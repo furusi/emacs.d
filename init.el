@@ -2,20 +2,22 @@
 (setq recentf-max-menu-items 25)
 (global-set-key "\C-x\ \C-r" 'recentf-open-files)
 
-(when (require 'package nil t)
-  (add-to-list 'package-archives
- '("melpa" . "https://melpa.org/packages/") t))
+(require 'package)
+(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+                    (not (gnutls-available-p))))
+       (proto (if no-ssl "http" "https")))
+  ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
+  (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
+  ;;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
+  (when (< emacs-major-version 24)
+    ;; For important compatibility libraries like cl-lib
+    (add-to-list 'package-archives '("gnu" . (concat proto "://elpa.gnu.org/packages/")))))
+(package-initialize)
 
 (global-set-key (kbd "C-x C-j") 'skk-mode)
 
 (show-paren-mode t)
 (setq org-directory "~/Dropbox/Memo/")
-
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-(package-initialize)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -27,7 +29,7 @@
  '(org-agenda-files (quote ("~/tmp/schedule.org")))
  '(package-selected-packages
    (quote
-    (slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete powerline markdown-mode ddskk))))
+    (sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete powerline markdown-mode ddskk))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -64,8 +66,6 @@
 (global-set-key (kbd "C-x g") 'magit-status)
 
 (require 'gradle-mode)
-
-(gradle-mode 1)
 
 (setq eww-search-prefix "http://www.google.co.jp/search?q=")
 
@@ -189,3 +189,14 @@
 (ac-set-trigger-key "TAB")
 (setq ac-use-menu-map t)       ;; 補完メニュー表示時にC-n/C-pで補完候補選択
 (setq ac-use-fuzzy t)          ;; 曖昧マッチ
+
+(setq skk-use-act t)
+
+(autoload 'run-prolog "prolog" "Start a Prolog sub-process." t)
+(autoload 'prolog-mode "prolog" "Major mode for editing Prolog programs." t)
+(autoload 'mercury-mode "prolog" "Major mode for editing Mercury programs." t)
+(setq prolog-system 'swi)
+(setq auto-mode-alist (append '(("\\.pl$" . prolog-mode)
+				("\\.swi$" . prolog-mode)
+                                ("\\.m$" . mercury-mode))
+                               auto-mode-alist))
