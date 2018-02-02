@@ -9,7 +9,7 @@
 (global-set-key (kbd "C-x C-j") 'skk-mode)
 
 (show-paren-mode t)
-(setq org-directory "~/org/")
+(setq org-directory "~/Dropbox/Memo/")
 
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
@@ -24,9 +24,10 @@
  ;; If there is more than one, they won't work right.
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(inhibit-startup-screen t)
+ '(org-agenda-files (quote ("~/tmp/schedule.org")))
  '(package-selected-packages
    (quote
-    (atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete powerline markdown-mode ddskk))))
+    (slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete powerline markdown-mode ddskk))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -38,11 +39,6 @@
 (powerline-default-theme)
 
 (set-face-attribute 'default nil :height 140)
-
-(require 'simplenote2)
-(setq simplenote2-email "furusityofu@gmail.com")
-(setq simplenote2-password "jjB9EbFm2W.CA")
-(simplenote2-setup)
 
 (setq org-default-notes-file (concat org-directory "/notes.org"))
 (setq org-capture-templates
@@ -165,3 +161,31 @@
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
 (eval-after-load "org" '(require 'ox-odt nil t))
+
+(define-key global-map "\C-ca" 'org-agenda)
+
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-cc" 'org-capture)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+
+(require 'undo-tree)
+(global-undo-tree-mode t)
+(global-set-key (kbd "M-/") 'undo-tree-redo)
+
+(require 'org-ac)
+
+;; Make config suit for you. About the config item, eval the following sexp.
+;; (customize-group "org-ac")
+
+(org-ac/config-default)
+
+(require 'auto-complete-config)
+(ac-config-default)
+(add-to-list 'ac-modes 'text-mode)         ;; text-modeでも自動的に有効にする
+(add-to-list 'ac-modes 'fundamental-mode)  ;; fundamental-mode
+(add-to-list 'ac-modes 'org-mode)
+(add-to-list 'ac-modes 'yatex-mode)
+(ac-set-trigger-key "TAB")
+(setq ac-use-menu-map t)       ;; 補完メニュー表示時にC-n/C-pで補完候補選択
+(setq ac-use-fuzzy t)          ;; 曖昧マッチ
