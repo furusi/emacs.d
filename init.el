@@ -26,7 +26,7 @@
  ;; If there is more than one, they won't work right.
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(inhibit-startup-screen t)
- '(org-agenda-files (quote ("~/tmp/schedule.org")))
+ '(org-agenda-files (quote ("~/Dropbox/Memo/agenda.org")))
  '(package-selected-packages
    (quote
     (sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete powerline markdown-mode ddskk))))
