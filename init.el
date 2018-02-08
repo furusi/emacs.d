@@ -17,7 +17,7 @@
 (global-set-key (kbd "C-x C-j") 'skk-mode)
 
 (show-paren-mode t)
-(setq org-directory "~/Dropbox/Memo/")
+(setq org-directory "~/Dropbox/org/")
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -26,10 +26,12 @@
  ;; If there is more than one, they won't work right.
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(inhibit-startup-screen t)
- '(org-agenda-files (quote ("~/Dropbox/Memo/agenda.org")))
+ '(org-agenda-files
+   (quote
+    ("~/Dropbox/Memo/hikkoshi.org" "~/Dropbox/org/agenda.org")))
  '(package-selected-packages
    (quote
-    (sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete powerline markdown-mode ddskk))))
+    (web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete powerline markdown-mode ddskk))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -70,7 +72,7 @@
 (setq eww-search-prefix "http://www.google.co.jp/search?q=")
 
 (prefer-coding-system 'utf-8)
-(setq coding-system-for-read 'utf-8)
+;;(setq coding-system-for-read 'utf-8)
 (load-theme 'atom-dark t)
 	
 (setq skk-search-katakana t)
@@ -200,3 +202,44 @@
 				("\\.swi$" . prolog-mode)
                                 ("\\.m$" . mercury-mode))
                                auto-mode-alist))
+
+
+(setq recentf-max-saved-items 2000) ;; 2000ファイルまで履歴保存する
+(setq recentf-auto-cleanup 'never)  ;; 存在しないファイルは消さない
+(setq recentf-exclude '("/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/" "/\\.emacs\\.d/elpa/"))
+(setq recentf-auto-save-timer (run-with-idle-timer 30 t 'recentf-save-list))
+(put 'narrow-to-region 'disabled nil)
+
+(setq inferior-lisp-program "sbcl")
+;; ~/.emacs.d/slimeをload-pathに追加
+;;(add-to-list 'load-path (expand-file-name "~/.emacs.d/slime"))
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/elpa/slime-20180130.537"))
+;; SLIMEのロード
+(require 'slime)
+(slime-setup '(slime-repl slime-fancy slime-banner)) 
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages '((C . t)))
+
+(require 'undohist)
+(undohist-initialize)
+;;; 永続化を無視するファイル名の正規表現
+(setq undohist-ignored-files
+      '("/tmp/" "COMMIT_EDITMSG"))
+
+(require 'auto-save-buffers-enhanced)
+
+;;; 1秒後に保存
+(setq auto-save-buffers-enhanced-interval 1)
+
+(auto-save-buffers-enhanced t)
+
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.[gj]sp\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
