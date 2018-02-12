@@ -31,7 +31,7 @@
     ("~/Dropbox/Memo/hikkoshi.org" "~/Dropbox/org/agenda.org")))
  '(package-selected-packages
    (quote
-    (leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete powerline markdown-mode ddskk))))
+    (yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete powerline markdown-mode ddskk))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -61,7 +61,7 @@
       (append '(("\\.rst$" . rst-mode)
 		("\\.rest$" . rst-mode)) auto-mode-alist))
 ;; 背景が黒い場合はこうしないと見出しが見づらい
-(setq frame-background-mode 'dark)
+;;(setq frame-background-mode 'dark)
 ;; 全部スペースでインデントしましょう
 (add-hook 'rst-mode-hook '(lambda() (setq indent-tabs-mode nil)))
 
@@ -73,8 +73,8 @@
 
 (prefer-coding-system 'utf-8)
 ;;(setq coding-system-for-read 'utf-8)
-(load-theme 'atom-dark t)
-;;(load-theme 'leuven t)
+;;(load-theme 'atom-dark t)
+(load-theme 'leuven t)
 	
 (setq skk-search-katakana t)
 
@@ -258,3 +258,14 @@
 (global-set-key (kbd "C-x b") 'helm-mini)
 
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
+
+;;; 3つの表示方法どれか1つ選ぶ
+(which-key-setup-side-window-bottom)    ;ミニバッファ
+;; (which-key-setup-side-window-right)     ;右端
+;; (which-key-setup-side-window-right-bottom) ;両方使う
+
+(which-key-mode 1)
+
+;;yasnippet
+(require 'yasnippet)
+(yas-global-mode 1)
