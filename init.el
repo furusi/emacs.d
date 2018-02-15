@@ -1,6 +1,7 @@
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
-(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+;;(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+(global-set-key "\C-x\ \C-r" 'helm-recentf)
 
 (require 'package)
 (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
@@ -214,7 +215,7 @@
 (setq inferior-lisp-program "sbcl")
 ;; ~/.emacs.d/slimeをload-pathに追加
 ;;(add-to-list 'load-path (expand-file-name "~/.emacs.d/slime"))
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/elpa/slime-20180130.537"))
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/elpa/slime-20180208.323"))
 ;; SLIMEのロード
 (require 'slime)
 (slime-setup '(slime-repl slime-fancy slime-banner)) 
@@ -232,8 +233,9 @@
 
 ;;; 1秒後に保存
 (setq auto-save-buffers-enhanced-interval 1)
-
 (auto-save-buffers-enhanced t)
+;;; Wroteのメッセージを抑制
+(setq auto-save-buffers-enhanced-quiet-save-p t)
 
 (require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
@@ -269,3 +271,34 @@
 ;;yasnippet
 (require 'yasnippet)
 (yas-global-mode 1)
+
+(defvar mode-line-cleaner-alist
+  '( ;; For minor-mode, first char is 'space'
+    (yas-minor-mode . " Ys")
+    (paredit-mode . " Pe")
+    (eldoc-mode . "")
+    (abbrev-mode . "")
+    (undo-tree-mode . " Ut")
+    (elisp-slime-nav-mode . " EN")
+    (helm-gtags-mode . " HG")
+    (flymake-mode . " Fm")
+    ;; Major modes
+    (lisp-interaction-mode . "Lisp")
+    (python-mode . "Py")
+    (ruby-mode   . "Rb")
+    (emacs-lisp-mode . "Elisp")
+    (markdown-mode . "Mkd")))
+
+;;mode lineの設定
+(defun clean-mode-line ()
+  (interactive)
+  (loop for (mode . mode-str) in mode-line-cleaner-alist
+        do
+        (let ((old-mode-str (cdr (assq mode minor-mode-alist))))
+          (when old-mode-str
+            (setcar old-mode-str mode-str))
+          ;; major mode
+          (when (eq mode major-mode)
+            (setq mode-name mode-str)))))
+
+(add-hook 'after-change-major-mode-hook 'clean-mode-line)
