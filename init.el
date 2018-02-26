@@ -32,7 +32,7 @@
     ("~/Dropbox/Memo/hikkoshi.org" "~/Dropbox/org/agenda.org")))
  '(package-selected-packages
    (quote
-    (yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete powerline markdown-mode ddskk))))
+    (elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete powerline markdown-mode ddskk))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -302,3 +302,13 @@
             (setq mode-name mode-str)))))
 
 (add-hook 'after-change-major-mode-hook 'clean-mode-line)
+
+(exec-path-from-shell-initialize)
+(require 'jedi)
+(add-hook 'python-mode-hook
+          '(lambda()
+             (jedi:ac-setup)
+             (setq jedi:complete-on-dot t)
+             (local-set-key (kbd "M-TAB") 'jedi:complete)))
+
+(elpy-enable)
