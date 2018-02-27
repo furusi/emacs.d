@@ -16,7 +16,10 @@
     ;; For important compatibility libraries like cl-lib
     (add-to-list 'package-archives '("gnu" . (concat proto "://elpa.gnu.org/packages/")))))
 (package-initialize)
+(eval-when-compile
+  ;; Following line is not needed if use-package.el is in ~/.emacs.d
 
+  (require 'use-package))
 (global-set-key (kbd "C-x C-j") 'skk-mode)
 
 (show-paren-mode t)
@@ -34,16 +37,13 @@
     ("~/Dropbox/Memo/hikkoshi.org" "~/Dropbox/org/agenda.org")))
  '(package-selected-packages
    (quote
-    (org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete powerline markdown-mode ddskk))))
+    (spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
-(require 'powerline)
-(powerline-default-theme)
 
 (set-face-attribute 'default nil :height 140)
 
@@ -306,7 +306,7 @@
 (add-hook 'after-change-major-mode-hook 'clean-mode-line)
 
 (exec-path-from-shell-initialize)
-(require 'jedi)
+(use-package jedi)
 (add-hook 'python-mode-hook
           '(lambda()
              (jedi:ac-setup)
@@ -314,3 +314,20 @@
              (local-set-key (kbd "M-TAB") 'jedi:complete)))
 
 (elpy-enable)
+
+;(use-package 'all-the-icons)
+
+
+(use-package spaceline :ensure t
+  :config
+  (setq-default mode-line-format '("%e" (:eval (spaceline-ml-main)))))
+
+(use-package spaceline-config :ensure spaceline
+  :config
+  (spaceline-helm-mode 1)
+  (spaceline-spacemacs-theme))
+
+(use-package spaceline-all-the-icons 
+  :after spaceline
+  :config (spaceline-all-the-icons-theme))
+
