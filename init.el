@@ -17,13 +17,19 @@
     (add-to-list 'package-archives '("gnu" . (concat proto "://elpa.gnu.org/packages/")))))
 (package-initialize)
 (eval-when-compile
-  ;; Following line is not needed if use-package.el is in ~/.emacs.d
+    (unless (require 'use-package nil t)
+    (package-install 'use-package))
+  )
 
-  (require 'use-package))
-(global-set-key (kbd "C-x C-j") 'skk-mode)
 
+
+(use-package org
+  :ensure t
+  :config
+  (setq org-directory "~/Dropbox/org/")
+  )
 (show-paren-mode t)
-(setq org-directory "~/Dropbox/org/")
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -37,7 +43,7 @@
     ("~/Dropbox/Memo/hikkoshi.org" "~/Dropbox/org/agenda.org")))
  '(package-selected-packages
    (quote
-    (spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
+    (esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -68,34 +74,50 @@
 ;; 全部スペースでインデントしましょう
 (add-hook 'rst-mode-hook '(lambda() (setq indent-tabs-mode nil)))
 
-(global-set-key (kbd "C-x g") 'magit-status)
+(use-package magit
+  :ensure t
+  :bind (("C-x g" . magit-status))
+  )
 
-(require 'gradle-mode)
 
-(setq eww-search-prefix "http://www.google.co.jp/search?q=")
+(use-package gradle-mode)
+
+(use-package eww
+  :config
+  (setq eww-search-prefix "http://www.google.co.jp/search?q=")
+  )
+
 
 (prefer-coding-system 'utf-8)
 ;;(setq coding-system-for-read 'utf-8)
 ;;(load-theme 'atom-dark t)
 (load-theme 'leuven t)
-	
-(setq skk-search-katakana t)
+
+(use-package ddskk
+  :ensure t
+;;  :defer t
+  :bind (("C-x C-j" . skk-mode))
+  :init
+  (setq skk-search-katakana t)
+  (setq skk-use-act t) )
 
 ;;
 ;; Org mode
 ;;
-(require 'ox-latex)
-(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-(setq org-latex-default-class "bxjsarticle")
-(setq org-latex-pdf-process '("latexmk -e '$latex=q/uplatex %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
+(use-package ox-latex
+  :config
+  
+  (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+  (setq org-latex-default-class "bxjsarticle")
+  (setq org-latex-pdf-process '("latexmk -e '$latex=q/uplatex %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
 ;(setq org-latex-pdf-process '("latexmk -e '$lualatex=q/lualatex %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex -o %D %S/' -norc -gg -pdflua %f"))
 ;(setq org-export-in-background t)
-(setq org-file-apps
-      '(("pdf" . "open -a Skim %s")))
+  (setq org-file-apps
+	'(("pdf" . "open -a Skim %s")))
 
-(add-to-list 'org-latex-classes
-             '("bxjsarticle"
-               "\\documentclass[autodetect-engine,dvi=dvipdfmx,11pt,a4paper,ja=standard]{bxjsarticle}
+  (add-to-list 'org-latex-classes
+	       '("bxjsarticle"
+		 "\\documentclass[autodetect-engine,dvi=dvipdfmx,11pt,a4paper,ja=standard]{bxjsarticle}
 [NO-DEFAULT-PACKAGES]
 \\usepackage{amsmath}
 \\usepackage{newtxtext,newtxmath}
@@ -164,16 +186,16 @@
                ("\\subsection{%s}" . "\\subsection*{%s}")
                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                ("\\paragraph{%s}" . "\\paragraph*{%s}")
-               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))) )
 
-(eval-after-load "org" '(require 'ox-odt nil t))
-
-(define-key global-map "\C-ca" 'org-agenda)
-
-(global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-cc" 'org-capture)
-(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cb" 'org-iswitchb)
+(use-package org
+  :commands (ox-odt)
+  :bind (("\C-cl" . org-store-link)
+	 ("\C-cc" . org-capture)
+	 ("\C-ca" . org-agenda)
+	 ("\C-cb" . org-iswitchb) )
+	 
+  )
 
 (require 'undo-tree)
 (global-undo-tree-mode t)
@@ -196,7 +218,7 @@
 (setq ac-use-menu-map t)       ;; 補完メニュー表示時にC-n/C-pで補完候補選択
 (setq ac-use-fuzzy t)          ;; 曖昧マッチ
 
-(setq skk-use-act t)
+
 
 (autoload 'run-prolog "prolog" "Start a Prolog sub-process." t)
 (autoload 'prolog-mode "prolog" "Major mode for editing Prolog programs." t)
@@ -250,33 +272,47 @@
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
 ;;helm
-(require 'helm-config)
-(helm-mode 1)
-(global-set-key (kbd "M-x") 'helm-M-x)
+
+
+
+(use-package helm
+  :bind (("M-x" . helm-M-x)
+	 ("M-y" . helm-show-kill-ring)
+	 ("C-x b" . helm-mini)
+	 ("C-x C-f" . helm-find-files)  )
+  :config
+  (helm-autoresize-mode 1)
+  (helm-mode 1)
+  )
+(use-package helm-config
+  :config (helm-mode 1))
 
 (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
 (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
 (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
-(helm-autoresize-mode t)
-(global-set-key (kbd "M-y") 'helm-show-kill-ring)
-(global-set-key (kbd "C-x b") 'helm-mini)
 
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
 
+(use-package which-key
+  :config
 ;;; 3つの表示方法どれか1つ選ぶ
-(which-key-setup-side-window-bottom)    ;ミニバッファ
+  (which-key-setup-side-window-bottom)    ;ミニバッファ
 ;; (which-key-setup-side-window-right)     ;右端
 ;; (which-key-setup-side-window-right-bottom) ;両方使う
-
-(which-key-mode 1)
+  (which-key-mode 1)
+  )
 
 ;;yasnippet
-(require 'yasnippet)
-(yas-global-mode 1)
+(use-package yasnippet
+  :ensure t
+  :defer t
+  :config
+  (yas-global-mode 1)
+  )
+
 
 (defvar mode-line-cleaner-alist
   '( ;; For minor-mode, first char is 'space'
-    (yas-minor-mode . " Ys")
+;;    (yas-minor-mode . " Ys")
     (paredit-mode . " Pe")
     (eldoc-mode . "")
     (abbrev-mode . "")
@@ -313,21 +349,25 @@
              (setq jedi:complete-on-dot t)
              (local-set-key (kbd "M-TAB") 'jedi:complete)))
 
-(elpy-enable)
-
-;(use-package 'all-the-icons)
+(use-package elpy
+  :config
+  (elpy-enable)
+  )
 
 
 (use-package spaceline :ensure t
+  :disabled t
   :config
   (setq-default mode-line-format '("%e" (:eval (spaceline-ml-main)))))
 
 (use-package spaceline-config :ensure spaceline
+  :disabled t
   :config
   (spaceline-helm-mode 1)
   (spaceline-spacemacs-theme))
 
-(use-package spaceline-all-the-icons 
+(use-package spaceline-all-the-icons
+  :disabled t
   :after spaceline
   :config (spaceline-all-the-icons-theme))
 
