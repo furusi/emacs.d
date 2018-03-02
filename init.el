@@ -21,13 +21,11 @@
     (package-install 'use-package))
   )
 
-
-
-(use-package org
-  :ensure t
+(use-package powerline
   :config
-  (setq org-directory "~/Dropbox/org/")
-  )
+  (powerline-default-theme) )
+
+
 (show-paren-mode t)
 
 
@@ -38,9 +36,7 @@
  ;; If there is more than one, they won't work right.
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(inhibit-startup-screen t)
- '(org-agenda-files
-   (quote
-    ("~/Dropbox/Memo/hikkoshi.org" "~/Dropbox/org/agenda.org")))
+
  '(package-selected-packages
    (quote
     (esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
@@ -53,15 +49,7 @@
 
 (set-face-attribute 'default nil :height 140)
 
-(setq org-default-notes-file (concat org-directory "/notes.org"))
-(setq org-capture-templates
-   '(("t" "Task" entry (file (expand-file-name (concat org-directory "/task.org")))
-      "* TODO %?\n    %i\n   %a\n    %T")
-     ("n" "note" entry (file (expand-file-name (concat org-directory "/notes.org")))
-      "* %?\n   %a\n    %T")
-     ("r" "reading" entry (file (expand-file-name (concat org-directory "/reading.org")))
-      "* %?\n   %a\n    %T")))
-(define-key global-map "\C-cc" 'org-capture)
+
 
 ;; Emacs起動時にrst.elを読み込み
 (require 'rst)
@@ -188,25 +176,55 @@
                ("\\paragraph{%s}" . "\\paragraph*{%s}")
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))) )
 
-(use-package org
-  :commands (ox-odt)
-  :bind (("\C-cl" . org-store-link)
-	 ("\C-cc" . org-capture)
-	 ("\C-ca" . org-agenda)
-	 ("\C-cb" . org-iswitchb) )
-	 
+
+(use-package org-capture
+  :bind (("\C-cc" . org-capture))
+  :config
+  (setq org-directory (expand-file-name "~/Dropbox/org/"))
+  (setq org-capture-templates
+	`(
+	  ("t" "Task" entry
+	   (file ,(concat org-directory "task.org"))
+	   "* TODO %? %i\n %a\n %T")
+	  ("n" "note" entry
+	   (file ,(concat org-directory "reading.org"))
+	   "* %?\n %a\n %T")
+	  ("r" "reading" entry
+	   (file ,(concat org-directory "reading.org"))
+	   "* %?\n %a\n %T") ))
   )
+
+(use-package org
+  :mode (("\\.org$" . org-mode))
+  :ensure org-plus-contrib
+  :config
+  (progn
+    '(org-agenda-files
+      (quote
+       ("~/Dropbox/Memo/hikkoshi.org" "~/Dropbox/org/agenda.org")))
+    )
+  :bind (("\C-cl" . org-store-link)
+	 ("\C-ca" . org-agenda)
+	 ("\C-cb" . org-iswitchb))  
+  )
+
+
 
 (require 'undo-tree)
 (global-undo-tree-mode t)
 (global-set-key (kbd "M-/") 'undo-tree-redo)
 
-(require 'org-ac)
+(use-package org-ac
+  :ensure t
+  :defer t
+  :config
+  (org-ac/config-default)
+  )
 
 ;; Make config suit for you. About the config item, eval the following sexp.
 ;; (customize-group "org-ac")
 
-(org-ac/config-default)
+
 
 (require 'auto-complete-config)
 (ac-config-default)
@@ -236,13 +254,13 @@
 (setq recentf-auto-save-timer (run-with-idle-timer 30 t 'recentf-save-list))
 (put 'narrow-to-region 'disabled nil)
 
-(setq inferior-lisp-program "sbcl")
-;; ~/.emacs.d/slimeをload-pathに追加
-;;(add-to-list 'load-path (expand-file-name "~/.emacs.d/slime"))
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/elpa/slime-20180208.323"))
+
+
 ;; SLIMEのロード
-(require 'slime)
-(slime-setup '(slime-repl slime-fancy slime-banner)) 
+(use-package slime
+  :config
+  (setq inferior-lisp-program "sbcl")
+  (slime-setup '(slime-repl slime-fancy slime-banner)) )
 
 (org-babel-do-load-languages
  'org-babel-load-languages '((C . t)))
@@ -253,15 +271,19 @@
 (setq undohist-ignored-files
       '("/tmp/" "COMMIT_EDITMSG"))
 
-(require 'auto-save-buffers-enhanced)
-
-;;; 1秒後に保存
-(setq auto-save-buffers-enhanced-interval 1)
-(auto-save-buffers-enhanced t)
+(use-package auto-save-buffers-enhanced
+  :ensure t
+  :config
+  ;;; 1秒後に保存
+  (setq auto-save-buffers-enhanced-interval 1)
+  (auto-save-buffers-enhanced t)
 ;;; Wroteのメッセージを抑制
-(setq auto-save-buffers-enhanced-quiet-save-p t)
+  (setq auto-save-buffers-enhanced-quiet-save-p t)
+  )
 
-(require 'web-mode)
+
+(use-package web-mode
+  :ensure t)
 (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.[gj]sp\\'" . web-mode))
@@ -273,8 +295,6 @@
 
 ;;helm
 
-
-
 (use-package helm
   :bind (("M-x" . helm-M-x)
 	 ("M-y" . helm-show-kill-ring)
@@ -284,6 +304,7 @@
   (helm-autoresize-mode 1)
   (helm-mode 1)
   )
+
 (use-package helm-config
   :config (helm-mode 1))
 
@@ -312,7 +333,7 @@
 
 (defvar mode-line-cleaner-alist
   '( ;; For minor-mode, first char is 'space'
-;;    (yas-minor-mode . " Ys")
+    (yas-minor-mode . " Ys")
     (paredit-mode . " Pe")
     (eldoc-mode . "")
     (abbrev-mode . "")
@@ -342,7 +363,10 @@
 (add-hook 'after-change-major-mode-hook 'clean-mode-line)
 
 (exec-path-from-shell-initialize)
-(use-package jedi)
+(use-package jedi
+  :ensure t
+ ; :defer t
+  )
 (add-hook 'python-mode-hook
           '(lambda()
              (jedi:ac-setup)
