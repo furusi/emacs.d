@@ -21,11 +21,6 @@
     (package-install 'use-package))
   )
 
-(use-package powerline
-  :config
-  (powerline-default-theme) )
-
-
 (show-paren-mode t)
 
 
@@ -36,7 +31,7 @@
  ;; If there is more than one, they won't work right.
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(inhibit-startup-screen t)
-
+ '(org-agenda-files (quote ("~/Dropbox/org/notes.org")))
  '(package-selected-packages
    (quote
     (esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
@@ -52,7 +47,8 @@
 
 
 ;; Emacs起動時にrst.elを読み込み
-(require 'rst)
+(use-package rst
+  :ensure t)
 ;; 拡張子の*.rst, *.restのファイルをrst-modeで開く
 (setq auto-mode-alist
       (append '(("\\.rst$" . rst-mode)
@@ -86,8 +82,19 @@
 ;;  :defer t
   :bind (("C-x C-j" . skk-mode))
   :init
+  (setq skk-large-jisyo "~/.emacs.d/skk-get-jisyo/SKK-JISYO.L")
   (setq skk-search-katakana t)
-  (setq skk-use-act t) )
+  (setq skk-use-act t)
+  (setq skk-henkan-show-candidates-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
+  :config
+  (setq skk-show-icon t)
+  (setq skk-egg-like-newline t);;non-nilにするとEnterでの確定時に改行しない
+  ;; ▼モードで BS を押したときには確定しないで前候補を表示する
+  (setq skk-delete-implies-kakutei nil)
+  )
+
+(use-package skk-study
+  :after ddskk)
 
 ;;
 ;; Org mode
@@ -187,7 +194,7 @@
 	   (file ,(concat org-directory "task.org"))
 	   "* TODO %? %i\n %a\n %T")
 	  ("n" "note" entry
-	   (file ,(concat org-directory "reading.org"))
+	   (file ,(concat org-directory "notes.org"))
 	   "* %?\n %a\n %T")
 	  ("r" "reading" entry
 	   (file ,(concat org-directory "reading.org"))
@@ -198,11 +205,13 @@
   :mode (("\\.org$" . org-mode))
   :ensure org-plus-contrib
   :config
-  (progn
-    '(org-agenda-files
-      (quote
-       ("~/Dropbox/Memo/hikkoshi.org" "~/Dropbox/org/agenda.org")))
-    )
+  (setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
+  (setq org-mobile-files
+	(list "~/Dropbox/org/notes.org"
+	      "~/Dropbox/org/todo.org"
+	      "~/Dropbox/org/iphone.org"
+	      ))
+  (setq org-mobile-inbox-for-pull "~/Dropbox/org/iphone.org")
   :bind (("\C-cl" . org-store-link)
 	 ("\C-ca" . org-agenda)
 	 ("\C-cb" . org-iswitchb))  
@@ -210,9 +219,15 @@
 
 
 
-(require 'undo-tree)
-(global-undo-tree-mode t)
-(global-set-key (kbd "M-/") 'undo-tree-redo)
+(use-package undo-tree
+  :bind (("M-/" . undo-tree-undo))
+  :init
+  (undo-tree-mode)
+  :config
+  (global-undo-tree-mode t)  
+  )
+
+
 
 (use-package org-ac
   :ensure t
@@ -394,4 +409,19 @@
   :disabled t
   :after spaceline
   :config (spaceline-all-the-icons-theme))
+
+(use-package smart-mode-line
+  :ensure t
+  :init
+  (column-number-mode t) ;; 列番号の表示
+  (line-number-mode t) ;; 行番号の表示
+  (defvar sml/no-confirm-load-theme t)
+  (defvar sml/theme 'dark) ;; お好みで
+  (defvar sml/shorten-directory -1) ;; directory pathはフルで表示されたいので
+  (sml/setup)
+  )
+
+
+
+
 
