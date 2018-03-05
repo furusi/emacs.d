@@ -376,8 +376,13 @@
             (setq mode-name mode-str)))))
 
 (add-hook 'after-change-major-mode-hook 'clean-mode-line)
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (setq exec-path-from-shell-check-startup-files nil)
+  (exec-path-from-shell-initialize)
+  )
 
-(exec-path-from-shell-initialize)
 (use-package jedi
   :ensure t
  ; :defer t
