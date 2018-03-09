@@ -31,7 +31,9 @@
  ;; If there is more than one, they won't work right.
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(inhibit-startup-screen t)
- '(org-agenda-files (quote ("~/Dropbox/org/notes.org")))
+ '(org-agenda-files
+   (quote
+    ("~/Dropbox/org/task.org" "~/Dropbox/org/notes.org")))
  '(package-selected-packages
    (quote
     (esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
