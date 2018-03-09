@@ -211,6 +211,7 @@
   (setq org-mobile-files
 	(list "~/Dropbox/org/notes.org"
 	      "~/Dropbox/org/todo.org"
+	      "~/Dropbox/org/task.org"
 	      "~/Dropbox/org/iphone.org"
 	      ))
   (setq org-mobile-inbox-for-pull "~/Dropbox/org/iphone.org")
