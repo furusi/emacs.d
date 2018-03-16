@@ -36,7 +36,7 @@
     ("~/Dropbox/org/task.org" "~/Dropbox/org/notes.org")))
  '(package-selected-packages
    (quote
-    (esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
+    (keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -74,7 +74,7 @@
   )
 
 
-(prefer-coding-system 'utf-8)
+
 ;;(setq coding-system-for-read 'utf-8)
 ;;(load-theme 'atom-dark t)
 (load-theme 'leuven t)
@@ -194,7 +194,7 @@
 	`(
 	  ("t" "Task" entry
 	   (file ,(concat org-directory "task.org"))
-	   "* TODO %? %i\n %a\n %T")
+	   "* TODO %? %i\n %a\n")
 	  ("n" "note" entry
 	   (file ,(concat org-directory "notes.org"))
 	   "* %?\n %a\n %T")
@@ -429,7 +429,17 @@
   (sml/setup)
   )
 
+(use-package keyfreq
+  :config
+  (keyfreq-mode 1)
+  (keyfreq-autosave-mode 1)
+  )
 
-
-
-
+(set-language-environment 'Japanese)
+(prefer-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-buffer-file-coding-system 'utf-8)
+(setq default-buffer-file-coding-system 'utf-8)
+(setq file-name-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
