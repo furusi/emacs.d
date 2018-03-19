@@ -36,7 +36,7 @@
     ("~/Dropbox/org/task.org" "~/Dropbox/org/notes.org")))
  '(package-selected-packages
    (quote
-    (keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
+    (init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -215,6 +215,10 @@
 	      "~/Dropbox/org/iphone.org"
 	      ))
   (setq org-mobile-inbox-for-pull "~/Dropbox/org/iphone.org")
+  (setq org-tag-alist
+  '(("@OFFICE" . ?o) ("@HOME" . ?h) ("SHOPPING" . ?s)
+    ("MAIL" . ?m) ("PROJECT" . ?p) ("備忘録" . ?b)))
+
   :bind (("\C-cl" . org-store-link)
 	 ("\C-ca" . org-agenda)
 	 ("\C-cb" . org-iswitchb))  
@@ -443,3 +447,4 @@
 (setq default-buffer-file-coding-system 'utf-8)
 (setq file-name-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
+
