@@ -50,7 +50,9 @@
 
 ;; Emacs起動時にrst.elを読み込み
 (use-package rst
-  :ensure t)
+  :ensure t
+  :bind (("M-RET" . rst-insert-list))
+  )
 ;; 拡張子の*.rst, *.restのファイルをrst-modeで開く
 (setq auto-mode-alist
       (append '(("\\.rst$" . rst-mode)
@@ -218,6 +220,11 @@
   (setq org-tag-alist
   '(("@OFFICE" . ?o) ("@HOME" . ?h) ("SHOPPING" . ?s)
     ("MAIL" . ?m) ("PROJECT" . ?p) ("備忘録" . ?b)))
+  (setq org-refile-targets
+	(quote (
+		("~/Dropbox/org/task.org" :level . 1)
+		("~/Dropbox/org/notes.org" :level . 1)
+		 )))
 
   :bind (("\C-cl" . org-store-link)
 	 ("\C-ca" . org-agenda)
