@@ -455,3 +455,26 @@
 (setq file-name-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 
+(when (equal system-type 'darwin)
+  (add-to-list 'load-path "/usr/local/Cellar/mu/HEAD-4242ca8/share/emacs/site-lisp/mu/mu4e/")
+  (use-package mu4e
+    :config
+      ;;location of my maildir
+    (setq mu4e-maildir (expand-file-name "~/.maildir/gmail"))
+    ;;command used to get mail
+    ;; use this for testing
+    ;;(setq mu4e-get-mail-command "true")
+    ;; use this to sync with mbsync
+    (setq mu4e-get-mail-command "mbsync gmail")
+
+    ;;rename files when moving
+    ;;NEEDED FOR MBSYNC
+    (setq mu4e-change-filenames-when-moving t)
+    )
+  (use-package org-mu4e
+    :config
+    ;;store link to message if in header view, not to header query
+    (setq org-mu4e-link-query-in-headers-mode nil)
+    )
+
+)
