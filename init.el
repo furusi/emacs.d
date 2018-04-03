@@ -36,7 +36,7 @@
     ("~/Dropbox/org/task.org" "~/Dropbox/org/notes.org")))
  '(package-selected-packages
    (quote
-    (init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
+    (migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -332,6 +332,7 @@
   :config
   (helm-autoresize-mode 1)
   (helm-mode 1)
+  (helm-migemo-mode 1)
   )
 
 (use-package helm-config
@@ -456,7 +457,12 @@
 (set-default-coding-systems 'utf-8)
 
 (when (equal system-type 'darwin)
-  (add-to-list 'load-path "/usr/local/Cellar/mu/HEAD-4242ca8/share/emacs/site-lisp/mu/mu4e/")
+  (add-to-list 'load-path "/usr/local/Cellar/mu/1.0/share/emacs/site-lisp/mu/mu4e/")
+    ;; Set your installed path
+  (setq migemo-dictionary "/usr/local/Cellar/cmigemo/HEAD-5c014a8/share/migemo/utf-8/migemo-dict")
+
+
+)
   (use-package mu4e
     :config
       ;;location of my maildir
@@ -512,13 +518,32 @@
 	     ;;  mu4e-sent-folder)
 	     ;; everything else goes to /archive
 	     ;; important to have a catch-all at the end!
-	     (t  "/archive"))))
-
+	     (t  "/archive")) ))
+    ;; don't keep message buffers around
+    (setq message-kill-buffer-on-exit t)
+    ;; save attachment to my desktop (this can also be a function)
+    (setq mu4e-attachment-dir "~/Downloads")
+    (setq mu4e-maildir-shortcuts
+      '( ("/inbox"               . ?i)
+         ("/sent"   . ?s)
+         ("/trash"       . ?t)
+         ("/archive"    . ?a)))
     )
   (use-package org-mu4e
     :config
     ;;store link to message if in header view, not to header query
-    (setq org-mu4e-link-query-in-headers-mode nil)
-    )
+    (setq org-mu4e-link-query-in-headers-mode nil) )
 
-)
+(use-package migemo
+  :ensure t
+  :config
+  (setq migemo-command "cmigemo")
+  (setq migemo-options '("-q" "--emacs"))
+  ;; Set your installed path
+  ;;(setq migemo-dictionary "/usr/local/Cellar/cmigemo/HEAD-5c014a8/share/migemo/utf-8/migemo-dict")
+  (setq migemo-user-dictionary nil)
+  (setq migemo-regex-dictionary nil)
+  (setq migemo-coding-system 'utf-8-unix)
+  (migemo-init)
+  )
+
