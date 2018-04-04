@@ -332,7 +332,7 @@
   :config
   (helm-autoresize-mode 1)
   (helm-mode 1)
-  (helm-migemo-mode 1)
+
   )
 
 (use-package helm-config
@@ -545,5 +545,6 @@
   (setq migemo-regex-dictionary nil)
   (setq migemo-coding-system 'utf-8-unix)
   (migemo-init)
+  (helm-migemo-mode 1)
   )
 
