@@ -33,7 +33,10 @@
  '(inhibit-startup-screen t)
  '(org-agenda-files
    (quote
-    ("~/Dropbox/org/task.org" "~/Dropbox/org/notes.org")))
+    ("~/Dropbox/org/task.org"
+     "~/Dropbox/org/notes.org"
+     "~/Dropbox/org/habit.org"
+     )))
  '(package-selected-packages
    (quote
     (migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
@@ -194,13 +197,22 @@
   (setq org-directory (expand-file-name "~/Dropbox/org/"))
   (setq org-capture-templates
 	`(
-	  ("t" "Task" entry
+	  ("t" "タスク" entry
+	   (file ,(concat org-directory "task.org"))
+	   "* TODO %? %i\n")
+	  ("n" "ノート" entry
+	   (file ,(concat org-directory "notes.org"))
+	   "* %?\n %T\n")
+	  ("n" "定期的にやること" entry
+	   (file ,(concat org-directory "habit.org"))
+	   "* %?\n %T\n")
+	  ("T" "タスク(リンク付き)" entry
 	   (file ,(concat org-directory "task.org"))
 	   "* TODO %? %i\n %a\n")
-	  ("n" "note" entry
+	  ("N" "ノート(リンク付き)" entry
 	   (file ,(concat org-directory "notes.org"))
-	   "* %?\n %a\n %T")
-	  ("r" "reading" entry
+	   "* %?\n %a\n %T\n")
+	  ("r" "読みかけ(リンク付き)" entry
 	   (file ,(concat org-directory "reading.org"))
 	   "* %?\n %a\n %T") ))
   )
@@ -214,22 +226,18 @@
 	(list "~/Dropbox/org/notes.org"
 	      "~/Dropbox/org/todo.org"
 	      "~/Dropbox/org/task.org"
-	      "~/Dropbox/org/iphone.org"
-	      ))
+	      "~/Dropbox/org/iphone.org"	      ))
   (setq org-mobile-inbox-for-pull "~/Dropbox/org/iphone.org")
   (setq org-tag-alist
   '(("@OFFICE" . ?o) ("@HOME" . ?h) ("SHOPPING" . ?s)
     ("MAIL" . ?m) ("PROJECT" . ?p) ("備忘録" . ?b)))
   (setq org-refile-targets
 	(quote (
-		("~/Dropbox/org/task.org" :level . 1)
-		("~/Dropbox/org/notes.org" :level . 1)
-		 )))
-
+		(nil . (:level . 1))
+		(org-agenda-files . (:level . 1)))))
   :bind (("\C-cl" . org-store-link)
 	 ("\C-ca" . org-agenda)
-	 ("\C-cb" . org-iswitchb))  
-  )
+	 ("\C-cb" . org-iswitchb)))
 
 
 
@@ -238,8 +246,7 @@
   :init
   (undo-tree-mode)
   :config
-  (global-undo-tree-mode t)  
-  )
+  (global-undo-tree-mode t)  )
 
 
 
@@ -247,8 +254,7 @@
   :ensure t
   :defer t
   :config
-  (org-ac/config-default)
-  )
+  (org-ac/config-default)  )
 
 ;; Make config suit for you. About the config item, eval the following sexp.
 ;; (customize-group "org-ac")
@@ -307,8 +313,7 @@
   (setq auto-save-buffers-enhanced-interval 1)
   (auto-save-buffers-enhanced t)
 ;;; Wroteのメッセージを抑制
-  (setq auto-save-buffers-enhanced-quiet-save-p t)
-  )
+  (setq auto-save-buffers-enhanced-quiet-save-p t)  )
 
 
 (use-package web-mode
@@ -331,9 +336,7 @@
 	 ("C-x C-f" . helm-find-files)  )
   :config
   (helm-autoresize-mode 1)
-  (helm-mode 1)
-
-  )
+  (helm-mode 1)  )
 
 (use-package helm-config
   :config (helm-mode 1))
@@ -349,8 +352,7 @@
   (which-key-setup-side-window-bottom)    ;ミニバッファ
 ;; (which-key-setup-side-window-right)     ;右端
 ;; (which-key-setup-side-window-right-bottom) ;両方使う
-  (which-key-mode 1)
-  )
+  (which-key-mode 1)  )
 
 ;;yasnippet
 (use-package yasnippet
@@ -410,8 +412,7 @@
 
 (use-package elpy
   :config
-  (elpy-enable)
-  )
+  (elpy-enable)  )
 
 
 (use-package spaceline :ensure t
@@ -428,7 +429,7 @@
 (use-package spaceline-all-the-icons
   :disabled t
   :after spaceline
-  :config (spaceline-all-the-icons-theme))
+  :config (spaceline-all-the-icons-theme)  )
 
 (use-package smart-mode-line
   :ensure t
@@ -438,8 +439,7 @@
   (defvar sml/no-confirm-load-theme t)
   (defvar sml/theme 'dark) ;; お好みで
   (defvar sml/shorten-directory -1) ;; directory pathはフルで表示されたいので
-  (sml/setup)
-  )
+  (sml/setup)  )
 
 (use-package keyfreq
   :config
@@ -459,10 +459,8 @@
 (when (equal system-type 'darwin)
   (add-to-list 'load-path "/usr/local/Cellar/mu/1.0/share/emacs/site-lisp/mu/mu4e/")
     ;; Set your installed path
-  (setq migemo-dictionary "/usr/local/Cellar/cmigemo/HEAD-5c014a8/share/migemo/utf-8/migemo-dict")
+  (setq migemo-dictionary "/usr/local/Cellar/cmigemo/HEAD-5c014a8/share/migemo/utf-8/migemo-dict")  )
 
-
-)
   (use-package mu4e
     :config
       ;;location of my maildir
@@ -518,17 +516,16 @@
 	     ;;  mu4e-sent-folder)
 	     ;; everything else goes to /archive
 	     ;; important to have a catch-all at the end!
-	     (t  "/archive")) ))
+	     (t  "/archive"))	    )	  )
     ;; don't keep message buffers around
     (setq message-kill-buffer-on-exit t)
     ;; save attachment to my desktop (this can also be a function)
     (setq mu4e-attachment-dir "~/Downloads")
     (setq mu4e-maildir-shortcuts
-      '( ("/inbox"               . ?i)
-         ("/sent"   . ?s)
-         ("/trash"       . ?t)
-         ("/archive"    . ?a)))
-    )
+	  '( ("/inbox"	      . ?i)	     
+	     ("/sent"	      . ?s)
+	     ("/trash"	      . ?t)
+	     ("/archive"      . ?a)))    )
   (use-package org-mu4e
     :config
     ;;store link to message if in header view, not to header query
@@ -545,6 +542,5 @@
   (setq migemo-regex-dictionary nil)
   (setq migemo-coding-system 'utf-8-unix)
   (migemo-init)
-  (helm-migemo-mode 1)
-  )
+  (helm-migemo-mode 1)  )
 
