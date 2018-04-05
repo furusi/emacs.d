@@ -36,6 +36,7 @@
     ("~/Dropbox/org/task.org"
      "~/Dropbox/org/notes.org"
      "~/Dropbox/org/habit.org"
+     "~/Dropbox/org/event.org"
      )))
  '(package-selected-packages
    (quote
@@ -200,6 +201,9 @@
 	  ("t" "タスク" entry
 	   (file ,(concat org-directory "task.org"))
 	   "* TODO %? %i\n")
+	  ("e" "イベント" entry
+	   (file ,(concat org-directory "event.org"))
+	   "* EVENT %? %i\n")
 	  ("n" "ノート" entry
 	   (file ,(concat org-directory "notes.org"))
 	   "* %?\n %T\n")
