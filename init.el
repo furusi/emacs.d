@@ -425,6 +425,9 @@
 (setq file-name-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 
+(when (equal system-type 'gnu/linux)
+    (add-to-list 'load-path "~/opt/mu-1.0/mu4e/")
+  )
 (when (equal system-type 'darwin)
   (add-to-list 'load-path "/usr/local/Cellar/mu/1.0/share/emacs/site-lisp/mu/mu4e/")
     ;; Set your installed path
