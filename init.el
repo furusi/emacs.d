@@ -107,89 +107,51 @@
 ;;
 ;; Org mode
 ;;
-(use-package ox-latex
-  :config
-  
-  (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-  (setq org-latex-default-class "bxjsarticle")
-  (setq org-latex-pdf-process '("latexmk -e '$latex=q/uplatex %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
-;(setq org-latex-pdf-process '("latexmk -e '$lualatex=q/lualatex %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex -o %D %S/' -norc -gg -pdflua %f"))
-;(setq org-export-in-background t)
-  (setq org-file-apps
-	'(("pdf" . "open -a Skim %s")))
+;; Org Mode LaTeX Export
+(require 'ox-latex)
+(require 'ox-bibtex)
+(unless (boundp 'org-latex-classes)
+  (setq org-latex-classes nil))
 
-  (add-to-list 'org-latex-classes
-	       '("bxjsarticle"
-		 "\\documentclass[autodetect-engine,dvi=dvipdfmx,11pt,a4paper,ja=standard]{bxjsarticle}
-[NO-DEFAULT-PACKAGES]
-\\usepackage{amsmath}
-\\usepackage{newtxtext,newtxmath}
-\\usepackage{graphicx}
-\\usepackage{hyperref}
-\\ifdefined\\kanjiskip
-  \\usepackage{pxjahyper}
-  \\hypersetup{colorlinks=true}
-\\else
-  \\ifdefined\\XeTeXversion
-      \\XeTeXgenerateactualtext=1
-      \\hypersetup{colorlinks=true}
-  \\else
-    \\ifdefined\\directlua
-      \\hypersetup{pdfencoding=auto,colorlinks=true}
-    \\else
-      \\hypersetup{unicode,colorlinks=true}
-    \\fi
-  \\fi
-\\fi"
-               ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-               ("\\paragraph{%s}" . "\\paragraph*{%s}")
-               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
+;; pdf process = latexmk
+(setq org-latex-pdf-process '("latexmk %f"))
+;; default class = jsarticle
+(setq org-latex-default-class "jsarticle")
+(setq org-latex-packages-alist
+  '(("AUTO" "inputenc"  nil)
+    ("hyperref,x11names" "xcolor"  nil)
+    ("colorlinks=true,urlcolor=SteelBlue4,linkcolor=Firebrick4" "hyperref"  nil)
+    ;; ...
+    ))
+;; org-latex-classes
 (add-to-list 'org-latex-classes
-             '("jlreq"
-               "\\documentclass[11pt,paper=a4]{jlreq}
-[NO-DEFAULT-PACKAGES]
-\\usepackage{amsmath}
-\\usepackage{newtxtext,newtxmath}
-\\ifdefined\\kanjiskip
-  \\usepackage[dvipdfmx]{graphicx}
-  \\usepackage[dvipdfmx]{hyperref}
-  \\usepackage{pxjahyper}
-  \\hypersetup{colorlinks=true}
-\\else
-  \\usepackage{graphicx}
-  \\usepackage{hyperref}
-  \\hypersetup{pdfencoding=auto,colorlinks=true}
-\\fi"
+             '("jsarticle"
+               "\\documentclass[11pt,a4paper,uplatex]{jsarticle}
+                [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
                ("\\section{%s}" . "\\section*{%s}")
                ("\\subsection{%s}" . "\\subsection*{%s}")
                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                ("\\paragraph{%s}" . "\\paragraph*{%s}")
-               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
+               ))
 
-(add-to-list 'org-latex-classes
-             '("jlreq-tate"
-               "\\documentclass[tate,11pt,paper=a4]{jlreq}
-[NO-DEFAULT-PACKAGES]
-\\usepackage{amsmath}
-\\usepackage{newtxtext,newtxmath}
-\\ifdefined\\kanjiskip
-  \\usepackage[dvipdfmx]{graphicx}
-  \\usepackage[dvipdfmx]{hyperref}
-  \\usepackage{pxjahyper}
-  \\hypersetup{colorlinks=true}
-\\else
-  \\usepackage{graphicx}
-  \\usepackage{hyperref}
-  \\hypersetup{pdfencoding=auto,colorlinks=true}
-\\fi"
-               ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-               ("\\paragraph{%s}" . "\\paragraph*{%s}")
-               ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))) )
+
+;; org-export-latex-no-toc
+(defun org-export-latex-no-toc (depth)
+    (when depth
+      (format "%% Org-mode is exporting headings to %s levels.\n"
+              depth)))
+  (setq org-export-latex-format-toc-function 'org-export-latex-no-toc)
+
+;; reftex with org mode
+(add-hook 'org-mode-hook 'turn-on-reftex)
+(defun org-mode-reftex-setup ()
+   (load-library "reftex")
+   (and (buffer-file-name)
+        (file-exists-p (buffer-file-name))
+        (reftex-parse-all))
+   (define-key org-mode-map (kbd "C-c [") 'reftex-citation))
+
 
 
 (use-package org-capture
@@ -200,25 +162,28 @@
 	`(
 	  ("t" "タスク" entry
 	   (file ,(concat org-directory "task.org"))
-	   "* TODO %? %i\n")
+	   "* TODO %? %i\n %U\n")
 	  ("e" "イベント" entry
 	   (file ,(concat org-directory "event.org"))
-	   "* EVENT %? %i\n")
+	   "* EVENT %? %i\n %U\n")
 	  ("n" "ノート" entry
 	   (file ,(concat org-directory "notes.org"))
-	   "* %?\n %T\n")
+	   "* %?\n %U\n")
 	  ("n" "定期的にやること" entry
 	   (file ,(concat org-directory "habit.org"))
-	   "* %?\n %T\n")
+	   "* %?\n %U\n")
 	  ("T" "タスク(リンク付き)" entry
 	   (file ,(concat org-directory "task.org"))
-	   "* TODO %? %i\n %a\n")
+	   "* TODO %? %i\n %a\n %U\n")
+	  ("E" "イベント(リンク付き)" entry
+	   (file ,(concat org-directory "event.org"))
+	   "* EVENT %? %i\n %a\n %U\n")
 	  ("N" "ノート(リンク付き)" entry
 	   (file ,(concat org-directory "notes.org"))
-	   "* %?\n %a\n %T\n")
+	   "* %?\n %a\n %U\n")
 	  ("r" "読みかけ(リンク付き)" entry
 	   (file ,(concat org-directory "reading.org"))
-	   "* %?\n %a\n %T") ))
+	   "* %?\n %a\n %U\n") ))
   )
 
 (use-package org
