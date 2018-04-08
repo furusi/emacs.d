@@ -94,13 +94,12 @@
   (setq skk-search-katakana t)
   (setq skk-use-act t)
   (setq skk-henkan-show-candidates-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
+  (setq-default skk-kutouten-type 'en)
   :config
   (setq skk-show-icon t)
   (setq skk-egg-like-newline t);;non-nilにするとEnterでの確定時に改行しない
   ;; ▼モードで BS を押したときには確定しないで前候補を表示する
-  (setq skk-delete-implies-kakutei nil)
-  (setq skk-kutouten-type 'en)
-  )
+  (setq skk-delete-implies-kakutei nil)  )
 
 (use-package skk-study
   :after ddskk)
