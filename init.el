@@ -99,6 +99,7 @@
   (setq skk-egg-like-newline t);;non-nilにするとEnterでの確定時に改行しない
   ;; ▼モードで BS を押したときには確定しないで前候補を表示する
   (setq skk-delete-implies-kakutei nil)
+  (setq skk-kutouten-type 'en)
   )
 
 (use-package skk-study
