@@ -169,7 +169,7 @@
 	  ("n" "ノート" entry
 	   (file ,(concat org-directory "notes.org"))
 	   "* %?\n %U\n")
-	  ("n" "定期的にやること" entry
+	  ("h" "定期的にやること" entry
 	   (file ,(concat org-directory "habit.org"))
 	   "* %?\n %U\n")
 	  ("T" "タスク(リンク付き)" entry
