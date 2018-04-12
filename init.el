@@ -37,6 +37,7 @@
      "~/Dropbox/org/notes.org"
      "~/Dropbox/org/habit.org"
      "~/Dropbox/org/event.org"
+     "~/Dropbox/org/inbox.org"
      )))
  '(package-selected-packages
    (quote
@@ -47,6 +48,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+(use-package gradle-mode
+  :ensure t)
 
 (set-face-attribute 'default nil :height 140)
 
@@ -160,6 +164,9 @@
   (setq org-directory (expand-file-name "~/Dropbox/org/"))
   (setq org-capture-templates
 	`(
+	  ("i" "インボックス" entry
+	   (file ,(concat org-directory "inbox.org"))
+	   "* %? %i\n %U\n")
 	  ("t" "タスク" entry
 	   (file ,(concat org-directory "task.org"))
 	   "* TODO %? %i\n %U\n")
@@ -211,6 +218,7 @@
 
 
 (use-package undo-tree
+  :ensure t
   :bind (("M-/" . undo-tree-undo))
   :init
   (undo-tree-mode)
@@ -262,6 +270,7 @@
 
 ;; SLIMEのロード
 (use-package slime
+  :ensure t
   :config
   (setq inferior-lisp-program "sbcl")
   (slime-setup '(slime-repl slime-fancy slime-banner)) )
@@ -269,7 +278,8 @@
 (org-babel-do-load-languages
  'org-babel-load-languages '((C . t)))
 
-(require 'undohist)
+(use-package undohist
+  :ensure t)
 (undohist-initialize)
 ;;; 永続化を無視するファイル名の正規表現
 (setq undohist-ignored-files
@@ -299,6 +309,7 @@
 ;;helm
 
 (use-package helm
+  :ensure t
   :bind (("M-x" . helm-M-x)
 	 ("M-y" . helm-show-kill-ring)
 	 ("C-x b" . helm-mini)
@@ -316,6 +327,7 @@
 
 
 (use-package which-key
+  :ensure t
   :config
 ;;; 3つの表示方法どれか1つ選ぶ
   (which-key-setup-side-window-bottom)    ;ミニバッファ
@@ -380,6 +392,7 @@
              (local-set-key (kbd "M-TAB") 'jedi:complete)))
 
 (use-package elpy
+  :ensure t
   :config
   (elpy-enable)  )
 
@@ -411,6 +424,7 @@
   (sml/setup)  )
 
 (use-package keyfreq
+  :ensure t
   :config
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1)
