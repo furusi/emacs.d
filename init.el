@@ -29,19 +29,15 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(company-idle-delay nil)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(inhibit-startup-screen t)
  '(org-agenda-files
    (quote
-    ("~/Dropbox/org/task.org"
-     "~/Dropbox/org/notes.org"
-     "~/Dropbox/org/habit.org"
-     "~/Dropbox/org/event.org"
-     "~/Dropbox/org/inbox.org"
-     )))
+    ("~/Dropbox/org/task.org" "~/Dropbox/org/notes.org" "~/Dropbox/org/habit.org" "~/Dropbox/org/event.org" "~/Dropbox/org/inbox.org")))
  '(package-selected-packages
    (quote
-    (migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
+    (ob-browser migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -238,6 +234,18 @@
 
 
 
+(use-package auto-complete-config
+  :disabled t
+  :ensure auto-complete
+  :bind ("M-<tab>" . m)
+  :init
+  (defun my--auto-complete ()
+    ((interactive)
+     (unless (boundp 'auto-complete-mode)
+       (global-auto-complete-mode 1))
+     (auto-complete))
+    )
+  )
 ;;(require 'auto-complete-config)
 ;;(ac-config-default)
 ;;(add-to-list 'ac-modes 'text-mode)         ;; text-modeでも自動的に有効にする
@@ -261,7 +269,8 @@
 	      ("C-p" . 'company-select-previous)
 	 ) 
   :config
-  (global-company-mode 1)  )
+  (global-company-mode 1)
+  (custom-set-variables '(company-idle-delay nil)))
 
 (autoload 'run-prolog "prolog" "Start a Prolog sub-process." t)
 (autoload 'prolog-mode "prolog" "Major mode for editing Prolog programs." t)
@@ -457,6 +466,8 @@
   )
 (when (equal system-type 'darwin)
   (add-to-list 'load-path "/usr/local/Cellar/mu/1.0/share/emacs/site-lisp/mu/mu4e/")
+  (add-to-list 'exec-path " /usr/local/Cellar/phantomjs/2.1.1/bin/phantomjs/")
+  (setenv "PATH" (mapconcat 'identity exec-path ":"))
     ;; Set your installed path
   (setq migemo-dictionary "/usr/local/Cellar/cmigemo/HEAD-5c014a8/share/migemo/utf-8/migemo-dict")  )
 
