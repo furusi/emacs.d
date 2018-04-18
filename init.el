@@ -210,7 +210,8 @@
   :bind (("\C-cl" . org-store-link)
 	 ("\C-ca" . org-agenda)
 	 ("\C-cb" . org-iswitchb)))
-
+(use-package htmlize
+  :ensure t)
 
 
 (use-package undo-tree
