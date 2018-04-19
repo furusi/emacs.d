@@ -29,6 +29,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(company-idle-delay nil)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(inhibit-startup-screen t)
  '(org-agenda-files
@@ -36,7 +37,7 @@
     ("~/Dropbox/org/task.org" "~/Dropbox/org/notes.org" "~/Dropbox/org/habit.org" "~/Dropbox/org/event.org" "~/Dropbox/org/inbox.org")))
  '(package-selected-packages
    (quote
-    (ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
+    (ob-browser ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -554,4 +555,6 @@
   (migemo-init)
   (helm-migemo-mode 1)  )
 
-(use-package ox-reveal)
+(use-package ox-reveal
+  :ensure t
+  :config    )
