@@ -19,7 +19,7 @@
 (eval-when-compile
     (unless (require 'use-package nil t)
     (package-install 'use-package))
-  )
+    )
 
 (show-paren-mode t)
 
@@ -95,14 +95,29 @@
   (setq skk-use-act t)
   (setq skk-henkan-show-candidates-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
   (setq-default skk-kutouten-type 'en)
+  (setq skk-dcomp-activate t)
+  (setq skk-rom-kana-rule-list
+		'(("thi" nil ("ティ" . "てぃ"))))
   :config
   (setq skk-show-icon t)
   (setq skk-egg-like-newline t);;non-nilにするとEnterでの確定時に改行しない
   ;; ▼モードで BS を押したときには確定しないで前候補を表示する
-  (setq skk-delete-implies-kakutei nil)  )
+  (setq skk-delete-implies-kakutei nil)
+  (setq skk-dcomp-activate t)
+ )
+
 
 (use-package skk-study
+  :disabled nil
   :after ddskk)
+
+;;wget https://raw.githubusercontent.com/skk-dev/ddskk/master/bayesian/skk-bayesian.el
+
+(use-package skk-bayesian
+  :disabled t
+  :init
+  (add-to-list 'load-path "~/.emacs.d/elisp/usr/")
+  )
 
 ;;
 ;; Org mode
