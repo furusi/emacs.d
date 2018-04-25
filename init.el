@@ -97,13 +97,18 @@
   (setq-default skk-kutouten-type 'en)
   (setq skk-dcomp-activate t)
   (setq skk-rom-kana-rule-list
-		'(("thi" nil ("ティ" . "てぃ"))))
+	'(("thi" nil ("ティ" . "てぃ"))))
+  ;; isearch
+  (add-hook 'isearch-mode-hook 'skk-isearch-mode-setup) ; isearch で skk のセットアップ
+  (add-hook 'isearch-mode-end-hook 'skk-isearch-mode-cleanup) ; isearch で skk のクリーンアップ
+  (setq skk-isearch-start-mode 'latin); isearch で skk の初期状態
+
   :config
-  (setq skk-show-icon t)
   (setq skk-egg-like-newline t);;non-nilにするとEnterでの確定時に改行しない
   ;; ▼モードで BS を押したときには確定しないで前候補を表示する
   (setq skk-delete-implies-kakutei nil)
   (setq skk-dcomp-activate t)
+
  )
 
 
@@ -558,6 +563,7 @@
     (setq org-mu4e-link-query-in-headers-mode nil) )
 
 (use-package migemo
+  :disabled t
   :ensure t
   :config
   (setq migemo-command "cmigemo")
