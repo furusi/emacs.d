@@ -60,7 +60,7 @@
 ;; 拡張子の*.rst, *.restのファイルをrst-modeで開く
 (setq auto-mode-alist
       (append '(("\\.rst$" . rst-mode)
-		("\\.rest$" . rst-mode)) auto-mode-alist))
+		("\\.rest$" . rst-mode))))
 ;; 背景が黒い場合はこうしないと見出しが見づらい
 ;;(setq frame-background-mode 'dark)
 ;; 全部スペースでインデントしましょう
@@ -71,15 +71,12 @@
   :bind (("C-x g" . magit-status))
   )
 
-
 (use-package gradle-mode)
 
 (use-package eww
   :config
   (setq eww-search-prefix "http://www.google.co.jp/search?q=")
   )
-
-
 
 ;;(setq coding-system-for-read 'utf-8)
 ;;(load-theme 'atom-dark t)
@@ -327,11 +324,13 @@
  'org-babel-load-languages '((C . t)))
 
 (use-package undohist
-  :ensure t)
-(undohist-initialize)
-;;; 永続化を無視するファイル名の正規表現
-(setq undohist-ignored-files
-      '("/tmp/" "COMMIT_EDITMSG"))
+  :ensure t
+  :config
+  (undohist-initialize)
+  ;;; 永続化を無視するファイル名の正規表現
+  (setq undohist-ignored-files
+	'("/tmp/" "COMMIT_EDITMSG"))
+  )
 
 (use-package auto-save-buffers-enhanced
   :ensure t
