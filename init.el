@@ -60,7 +60,7 @@
 ;; 拡張子の*.rst, *.restのファイルをrst-modeで開く
 (setq auto-mode-alist
       (append '(("\\.rst$" . rst-mode)
-		("\\.rest$" . rst-mode))))
+		("\\.rest$" . rst-mode)) auto-mode-alist))
 ;; 背景が黒い場合はこうしないと見出しが見づらい
 ;;(setq frame-background-mode 'dark)
 ;; 全部スペースでインデントしましょう
@@ -495,7 +495,7 @@
   (setenv "PATH" (mapconcat 'identity exec-path ":"))
     ;; Set your installed path
   (setq migemo-dictionary "/usr/local/Cellar/cmigemo/HEAD-5c014a8/share/migemo/utf-8/migemo-dict")
-  (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family "Hiragino Kaku Gothic ProN"))
+  (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family "Hiragino Mincho ProN"))
   ;フォント一覧を出力するには
   ;(dolist (x (font-family-list)) (print x))
   )
