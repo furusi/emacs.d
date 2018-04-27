@@ -1,5 +1,5 @@
 (recentf-mode 1)
-(setq recentf-max-menu-items 25)
+(setq recentf-max-menu-items 30)
 ;;(global-set-key "\C-x\ \C-r" 'recentf-open-files)
 (global-set-key "\C-x\ \C-r" 'helm-recentf)
 
@@ -227,6 +227,11 @@
 	(quote (
 		(nil . (:level . 1))
 		(org-agenda-files . (:level . 1)))))
+  ;; コードを評価するとき尋ねない
+  (setq org-confirm-babel-evaluate nil)
+  ;; 有効にする言語 デフォルトでは elisp のみ
+  (org-babel-do-load-languages
+   'org-babel-load-languages   '((dot . t)))
   :bind (("\C-cl" . org-store-link)
 	 ("\C-ca" . org-agenda)
 	 ("\C-cb" . org-iswitchb)))
@@ -490,7 +495,11 @@
   (add-to-list 'exec-path " /usr/local/Cellar/phantomjs/2.1.1/bin/phantomjs/")
   (setenv "PATH" (mapconcat 'identity exec-path ":"))
     ;; Set your installed path
-  (setq migemo-dictionary "/usr/local/Cellar/cmigemo/HEAD-5c014a8/share/migemo/utf-8/migemo-dict")  )
+  (setq migemo-dictionary "/usr/local/Cellar/cmigemo/HEAD-5c014a8/share/migemo/utf-8/migemo-dict")
+  (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family "Hiragino Kaku Gothic ProN"))
+  ;フォント一覧を出力するには
+  ;(dolist (x (font-family-list)) (print x))
+  )
 
   (use-package mu4e
     :config
