@@ -37,7 +37,7 @@
     ("~/Dropbox/org/task.org" "~/Dropbox/org/notes.org" "~/Dropbox/org/habit.org" "~/Dropbox/org/event.org" "~/Dropbox/org/inbox.org")))
  '(package-selected-packages
    (quote
-    (elisp-lint flycheck company-web common-lisp-snippets slime-company ob-browser ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
+    (sudo-edit elisp-lint flycheck company-web common-lisp-snippets slime-company ob-browser ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -135,9 +135,10 @@
 ;; default class = jsarticle
 (setq org-latex-default-class "jsarticle")
 (setq org-latex-packages-alist
-  '(("AUTO" "inputenc"  nil)
-    ("hyperref,x11names" "xcolor"  nil)
-    ("colorlinks=true,urlcolor=SteelBlue4,linkcolor=Firebrick4" "hyperref"  nil)
+      '(("AUTO" "inputenc"  nil)
+	("" "ulem" nil)
+;    ("hyperref,x11names" "xcolor"  nil)
+;    ("colorlinks=true,urlcolor=SteelBlue4,linkcolor=Firebrick4" "hyperref"  nil)
     ;; ...
     ))
 ;; org-latex-classes
@@ -151,6 +152,13 @@
                ("\\paragraph{%s}" . "\\paragraph*{%s}")
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
                ))
+(add-to-list 'org-latex-classes
+             '("beamer"
+               "\\documentclass[dvipdfmx,presentation]{beamer}
+               [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
+               ("\\section\{%s\}" . "\\section*\{%s\}")
+               ("\\subsection\{%s\}" . "\\subsection*\{%s\}")
+               ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")))
 
 
 ;; org-export-latex-no-toc
@@ -228,7 +236,9 @@
   (setq org-confirm-babel-evaluate nil)
   ;; 有効にする言語 デフォルトでは elisp のみ
   (org-babel-do-load-languages
-   'org-babel-load-languages   '((dot . t)))
+   'org-babel-load-languages   '((java . t)
+				 (perl . t)
+				 (dot . t)))
   :bind (("\C-cl" . org-store-link)
 	 ("\C-ca" . org-agenda)
 	 ("\C-cb" . org-iswitchb)))
@@ -592,3 +602,14 @@
   :ensure t
   :init
   (global-flycheck-mode))
+
+(with-temp-buffer
+  (url-insert-file-contents "https://raw.github.com/steckerhalter/ob-php/master/ob-php.el")
+  (eval-buffer))
+(require 'ob-php)
+
+(add-to-list 'org-babel-load-languages '(php . t))
+(org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)
+
+(use-package sudo-edit
+  :ensure t)
