@@ -54,7 +54,7 @@
      ("bash" . sh))))
  '(package-selected-packages
    (quote
-    (sudo-edit elisp-lint flycheck company-web common-lisp-snippets slime-company ob-browser ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
+    (plantuml-mode sudo-edit elisp-lint flycheck company-web common-lisp-snippets slime-company ob-browser ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -253,9 +253,12 @@
   (setq org-confirm-babel-evaluate nil)
   ;; 有効にする言語 デフォルトでは elisp のみ
   (org-babel-do-load-languages
-   'org-babel-load-languages   '((java . t)
-				 (perl . t)
-				 (dot . t)))
+   'org-babel-load-languages   '(
+                                 (ruby . t)
+                                 (plantuml . t)
+                                 (java . t)
+                                 (perl . t)
+                                 (dot . t)))
   :bind (("\C-cl" . org-store-link)
 	 ("\C-ca" . org-agenda)
 	 ("\C-cb" . org-iswitchb)))
@@ -524,7 +527,8 @@
   (setq migemo-dictionary "/usr/local/Cellar/cmigemo/HEAD-5c014a8/share/migemo/utf-8/migemo-dict")
   (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family "Hiragino Mincho ProN"))
   ;フォント一覧を出力するには
-  ;(dolist (x (font-family-list)) (print x))
+                                        ;(dolist (x (font-family-list)) (print x))
+  (setq org-plantuml-jar-path   "/usr/local/Cellar/plantuml/1.2018.5/libexec/plantuml.jar")
   )
 
   (use-package mu4e
@@ -630,3 +634,4 @@
 
 (use-package sudo-edit
   :ensure t)
+(setq-default tab-width 4 indent-tabs-mode nil)
