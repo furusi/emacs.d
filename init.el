@@ -111,7 +111,8 @@
   (setq-default skk-kutouten-type 'en)
   (setq skk-dcomp-activate t)
   (setq skk-rom-kana-rule-list
-	'(("thi" nil ("ティ" . "てぃ"))))
+        '(("tni" nil ("ティ" . "てぃ"))
+          ("dni" nil ("ディ" . "でぃ"))))
   ;; isearch
   (add-hook 'isearch-mode-hook 'skk-isearch-mode-setup) ; isearch で skk のセットアップ
   (add-hook 'isearch-mode-end-hook 'skk-isearch-mode-cleanup) ; isearch で skk のクリーンアップ
