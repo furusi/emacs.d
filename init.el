@@ -636,3 +636,8 @@
 (use-package sudo-edit
   :ensure t)
 (setq-default tab-width 4 indent-tabs-mode nil)
+
+(add-hook 'dired-load-hook
+          (load "dired-x")
+          (global-set-key "\C-x\C-j" 'skk-mode))
+
