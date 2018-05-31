@@ -37,21 +37,21 @@
     ("~/Dropbox/org/task.org" "~/Dropbox/org/notes.org" "~/Dropbox/org/habit.org" "~/Dropbox/org/event.org" "~/Dropbox/org/inbox.org")))
  '(org-src-lang-modes
    (quote
-    (("html" . web)
-     ("browser" . web)
-     ("ocaml" . tuareg)
-     ("elisp" . emacs-lisp)
-     ("ditaa" . artist)
+    (("html"      . web)
+     ("browser"   . web)
+     ("ocaml"     . tuareg)
+     ("elisp"     . emacs-lisp)
+     ("ditaa"     . artist)
      ("asymptote" . asy)
-     ("dot" . fundamental)
-     ("sqlite" . sql)
-     ("calc" . fundamental)
-     ("C" . c)
-     ("cpp" . c++)
-     ("C++" . c++)
-     ("screen" . shell-script)
-     ("shell" . sh)
-     ("bash" . sh))))
+     ("dot"       . fundamental)
+     ("sqlite"    . sql)
+     ("calc"      . fundamental)
+     ("C"         . c)
+     ("cpp"       . c++)
+     ("C++"       . c++)
+     ("screen"    . shell-script)
+     ("shell"     . sh)
+     ("bash"      . sh))))
  '(package-selected-packages
    (quote
     (plantuml-mode sudo-edit elisp-lint flycheck company-web common-lisp-snippets slime-company ob-browser ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
@@ -174,8 +174,8 @@
              '("beamer"
                "\\documentclass[dvipdfmx,presentation]{beamer}
                [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
-               ("\\section\{%s\}" . "\\section*\{%s\}")
-               ("\\subsection\{%s\}" . "\\subsection*\{%s\}")
+               ("\\section\{%s\}"       . "\\section*\{%s\}")
+               ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
                ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")))
 
 
@@ -255,11 +255,11 @@
   ;; 有効にする言語 デフォルトでは elisp のみ
   (org-babel-do-load-languages
    'org-babel-load-languages   '(
-                                 (ruby . t)
+                                 (ruby     . t)
                                  (plantuml . t)
-                                 (java . t)
-                                 (perl . t)
-                                 (dot . t)))
+                                 (java     . t)
+                                 (perl     . t)
+                                 (dot      . t)))
   :bind (("\C-cl" . org-store-link)
 	 ("\C-ca" . org-agenda)
 	 ("\C-cb" . org-iswitchb)))
@@ -314,20 +314,20 @@
   :ensure t
   :bind (("C-M-i" . 'company-complete)
 	 :map company-active-map
-	      ("C-n" . 'company-select-next)
-	      ("C-p" . 'company-select-previous)
-	      ("C-s" . 'company-filter-candidates)
-	      ("C-i" . 'company-complete-selection)
+	      ("C-n"  . 'company-select-next)
+	      ("C-p"  . 'company-select-previous)
+	      ("C-s"  . 'company-filter-candidates)
+	      ("C-i"  . 'company-complete-selection)
 	 :map company-search-map
-	      ("C-n" . 'company-select-next)
-	      ("C-p" . 'company-select-previous)
+	      ("C-n"  . 'company-select-next)
+	      ("C-p"  . 'company-select-previous)
 	 ) 
   :config
   (global-company-mode 1)
   (custom-set-variables '(company-idle-delay nil)))
 
-(autoload 'run-prolog "prolog" "Start a Prolog sub-process." t)
-(autoload 'prolog-mode "prolog" "Major mode for editing Prolog programs." t)
+(autoload 'run-prolog   "prolog" "Start a Prolog sub-process." t)
+(autoload 'prolog-mode  "prolog" "Major mode for editing Prolog programs." t)
 (autoload 'mercury-mode "prolog" "Major mode for editing Mercury programs." t)
 (setq prolog-system 'swi)
 (setq auto-mode-alist (append '(("\\.pl$" . prolog-mode)
@@ -375,14 +375,14 @@
 
 (use-package web-mode
   :ensure t)
-(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.phtml\\'"     . web-mode))
 (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.[gj]sp\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.[gj]sp\\'"    . web-mode))
+(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'"   . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb\\'"       . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mustache\\'"  . web-mode))
+(add-to-list 'auto-mode-alist '("\\.djhtml\\'"    . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html?\\'"     . web-mode))
 
 ;;helm
 
@@ -424,20 +424,20 @@
 
 (defvar mode-line-cleaner-alist
   '( ;; For minor-mode, first char is 'space'
-    (yas-minor-mode . " Ys")
-    (paredit-mode . " Pe")
-    (eldoc-mode . "")
-    (abbrev-mode . "")
-    (undo-tree-mode . " Ut")
-    (elisp-slime-nav-mode . " EN")
-    (helm-gtags-mode . " HG")
-    (flymake-mode . " Fm")
+    (yas-minor-mode        . " Ys")
+    (paredit-mode          . " Pe")
+    (eldoc-mode            . "")
+    (abbrev-mode           . "")
+    (undo-tree-mode        . " Ut")
+    (elisp-slime-nav-mode  . " EN")
+    (helm-gtags-mode       . " HG")
+    (flymake-mode          . " Fm")
     ;; Major modes
     (lisp-interaction-mode . "Lisp")
-    (python-mode . "Py")
-    (ruby-mode   . "Rb")
-    (emacs-lisp-mode . "Elsp")
-    (markdown-mode . "Mkd")))
+    (python-mode           . "Py")
+    (ruby-mode             . "Rb")
+    (emacs-lisp-mode       . "Elsp")
+    (markdown-mode         . "Mkd")))
 
 ;;mode lineの設定
 (defun clean-mode-line ()
@@ -593,10 +593,10 @@
     ;; save attachment to my desktop (this can also be a function)
     (setq mu4e-attachment-dir "~/Downloads")
     (setq mu4e-maildir-shortcuts
-	  '( ("/inbox"	      . ?i)	     
-	     ("/sent"	      . ?s)
-	     ("/trash"	      . ?t)
-	     ("/archive"      . ?a)))    )
+	  '( ("/inbox"	 . ?i)	     
+	     ("/sent"	 . ?s)
+	     ("/trash"	 . ?t)
+	     ("/archive" . ?a)))    )
   (use-package org-mu4e
     :config
     ;;store link to message if in header view, not to header query
