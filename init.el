@@ -315,15 +315,17 @@
 
 (use-package company
   :ensure t
-  :bind (("C-M-i" . 'company-complete)
-	 :map company-active-map
-	      ("C-n"  . 'company-select-next)
-	      ("C-p"  . 'company-select-previous)
-	      ("C-s"  . 'company-filter-candidates)
-	      ("C-i"  . 'company-complete-selection)
-	 :map company-search-map
-	      ("C-n"  . 'company-select-next)
-	      ("C-p"  . 'company-select-previous)
+  :bind (
+         :map company-mode-map
+              ("C-M-i" . 'company-complete)
+         :map company-active-map
+              ("C-n"   . 'company-select-next)
+              ("C-p"   . 'company-select-previous)
+              ("C-s"   . 'company-filter-candidates)
+              ("C-i"   . 'company-complete-selection)
+         :map company-search-map
+	          ("C-n"   . 'company-select-next)
+	          ("C-p"   . 'company-select-previous)
 	 ) 
   :config
   (global-company-mode 1)
