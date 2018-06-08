@@ -72,12 +72,15 @@
 ;; Emacs起動時にrst.elを読み込み
 (use-package rst
   :ensure t
-  :bind (("M-RET" . rst-insert-list))
+  :bind (
+         :map rst-mode-map
+         ("M-RET" . rst-insert-list))
   )
 ;; 拡張子の*.rst, *.restのファイルをrst-modeで開く
 (setq auto-mode-alist
-      (append '(("\\.rst$" . rst-mode)
-		("\\.rest$" . rst-mode)) auto-mode-alist))
+      (append '(( "\\.rst$"	 . rst-mode)
+				( "\\.rest$" . rst-mode)
+                ("\\.php$"   . web-mode)) auto-mode-alist))
 ;; 背景が黒い場合はこうしないと見出しが見づらい
 ;;(setq frame-background-mode 'dark)
 ;; 全部スペースでインデントしましょう
