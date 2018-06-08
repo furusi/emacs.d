@@ -646,3 +646,22 @@
           (load "dired-x")
           (global-set-key "\C-x\C-j" 'skk-mode))
 
+;(cua-mode t) ; cua-modeをオン
+;(setq cua-enable-cua-keys nil)
+
+(use-package php-mode
+  :ensure t )
+
+(use-package company-php
+  :ensure t
+  :init
+    (add-hook 'php-mode-hook
+          '(lambda ()
+             (require 'company-php)
+             (company-mode t)
+             (ac-php-core-eldoc-setup) ;; enable eldoc
+             (make-local-variable 'company-backends)
+             (add-to-list 'company-backends 'company-ac-php-backend))) )
+
+
+
