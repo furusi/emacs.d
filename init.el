@@ -466,13 +466,13 @@
 
 (use-package jedi
   :ensure t
- ; :defer t
+  :defer t
   )
-(add-hook 'python-mode-hook
-          '(lambda()
-             (jedi:ac-setup)
-             (setq jedi:complete-on-dot t)
-             (local-set-key (kbd "M-TAB") 'jedi:complete)))
+;; (add-hook 'python-mode-hook
+;;           '(lambda()
+;;              (jedi:ac-setup)
+;;              (setq jedi:complete-on-dot t)
+;;              (local-set-key (kbd "M-TAB") 'jedi:complete)))
 
 (use-package elpy
   :ensure t
