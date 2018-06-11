@@ -628,7 +628,10 @@
 (use-package flycheck
   :ensure t
   :init
-  (global-flycheck-mode))
+  (global-flycheck-mode)
+  :config
+  (setq flycheck-python-pycompile-executable "python3")
+  )
 
 (with-temp-buffer
   (url-insert-file-contents "https://raw.github.com/steckerhalter/ob-php/master/ob-php.el")
@@ -667,7 +670,6 @@
 (use-package python
   :mode ("\\.py\\'" . python-mode)
   :config
-  (setq flycheck-python-pycompile-executable "python3")
   (setq python-shell-interpreter "python3")
   (setq py-python-command "python3")
   )
