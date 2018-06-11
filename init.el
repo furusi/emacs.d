@@ -664,4 +664,10 @@
              (add-to-list 'company-backends 'company-ac-php-backend))) )
 
 
-
+(use-package python
+  :mode ("\\.py\\'" . python-mode)
+  :config
+  (setq flycheck-python-pycompile-executable "python3")
+  (setq python-shell-interpreter "python3")
+  (setq py-python-command "python3")
+  )
