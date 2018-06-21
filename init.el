@@ -148,31 +148,42 @@
 ;; Org Mode LaTeX Export
 (require 'ox-latex)
 (require 'ox-bibtex)
-(unless (boundp 'org-latex-classes)
-  (setq org-latex-classes nil))
 
-;; pdf process = latexmk
-(setq org-latex-pdf-process '("latexmk %f"))
-;; default class = jsarticle
-(setq org-latex-default-class "jsarticle")
-(setq org-latex-packages-alist
-      '(("AUTO" "inputenc"  nil)
-	("" "ulem" nil)
-;    ("hyperref,x11names" "xcolor"  nil)
-;    ("colorlinks=true,urlcolor=SteelBlue4,linkcolor=Firebrick4" "hyperref"  nil)
-    ;; ...
-    ))
-;; org-latex-classes
+(setq org-latex-default-class "bxjsarticle")
+(setq org-latex-pdf-process '("latexmk  -gg -pdfdvi %f"))
+;(setq org-latex-pdf-process '("latexmk -e '$lualatex=q/lualatex %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex -o %D %S/' -norc -gg -pdflua %f"))
+;(setq org-export-in-background t)
+(setq org-file-apps
+      '(("pdf" . "open -a Skim %s")))
+
 (add-to-list 'org-latex-classes
-             '("jsarticle"
-               "\\documentclass[11pt,a4paper,uplatex]{jsarticle}
-                [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
+             '("bxjsarticle"
+               "\\documentclass[twocolumn,autodetect-engine,dvi=dvipdfmx,10pt,a4paper,ja=standard]{bxjsarticle}
+[NO-DEFAULT-PACKAGES]
+\\usepackage{amsmath}
+\\usepackage{newtxtext,newtxmath}
+\\usepackage{graphicx}
+\\usepackage{hyperref}
+\\ifdefined\\kanjiskip
+  \\usepackage{pxjahyper}
+  \\hypersetup{colorlinks=true}
+\\else
+  \\ifdefined\\XeTeXversion
+      \\hypersetup{colorlinks=true}
+  \\else
+    \\ifdefined\\directlua
+      \\hypersetup{pdfencoding=auto,colorlinks=true}
+    \\else
+      \\hypersetup{unicode,colorlinks=true}
+    \\fi
+  \\fi
+\\fi"
                ("\\section{%s}" . "\\section*{%s}")
                ("\\subsection{%s}" . "\\subsection*{%s}")
                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                ("\\paragraph{%s}" . "\\paragraph*{%s}")
-               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
-               ))
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
 (add-to-list 'org-latex-classes
              '("beamer"
                "\\documentclass[dvipdfmx,presentation]{beamer}
@@ -633,12 +644,12 @@
   (setq flycheck-python-pycompile-executable "python3")
   )
 
-(with-temp-buffer
-  (url-insert-file-contents "https://raw.github.com/steckerhalter/ob-php/master/ob-php.el")
-  (eval-buffer))
-(require 'ob-php)
+;; (with-temp-buffer
+;;   (url-insert-file-contents "https://raw.github.com/steckerhalter/ob-php/master/ob-php.el")
+;;   (eval-buffer))
+;; (require 'ob-php)
 
-(add-to-list 'org-babel-load-languages '(php . t))
+;; (add-to-list 'org-babel-load-languages '(php . t))
 (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)
 
 (use-package sudo-edit
