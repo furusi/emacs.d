@@ -255,7 +255,8 @@
 	(list "~/Dropbox/org/notes.org"
 	      "~/Dropbox/org/todo.org"
 	      "~/Dropbox/org/task.org"
-	      "~/Dropbox/org/iphone.org"	      ))
+	      "~/Dropbox/org/iphone.org"
+          "~/Dropbox/org/event.org"))
   (setq org-mobile-inbox-for-pull "~/Dropbox/org/iphone.org")
   (setq org-tag-alist
   '(("@OFFICE" . ?o) ("@HOME" . ?h) ("SHOPPING" . ?s)
