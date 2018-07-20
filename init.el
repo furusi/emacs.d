@@ -37,24 +37,24 @@
     ("~/Dropbox/org/task.org" "~/Dropbox/org/notes.org" "~/Dropbox/org/habit.org" "~/Dropbox/org/event.org" "~/Dropbox/org/inbox.org")))
  '(org-src-lang-modes
    (quote
-    (("html"      . web)
-     ("browser"   . web)
-     ("ocaml"     . tuareg)
-     ("elisp"     . emacs-lisp)
-     ("ditaa"     . artist)
+    (("html" . web)
+     ("browser" . web)
+     ("ocaml" . tuareg)
+     ("elisp" . emacs-lisp)
+     ("ditaa" . artist)
      ("asymptote" . asy)
-     ("dot"       . fundamental)
-     ("sqlite"    . sql)
-     ("calc"      . fundamental)
-     ("C"         . c)
-     ("cpp"       . c++)
-     ("C++"       . c++)
-     ("screen"    . shell-script)
-     ("shell"     . sh)
-     ("bash"      . sh))))
+     ("dot" . fundamental)
+     ("sqlite" . sql)
+     ("calc" . fundamental)
+     ("C" . c)
+     ("cpp" . c++)
+     ("C++" . c++)
+     ("screen" . shell-script)
+     ("shell" . sh)
+     ("bash" . sh))))
  '(package-selected-packages
    (quote
-    (plantuml-mode sudo-edit elisp-lint flycheck company-web common-lisp-snippets slime-company ob-browser ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
+    (ssh-config-mode osx-dictionary plantuml-mode sudo-edit elisp-lint flycheck company-web common-lisp-snippets slime-company ob-browser ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -212,9 +212,9 @@
 
 
 (use-package org-capture
+  :requires org
   :bind (("\C-cc" . org-capture))
   :config
-  (setq org-directory (expand-file-name "~/Dropbox/org/"))
   (setq org-capture-templates
 	`(
 	  ("i" "インボックス" entry
@@ -249,14 +249,27 @@
 (use-package org
   :mode (("\\.org$" . org-mode))
   :ensure org-plus-contrib
+  :init
+  (setq org-directory (expand-file-name "~/Dropbox/org/"))
   :config
   (setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
+  (setq org-agenda-files
+        '(    "~/Dropbox/org/task.org"
+              "~/Dropbox/org/notes.org"
+              "~/Dropbox/org/habit.org"
+              "~/Dropbox/org/event.org"
+              "~/Dropbox/org/inbox.org"
+              "~/Dropbox/org/org-ical.org"))
+  (setq org-refile-targets
+        '(("org-ical.org" . (:level . 1))
+          ("task.org"     . (:level . 1))
+          ("event.org"    . (:level . 1))          ))
   (setq org-mobile-files
-	(list "~/Dropbox/org/notes.org"
-	      "~/Dropbox/org/todo.org"
-	      "~/Dropbox/org/task.org"
-	      "~/Dropbox/org/iphone.org"
-          "~/Dropbox/org/event.org"))
+	    (list "~/Dropbox/org/notes.org"
+	          "~/Dropbox/org/todo.org"
+	          "~/Dropbox/org/task.org"
+	          "~/Dropbox/org/iphone.org"
+              "~/Dropbox/org/event.org"))
   (setq org-mobile-inbox-for-pull "~/Dropbox/org/iphone.org")
   (setq org-tag-alist
   '(("@OFFICE" . ?o) ("@HOME" . ?h) ("SHOPPING" . ?s)
@@ -275,6 +288,10 @@
                                  (java     . t)
                                  (perl     . t)
                                  (dot      . t)))
+   (setq org-refile-targets
+       (quote (("notes.org" :level . 1)
+               ("todo.org" :level . 1)
+               ("task.org" :level . 1))))
   :bind (("\C-cl" . org-store-link)
 	 ("\C-ca" . org-agenda)
 	 ("\C-cb" . org-iswitchb)))
