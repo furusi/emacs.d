@@ -54,7 +54,7 @@
      ("bash" . sh))))
  '(package-selected-packages
    (quote
-    (ssh-config-mode osx-dictionary plantuml-mode sudo-edit elisp-lint flycheck company-web common-lisp-snippets slime-company ob-browser ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
+    (gtags ssh-config-mode osx-dictionary plantuml-mode sudo-edit elisp-lint flycheck company-web common-lisp-snippets slime-company ob-browser ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -283,6 +283,7 @@
   ;; 有効にする言語 デフォルトでは elisp のみ
   (org-babel-do-load-languages
    'org-babel-load-languages   '(
+                                 (python   . t)
                                  (ruby     . t)
                                  (plantuml . t)
                                  (java     . t)
@@ -292,9 +293,14 @@
        (quote (("notes.org" :level . 1)
                ("todo.org" :level . 1)
                ("task.org" :level . 1))))
+   (setq org-use-speed-commands t)
   :bind (("\C-cl" . org-store-link)
 	 ("\C-ca" . org-agenda)
 	 ("\C-cb" . org-iswitchb)))
+(use-package org-mobile-sync
+  :ensure t
+  :config
+  (org-mobile-sync-mode 1)  )
 (use-package htmlize
   :ensure t)
 
@@ -707,3 +713,8 @@
   (setq python-shell-interpreter "python3")
   (setq py-python-command "python3")
   )
+
+;; gtags-modeのキーバインドを有効化する
+(setq gtags-suggested-key-mapping t) ; 無効化する場合はコメントアウト
+;; ファイル保存時に自動的にタグをアップデートする
+(setq gtags-auto-update t) ; 無効化する場合はコメントアウト
