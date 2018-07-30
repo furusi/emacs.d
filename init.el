@@ -29,7 +29,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(company-idle-delay nil)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(inhibit-startup-screen t)
  '(org-agenda-files
@@ -54,7 +53,7 @@
      ("bash" . sh))))
  '(package-selected-packages
    (quote
-    (gtags ssh-config-mode osx-dictionary plantuml-mode sudo-edit elisp-lint flycheck company-web common-lisp-snippets slime-company ob-browser ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
+    (company-irony irony company-php php-mode ssh-config-mode osx-dictionary plantuml-mode sudo-edit elisp-lint flycheck company-web common-lisp-snippets slime-company ob-browser ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -326,27 +325,6 @@
 
 
 
-(use-package auto-complete-config
-  :disabled t
-  :ensure auto-complete
-  :bind ("M-<tab>" . m)
-  :init
-  (defun my--auto-complete ()
-    ((interactive)
-     (unless (boundp 'auto-complete-mode)
-       (global-auto-complete-mode 1))
-     (auto-complete))
-    )
-  )
-;;(require 'auto-complete-config)
-;;(ac-config-default)
-;;(add-to-list 'ac-modes 'text-mode)         ;; text-modeでも自動的に有効にする
-;;(add-to-list 'ac-modes 'fundamental-mode)  ;; fundamental-mode
-;;(add-to-list 'ac-modes 'org-mode)
-;;(add-to-list 'ac-modes 'yatex-mode)
-;;(ac-set-trigger-key "TAB")
-;;(setq ac-use-menu-map t)       ;; 補完メニュー表示時にC-n/C-pで補完候補選択
-;;(setq ac-use-fuzzy t)          ;; 曖昧マッチ
 
 (use-package company
   :ensure t
@@ -364,7 +342,8 @@
 	 ) 
   :config
   (global-company-mode 1)
-  (custom-set-variables '(company-idle-delay nil)))
+  ;(custom-set-variables '(company-idle-delay nil))
+  )
 
 (autoload 'run-prolog   "prolog" "Start a Prolog sub-process." t)
 (autoload 'prolog-mode  "prolog" "Major mode for editing Prolog programs." t)
@@ -718,3 +697,15 @@
 (setq gtags-suggested-key-mapping t) ; 無効化する場合はコメントアウト
 ;; ファイル保存時に自動的にタグをアップデートする
 (setq gtags-auto-update t) ; 無効化する場合はコメントアウト
+
+(use-package irony
+  :ensure t
+  :config
+  (progn  
+    (use-package company-irony
+      :ensure t
+      :config      
+      (add-to-list 'company-backends 'company-irony)
+      (add-hook 'c++-mode-hook 'irony-mode)
+      (add-hook 'c-mode-hook 'irony-mode)
+      (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))  )
