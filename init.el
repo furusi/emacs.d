@@ -290,8 +290,9 @@
                                  (dot      . t)))
    (setq org-refile-targets
        (quote (("notes.org" :level . 1)
-               ("todo.org" :level . 1)
-               ("task.org" :level . 1))))
+               ("todo.org"  :level . 1)
+               ("event.org" :level . 1)
+               ("task.org"  :level . 1))))
    (setq org-use-speed-commands t)
   :bind (("\C-cl" . org-store-link)
 	 ("\C-ca" . org-agenda)
