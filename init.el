@@ -53,7 +53,7 @@
      ("bash" . sh))))
  '(package-selected-packages
    (quote
-    (company-irony irony company-php php-mode ssh-config-mode osx-dictionary plantuml-mode sudo-edit elisp-lint flycheck company-web common-lisp-snippets slime-company ob-browser ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode ac-html auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode slack org-ac undo-tree atom-dark-theme gradle-mode package-utils simplenote2 ac-skk magit auto-complete manrkdown-mode ddskk))))
+    (helm-org-rifle company-irony irony company-php php-mode ssh-config-mode osx-dictionary plantuml-mode sudo-edit elisp-lint flycheck company-web common-lisp-snippets slime-company ob-browser ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode org-ac undo-tree atom-dark-theme gradle-mode package-utils magit manrkdown-mode ddskk))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -145,19 +145,24 @@
 ;; Org mode
 ;;
 ;; Org Mode LaTeX Export
-(require 'ox-latex)
-(require 'ox-bibtex)
 
-(setq org-latex-default-class "bxjsarticle")
-(setq org-latex-pdf-process '("latexmk  %f"))
+(use-package ox-bibtex
+  :ensure org-plus-contrib
+  :defer t
+  )
+(use-package ox-latex
+  :ensure org-plus-contrib
+  :config
+  (setq org-latex-default-class "bxjsarticle")
+  (setq org-latex-pdf-process '("latexmk -gg -pdfdvi  %f"))
 ;(setq org-latex-pdf-process '("latexmk -e '$lualatex=q/lualatex %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex -o %D %S/' -norc -gg -pdflua %f"))
 ;(setq org-export-in-background t)
-(setq org-file-apps
-      '(("pdf" . "open -a Skim %s")))
+  (setq org-file-apps
+        '(("pdf" . "open -a Skim %s")))
 
-(add-to-list 'org-latex-classes
-             '("bxjsarticle"
-               "\\documentclass[twocolumn,autodetect-engine,dvi=dvipdfmx,10pt,a4paper,ja=standard]{bxjsarticle}
+  (add-to-list 'org-latex-classes
+               '("bxjsarticle"
+                 "\\documentclass[twocolumn,autodetect-engine,dvi=dvipdfmx,10pt,a4paper,ja=standard]{bxjsarticle}
 [NO-DEFAULT-PACKAGES]
 \\usepackage{amsmath}
 \\usepackage{newtxtext,newtxmath}
@@ -177,19 +182,40 @@
     \\fi
   \\fi
 \\fi"
-               ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-               ("\\paragraph{%s}" . "\\paragraph*{%s}")
-               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
-(add-to-list 'org-latex-classes
-             '("beamer"
-               "\\documentclass[dvipdfmx,presentation]{beamer}
+  (add-to-list 'org-latex-classes
+               '("beamer"
+                 "\\documentclass[dvipdfmx,presentation]{beamer}
                [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
-               ("\\section\{%s\}"       . "\\section*\{%s\}")
-               ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
-               ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")))
+                 ("\\section\{%s\}"       . "\\section*\{%s\}")
+                 ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
+                 ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")))
+  (add-to-list 'org-latex-classes
+               '("ieicej"
+                 
+                 "\\documentclass[paper]{ieicej}
+\\usepackage{graphicx}
+\\usepackage[T1]{fontenc}
+\\usepackage{lmodern}
+\\usepackage{textcomp}
+\\usepackage{latexsym}
+
+\\setcounter{page}{1}
+               [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
+                 ("\\section\{%s\}"       . "\\section*\{%s\}")
+                 ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
+                 ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
+                 ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
+                 ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
+  (setq org-latex-with-hyperref nil) ;ieicej出力時エラー対策
+
+  )
+
 
 
 ;; org-export-latex-no-toc
