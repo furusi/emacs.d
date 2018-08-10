@@ -53,7 +53,7 @@
      ("bash" . sh))))
  '(package-selected-packages
    (quote
-    (helm-org-rifle company-irony irony company-php php-mode ssh-config-mode osx-dictionary plantuml-mode sudo-edit elisp-lint flycheck company-web common-lisp-snippets slime-company ob-browser ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode org-ac undo-tree atom-dark-theme gradle-mode package-utils magit manrkdown-mode ddskk))))
+    (howm helm-org-rifle company-irony irony company-php php-mode ssh-config-mode osx-dictionary plantuml-mode sudo-edit elisp-lint flycheck company-web common-lisp-snippets slime-company ob-browser ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode org-ac undo-tree atom-dark-theme gradle-mode package-utils magit manrkdown-mode ddskk))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -191,6 +191,7 @@
   (add-to-list 'org-latex-classes
                '("beamer"
                  "\\documentclass[dvipdfmx,presentation]{beamer}
+\\usepackage{bxdpx-beamer}
                [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
                  ("\\section\{%s\}"       . "\\section*\{%s\}")
                  ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
@@ -288,7 +289,8 @@
   (setq org-refile-targets
         '(("org-ical.org" . (:level . 1))
           ("task.org"     . (:level . 1))
-          ("event.org"    . (:level . 1))          ))
+          ("event.org"    . (:level . 1))
+          ("notes.org"    . (:level . 1))))
   (setq org-mobile-files
 	    (list "~/Dropbox/org/notes.org"
 	          "~/Dropbox/org/todo.org"
@@ -320,6 +322,8 @@
                ("event.org" :level . 1)
                ("task.org"  :level . 1))))
    (setq org-use-speed-commands t)
+   (setq org-icalendar-alarm-time 30)
+   (setq org-icalendar-timezone "Asia/Tokyo")
   :bind (("\C-cl" . org-store-link)
 	 ("\C-ca" . org-agenda)
 	 ("\C-cb" . org-iswitchb)))
@@ -580,7 +584,7 @@
   (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family "Hiragino Mincho ProN"))
   ;フォント一覧を出力するには
                                         ;(dolist (x (font-family-list)) (print x))
-  (setq org-plantuml-jar-path   "/usr/local/Cellar/plantuml/1.2018.5/libexec/plantuml.jar")
+  (setq org-plantuml-jar-path   "/usr/local/Cellar/plantuml/1.2018.9/libexec/plantuml.jar")
   )
 
   (use-package mu4e
@@ -736,3 +740,9 @@
       (add-hook 'c++-mode-hook 'irony-mode)
       (add-hook 'c-mode-hook 'irony-mode)
       (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))  ))
+
+(use-package ox-extra
+  :ensure org-plus-contrib
+  :config
+  (ox-extras-activate '(ignore-headlines)))
+
