@@ -190,8 +190,12 @@
 
   (add-to-list 'org-latex-classes
                '("beamer"
-                 "\\documentclass[dvipdfmx,presentation]{beamer}
+                 "\\documentclass[dvipdfmx,cjk]{beamer}
 \\usepackage{bxdpx-beamer}
+\\usepackage{pxjahyper}
+\\usepackage{minijs}
+\\renewcommand{\\kanjifamilydefault}{\\gtdefault}
+\\newcommand{\\uline}[1]{\\underline{#1}}
                [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
                  ("\\section\{%s\}"       . "\\section*\{%s\}")
                  ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
