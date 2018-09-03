@@ -328,6 +328,11 @@
    (setq org-use-speed-commands t)
    (setq org-icalendar-alarm-time 30)
    (setq org-icalendar-timezone "Asia/Tokyo")
+   (defun my-org-mode-hook ()
+     (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
+   (add-hook 'org-mode-hook #'my-org-mode-hook)
+
+
   :bind (("\C-cl" . org-store-link)
 	 ("\C-ca" . org-agenda)
 	 ("\C-cb" . org-iswitchb)))
