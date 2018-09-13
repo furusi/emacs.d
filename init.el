@@ -613,13 +613,7 @@
     (setq mu4e-sent-messages-behavior 'delete)
 
     ;; something about ourselves
-    (setq
-     user-mail-address "yourname@aaa.bbb"
-     user-full-name  "yourname"
-     mu4e-compose-signature
-     (concat
-      "aaaa\n"
-      "xxxxxx\n") )
+    (load "~/.mailinfo.el")
     ;; show images
     (setq mu4e-show-images t)
     ;; configuration for sending mail
