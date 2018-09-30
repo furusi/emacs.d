@@ -156,9 +156,13 @@
   (setq org-latex-default-class "bxjsarticle")
   (setq org-latex-pdf-process '("latexmk -gg -pdfdvi  %f"))
 ;(setq org-latex-pdf-process '("latexmk -e '$lualatex=q/lualatex %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex -o %D %S/' -norc -gg -pdflua %f"))
-;(setq org-export-in-background t)
-  (setq org-file-apps
-        '(("pdf" . "open -a Skim %s")))
+                                        ;(setq org-export-in-background t)
+  (when (equal system-type 'darwin)
+    (setq org-file-apps
+          '(("pdf" . "open -a Skim %s")))    )
+  (when (equal system-type 'gnu/linux)
+    (setq org-file-apps
+          '(("pdf" . "evince %s")))    )
 
   (add-to-list 'org-latex-classes
                '("bxjsarticle"
@@ -204,11 +208,13 @@
                '("ieicej"
                  
                  "\\documentclass[paper]{ieicej}
-\\usepackage{graphicx}
+\\usepackage[dvipdfmx]{graphicx}
 \\usepackage[T1]{fontenc}
 \\usepackage{lmodern}
 \\usepackage{textcomp}
 \\usepackage{latexsym}
+\\usepackage{tabularx}
+\\usepackage{dcolumn}
 
 \\setcounter{page}{1}
                [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
