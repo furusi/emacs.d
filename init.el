@@ -215,6 +215,7 @@
 \\usepackage{latexsym}
 \\usepackage{tabularx}
 \\usepackage{dcolumn}
+\\usepackage{amssymb}
 
 \\setcounter{page}{1}
                [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
