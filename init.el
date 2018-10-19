@@ -198,6 +198,8 @@
 \\usepackage{bxdpx-beamer}
 \\usepackage{pxjahyper}
 \\usepackage{minijs}
+\\usepackage{textcomp}
+\\usepackage{textgreek}
 \\renewcommand{\\kanjifamilydefault}{\\gtdefault}
 \\newcommand{\\uline}[1]{\\underline{#1}}
                [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
