@@ -39,27 +39,27 @@
  '(inhibit-startup-screen t)
  '(org-agenda-files
    (quote
-    ("~/Dropbox/org/task.org" "~/Dropbox/org/notes.org" "~/Dropbox/org/habit.org" "~/Dropbox/org/event.org" "~/Dropbox/org/inbox.org")))
+	("~/Dropbox/org/task.org" "~/Dropbox/org/notes.org" "~/Dropbox/org/habit.org" "~/Dropbox/org/event.org" "~/Dropbox/org/inbox.org")))
  '(org-src-lang-modes
    (quote
-    (("html" . web)
-     ("browser" . web)
-     ("ocaml" . tuareg)
-     ("elisp" . emacs-lisp)
-     ("ditaa" . artist)
-     ("asymptote" . asy)
-     ("dot" . fundamental)
-     ("sqlite" . sql)
-     ("calc" . fundamental)
-     ("C" . c)
-     ("cpp" . c++)
-     ("C++" . c++)
-     ("screen" . shell-script)
-     ("shell" . sh)
-     ("bash" . sh))))
+	(("html" . web)
+	 ("browser" . web)
+	 ("ocaml" . tuareg)
+	 ("elisp" . emacs-lisp)
+	 ("ditaa" . artist)
+	 ("asymptote" . asy)
+	 ("dot" . fundamental)
+	 ("sqlite" . sql)
+	 ("calc" . fundamental)
+	 ("C" . c)
+	 ("cpp" . c++)
+	 ("C++" . c++)
+	 ("screen" . shell-script)
+	 ("shell" . sh)
+	 ("bash" . sh))))
  '(package-selected-packages
    (quote
-    (company-jedi android-mode yatex howm helm-org-rifle company-irony irony company-php php-mode ssh-config-mode osx-dictionary plantuml-mode sudo-edit elisp-lint flycheck company-web common-lisp-snippets slime-company ob-browser ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell jedi yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode org-ac undo-tree atom-dark-theme gradle-mode package-utils magit manrkdown-mode ddskk))))
+	(jedi-core restart-emacs smart-mode-line htmlize org-mobile-sync pipenv company-jedi android-mode yatex howm helm-org-rifle company-irony irony company-php php-mode ssh-config-mode osx-dictionary plantuml-mode sudo-edit elisp-lint flycheck company-web common-lisp-snippets slime-company ob-browser ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode org-ac undo-tree atom-dark-theme gradle-mode package-utils magit manrkdown-mode ddskk))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -213,7 +213,7 @@
                  ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")))
   (add-to-list 'org-latex-classes
                '("ieicej"
-                 
+
                  "\\documentclass[paper]{ieicej}
 \\usepackage[dvipdfmx]{graphicx}
 \\usepackage[T1]{fontenc}
@@ -392,7 +392,7 @@
          :map company-search-map
 	          ("C-n"   . 'company-select-next)
 	          ("C-p"   . 'company-select-previous)
-	 ) 
+	 )
   :config
   (global-company-mode 1)
   ;(custom-set-variables '(company-idle-delay nil))
@@ -531,19 +531,20 @@
   (exec-path-from-shell-initialize)
   )
 
-(use-package jedi
+(use-package jedi-core
   :ensure t
-  :defer t
-  :disabled t
   )
-(use-package company-jedi
+(use-package company-jedi             ;;; company-mode completion back-end for Python JEDI
   :ensure t
   :config
-  (defun my/python-mode-hook ()
-  (add-to-list 'company-backends 'company-jedi))
+  (setq jedi:environment-virtualenv (list (expand-file-name "~/.emacs.d/.python-environments/")))
+  (add-hook 'python-mode-hook 'jedi:setup)
+  (setq jedi:complete-on-dot t)
+  (setq jedi:use-shortcuts t)
+  (defun config/enable-company-jedi ()
+    (add-to-list 'company-backends 'company-jedi))
+  (add-hook 'python-mode-hook 'config/enable-company-jedi))
 
-  (add-hook 'python-mode-hook 'my/python-mode-hook)
-  )
 ;; (add-hook 'python-mode-hook
 ;;           '(lambda()
 ;;              (jedi:ac-setup)
@@ -677,7 +678,7 @@
     ;; save attachment to my desktop (this can also be a function)
     (setq mu4e-attachment-dir "~/Downloads")
     (setq mu4e-maildir-shortcuts
-	  '( ("/inbox"	 . ?i)	     
+	  '( ("/inbox"	 . ?i)
 	     ("/sent"	 . ?s)
 	     ("/trash"	 . ?t)
 	     ("/archive" . ?a)))    )
@@ -709,7 +710,9 @@
   :init
   (global-flycheck-mode)
   :config
-  (setq flycheck-python-pycompile-executable "python3")
+  (setq flycheck-python-pycompile-executable (executable-find "python3"))
+  (setq flycheck-python-flake8-executable (executable-find "flake8"))
+  (setq flycheck-python-pylint-executable (executable-find "pylint"))
   )
 
 ;; (with-temp-buffer
@@ -751,6 +754,13 @@
   :config
   (setq python-shell-interpreter "python3")
   (setq py-python-command "python3")
+
+    (add-hook 'python-mode-hook
+	    (lambda ()
+		    (setq-default indent-tabs-mode t)
+		    (setq-default tab-width 4)
+		    (setq-default py-indent-tabs-mode t)
+	    (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
   )
 
 ;; gtags-modeのキーバインドを有効化する
@@ -761,10 +771,10 @@
 (use-package irony
   :ensure t
   :config
-  (progn  
+  (progn
     (use-package company-irony
       :ensure t
-      :config      
+      :config
       (add-to-list 'company-backends 'company-irony)
       (add-hook 'c++-mode-hook 'irony-mode)
       (add-hook 'c-mode-hook 'irony-mode)
@@ -823,4 +833,13 @@
              (reftex-mode 1)
              (define-key reftex-mode-map (concat YaTeX-prefix ">") 'YaTeX-comment-region)
              (define-key reftex-mode-map (concat YaTeX-prefix "<") 'YaTeX-uncomment-region)))
+  )
+
+(use-package pipenv
+  :ensure t
+  :hook (python-mode . pipenv-mode)
+  :init
+  (setq
+   pipenv-projectile-after-switch-function
+   #'pipenv-projectile-after-switch-extended)
   )
