@@ -446,7 +446,17 @@
 
 
 (use-package web-mode
-  :ensure t)
+  :ensure t
+  :config
+  ;; (setq web-mode-extra-snippets
+  ;;       '(("php" . (("print" . "<?php do { ?>\n\n<?php } while (|); ?>")
+  ;;                   ("debug" . "<?php error_log(__LINE__); ?>")))
+  ;;         ))
+  (setq web-mode-extra-snippets
+        '(("php" . (("print" . "print(\"|\")")
+                    ))))
+  )
+
 (add-to-list 'auto-mode-alist '("\\.phtml\\'"     . web-mode))
 (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.[gj]sp\\'"    . web-mode))
