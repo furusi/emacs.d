@@ -727,6 +727,7 @@
 
 (use-package ox-reveal
   :ensure t
+  :disabled t
   :config    )
 
 (use-package flycheck
@@ -867,3 +868,5 @@
    pipenv-projectile-after-switch-function
    #'pipenv-projectile-after-switch-extended)
   )
+(use-package restart-emacs
+  :ensure t)
