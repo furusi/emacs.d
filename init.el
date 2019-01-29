@@ -41,6 +41,9 @@
  '(org-agenda-files
    (quote
 	("~/Dropbox/org/task.org" "~/Dropbox/org/notes.org" "~/Dropbox/org/habit.org" "~/Dropbox/org/event.org" "~/Dropbox/org/inbox.org")))
+ '(org-latex-default-class "bxjsarticle")
+ '(org-latex-pdf-process (quote ("latexmk -gg -pdfdvi  %f")))
+ '(org-level-color-stars-only t)
  '(org-src-lang-modes
    (quote
 	(("html" . web)
