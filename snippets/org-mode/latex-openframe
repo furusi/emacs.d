@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: latex-openframe
+# key: latex-openframe
+# --
+ #+LATEX: \begin{figure}[h]
+ #+LATEX: \begin{oframed}
+$3
+#+LATEX: \end{oframed}
+#+LATEX: \caption{$1}
+#+LATEX: \label{$2}
+#+LATEX: \end{figure}

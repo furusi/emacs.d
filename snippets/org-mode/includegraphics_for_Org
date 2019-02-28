@@ -1,0 +1,7 @@
+# key: <include
+# name: includegraphics_for_Org
+# --
+#+CAPTION: $1
+#+NAME: fig_$2
+#+ATTR_LaTeX: :width $3\linewidth
+file:$4

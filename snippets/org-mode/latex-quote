@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: latex-quote
+# key: latex-quote
+# --
+ #+LATEX: \begin{quote}
+ $1
+ #+LATEX: \end{quote}

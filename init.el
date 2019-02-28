@@ -40,43 +40,43 @@
  '(inhibit-startup-screen t)
  '(org-agenda-files
    (quote
-	("~/Dropbox/org/task.org" "~/Dropbox/org/notes.org" "~/Dropbox/org/habit.org" "~/Dropbox/org/event.org" "~/Dropbox/org/inbox.org")))
+    ("~/Dropbox/org/task.org" "~/Dropbox/org/notes.org" "~/Dropbox/org/habit.org" "~/Dropbox/org/event.org" "~/Dropbox/org/inbox.org")))
  '(org-latex-default-class "bxjsarticle")
  '(org-latex-pdf-process (quote ("latexmk -gg -pdfdvi  %f")))
  '(org-level-color-stars-only t)
  '(org-src-lang-modes
    (quote
-	(("html" . web)
-	 ("browser" . web)
-	 ("ocaml" . tuareg)
-	 ("elisp" . emacs-lisp)
-	 ("ditaa" . artist)
-	 ("asymptote" . asy)
-	 ("dot" . fundamental)
-	 ("sqlite" . sql)
-	 ("calc" . fundamental)
-	 ("C" . c)
-	 ("cpp" . c++)
-	 ("C++" . c++)
-	 ("screen" . shell-script)
-	 ("shell" . sh)
-	 ("bash" . sh))))
+    (("html" . web)
+     ("browser" . web)
+     ("ocaml" . tuareg)
+     ("elisp" . emacs-lisp)
+     ("ditaa" . artist)
+     ("asymptote" . asy)
+     ("dot" . fundamental)
+     ("sqlite" . sql)
+     ("calc" . fundamental)
+     ("C" . c)
+     ("cpp" . c++)
+     ("C++" . c++)
+     ("screen" . shell-script)
+     ("shell" . sh)
+     ("bash" . sh))))
  '(org-structure-template-alist
    (quote
-	(("n" . "notes")
-	 ("a" . "export ascii")
-	 ("c" . "center")
-	 ("C" . "comment")
-	 ("e" . "example")
-	 ("E" . "export")
-	 ("h" . "export html")
-	 ("l" . "export latex")
-	 ("q" . "quote")
-	 ("s" . "src")
-	 ("v" . "verse"))))
+    (("n" . "notes")
+     ("a" . "export ascii")
+     ("c" . "center")
+     ("C" . "comment")
+     ("e" . "example")
+     ("E" . "export")
+     ("h" . "export html")
+     ("l" . "export latex")
+     ("q" . "quote")
+     ("s" . "src")
+     ("v" . "verse"))))
  '(package-selected-packages
    (quote
-	(jedi-core restart-emacs smart-mode-line htmlize org-mobile-sync pipenv company-jedi android-mode yatex howm helm-org-rifle company-irony irony company-php php-mode ssh-config-mode osx-dictionary plantuml-mode sudo-edit elisp-lint flycheck company-web common-lisp-snippets slime-company ob-browser ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode org-ac undo-tree atom-dark-theme gradle-mode package-utils magit manrkdown-mode ddskk))))
+    (company-shell jedi-core restart-emacs smart-mode-line htmlize org-mobile-sync pipenv company-jedi android-mode yatex howm helm-org-rifle company-irony irony company-php php-mode ssh-config-mode osx-dictionary plantuml-mode sudo-edit elisp-lint flycheck company-web common-lisp-snippets slime-company ob-browser ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode org-ac undo-tree atom-dark-theme gradle-mode package-utils magit manrkdown-mode ddskk))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -178,6 +178,7 @@
   :config
   (setq org-latex-default-class "bxjsarticle")
   (setq org-latex-pdf-process '("latexmk -gg -pdfdvi  %f"))
+  (setq org-highlight-latex-and-related '(latex script entities))
 ;(setq org-latex-pdf-process '("latexmk -e '$lualatex=q/lualatex %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex -o %D %S/' -norc -gg -pdflua %f"))
                                         ;(setq org-export-in-background t)
   (when (equal system-type 'darwin)
@@ -193,12 +194,13 @@
                  "\\documentclass[autodetect-engine,dvi=dvipdfmx,10pt,a4paper,ja=standard]{bxjsarticle}
 [NO-DEFAULT-PACKAGES]
 \\usepackage{amsmath}
+\\usepackage{siunitx}
 \\usepackage{newtxtext,newtxmath}
 \\usepackage{graphicx}
 \\usepackage{hyperref}
 \\ifdefined\\kanjiskip
   \\usepackage{pxjahyper}
-  \\hypersetup{colorlinks=true}
+  \\hypersetup{colorlinks=false}
 \\else
   \\ifdefined\\XeTeXversion
       \\hypersetup{colorlinks=true}
@@ -220,6 +222,7 @@
                '("beamer"
                  "\\documentclass[dvipdfmx,cjk]{beamer}
 \\usepackage{bxdpx-beamer}
+\\usepackage{siunitx}
 \\usepackage{pxjahyper}
 \\usepackage{minijs}
 \\renewcommand{\\kanjifamilydefault}{\\gtdefault}
@@ -250,6 +253,25 @@
   (setq org-latex-with-hyperref nil) ;ieicej出力時エラー対策
 
   )
+  (add-to-list 'org-latex-classes
+               '("tategaki"
+
+                 "\\documentclass[tate]{jlreq}
+\\usepackage[dvipdfmx]{graphicx}
+\\usepackage[T1]{fontenc}
+\\usepackage{lmodern}
+\\usepackage{textcomp}
+\\usepackage{latexsym}
+\\usepackage{tabularx}
+\\usepackage{dcolumn}
+
+\\setcounter{page}{1}
+               [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
+                 ("\\section\{%s\}"       . "\\section*\{%s\}")
+                 ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
+                 ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
+                 ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
+                 ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
 
 
 
