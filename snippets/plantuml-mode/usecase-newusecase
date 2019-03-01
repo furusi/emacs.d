@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: usecase-newusecase
+# key: usecase-newusecase
+# --
+usecase ($1 \n) as $2

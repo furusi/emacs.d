@@ -669,7 +669,7 @@
   (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family "Hiragino Mincho ProN"))
   ;フォント一覧を出力するには
                                         ;(dolist (x (font-family-list)) (print x))
-  (setq org-plantuml-jar-path   "/usr/local/Cellar/plantuml/1.2018.9/libexec/plantuml.jar")
+  (setq org-plantuml-jar-path   "~/.emacs.d/lib/plantuml.jar")
   )
 
   (use-package mu4e

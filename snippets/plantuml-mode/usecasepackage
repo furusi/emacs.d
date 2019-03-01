@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: usecasepackage
+# key: usecasepackage
+# --
+package "$1" {
+ 	usecase ($2 \n) as $3
+}

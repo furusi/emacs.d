@@ -1,0 +1,27 @@
+# -*- mode: snippet -*-
+# name: plantuml-template-usecase
+# key: plantuml-template-usecase
+# --
+@startuml
+title 
+skinparam dpi 300
+scale max 720 width
+
+' システム境界には package を四角形の形式で利用する
+skinparam packageStyle rect
+
+' 図を水平に展開する命令
+left to right direction
+
+' 棒人間図
+actor :: as 
+
+' パッケージ
+package "$1" {
+ 	usecase (Set \n Limits) as set
+}
+
+' 関連
+' TM -- set
+
+@enduml

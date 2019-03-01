@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: plantumlactor
+# key: plantumlactor
+# --
+actor :$1: as $2
