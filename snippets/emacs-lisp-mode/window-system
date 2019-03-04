@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: window-system
+# key: window-system
+# --
+(when (eq window-system 'ns)
+;;Windows: 'w32あるいは'pc
+;;Linux: 'x
+)

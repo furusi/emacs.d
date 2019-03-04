@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: system-type
+# key: system-type
+# --
+(when (eq system-type 'darwin)
+;;Windows: 'windows-ntあるいは'cygwin
+;;Linux: 'gnu/linux
+)
