@@ -56,7 +56,6 @@
      ("elisp" . emacs-lisp)
      ("ditaa" . artist)
      ("asymptote" . asy)
-     ("dot" . fundamental)
      ("sqlite" . sql)
      ("calc" . fundamental)
      ("C" . c)
