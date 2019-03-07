@@ -42,7 +42,9 @@
  '(org-agenda-files
    (quote
     ("~/Dropbox/org/task.org" "~/Dropbox/org/notes.org" "~/Dropbox/org/habit.org" "~/Dropbox/org/event.org" "~/Dropbox/org/inbox.org")))
+ '(org-babel-load-languages (quote ((C . t) (dot . t))))
  '(org-latex-default-class "bxjsarticle")
+ '(org-latex-listings (quote minted))
  '(org-latex-pdf-process (quote ("latexmk -gg -pdfdvi  %f")))
  '(org-level-color-stars-only t)
  '(org-src-lang-modes
@@ -61,7 +63,8 @@
      ("C++" . c++)
      ("screen" . shell-script)
      ("shell" . sh)
-     ("bash" . sh))))
+     ("bash" . sh)
+     ("dot" . graphviz-dot))))
  '(org-structure-template-alist
    (quote
     (("n" . "notes")
@@ -77,7 +80,7 @@
      ("v" . "verse"))))
  '(package-selected-packages
    (quote
-    (dimmer company-lsp lsp-ui lsp-mode company-shell jedi-core restart-emacs smart-mode-line htmlize org-mobile-sync pipenv company-jedi android-mode yatex howm helm-org-rifle company-irony irony company-php php-mode ssh-config-mode osx-dictionary plantuml-mode sudo-edit elisp-lint flycheck company-web common-lisp-snippets slime-company ob-browser ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode org-ac undo-tree atom-dark-theme gradle-mode package-utils magit manrkdown-mode ddskk))))
+    (graphviz-dot-mode dimmer company-lsp lsp-ui lsp-mode company-shell jedi-core restart-emacs smart-mode-line htmlize org-mobile-sync pipenv company-jedi android-mode yatex howm helm-org-rifle company-irony irony company-php php-mode ssh-config-mode osx-dictionary plantuml-mode sudo-edit elisp-lint flycheck company-web common-lisp-snippets slime-company ob-browser ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode org-ac undo-tree atom-dark-theme gradle-mode package-utils magit manrkdown-mode ddskk))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -257,7 +260,26 @@
   (add-to-list 'org-latex-classes
                '("tategaki"
 
-                 "\\documentclass[tate]{jlreq}
+                 "\\documentclass[tate, book,jafontscale=1.3]{jlreq}
+\\usepackage[dvipdfmx]{graphicx}
+\\usepackage[T1]{fontenc}
+\\usepackage{lmodern}
+\\usepackage{textcomp}
+\\usepackage{latexsym}
+\\usepackage{tabularx}
+\\usepackage{dcolumn}
+
+\\setcounter{page}{1}
+               [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
+                 ("\\section\{%s\}"       . "\\section*\{%s\}")
+                 ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
+                 ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
+                 ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
+                 ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
+  (add-to-list 'org-latex-classes
+               '("jlreq-yoko"
+
+                 "\\documentclass[book,jafontscale=1.3]{jlreq}
 \\usepackage[dvipdfmx]{graphicx}
 \\usepackage[T1]{fontenc}
 \\usepackage{lmodern}
@@ -556,8 +578,8 @@
     (flymake-mode          . " Fm")
     ;; Major modes
     (lisp-interaction-mode . "Lisp")
-    (python-mode           . "Py")
-    (ruby-mode             . "Rb")
+    (python-mode           . "Python")
+    (ruby-mode             . "Ruby")
     (emacs-lisp-mode       . "Elsp")
     (markdown-mode         . "Mkd")))
 
@@ -896,6 +918,7 @@
   )
 (use-package restart-emacs
   :ensure t)
+(put 'set-goal-column 'disabled nil)
 (use-package lsp-mode
   :commands lsp
   :init
