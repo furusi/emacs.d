@@ -36,6 +36,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(backup-directory-alist (quote ((".*" . "~/.ehist"))))
  '(dimmer-fraction 0.3)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(inhibit-startup-screen t)
@@ -89,7 +90,7 @@
      ("v" . "verse"))))
  '(package-selected-packages
    (quote
-    (graphviz-dot-mode dimmer company-lsp lsp-ui lsp-mode company-shell jedi-core restart-emacs smart-mode-line htmlize org-mobile-sync pipenv company-jedi android-mode yatex howm helm-org-rifle company-irony irony company-php php-mode ssh-config-mode osx-dictionary plantuml-mode sudo-edit elisp-lint flycheck company-web common-lisp-snippets slime-company ob-browser ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode org-ac undo-tree atom-dark-theme gradle-mode package-utils magit manrkdown-mode ddskk)))
+    (org-journal graphviz-dot-mode dimmer company-lsp lsp-ui lsp-mode company-shell jedi-core restart-emacs smart-mode-line htmlize org-mobile-sync pipenv company-jedi android-mode yatex howm helm-org-rifle company-irony irony company-php php-mode ssh-config-mode osx-dictionary plantuml-mode sudo-edit elisp-lint flycheck company-web common-lisp-snippets slime-company ob-browser ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode org-ac undo-tree atom-dark-theme gradle-mode package-utils magit manrkdown-mode ddskk)))
  '(picasm-db-file "~/.emacs.d/lisp/picasm/picasm-db.el"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -952,3 +953,10 @@
 
 (add-to-list 'load-path "~/.emacs.d/lisp/picasm/")
 (require 'picasm)
+
+(use-package org-journal
+  :ensure t
+  :defer t
+  :custom
+  (org-journal-dir "~/Dropbox/org/journal")
+  (org-journal-date-format "%A, %d %B %Y"))
