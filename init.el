@@ -44,7 +44,15 @@
     ("~/Dropbox/org/task.org" "~/Dropbox/org/notes.org" "~/Dropbox/org/habit.org" "~/Dropbox/org/event.org" "~/Dropbox/org/inbox.org")))
  '(org-babel-load-languages (quote ((C . t) (dot . t))))
  '(org-latex-default-class "bxjsarticle")
- '(org-latex-listings (quote minted))
+ '(org-latex-listings t)
+ '(org-latex-listings-options
+   (quote
+    (("frame" "single")
+     ("basicstyle" "{\\ttfamily\\scriptsize}")
+     ("numbers" "left")
+     ("commentstyle" "{\\gtfamily\\scriptsize}")
+     ("breaklines" "true")
+     ("showstringspaces" "false"))))
  '(org-latex-minted-options (quote (("frame" "single") ("linenos" "true"))))
  '(org-latex-pdf-process (quote ("latexmk -gg -pdfdvi  %f")))
  '(org-level-color-stars-only t)
@@ -360,6 +368,7 @@
   :init
   (setq org-directory (expand-file-name "~/Dropbox/org/"))
   :config
+  (define-key global-map (kbd "C-c t l") 'toggle-truncate-lines)
   (setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
   (setq org-agenda-files
         '(    "~/Dropbox/org/task.org"
