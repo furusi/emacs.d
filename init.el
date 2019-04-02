@@ -57,6 +57,7 @@
  '(org-latex-minted-options (quote (("frame" "single") ("linenos" "true"))))
  '(org-latex-pdf-process (quote ("latexmk -gg -pdfdvi  %f")))
  '(org-level-color-stars-only t)
+ '(org-rst-headline-underline-characters (quote (45 126 94 58 39 32 95)))
  '(org-src-lang-modes
    (quote
     (("html" . web)
@@ -91,7 +92,16 @@
  '(package-selected-packages
    (quote
     (org-journal graphviz-dot-mode dimmer company-lsp lsp-ui lsp-mode company-shell jedi-core restart-emacs smart-mode-line htmlize org-mobile-sync pipenv company-jedi android-mode yatex howm helm-org-rifle company-irony irony company-php php-mode ssh-config-mode osx-dictionary plantuml-mode sudo-edit elisp-lint flycheck company-web common-lisp-snippets slime-company ob-browser ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode org-ac undo-tree atom-dark-theme gradle-mode package-utils magit manrkdown-mode ddskk)))
- '(picasm-db-file "~/.emacs.d/lisp/picasm/picasm-db.el"))
+ '(picasm-db-file "~/.emacs.d/lisp/picasm/picasm-db.el")
+ '(rst-compile-toolsets
+   (quote
+    ((html "rst2html.py" ".html" nil)
+     (latex "rst2latex.py" ".tex" nil)
+     (newlatex "rst2newlatex" ".tex" nil)
+     (pseudoxml "rst2pseudoxml.py" ".xml" nil)
+     (xml "rst2xml.py" ".xml" nil)
+     (pdf "rst2pdf" ".pdf" "-s ja")
+     (s5 "rst2s5.py" ".html" nil)))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -115,6 +125,7 @@
   :config
   (when (eq system-type 'darwin)
     (setq rst-pdf-program "open -a Skim")
+    (setq rst-slides-program "open -a Firefox")
     )
   )
 ;; 拡張子の*.rst, *.restのファイルをrst-modeで開く
