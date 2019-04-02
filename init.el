@@ -111,7 +111,11 @@
   :ensure t
   :bind (
          :map rst-mode-map
-         ("M-RET" . rst-insert-list))
+              ("M-RET" . rst-insert-list))
+  :config
+  (when (eq system-type 'darwin)
+    (setq rst-pdf-program "open -a Skim")
+    )
   )
 ;; 拡張子の*.rst, *.restのファイルをrst-modeで開く
 (setq auto-mode-alist
@@ -960,3 +964,6 @@
   :custom
   (org-journal-dir "~/Dropbox/org/journal")
   (org-journal-date-format "%A, %d %B %Y"))
+
+(use-package ox-rst
+  :ensure t)
