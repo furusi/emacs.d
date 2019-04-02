@@ -40,6 +40,7 @@
  '(dimmer-fraction 0.3)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(inhibit-startup-screen t)
+ '(magit-display-buffer-function (quote magit-display-buffer-fullframe-status-v1))
  '(org-agenda-files
    (quote
     ("~/Dropbox/org/task.org" "~/Dropbox/org/notes.org" "~/Dropbox/org/habit.org" "~/Dropbox/org/event.org" "~/Dropbox/org/inbox.org")))
@@ -130,8 +131,8 @@
   )
 ;; 拡張子の*.rst, *.restのファイルをrst-modeで開く
 (setq auto-mode-alist
-      (append '(( "\\.rst$"	 . rst-mode)
-				( "\\.rest$" . rst-mode)
+      (append '(( "\\.rst$"  . rst-mode)
+                ( "\\.rest$" . rst-mode)
                 ("\\.php$"   . web-mode)) auto-mode-alist))
 ;; 背景が黒い場合はこうしないと見出しが見づらい
 ;;(setq frame-background-mode 'dark)
@@ -348,34 +349,34 @@
   :bind (("\C-cc" . org-capture))
   :config
   (setq org-capture-templates
-	`(
-	  ("i" "インボックス" entry
-	   (file ,(concat org-directory "inbox.org"))
-	   "* %? %i\n %U\n")
-	  ("t" "タスク" entry
-	   (file ,(concat org-directory "task.org"))
-	   "* TODO %? %i\n %U\n")
-	  ("e" "イベント" entry
-	   (file ,(concat org-directory "event.org"))
-	   "* EVENT %? %i\n %U\n")
-	  ("n" "ノート" entry
-	   (file ,(concat org-directory "notes.org"))
-	   "* %?\n %U\n")
-	  ("h" "定期的にやること" entry
-	   (file ,(concat org-directory "habit.org"))
-	   "* %?\n %U\n")
-	  ("T" "タスク(リンク付き)" entry
-	   (file ,(concat org-directory "task.org"))
-	   "* TODO %? %i\n %a\n %U\n")
-	  ("E" "イベント(リンク付き)" entry
-	   (file ,(concat org-directory "event.org"))
-	   "* EVENT %? %i\n %a\n %U\n")
-	  ("N" "ノート(リンク付き)" entry
-	   (file ,(concat org-directory "notes.org"))
-	   "* %?\n %a\n %U\n")
-	  ("r" "読みかけ(リンク付き)" entry
-	   (file ,(concat org-directory "reading.org"))
-	   "* %?\n %a\n %U\n") ))
+    `(
+      ("i" "インボックス" entry
+       (file ,(concat org-directory "inbox.org"))
+       "* %? %i\n %U\n")
+      ("t" "タスク" entry
+       (file ,(concat org-directory "task.org"))
+       "* TODO %? %i\n %U\n")
+      ("e" "イベント" entry
+       (file ,(concat org-directory "event.org"))
+       "* EVENT %? %i\n %U\n")
+      ("n" "ノート" entry
+       (file ,(concat org-directory "notes.org"))
+       "* %?\n %U\n")
+      ("h" "定期的にやること" entry
+       (file ,(concat org-directory "habit.org"))
+       "* %?\n %U\n")
+      ("T" "タスク(リンク付き)" entry
+       (file ,(concat org-directory "task.org"))
+       "* TODO %? %i\n %a\n %U\n")
+      ("E" "イベント(リンク付き)" entry
+       (file ,(concat org-directory "event.org"))
+       "* EVENT %? %i\n %a\n %U\n")
+      ("N" "ノート(リンク付き)" entry
+       (file ,(concat org-directory "notes.org"))
+       "* %?\n %a\n %U\n")
+      ("r" "読みかけ(リンク付き)" entry
+       (file ,(concat org-directory "reading.org"))
+       "* %?\n %a\n %U\n") ))
   )
 
 (use-package org
@@ -399,19 +400,19 @@
           ("event.org"    . (:level . 1))
           ("notes.org"    . (:level . 1))))
   (setq org-mobile-files
-	    (list "~/Dropbox/org/notes.org"
-	          "~/Dropbox/org/todo.org"
-	          "~/Dropbox/org/task.org"
-	          "~/Dropbox/org/iphone.org"
+        (list "~/Dropbox/org/notes.org"
+              "~/Dropbox/org/todo.org"
+              "~/Dropbox/org/task.org"
+              "~/Dropbox/org/iphone.org"
               "~/Dropbox/org/event.org"))
   (setq org-mobile-inbox-for-pull "~/Dropbox/org/iphone.org")
   (setq org-tag-alist
   '(("@OFFICE" . ?o) ("@HOME" . ?h) ("SHOPPING" . ?s)
     ("MAIL" . ?m) ("PROJECT" . ?p) ("備忘録" . ?b)))
   (setq org-refile-targets
-	(quote (
-		(nil . (:level . 1))
-		(org-agenda-files . (:level . 1)))))
+    (quote (
+        (nil . (:level . 1))
+        (org-agenda-files . (:level . 1)))))
   ;; コードを評価するとき尋ねない
   (setq org-confirm-babel-evaluate nil)
   ;; 有効にする言語 デフォルトでは elisp のみ
@@ -437,8 +438,8 @@
 
 
   :bind (("\C-cl" . org-store-link)
-	 ("\C-ca" . org-agenda)
-	 ("\C-cb" . org-iswitchb)))
+     ("\C-ca" . org-agenda)
+     ("\C-cb" . org-iswitchb)))
 (use-package org-mobile-sync
   :ensure t
   :config
@@ -480,9 +481,9 @@
               ("C-s"   . 'company-filter-candidates)
               ("C-i"   . 'company-complete-selection)
          :map company-search-map
-	          ("C-n"   . 'company-select-next)
-	          ("C-p"   . 'company-select-previous)
-	 )
+              ("C-n"   . 'company-select-next)
+              ("C-p"   . 'company-select-previous)
+     )
   :config
   (global-company-mode 1)
   ;(custom-set-variables '(company-idle-delay nil))
@@ -493,7 +494,7 @@
 (autoload 'mercury-mode "prolog" "Major mode for editing Mercury programs." t)
 (setq prolog-system 'swi)
 (setq auto-mode-alist (append '(("\\.pl$" . prolog-mode)
-				("\\.swi$" . prolog-mode)
+                ("\\.swi$" . prolog-mode)
                                 ("\\.m$" . mercury-mode))
                                auto-mode-alist))
 
@@ -522,7 +523,7 @@
   (undohist-initialize)
   ;;; 永続化を無視するファイル名の正規表現
   (setq undohist-ignored-files
-	'("/tmp/" "COMMIT_EDITMSG"))
+    '("/tmp/" "COMMIT_EDITMSG"))
   )
 
 (use-package auto-save-buffers-enhanced
@@ -561,9 +562,9 @@
 (use-package helm
   :ensure t
   :bind (("M-x" . helm-M-x)
-	 ("M-y" . helm-show-kill-ring)
-	 ("C-x b" . helm-mini)
-	 ("C-x C-f" . helm-find-files)  )
+     ("M-y" . helm-show-kill-ring)
+     ("C-x b" . helm-mini)
+     ("C-x C-f" . helm-find-files)  )
   :config
   (helm-autoresize-mode 1)
   (helm-mode 1)  )
@@ -707,9 +708,9 @@
 (when (equal system-type 'gnu/linux)
   (add-to-list 'load-path "~/opt/mu-1.0/mu4e/")
   (cond ((display-graphic-p)
-	 (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family "IPAex\346\230\216\346\234\235"))  )
+     (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family "IPAex\346\230\216\346\234\235"))  )
 
-	           (t 0)))
+               (t 0)))
 
 (when (equal system-type 'darwin)
   (add-to-list 'load-path "/usr/local/Cellar/mu/1.0/share/emacs/site-lisp/mu/mu4e/")
@@ -745,43 +746,43 @@
     (setq mu4e-show-images t)
     ;; configuration for sending mail
     (setq message-send-mail-function 'smtpmail-send-it
-	  smtpmail-stream-type 'starttls
-	  smtpmail-default-smtp-server "smtp.gmail.com"
-	  smtpmail-smtp-server "smtp.gmail.com"
-	  smtpmail-smtp-service 587)
+      smtpmail-stream-type 'starttls
+      smtpmail-default-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-service 587)
     (setq mu4e-refile-folder
-	  (lambda (msg)
-	    (cond
-	     ;; messages to the mu mailing list go to the /mu folder
-	     ((mu4e-message-contact-field-matches msg :to
-						  "mu-discuss@googlegroups.com")
-	      "/mu")
-	     ;; messages sent directly to me go to /archive
-	     ;; also `mu4e-user-mail-address-p' can be used
-	     ((mu4e-message-contact-field-matches msg :to "me@example.com")
-	      "/private")
-	     ;; messages with football or soccer in the subject go to /football
-	     ((string-match
-	       "football\\|soccer"			    (mu4e-message-field msg :subject))
-	      "/football")
-	     ;; messages sent by me go to the sent folder
-	     ;;((find-if
-	     ;;  (lambda (addr)
-	     ;;	 (mu4e-message-contact-field-matches msg :from addr))
-	     ;;     mu4e-user-mail-address-list)
-	     ;;  mu4e-sent-folder)
-	     ;; everything else goes to /archive
-	     ;; important to have a catch-all at the end!
-	     (t  "/archive"))	    )	  )
+      (lambda (msg)
+        (cond
+         ;; messages to the mu mailing list go to the /mu folder
+         ((mu4e-message-contact-field-matches msg :to
+                          "mu-discuss@googlegroups.com")
+          "/mu")
+         ;; messages sent directly to me go to /archive
+         ;; also `mu4e-user-mail-address-p' can be used
+         ((mu4e-message-contact-field-matches msg :to "me@example.com")
+          "/private")
+         ;; messages with football or soccer in the subject go to /football
+         ((string-match
+           "football\\|soccer"              (mu4e-message-field msg :subject))
+          "/football")
+         ;; messages sent by me go to the sent folder
+         ;;((find-if
+         ;;  (lambda (addr)
+         ;;  (mu4e-message-contact-field-matches msg :from addr))
+         ;;     mu4e-user-mail-address-list)
+         ;;  mu4e-sent-folder)
+         ;; everything else goes to /archive
+         ;; important to have a catch-all at the end!
+         (t  "/archive"))       )     )
     ;; don't keep message buffers around
     (setq message-kill-buffer-on-exit t)
     ;; save attachment to my desktop (this can also be a function)
     (setq mu4e-attachment-dir "~/Downloads")
     (setq mu4e-maildir-shortcuts
-	  '( ("/inbox"	 . ?i)
-	     ("/sent"	 . ?s)
-	     ("/trash"	 . ?t)
-	     ("/archive" . ?a)))    )
+      '( ("/inbox"   . ?i)
+         ("/sent"    . ?s)
+         ("/trash"   . ?t)
+         ("/archive" . ?a)))    )
   (use-package org-mu4e
     :config
     ;;store link to message if in header view, not to header query
@@ -857,11 +858,11 @@
   (setq py-python-command "python3")
 
     (add-hook 'python-mode-hook
-	    (lambda ()
-		    (setq-default indent-tabs-mode t)
-		    (setq-default tab-width 4)
-		    (setq-default py-indent-tabs-mode t)
-			))
+        (lambda ()
+            (setq-default indent-tabs-mode t)
+            (setq-default tab-width 4)
+            (setq-default py-indent-tabs-mode t)
+            ))
   )
 
 ;; gtags-modeのキーバインドを有効化する
