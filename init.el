@@ -614,3 +614,4 @@
 (load "org-init")
 (load "yatex-init")
 (load "mu4e-init")
+(load "magit-init")
