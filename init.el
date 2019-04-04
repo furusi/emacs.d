@@ -26,7 +26,7 @@
   (unless (require 'use-package nil t)
     (package-refresh-contents)
     (package-install 'use-package))
-    )
+  )
 
 (show-paren-mode t)
 
@@ -47,6 +47,8 @@
     ("~/Dropbox/org/task.org" "~/Dropbox/org/notes.org" "~/Dropbox/org/habit.org" "~/Dropbox/org/event.org" "~/Dropbox/org/inbox.org")))
  '(org-babel-load-languages (quote ((C . t) (dot . t))))
  '(org-export-backends (quote (ascii html icalendar latex odt taskjuggler)))
+ '(org-journal-date-format "%A, %d %B %Y")
+ '(org-journal-dir "~/Dropbox/org/journal")
  '(org-latex-default-class "bxjsarticle")
  '(org-latex-listings t)
  '(org-latex-listings-options
@@ -59,7 +61,6 @@
      ("showstringspaces" "false"))))
  '(org-latex-minted-options (quote (("frame" "single") ("linenos" "true"))))
  '(org-latex-pdf-process (quote ("latexmk -gg -pdfdvi  %f")))
- '(org-level-color-stars-only t)
  '(org-rst-headline-underline-characters (quote (45 126 94 58 39 32 95)))
  '(org-src-lang-modes
    (quote
@@ -94,9 +95,6 @@
      ("v" . "verse"))))
  '(org-taskjuggler-process-command
    "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")
- '(package-selected-packages
-   (quote
-    (spacemacs-theme zenburn-theme rust-mode org-journal graphviz-dot-mode dimmer company-lsp lsp-ui lsp-mode company-shell jedi-core restart-emacs smart-mode-line htmlize org-mobile-sync pipenv company-jedi android-mode yatex howm helm-org-rifle company-irony irony company-php php-mode ssh-config-mode osx-dictionary plantuml-mode sudo-edit elisp-lint flycheck company-web common-lisp-snippets slime-company ob-browser ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode org-ac undo-tree atom-dark-theme gradle-mode package-utils magit manrkdown-mode ddskk)))
  '(picasm-db-file "~/.emacs.d/lisp/picasm/picasm-db.el")
  '(rst-compile-toolsets
    (quote
@@ -115,7 +113,16 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(add-to-list 'load-path "~/.emacs.d/conf")
+(load "org-init")
+(load "yatex-init")
+(load "mu4e-init")
+(load "magit-init")
+
 (setq-default indent-tabs-mode nil)
+(use-package restart-emacs
+  :ensure t)
+
 (use-package gradle-mode
   :ensure t)
 
@@ -175,7 +182,6 @@
 
 (use-package ddskk
   :ensure t
-;;  :defer t
   :bind (("C-x C-j" . skk-mode))
   :init
   (setq skk-large-jisyo "~/.emacs.d/skk-get-jisyo/SKK-JISYO.L")
@@ -238,7 +244,7 @@
          :map company-search-map
               ("C-n"   . 'company-select-next)
               ("C-p"   . 'company-select-previous)
-     )
+              )
   :config
   (global-company-mode 1)
   ;(custom-set-variables '(company-idle-delay nil))
@@ -249,7 +255,7 @@
 (autoload 'mercury-mode "prolog" "Major mode for editing Mercury programs." t)
 (setq prolog-system 'swi)
 (setq auto-mode-alist (append '(("\\.pl$" . prolog-mode)
-                ("\\.swi$" . prolog-mode)
+                                ("\\.swi$" . prolog-mode)
                                 ("\\.m$" . mercury-mode))
                                auto-mode-alist))
 
@@ -387,36 +393,6 @@
   (exec-path-from-shell-initialize)
   )
 
-(use-package jedi-core
-  :ensure t
-  )
-(use-package company-jedi             ;;; company-mode completion back-end for Python JEDI
-  :ensure t
-  :config
-  (append python-environment-virtualenv '("--python" "python3"))
-  (add-hook 'python-mode-hook 'jedi:setup)
-  (setq jedi:complete-on-dot t)
-  (setq jedi:use-shortcuts t)
-  (defun config/enable-company-jedi ()
-    (add-to-list 'company-backends 'company-jedi))
-  (add-hook 'python-mode-hook 'config/enable-company-jedi))
-
-;; (add-hook 'python-mode-hook
-;;           '(lambda()
-;;              (jedi:ac-setup)
-;;              (setq jedi:complete-on-dot t)
-;;              (local-set-key (kbd "M-TAB") 'jedi:complete)))
-
-(use-package elpy
-  :ensure t
-  :config
-  (elpy-enable)
-  (setq python-shell-interpreter "jupyter"
-        python-shell-interpreter-args "console --simple-prompt"
-        python-shell-prompt-detect-failure-warning nil)
-  (add-to-list 'python-shell-completion-native-disabled-interpreters
-               "jupyter"))
-
 
 (use-package spaceline :ensure t
   :disabled t
@@ -528,17 +504,6 @@
 (use-package php-mode
   :ensure t )
 
-(use-package company-php
-  :ensure t
-  :init
-    (add-hook 'php-mode-hook
-          '(lambda ()
-             (require 'company-php)
-             (company-mode t)
-             (ac-php-core-eldoc-setup) ;; enable eldoc
-             (make-local-variable 'company-backends)
-             (add-to-list 'company-backends 'company-ac-php-backend))) )
-
 
 (use-package python
   :mode ("\\.py\\'" . python-mode)
@@ -559,18 +524,6 @@
 ;; ファイル保存時に自動的にタグをアップデートする
 (setq gtags-auto-update t) ; 無効化する場合はコメントアウト
 
-(use-package irony
-  :ensure t
-  :config
-  (progn
-    (use-package company-irony
-      :ensure t
-      :config
-      (add-to-list 'company-backends 'company-irony)
-      (add-hook 'c++-mode-hook 'irony-mode)
-      (add-hook 'c-mode-hook 'irony-mode)
-      (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))  ))
-
 (use-package pipenv
   :ensure t
   :hook (python-mode . pipenv-mode)
@@ -579,8 +532,7 @@
    pipenv-projectile-after-switch-function
    #'pipenv-projectile-after-switch-extended)
   )
-(use-package restart-emacs
-  :ensure t)
+
 (put 'set-goal-column 'disabled nil)
 (use-package lsp-mode
   :commands lsp
@@ -610,8 +562,3 @@
   (autoload 'rust-mode "rust-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode)))
 
-(add-to-list 'load-path "~/.emacs.d/conf")
-(load "org-init")
-(load "yatex-init")
-(load "mu4e-init")
-(load "magit-init")

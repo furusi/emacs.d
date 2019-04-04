@@ -13,12 +13,12 @@
   (define-key global-map (kbd "C-c t l") 'toggle-truncate-lines)
   (setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
   (setq org-agenda-files
-        '(    "~/Dropbox/org/task.org"
-              "~/Dropbox/org/notes.org"
-              "~/Dropbox/org/habit.org"
-              "~/Dropbox/org/event.org"
-              "~/Dropbox/org/inbox.org"
-              "~/Dropbox/org/org-ical.org"))
+        '("~/Dropbox/org/task.org"
+          "~/Dropbox/org/notes.org"
+          "~/Dropbox/org/habit.org"
+          "~/Dropbox/org/event.org"
+          "~/Dropbox/org/inbox.org"
+          "~/Dropbox/org/org-ical.org"))
   (setq org-refile-targets
         '(("org-ical.org" . (:level . 1))
           ("task.org"     . (:level . 1))
