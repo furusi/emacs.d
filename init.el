@@ -145,11 +145,6 @@
 ;; 全部スペースでインデントしましょう
 (add-hook 'rst-mode-hook '(lambda() (setq indent-tabs-mode nil)))
 
-(use-package magit
-  :ensure t
-  :bind (("C-x g" . magit-status))
-  )
-
 (use-package gradle-mode)
 
 (use-package eww
