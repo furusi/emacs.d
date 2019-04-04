@@ -274,4 +274,4 @@
 (use-package ox-extra
   :ensure org-plus-contrib
   :config
-  (ox-extras-activate '(ignore-headlines)))
+  (ox-extras-activate '(latex-header-blocks ignore-headlines)))

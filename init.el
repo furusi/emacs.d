@@ -96,7 +96,7 @@
    "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")
  '(package-selected-packages
    (quote
-    (rust-mode org-journal graphviz-dot-mode dimmer company-lsp lsp-ui lsp-mode company-shell jedi-core restart-emacs smart-mode-line htmlize org-mobile-sync pipenv company-jedi android-mode yatex howm helm-org-rifle company-irony irony company-php php-mode ssh-config-mode osx-dictionary plantuml-mode sudo-edit elisp-lint flycheck company-web common-lisp-snippets slime-company ob-browser ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode org-ac undo-tree atom-dark-theme gradle-mode package-utils magit manrkdown-mode ddskk)))
+    (spacemacs-theme zenburn-theme rust-mode org-journal graphviz-dot-mode dimmer company-lsp lsp-ui lsp-mode company-shell jedi-core restart-emacs smart-mode-line htmlize org-mobile-sync pipenv company-jedi android-mode yatex howm helm-org-rifle company-irony irony company-php php-mode ssh-config-mode osx-dictionary plantuml-mode sudo-edit elisp-lint flycheck company-web common-lisp-snippets slime-company ob-browser ox-reveal migemo init-loader keyfreq esup spaceline-all-the-icons org-plus-contrib elpy exec-path-from-shell yasnippet-snippets yasnippet which-key helm-themes leuven-theme highlight smartparens parent-mode highlight-parentheses helm web-mode auto-save-buffers-enhanced undohist fuzzy slime prodigy ox-rst sphinx-mode org-ac undo-tree atom-dark-theme gradle-mode package-utils magit manrkdown-mode ddskk)))
  '(picasm-db-file "~/.emacs.d/lisp/picasm/picasm-db.el")
  '(rst-compile-toolsets
    (quote
@@ -106,7 +106,9 @@
      (pseudoxml "rst2pseudoxml.py" ".xml" nil)
      (xml "rst2xml.py" ".xml" nil)
      (pdf "rst2pdf" ".pdf" "-s ja")
-     (s5 "rst2s5.py" ".html" nil)))))
+     (s5 "rst2s5.py" ".html" nil))))
+ '(zenburn-scale-org-headlines t)
+ '(zenburn-scale-outline-headlines t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -157,7 +159,24 @@
 
 ;;(setq coding-system-for-read 'utf-8)
 ;;(load-theme 'atom-dark t)
-(load-theme 'leuven t)
+;;(load-theme 'leuven t)
+(use-package poet-theme
+  :ensure t
+  :disabled t
+  :config
+  (load-theme 'poet t))
+(use-package zenburn-theme
+  :ensure t
+  :disabled t
+  :config
+  (load-theme 'zenburn t))
+(use-package spacemacs-theme
+  :ensure t
+  :load-path "themes"
+  :defer t
+  :init
+  (load-theme 'spacemacs-dark t))
+
 
 (use-package ddskk
   :ensure t
