@@ -39,12 +39,14 @@
  '(backup-directory-alist (quote ((".*" . "~/.ehist"))))
  '(dimmer-fraction 0.3)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
+ '(eval-expression-print-length nil)
  '(inhibit-startup-screen t)
  '(magit-display-buffer-function (quote magit-display-buffer-fullframe-status-v1))
  '(org-agenda-files
    (quote
     ("~/Dropbox/org/task.org" "~/Dropbox/org/notes.org" "~/Dropbox/org/habit.org" "~/Dropbox/org/event.org" "~/Dropbox/org/inbox.org")))
  '(org-babel-load-languages (quote ((C . t) (dot . t))))
+ '(org-export-backends (quote (ascii html icalendar latex odt taskjuggler)))
  '(org-latex-default-class "bxjsarticle")
  '(org-latex-listings t)
  '(org-latex-listings-options
@@ -710,9 +712,8 @@
 (when (equal system-type 'gnu/linux)
   (add-to-list 'load-path "~/opt/mu-1.0/mu4e/")
   (cond ((display-graphic-p)
-     (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family "IPAex\346\230\216\346\234\235"))  )
-
-               (t 0)))
+         (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family "IPAex\346\230\216\346\234\235"))  )
+        (t 0)))
 
 (when (equal system-type 'darwin)
   (add-to-list 'load-path "/usr/local/Cellar/mu/1.0/share/emacs/site-lisp/mu/mu4e/")
@@ -720,7 +721,7 @@
   (setenv "PATH" (mapconcat 'identity exec-path ":"))
     ;; Set your installed path
   (setq migemo-dictionary "/usr/local/Cellar/cmigemo/HEAD-5c014a8/share/migemo/utf-8/migemo-dict")
-  (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family "Hiragino Mincho ProN"))
+  (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family "YuKyokasho Yoko"))
   ;フォント一覧を出力するには
                                         ;(dolist (x (font-family-list)) (print x))
   (setq org-plantuml-jar-path   "~/.emacs.d/lib/plantuml.jar")
