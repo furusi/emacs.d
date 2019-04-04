@@ -350,7 +350,6 @@
 ;;yasnippet
 (use-package yasnippet
   :ensure t
-  :defer t
   :config
   (yas-global-mode 1)
   )
@@ -451,7 +450,7 @@
   (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family "YuKyokasho Yoko"))
   ;フォント一覧を出力するには
                                         ;(dolist (x (font-family-list)) (print x))
-  (setq org-plantuml-jar-path   "~/.emacs.d/lib/plantuml.jar")
+  (setq org-plantuml-jar-path   "/usr/local/opt/plantuml/bin/plantuml")
   )
 
   
@@ -562,3 +561,15 @@
   (autoload 'rust-mode "rust-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode)))
 
+(use-package lsp-mode :commands lsp)
+(use-package lsp-ui :commands lsp-ui-mode)
+(use-package company-lsp :commands company-lsp)
+
+(use-package ccls
+  :hook ((c-mode c++-mode objc-mode) .
+         (lambda () (require 'ccls) (lsp))))
+
+
+(when (eq system-type 'darwin)
+  (setq ccls-executable "/usr/local/opt/ccls/bin/ccls")
+  )
