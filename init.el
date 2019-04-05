@@ -123,7 +123,7 @@
 (load "yatex-init")
 (load "mu4e-init")
 (load "magit-init")
-
+(define-key global-map (kbd "C-c t l") 'toggle-truncate-lines)
 (setq-default indent-tabs-mode nil)
 (use-package restart-emacs
   :ensure t)
@@ -153,7 +153,7 @@
                 ( "\\.rest$" . rst-mode)
                 ("\\.php$"   . web-mode)) auto-mode-alist))
 ;; 背景が黒い場合はこうしないと見出しが見づらい
-;;(setq frame-background-mode 'dark)
+;; (setq frame-background-mode 'dark)
 ;; 全部スペースでインデントしましょう
 (add-hook 'rst-mode-hook '(lambda() (setq indent-tabs-mode nil)))
 
@@ -289,7 +289,7 @@
   (undohist-initialize)
   ;;; 永続化を無視するファイル名の正規表現
   (setq undohist-ignored-files
-    '("/tmp/" "COMMIT_EDITMSG"))
+        '("/tmp/" "COMMIT_EDITMSG"))
   )
 
 (use-package auto-save-buffers-enhanced

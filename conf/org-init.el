@@ -14,7 +14,6 @@
   :init
   (setq org-directory (expand-file-name "~/Dropbox/org/"))
   :config
-  (define-key global-map (kbd "C-c t l") 'toggle-truncate-lines)
   (setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
   (setq org-agenda-files
         '("~/Dropbox/org/task.org"
