@@ -37,6 +37,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(backup-directory-alist (quote ((".*" . "~/.ehist"))))
+ '(dimmer-exclusion-regexp "^\\\\*helm\\\\|^ \\\\*Minibuf\\\\|^\\\\*Calendar\"")
  '(dimmer-fraction 0.3)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(eval-expression-print-length nil)
@@ -61,6 +62,7 @@
      ("showstringspaces" "false"))))
  '(org-latex-minted-options (quote (("frame" "single") ("linenos" "true"))))
  '(org-latex-pdf-process (quote ("latexmk -gg -pdfdvi  %f")))
+ '(org-return-follows-link t)
  '(org-rst-headline-underline-characters (quote (45 126 94 58 39 32 95)))
  '(org-src-lang-modes
    (quote
@@ -95,6 +97,9 @@
      ("v" . "verse"))))
  '(org-taskjuggler-process-command
    "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")
+ '(package-selected-packages
+   (quote
+    (ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm graphviz-dot-mode gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
  '(picasm-db-file "~/.emacs.d/lisp/picasm/picasm-db.el")
  '(rst-compile-toolsets
    (quote
@@ -548,7 +553,8 @@
 (use-package dimmer
   :ensure t
   :init
-  (dimmer-mode))
+  (dimmer-mode)
+  )
 (use-package graphviz-dot-mode
   :ensure t)
 
@@ -566,10 +572,13 @@
 (use-package company-lsp :commands company-lsp)
 
 (use-package ccls
+  :ensure t
   :hook ((c-mode c++-mode objc-mode) .
          (lambda () (require 'ccls) (lsp))))
 
 
 (when (eq system-type 'darwin)
-  (setq ccls-executable "/usr/local/opt/ccls/bin/ccls")
+  (when (executable-find "/usr/local/opt/ccls/bin/ccls")
+    (setq ccls-executable "/usr/local/opt/ccls/bin/ccls")
+    )
   )

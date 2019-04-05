@@ -7,6 +7,10 @@
 (use-package org
   :mode (("\\.org$" . org-mode))
   :ensure org-plus-contrib
+  :bind (("\C-cc" . org-capture)
+         ("\C-cl" . org-store-link)
+         ("\C-ca" . org-agenda)
+         ("\C-cb" . org-iswitchb))
   :init
   (setq org-directory (expand-file-name "~/Dropbox/org/"))
   :config
@@ -34,6 +38,64 @@
   (setq org-tag-alist
   '(("@OFFICE" . ?o) ("@HOME" . ?h) ("SHOPPING" . ?s)
     ("MAIL" . ?m) ("PROJECT" . ?p) ("備忘録" . ?b)))
+  (setq org-capture-templates
+        `(
+          ("i" "インボックス" entry
+           (file ,(concat org-directory "inbox.org"))
+           "* %? %i\n %U\n")
+          ("h" "定期的にやること" entry
+           (file ,(concat org-directory "habit.org"))
+           "* %?\n %U\n")
+          ("t" "タスク" entry
+           (file ,(concat org-directory "task.org"))
+           "* TODO %? %i\n %a\n %U\n")
+          ("e" "イベント" entry
+           (file ,(concat org-directory "event.org"))
+           "* EVENT %? %i\n %a\n %U\n")
+          ("n"
+           "思いついたことを書く"
+           entry
+           (file+headline, (concat org-directory "notes.org") "MEMO")
+           "* %U%?\n\n%a\n%F\n"
+           );; "* %?\n %a\n %U\n"
+          ("r" "読みかけ(リンク付き)" entry
+           (file ,(concat org-directory "reading.org"))
+           "* %?\n %a\n %U\n")
+          ("m"
+           "みんなで会議"
+           entry
+           (file+datetree "~/Documents/org/minutes.org")
+           "* %T %?"
+           :empty-lines 1
+           :jump-to-captured 1)
+          ("p"
+           "ぱっと 読み返したいと思ったとき"
+           plain
+           (file+headline nil "PLAIN")
+           "%?"
+           :empty-lines 1
+           :jump-to-captured 1
+           :unnarrowed 1)
+          ("g"
+           "とりあえず 仕事を放り込む"
+           entry
+           (file+headline "~/Dropbox/org/gtd.org" "GTD")
+           "** TODO %T %?\n   Entered on %U    %i\n"
+           :empty-lines 1)
+          ("i"
+           "itemのテスト"
+           item
+           (file+headline "~/Dropbox/org/gtd.org" "GTD")
+           "** TODO %T %?\n   Entered on %U    %i\n"
+           :empty-lines 1)
+          ("z"
+           "'あれ'についてのメモ"
+           entry
+           (file+headline , (concat org-directory "notes.org") "MEMO")
+           "* %U%?%^g\n\n%a\n%F\n"
+           :empty-lines 1)
+          
+          ))
   (setq org-refile-targets
     (quote (
         (nil . (:level . 1))
@@ -60,46 +122,9 @@
    (defun my-org-mode-hook ()
      (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
    (add-hook 'org-mode-hook #'my-org-mode-hook)
+)
 
 
-  :bind (("\C-cl" . org-store-link)
-     ("\C-ca" . org-agenda)
-     ("\C-cb" . org-iswitchb)))
-
-(use-package org-capture
-  :requires org
-  :bind (("\C-cc" . org-capture))
-  :config
-  (setq org-capture-templates
-    `(
-      ("i" "インボックス" entry
-       (file ,(concat org-directory "inbox.org"))
-       "* %? %i\n %U\n")
-      ("t" "タスク" entry
-       (file ,(concat org-directory "task.org"))
-       "* TODO %? %i\n %U\n")
-      ("e" "イベント" entry
-       (file ,(concat org-directory "event.org"))
-       "* EVENT %? %i\n %U\n")
-      ("n" "ノート" entry
-       (file ,(concat org-directory "notes.org"))
-       "* %?\n %U\n")
-      ("h" "定期的にやること" entry
-       (file ,(concat org-directory "habit.org"))
-       "* %?\n %U\n")
-      ("T" "タスク(リンク付き)" entry
-       (file ,(concat org-directory "task.org"))
-       "* TODO %? %i\n %a\n %U\n")
-      ("E" "イベント(リンク付き)" entry
-       (file ,(concat org-directory "event.org"))
-       "* EVENT %? %i\n %a\n %U\n")
-      ("N" "ノート(リンク付き)" entry
-       (file ,(concat org-directory "notes.org"))
-       "* %?\n %a\n %U\n")
-      ("r" "読みかけ(リンク付き)" entry
-       (file ,(concat org-directory "reading.org"))
-       "* %?\n %a\n %U\n") ))
-  )
 (use-package org-mobile-sync
   :ensure t
   :config
