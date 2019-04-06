@@ -10,7 +10,8 @@
   :bind (("\C-cc" . org-capture)
          ("\C-cl" . org-store-link)
          ("\C-ca" . org-agenda)
-         ("\C-cb" . org-iswitchb))
+         ("\C-cb" . org-iswitchb)
+         ("C-c C-\'" . org-insert-structure-template))
   :init
   (setq org-directory (expand-file-name "~/Dropbox/org/"))
   :config
@@ -184,6 +185,9 @@
 \\usepackage{newtxtext,newtxmath}
 \\usepackage{graphicx}
 \\usepackage{hyperref}
+\\usepackage{fancyhdr}
+\\usepackage{listings, jlisting}
+\\usepackage{fancybox}
 \\ifdefined\\kanjiskip
   \\usepackage{pxjahyper}
   \\hypersetup{colorlinks=false}

@@ -46,7 +46,7 @@
  '(org-agenda-files
    (quote
     ("~/Dropbox/org/task.org" "~/Dropbox/org/notes.org" "~/Dropbox/org/habit.org" "~/Dropbox/org/event.org" "~/Dropbox/org/inbox.org")))
- '(org-babel-load-languages (quote ((C . t) (dot . t))))
+ '(org-babel-load-languages (quote ((emacs-lisp . t) (C . t) (dot . t))))
  '(org-export-backends (quote (ascii html icalendar latex odt taskjuggler)))
  '(org-journal-date-format "%A, %d %B %Y")
  '(org-journal-dir "~/Dropbox/org/journal")
@@ -582,3 +582,8 @@
     (setq ccls-executable "/usr/local/opt/ccls/bin/ccls")
     )
   )
+
+(use-package smartparens-config
+  :ensure smartparens
+  :init
+  (smartparens-global-mode))
