@@ -56,7 +56,7 @@
            "思いついたことを書く"
            entry
            (file+headline, (concat org-directory "notes.org") "MEMO")
-           "* %U%?\n\n%a\n%F\n"
+           "* %U %?\n\n%a\n%F\n"
            );; "* %?\n %a\n %U\n"
           ("r" "読みかけ(リンク付き)" entry
            (file ,(concat org-directory "reading.org"))
@@ -281,6 +281,35 @@
                  ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
 
   )
+(add-to-list 'org-latex-classes
+             '("luatex-jlreq-tate"
+               "\\documentclass[tate,book,jafontscale=1.3]{jlreq}
+
+\\usepackage[T1]{fontenc}
+\\usepackage{lmodern}
+\\usepackage{textcomp}
+\\usepackage{latexsym}
+\\usepackage{tabularx}
+\\usepackage{dcolumn}
+\\usepackage{luatexja-fontspec}
+
+\\setmainfont[Ligatures=TeX]{TeXGyreTermes}
+\\setsansfont[Ligatures=TeX]{TeXGyreHeros}
+
+\\setmainjfont[BoldFont=IPAexGothic]{YuKyokasho Medium}
+\\setsansjfont{IPAexGothic}
+
+\\newjfontfamily\\jisninety[CJKShape=JIS1990]{IPAexMincho}
+
+
+\\setcounter{page}{1}
+               [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
+                 ("\\section\{%s\}"       . "\\section*\{%s\}")
+                 ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
+                 ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
+                 ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
+                 ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
+
 ;; org-export-latex-no-toc
 (defun org-export-latex-no-toc (depth)
     (when depth

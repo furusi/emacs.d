@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: srcblock-latex
+# key: srcblock-latex
+# --
+#+ATTR_LATEX: :options frame=lines, linenos=true
+#+CAPTION: $2
+#+LABEL: $3
+#+begin_src $1 -n 1
+$4
+#+end_src

@@ -588,3 +588,6 @@
   :ensure smartparens
   :init
   (smartparens-global-mode))
+
+(use-package kotlin-mode
+  :ensure t)
