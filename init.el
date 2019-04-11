@@ -6,7 +6,6 @@
 
 (recentf-mode 1)
 (setq recentf-max-menu-items 30)
-;;(global-set-key "\C-x\ \C-r" 'recentf-open-files)
 (global-set-key "\C-x\ \C-r" 'helm-recentf)
 
 (require 'package)
@@ -42,6 +41,7 @@
  '(dimmer-fraction 0.3)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(eval-expression-print-length nil)
+ '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(magit-display-buffer-function (quote magit-display-buffer-fullframe-status-v1))
  '(org-agenda-files
@@ -83,6 +83,7 @@
      ("bash" . sh)
      ("dot" . graphviz-dot)
      ("asm" . picasm))))
+ '(org-src-preserve-indentation t)
  '(org-structure-template-alist
    (quote
     (("n" . "notes")
@@ -100,7 +101,7 @@
    "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")
  '(package-selected-packages
    (quote
-    (ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm graphviz-dot-mode gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
+    (dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm graphviz-dot-mode gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
  '(picasm-db-file "~/.emacs.d/lisp/picasm/picasm-db.el")
  '(rst-compile-toolsets
    (quote
@@ -568,10 +569,6 @@
   (autoload 'rust-mode "rust-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode)))
 
-(use-package lsp-mode :commands lsp)
-(use-package lsp-ui :commands lsp-ui-mode)
-(use-package company-lsp :commands company-lsp)
-
 (use-package ccls
   :ensure t
   :hook ((c-mode c++-mode objc-mode) .
@@ -590,4 +587,39 @@
   (smartparens-global-mode))
 
 (use-package kotlin-mode
-  :ensure t)
+  :ensure t
+  :mode (("\\.kt\\'" . kotlin-mode)))
+
+(use-package projectile :ensure t)
+(use-package treemacs :ensure t)
+(use-package hydra :ensure t)
+(use-package lsp-java :ensure t :after lsp
+  :config (add-hook 'java-mode-hook 'lsp))
+
+(use-package dap-mode
+  :ensure t :after lsp-mode
+  :config
+  (dap-mode t)
+  (dap-ui-mode t))
+
+(use-package dap-java :after (lsp-java))
+(use-package lsp-java-treemacs :after (treemacs))
+
+(use-package whitespace
+  ;; :disabled t
+  :config
+  ;; 空白
+  (set-face-foreground 'whitespace-space nil)
+  (set-face-background 'whitespace-space "gray33")
+  (setq whitespace-style '(face
+                         ;; trailing
+                         ;; tabs
+                         spaces
+                         ;; empty
+                         ;; space-mark
+                         ;; tab-mark
+                         ))
+
+  (setq whitespace-space-regexp "\\(\u3000+\\)")
+  (global-whitespace-mode 1)
+  )

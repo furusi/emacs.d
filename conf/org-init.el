@@ -92,7 +92,7 @@
            "'あれ'についてのメモ"
            entry
            (file+headline , (concat org-directory "notes.org") "MEMO")
-           "* %U%?%^g\n\n%a\n%F\n"
+           "* %U %? %^g\n\n%a\n%F\n"
            :empty-lines 1)
           
           ))
