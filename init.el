@@ -6,7 +6,7 @@
 
 (recentf-mode 1)
 (setq recentf-max-menu-items 30)
-(global-set-key "\C-x\ \C-r" 'helm-recentf)
+
 
 (require 'package)
 (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
@@ -254,7 +254,8 @@
               )
   :config
   (global-company-mode 1)
-  ;(custom-set-variables '(company-idle-delay nil))
+  (setq company-minimum-prefix-length 2)
+  (setq company-selection-wrap-around t)
   )
 
 (autoload 'run-prolog   "prolog" "Start a Prolog sub-process." t)
@@ -332,7 +333,9 @@
   :bind (("M-x" . helm-M-x)
      ("M-y" . helm-show-kill-ring)
      ("C-x b" . helm-mini)
-     ("C-x C-f" . helm-find-files)  )
+     ("C-x C-f" . helm-find-files)
+     ("C-x C-r" . helm-recentf)
+     )
   :config
   (helm-autoresize-mode 1)
   (helm-mode 1)  )
