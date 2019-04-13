@@ -101,7 +101,7 @@
    "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")
  '(package-selected-packages
    (quote
-    (dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm graphviz-dot-mode gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
+    (hydra kotlin-mode dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm graphviz-dot-mode gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
  '(picasm-db-file "~/.emacs.d/lisp/picasm/picasm-db.el")
  '(rst-compile-toolsets
    (quote
@@ -256,6 +256,18 @@
   (global-company-mode 1)
   (setq company-minimum-prefix-length 2)
   (setq company-selection-wrap-around t)
+  (defvar company-mode/enable-yas t
+  "Enable yasnippet for all backends.")
+
+  (defun company-mode/backend-with-yas (backend)
+	(if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
+		backend
+      (append (if (consp backend) backend (list backend))
+              '(:with company-yasnippet))))
+
+  (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
+  ;; (push '(company-semantic :with company-yasnippet) company-backends)
+  ;(custom-set-variables '(company-idle-delay nil))
   )
 
 (autoload 'run-prolog   "prolog" "Start a Prolog sub-process." t)
