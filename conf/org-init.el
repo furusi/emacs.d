@@ -11,10 +11,20 @@
          ("\C-cl" . org-store-link)
          ("\C-ca" . org-agenda)
          ("\C-cb" . org-iswitchb)
-         ("C-c C-\'" . org-insert-structure-template))
+         :map org-mode-map
+         ("C-c C-\'" . org-insert-structure-template)
+         ("C-c C-u" . outline-up-heading-latin))
   :init
   (setq org-directory (expand-file-name "~/Dropbox/org/"))
+  (defun outline-up-heading-latin ()
+    "docstring"
+    (interactive)
+    (outline-up-heading 1 nil)
+    (skk-latin-mode nil)
+    )
+
   :config
+  (add-hook 'org-speed-command-hook 'skk-latin-mode)
   (setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
   (setq org-agenda-files
         '("~/Dropbox/org/task.org"
