@@ -49,8 +49,8 @@
     ("~/Dropbox/org/task.org" "~/Dropbox/org/notes.org" "~/Dropbox/org/habit.org" "~/Dropbox/org/event.org" "~/Dropbox/org/inbox.org")))
  '(org-babel-load-languages (quote ((emacs-lisp . t) (C . t) (dot . t))))
  '(org-export-backends (quote (ascii html icalendar latex odt taskjuggler)))
- '(org-journal-date-format "%A, %d %B %Y")
- '(org-journal-dir "~/Dropbox/org/journal")
+ '(org-journal-date-format "%A, %d %B %Y" t)
+ '(org-journal-dir "~/Box/org/journal" t)
  '(org-latex-default-class "bxjsarticle")
  '(org-latex-listings t)
  '(org-latex-listings-options
@@ -120,6 +120,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(use-package use-package-ensure-system-package
+  :ensure t)
 (add-to-list 'load-path "~/.emacs.d/conf")
 (load "org-init")
 (load "yatex-init")
@@ -575,8 +577,11 @@
 (use-package graphviz-dot-mode
   :ensure t)
 
-(add-to-list 'load-path "~/.emacs.d/lisp/picasm/")
-(require 'picasm)
+
+;;git clone git@github.com:rswarbrick/picasm.git ~/.emacs.d/lisp/picasm
+(use-package picasm
+  :load-path "~/.emacs.d/lisp/picasm/"
+  )
 
 (use-package rust-mode
   :ensure t

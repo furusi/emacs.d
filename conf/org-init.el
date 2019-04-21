@@ -15,7 +15,12 @@
          ("C-c C-\'" . org-insert-structure-template)
          ("C-c C-u" . outline-up-heading-latin))
   :init
-  (setq org-directory (expand-file-name "~/Dropbox/org/"))
+  (if (file-exists-p "~/Dropbox")
+      (setq org-directory (expand-file-name "~/Dropbox/org/")) nil
+    )
+  (if (file-exists-p "~/Box")
+      (setq org-directory (expand-file-name "~/Box/org/")) nil
+    )
   (defun outline-up-heading-latin ()
     "docstring"
     (interactive)
@@ -25,26 +30,30 @@
 
   :config
   (add-hook 'org-speed-command-hook 'skk-latin-mode)
-  (setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
+  (when (file-exists-p "~/Dropbox")
+    (setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
+    )
+
   (setq org-agenda-files
-        '("~/Dropbox/org/task.org"
-          "~/Dropbox/org/notes.org"
-          "~/Dropbox/org/habit.org"
-          "~/Dropbox/org/event.org"
-          "~/Dropbox/org/inbox.org"
-          "~/Dropbox/org/org-ical.org"))
+        '((concat org-directory "task.org")
+          (concat org-directory "notes.org")
+          (concat org-directory "habit.org")
+          (concat org-directory "event.org")
+          (concat org-directory "inbox.org")
+          (concat org-directory "org-ical.org")
+          ))
   (setq org-refile-targets
         '(("org-ical.org" . (:level . 1))
           ("task.org"     . (:level . 1))
           ("event.org"    . (:level . 1))
           ("notes.org"    . (:level . 1))))
   (setq org-mobile-files
-        (list "~/Dropbox/org/notes.org"
-              "~/Dropbox/org/todo.org"
-              "~/Dropbox/org/task.org"
-              "~/Dropbox/org/iphone.org"
-              "~/Dropbox/org/event.org"))
-  (setq org-mobile-inbox-for-pull "~/Dropbox/org/iphone.org")
+        (list
+         (concat org-directory "task.org")
+         (concat org-directory "notes.org")
+         (concat org-directory "iphone.org")
+         (concat org-directory "event.org")))
+  (setq org-mobile-inbox-for-pull (concat org-directory "iphone.org"))
   (setq org-tag-alist
   '(("@OFFICE" . ?o) ("@HOME" . ?h) ("SHOPPING" . ?s)
     ("MAIL" . ?m) ("PROJECT" . ?p) ("備忘録" . ?b)))
@@ -74,7 +83,7 @@
           ("m"
            "みんなで会議"
            entry
-           (file+datetree "~/Documents/org/minutes.org")
+           (file+datetree (concat org-directory "minutes.org"))
            "* %T %?"
            :empty-lines 1
            :jump-to-captured 1)
@@ -89,13 +98,13 @@
           ("g"
            "とりあえず 仕事を放り込む"
            entry
-           (file+headline "~/Dropbox/org/gtd.org" "GTD")
+           (file+headline (concat org-directory "gtd.org") "GTD")
            "** TODO %T %?\n   Entered on %U    %i\n"
            :empty-lines 1)
           ("i"
            "itemのテスト"
            item
-           (file+headline "~/Dropbox/org/gtd.org" "GTD")
+           (file+headline (concat org-directory "gtd.org") "GTD")
            "** TODO %T %?\n   Entered on %U    %i\n"
            :empty-lines 1)
           ("z"
@@ -153,7 +162,7 @@
   :ensure t
   :defer t
   :custom
-  (org-journal-dir "~/Dropbox/org/journal")
+  (org-journal-dir (concat org-directory "journal"))
   (org-journal-date-format "%A, %d %B %Y"))
 
 (use-package ox-rst
