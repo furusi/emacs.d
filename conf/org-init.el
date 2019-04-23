@@ -16,11 +16,9 @@
          ("C-c C-u" . outline-up-heading-latin))
   :init
   (if (file-exists-p "~/Dropbox")
-      (setq org-directory (expand-file-name "~/Dropbox/org/")) nil
-    )
+      (setq org-directory (expand-file-name "~/Dropbox/org/")) nil)
   (if (file-exists-p "~/Box")
-      (setq org-directory (expand-file-name "~/Box/org/")) nil
-    )
+      (setq org-directory (expand-file-name "~/Box/org/")) nil)
   (defun outline-up-heading-latin ()
     (interactive)
     (outline-up-heading 1 nil)
@@ -29,8 +27,7 @@
 
   :config
   (when (file-exists-p "~/Dropbox")
-    (setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
-    )
+    (setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg"))
 
   (setq org-agenda-files
         '((concat org-directory "task.org")
@@ -38,8 +35,7 @@
           (concat org-directory "habit.org")
           (concat org-directory "event.org")
           (concat org-directory "inbox.org")
-          (concat org-directory "org-ical.org")
-          ))
+          (concat org-directory "org-ical.org")))
   (setq org-refile-targets
         '(("org-ical.org" . (:level . 1))
           ("task.org"     . (:level . 1))
@@ -73,8 +69,7 @@
            "思いついたことを書く"
            entry
            (file+headline, (concat org-directory "notes.org") "MEMO")
-           "* %U %?\n\n%a\n%F\n"
-           );; "* %?\n %a\n %U\n"
+           "* %U %?\n\n%a\n%F\n")
           ("r" "読みかけ(リンク付き)" entry
            (file ,(concat org-directory "reading.org"))
            "* %?\n %a\n %U\n")
@@ -110,9 +105,7 @@
            entry
            (file+headline , (concat org-directory "notes.org") "MEMO")
            "* %U %? %^g\n\n%a\n%F\n"
-           :empty-lines 1)
-          
-          ))
+           :empty-lines 1)))
   (setq org-refile-targets
     (quote (
         (nil . (:level . 1))
@@ -138,24 +131,23 @@
    (setq org-icalendar-timezone "Asia/Tokyo")
    (defun my-org-mode-hook ()
      (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
-   (add-hook 'org-mode-hook #'my-org-mode-hook)
-)
+   (add-hook 'org-mode-hook #'my-org-mode-hook))
 
 
 (use-package org-mobile-sync
   :ensure t
   :config
-  (org-mobile-sync-mode 1)  )
+  (org-mobile-sync-mode 1))
 (use-package org-ac
   :ensure t
   :defer t
   :config
-  (org-ac/config-default)  )
+  (org-ac/config-default))
 (use-package org-mu4e
     :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e"
     :config
     ;;store link to message if in header view, not to header query
-    (setq org-mu4e-link-query-in-headers-mode nil) )
+    (setq org-mu4e-link-query-in-headers-mode nil))
 
 (use-package org-journal
   :ensure t
@@ -174,8 +166,7 @@
 
 (use-package ox-bibtex
   :ensure org-plus-contrib
-  :defer t
-  )
+  :defer t)
 
 (use-package ox-latex
   :ensure org-plus-contrib
@@ -188,10 +179,10 @@
                                         ;(setq org-export-in-background t)
   (when (equal system-type 'darwin)
     (setq org-file-apps
-          '(("pdf" . "open -a Skim %s")))    )
+          '(("pdf" . "open -a Skim %s"))))
   (when (equal system-type 'gnu/linux)
     (setq org-file-apps
-          '(("pdf" . "evince %s")))    )
+          '(("pdf" . "evince %s"))))
 
   (add-to-list 'org-latex-classes
                '("bxjsarticle"
@@ -330,19 +321,19 @@
 
 ;; org-export-latex-no-toc
 (defun org-export-latex-no-toc (depth)
-    (when depth
-      (format "%% Org-mode is exporting headings to %s levels.\n"
-              depth)))
-  (setq org-export-latex-format-toc-function 'org-export-latex-no-toc)
+  (when depth
+    (format "%% Org-mode is exporting headings to %s levels.\n"
+            depth)))
+(setq org-export-latex-format-toc-function 'org-export-latex-no-toc)
 
 ;; reftex with org mode
 (add-hook 'org-mode-hook 'turn-on-reftex)
 (defun org-mode-reftex-setup ()
-   (load-library "reftex")
-   (and (buffer-file-name)
-        (file-exists-p (buffer-file-name))
-        (reftex-parse-all))
-   (define-key org-mode-map (kbd "C-c [") 'reftex-citation))
+  (load-library "reftex")
+  (and (buffer-file-name)
+       (file-exists-p (buffer-file-name))
+       (reftex-parse-all))
+  (define-key org-mode-map (kbd "C-c [") 'reftex-citation))
 (use-package ox-reveal
   :ensure t
   :disabled t)
