@@ -151,7 +151,8 @@
   :defer t
   :config
   (org-ac/config-default)  )
-  (use-package org-mu4e
+(use-package org-mu4e
+    :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e"
     :config
     ;;store link to message if in header view, not to header query
     (setq org-mu4e-link-query-in-headers-mode nil) )

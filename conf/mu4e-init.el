@@ -1,4 +1,5 @@
 (use-package mu4e
+    :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e"
     :config
       ;;location of my maildir
     (setq mu4e-maildir (expand-file-name "~/.maildir/gmail"))
@@ -47,7 +48,7 @@
          ;;  mu4e-sent-folder)
          ;; everything else goes to /archive
          ;; important to have a catch-all at the end!
-         (t  "/archive"))       )     )
+         (t  "/archive"))))
     ;; don't keep message buffers around
     (setq message-kill-buffer-on-exit t)
     ;; save attachment to my desktop (this can also be a function)
@@ -56,4 +57,4 @@
       '( ("/inbox"   . ?i)
          ("/sent"    . ?s)
          ("/trash"   . ?t)
-         ("/archive" . ?a)))    )
+         ("/archive" . ?a))))
