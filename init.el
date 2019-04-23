@@ -46,6 +46,7 @@
  '(org-babel-load-languages (quote ((emacs-lisp . t) (C . t) (dot . t))))
  '(org-export-backends (quote (ascii html icalendar latex odt taskjuggler)))
  '(org-journal-date-format "%A, %d %B %Y")
+ '(org-journal-dir "~/Dropbox/org/journal")
  '(org-latex-default-class "bxjsarticle")
  '(org-latex-listings t)
  '(org-latex-listings-options
@@ -506,7 +507,7 @@
 (add-hook 'dired-load-hook
           (load "dired-x")
           (global-set-key "\C-x\C-j" 'skk-mode))
-
+(global-set-key "\C-z" 'other-window)
 ;(cua-mode t) ; cua-modeをオン
 ;(setq cua-enable-cua-keys nil)
 
