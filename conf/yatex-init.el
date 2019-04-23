@@ -1,3 +1,9 @@
+;;; package --- Summary
+
+;;; Commentary:
+
+;;; Code:
+
 (use-package yatex
   :ensure t
   :mode
@@ -40,10 +46,11 @@
           '(lambda ()
              (reftex-mode 1)
              (define-key reftex-mode-map (concat YaTeX-prefix ">") 'YaTeX-comment-region)
-             (define-key reftex-mode-map (concat YaTeX-prefix "<") 'YaTeX-uncomment-region)))
-  )
+             (define-key reftex-mode-map (concat YaTeX-prefix "<") 'YaTeX-uncomment-region))))
 ; for yatex
 (when (equal system-type 'darwin)
   (setenv "PATH" "/usr/local/bin:/Library/TeX/texbin/:/Applications/Skim.app/Contents/SharedSupport:$PATH" t)
-  (setq exec-path (append '("/usr/local/bin" "/Library/TeX/texbin" "/Applications/Skim.app/Contents/SharedSupport") exec-path))
-  )
+  (setq exec-path (append '("/usr/local/bin" "/Library/TeX/texbin" "/Applications/Skim.app/Contents/SharedSupport") exec-path)))
+
+(provide 'yatex-init)
+;;; yatex-init.el ends here
