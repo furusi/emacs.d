@@ -22,11 +22,10 @@
       (setq org-directory (expand-file-name "~/Box/org/")) nil
     )
   (defun outline-up-heading-latin ()
-    "docstring"
     (interactive)
     (outline-up-heading 1 nil)
-    (skk-latin-mode nil)
-    )
+    (when (bound-and-true-p skk-mode)
+      (skk-latin-mode nil)))
 
   :config
   (add-hook 'org-speed-command-hook 'skk-latin-mode)

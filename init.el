@@ -4,9 +4,6 @@
 
 ;;; Code:
 
-(recentf-mode 1)
-(setq recentf-max-menu-items 30)
-
 
 (require 'package)
 (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
@@ -24,8 +21,7 @@
 (eval-when-compile
   (unless (require 'use-package nil t)
     (package-refresh-contents)
-    (package-install 'use-package))
-  )
+    (package-install 'use-package)))
 
 (show-paren-mode t)
 
@@ -49,8 +45,7 @@
     ("~/Dropbox/org/task.org" "~/Dropbox/org/notes.org" "~/Dropbox/org/habit.org" "~/Dropbox/org/event.org" "~/Dropbox/org/inbox.org")))
  '(org-babel-load-languages (quote ((emacs-lisp . t) (C . t) (dot . t))))
  '(org-export-backends (quote (ascii html icalendar latex odt taskjuggler)))
- '(org-journal-date-format "%A, %d %B %Y" t)
- '(org-journal-dir "~/Box/org/journal" t)
+ '(org-journal-date-format "%A, %d %B %Y")
  '(org-latex-default-class "bxjsarticle")
  '(org-latex-listings t)
  '(org-latex-listings-options
@@ -101,8 +96,14 @@
    "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")
  '(package-selected-packages
    (quote
-    (hydra kotlin-mode dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm graphviz-dot-mode gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
+    (dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm graphviz-dot-mode gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
  '(picasm-db-file "~/.emacs.d/lisp/picasm/picasm-db.el")
+ '(recentf-auto-cleanup (quote never))
+ '(recentf-exclude
+   (quote
+    ("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|MERGEREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" "/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/" "/\\.emacs\\.d/elpa/")))
+ '(recentf-max-menu-items 30)
+ '(recentf-max-saved-items 2000)
  '(rst-compile-toolsets
    (quote
     ((html "rst2html.py" ".html" nil)
@@ -120,6 +121,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+(recentf-mode 1)
+
 (use-package use-package-ensure-system-package
   :ensure t)
 (add-to-list 'load-path "~/.emacs.d/conf")
@@ -148,9 +152,8 @@
   :config
   (when (eq system-type 'darwin)
     (setq rst-pdf-program "open -a Skim")
-    (setq rst-slides-program "open -a Firefox")
-    )
-  )
+    (setq rst-slides-program "open -a Firefox")))
+
 ;; 拡張子の*.rst, *.restのファイルをrst-modeで開く
 (setq auto-mode-alist
       (append '(( "\\.rst$"  . rst-mode)
@@ -165,8 +168,7 @@
 
 (use-package eww
   :config
-  (setq eww-search-prefix "http://www.google.co.jp/search?q=")
-  )
+  (setq eww-search-prefix "http://www.google.co.jp/search?q="))
 
 ;;(setq coding-system-for-read 'utf-8)
 ;;(load-theme 'atom-dark t)
@@ -211,9 +213,7 @@
   (setq skk-egg-like-newline t);;non-nilにするとEnterでの確定時に改行しない
   ;; ▼モードで BS を押したときには確定しないで前候補を表示する
   (setq skk-delete-implies-kakutei nil)
-  (setq skk-dcomp-activate t)
-
- )
+  (setq skk-dcomp-activate t))
 
 
 (use-package skk-study
@@ -225,8 +225,7 @@
 (use-package skk-bayesian
   :disabled t
   :init
-  (add-to-list 'load-path "~/.emacs.d/elisp/usr/")
-  )
+  (add-to-list 'load-path "~/.emacs.d/elisp/usr/"))
 
 (use-package htmlize
   :ensure t)
@@ -238,7 +237,7 @@
   :init
   (undo-tree-mode)
   :config
-  (global-undo-tree-mode t)  )
+  (global-undo-tree-mode t))
 
 (use-package company
   :ensure t
@@ -252,8 +251,7 @@
               ("C-i"   . 'company-complete-selection)
          :map company-search-map
               ("C-n"   . 'company-select-next)
-              ("C-p"   . 'company-select-previous)
-              )
+              ("C-p"   . 'company-select-previous))
   :config
   (global-company-mode 1)
   (setq company-minimum-prefix-length 2)
@@ -282,9 +280,6 @@
                                auto-mode-alist))
 
 
-(setq recentf-max-saved-items 2000) ;; 2000ファイルまで履歴保存する
-(setq recentf-auto-cleanup 'never)  ;; 存在しないファイルは消さない
-(setq recentf-exclude '("/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/" "/\\.emacs\\.d/elpa/"))
 (setq recentf-auto-save-timer (run-with-idle-timer 30 t 'recentf-save-list))
 (put 'narrow-to-region 'disabled nil)
 
@@ -295,7 +290,7 @@
   :ensure t
   :config
   (setq inferior-lisp-program "sbcl")
-  (slime-setup '(slime-repl slime-fancy slime-banner)) )
+  (slime-setup '(slime-repl slime-fancy slime-banner)))
 
 (org-babel-do-load-languages
  'org-babel-load-languages '((C . t)))
@@ -306,8 +301,7 @@
   (undohist-initialize)
   ;;; 永続化を無視するファイル名の正規表現
   (setq undohist-ignored-files
-        '("/tmp/" "COMMIT_EDITMSG"))
-  )
+        '("/tmp/" "COMMIT_EDITMSG")))
 
 (use-package auto-save-buffers-enhanced
   :ensure t
@@ -316,7 +310,7 @@
   (setq auto-save-buffers-enhanced-interval 1)
   (auto-save-buffers-enhanced t)
 ;;; Wroteのメッセージを抑制
-  (setq auto-save-buffers-enhanced-quiet-save-p t)  )
+  (setq auto-save-buffers-enhanced-quiet-save-p t))
 
 
 (use-package web-mode
@@ -327,9 +321,7 @@
   ;;                   ("debug" . "<?php error_log(__LINE__); ?>")))
   ;;         ))
   (setq web-mode-extra-snippets
-        '(("php" . (("print" . "print(\"|\")")
-                    ))))
-  )
+        '(("php" . (("print" . "print(\"|\")"))))))
 
 (add-to-list 'auto-mode-alist '("\\.phtml\\'"     . web-mode))
 (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
@@ -348,11 +340,10 @@
      ("M-y" . helm-show-kill-ring)
      ("C-x b" . helm-mini)
      ("C-x C-f" . helm-find-files)
-     ("C-x C-r" . helm-recentf)
-     )
+     ("C-x C-r" . helm-recentf))
   :config
   (helm-autoresize-mode 1)
-  (helm-mode 1)  )
+  (helm-mode 1))
 
 (use-package helm-config
   :config (helm-mode 1))
@@ -369,14 +360,13 @@
   (which-key-setup-side-window-bottom)    ;ミニバッファ
 ;; (which-key-setup-side-window-right)     ;右端
 ;; (which-key-setup-side-window-right-bottom) ;両方使う
-  (which-key-mode 1)  )
+  (which-key-mode 1))
 
 ;;yasnippet
 (use-package yasnippet
   :ensure t
   :config
-  (yas-global-mode 1)
-  )
+  (yas-global-mode 1))
 
 
 (defvar mode-line-cleaner-alist
@@ -413,8 +403,7 @@
   :ensure t
   :config
   (setq exec-path-from-shell-check-startup-files nil)
-  (exec-path-from-shell-initialize)
-  )
+  (exec-path-from-shell-initialize))
 
 
 (use-package spaceline :ensure t
@@ -431,7 +420,7 @@
 (use-package spaceline-all-the-icons
   :disabled t
   :after spaceline
-  :config (spaceline-all-the-icons-theme)  )
+  :config (spaceline-all-the-icons-theme))
 
 (use-package smart-mode-line
   :ensure t
@@ -441,14 +430,13 @@
   (defvar sml/no-confirm-load-theme t)
   (defvar sml/theme 'dark) ;; お好みで
   (defvar sml/shorten-directory -1) ;; directory pathはフルで表示されたいので
-  (sml/setup)  )
+  (sml/setup))
 
 (use-package keyfreq
   :ensure t
   :config
   (keyfreq-mode 1)
-  (keyfreq-autosave-mode 1)
-  )
+  (keyfreq-autosave-mode 1))
 
 (set-language-environment 'Japanese)
 (prefer-coding-system 'utf-8)
@@ -462,7 +450,7 @@
 (when (equal system-type 'gnu/linux)
   (add-to-list 'load-path "~/opt/mu-1.0/mu4e/")
   (cond ((display-graphic-p)
-         (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family "IPAex\346\230\216\346\234\235"))  )
+         (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family "IPAex\346\230\216\346\234\235")))
         (t 0)))
 
 (when (equal system-type 'darwin)
@@ -474,8 +462,7 @@
   (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family "YuKyokasho Yoko"))
   ;フォント一覧を出力するには
                                         ;(dolist (x (font-family-list)) (print x))
-  (setq org-plantuml-jar-path   "/usr/local/opt/plantuml/bin/plantuml")
-  )
+  (setq org-plantuml-jar-path   "/usr/local/opt/plantuml/bin/plantuml"))
 
   
 
@@ -492,7 +479,7 @@
   (setq migemo-regex-dictionary nil)
   (setq migemo-coding-system 'utf-8-unix)
   (migemo-init)
-  (helm-migemo-mode 1)  )
+  (helm-migemo-mode 1))
 
 
 (use-package flycheck
@@ -502,8 +489,7 @@
   :config
   (setq flycheck-python-pycompile-executable (executable-find "python3"))
   (setq flycheck-python-flake8-executable (executable-find "flake8"))
-  (setq flycheck-python-pylint-executable (executable-find "pylint"))
-  )
+  (setq flycheck-python-pylint-executable (executable-find "pylint")))
 
 ;; (with-temp-buffer
 ;;   (url-insert-file-contents "https://raw.github.com/steckerhalter/ob-php/master/ob-php.el")
@@ -538,9 +524,7 @@
         (lambda ()
             (setq-default indent-tabs-mode t)
             (setq-default tab-width 4)
-            (setq-default py-indent-tabs-mode t)
-            ))
-  )
+            (setq-default py-indent-tabs-mode t))))
 
 ;; gtags-modeのキーバインドを有効化する
 (setq gtags-suggested-key-mapping t) ; 無効化する場合はコメントアウト
@@ -553,14 +537,11 @@
   :init
   (setq
    pipenv-projectile-after-switch-function
-   #'pipenv-projectile-after-switch-extended)
-  )
+   #'pipenv-projectile-after-switch-extended))
 
 (put 'set-goal-column 'disabled nil)
 (use-package lsp-mode
-  :commands lsp
-  :init
-  )
+  :commands lsp)
 
 (use-package lsp-ui
   :commands lsp-ui-mode
@@ -580,8 +561,7 @@
 
 ;;git clone git@github.com:rswarbrick/picasm.git ~/.emacs.d/lisp/picasm
 (use-package picasm
-  :load-path "~/.emacs.d/lisp/picasm/"
-  )
+  :load-path "~/.emacs.d/lisp/picasm/")
 
 (use-package rust-mode
   :ensure t
@@ -592,14 +572,13 @@
 (use-package ccls
   :ensure t
   :hook ((c-mode c++-mode objc-mode) .
-         (lambda () (require 'ccls) (lsp))))
-
-
-(when (eq system-type 'darwin)
+         (lambda () (require 'ccls) (lsp)))
+  :config
+  (when (eq system-type 'darwin)
   (when (executable-find "/usr/local/opt/ccls/bin/ccls")
-    (setq ccls-executable "/usr/local/opt/ccls/bin/ccls")
-    )
-  )
+    (setq ccls-executable "/usr/local/opt/ccls/bin/ccls"))))
+
+
 
 (use-package smartparens-config
   :ensure smartparens
@@ -639,7 +618,8 @@
                          ;; space-mark
                          ;; tab-mark
                          ))
-
   (setq whitespace-space-regexp "\\(\u3000+\\)")
-  (global-whitespace-mode 1)
-  )
+  (global-whitespace-mode 1))
+
+(provide 'init)
+;;; init.el ends here
