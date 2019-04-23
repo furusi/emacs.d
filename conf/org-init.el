@@ -28,7 +28,6 @@
       (skk-latin-mode nil)))
 
   :config
-  (add-hook 'org-speed-command-hook 'skk-latin-mode)
   (when (file-exists-p "~/Dropbox")
     (setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
     )
