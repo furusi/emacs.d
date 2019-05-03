@@ -15,10 +15,17 @@
          ("C-c C-\'" . org-insert-structure-template)
          ("C-c C-u" . outline-up-heading-latin))
   :init
-  (if (file-exists-p "~/Dropbox")
-      (setq org-directory (expand-file-name "~/Dropbox/org/")) nil)
-  (if (file-exists-p "~/Box")
-      (setq org-directory (expand-file-name "~/Box/org/")) nil)
+  (when (eq system-type 'gnu/linux)
+    (if (file-exists-p "~/pCloudDrive/")
+        (progn
+          (setq org-directory (expand-file-name "~/pCloudDrive/org/"))
+          (setq org-mobile-directory "~/pCloudDrive/org/mobile/")) nil))
+  (when (eq system-type 'darwin)
+    (if (file-exists-p "~/pCloud Drive/")
+        (progn
+          (setq org-directory (expand-file-name "~/pCloud Drive/org/"))
+          (setq org-mobile-directory "~/pCloud Drive/org/mobile/")) nil))
+  
   (defun outline-up-heading-latin ()
     (interactive)
     (outline-up-heading 1 nil)
@@ -26,9 +33,6 @@
       (skk-latin-mode nil)))
 
   :config
-  (when (file-exists-p "~/Dropbox")
-    (setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg"))
-
   (setq org-agenda-files
         '((concat org-directory "task.org")
           (concat org-directory "notes.org")
