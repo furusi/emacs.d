@@ -40,13 +40,10 @@
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(magit-display-buffer-function (quote magit-display-buffer-fullframe-status-v1))
- '(org-agenda-files
-   (quote
-    ("~/Dropbox/org/task.org" "~/Dropbox/org/notes.org" "~/Dropbox/org/habit.org" "~/Dropbox/org/event.org" "~/Dropbox/org/inbox.org")))
  '(org-babel-load-languages (quote ((emacs-lisp . t) (C . t) (dot . t))))
  '(org-export-backends (quote (ascii html icalendar latex odt taskjuggler)))
  '(org-journal-date-format "%A, %d %B %Y")
- '(org-journal-dir "~/Dropbox/org/journal")
+ '(org-journal-dir "/home/furusho/pCloudDrive/org/journal")
  '(org-latex-default-class "bxjsarticle")
  '(org-latex-listings t)
  '(org-latex-listings-options
@@ -97,7 +94,7 @@
    "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")
  '(package-selected-packages
    (quote
-    (dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm graphviz-dot-mode gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
+    (omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm graphviz-dot-mode gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
  '(picasm-db-file "~/.emacs.d/lisp/picasm/picasm-db.el")
  '(recentf-auto-cleanup (quote never))
  '(recentf-exclude
@@ -134,6 +131,26 @@
 (load "magit-init")
 (define-key global-map (kbd "C-c t l") 'toggle-truncate-lines)
 (setq-default indent-tabs-mode nil)
+
+;; eww
+(defun eww-disable-images ()
+  "eww で画像表示させない"
+  (interactive)
+  (setq-local shr-put-image-function 'shr-put-image-alt)
+  (eww-reload))
+(defun eww-enable-images ()
+  "eww で画像表示させる"
+  (interactive)
+  (setq-local shr-put-image-function 'shr-put-image)
+  (eww-reload))
+(defun shr-put-image-alt (spec alt &optional flags)
+  (insert alt))
+;; はじめから非表示
+(defun eww-mode-hook--disable-image ()
+  (setq-local shr-put-image-function 'shr-put-image-alt))
+(add-hook 'eww-mode-hook 'eww-mode-hook--disable-image)
+;; eww
+
 (use-package restart-emacs
   :ensure t)
 
@@ -622,5 +639,10 @@
   (setq whitespace-space-regexp "\\(\u3000+\\)")
   (global-whitespace-mode 1))
 
+(use-package omnisharp
+  :ensure t
+  :hook (csharp-mode . omnisharp-mode)
+  :init
+  (add-to-list 'company-backends 'company-omnisharp))
 (provide 'init)
 ;;; init.el ends here

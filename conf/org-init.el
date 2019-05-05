@@ -34,7 +34,8 @@
 
   :config
   (setq org-agenda-files
-        '((concat org-directory "task.org")
+        (list
+         (concat org-directory "task.org")
           (concat org-directory "notes.org")
           (concat org-directory "habit.org")
           (concat org-directory "event.org")
