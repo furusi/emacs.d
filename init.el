@@ -474,11 +474,14 @@
   (setenv "PATH" (mapconcat 'identity exec-path ":"))
     ;; Set your installed path
   (setq migemo-dictionary "/usr/local/Cellar/cmigemo/HEAD-5c014a8/share/migemo/utf-8/migemo-dict")
+  (set-face-attribute 'default nil :height 130)
   (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family "YuKyokasho Yoko"))
-  ;フォント一覧を出力するには
-                                        ;(dolist (x (font-family-list)) (print x))
-  (setq org-plantuml-jar-path   "/usr/local/opt/plantuml/bin/plantuml"))
+  ;; 記号をデフォルトのフォントにしない。(for Emacs 25.2)
+  (setq use-default-font-for-symbols nil)
+  (add-to-list 'face-font-rescale-alist
+               '(".*YuKyokasho.*" . 1.3))
 
+  (setq org-plantuml-jar-path   "/usr/local/opt/plantuml/bin/plantuml"))
   
 
 
