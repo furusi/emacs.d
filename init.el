@@ -43,7 +43,7 @@
  '(org-babel-load-languages (quote ((emacs-lisp . t) (C . t) (dot . t))))
  '(org-export-backends (quote (ascii html icalendar latex odt taskjuggler)))
  '(org-journal-date-format "%A, %d %B %Y")
- '(org-journal-dir "/home/furusho/pCloudDrive/org/journal")
+ '(org-journal-dir "/Users/furusho/pCloud Drive/org/journal")
  '(org-latex-default-class "bxjsarticle")
  '(org-latex-listings t)
  '(org-latex-listings-options
@@ -94,7 +94,7 @@
    "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")
  '(package-selected-packages
    (quote
-    (omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm graphviz-dot-mode gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
+    (visual-regexp-steroids omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm graphviz-dot-mode gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
  '(picasm-db-file "~/.emacs.d/lisp/picasm/picasm-db.el")
  '(recentf-auto-cleanup (quote never))
  '(recentf-exclude
@@ -157,7 +157,7 @@
 (use-package gradle-mode
   :ensure t)
 
-(set-face-attribute 'default nil :height 140)
+
 
 
 
@@ -309,9 +309,6 @@
   :config
   (setq inferior-lisp-program "sbcl")
   (slime-setup '(slime-repl slime-fancy slime-banner)))
-
-(org-babel-do-load-languages
- 'org-babel-load-languages '((C . t)))
 
 (use-package undohist
   :ensure t
@@ -515,7 +512,7 @@
 ;; (require 'ob-php)
 
 ;; (add-to-list 'org-babel-load-languages '(php . t))
-(org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)
+
 
 (use-package sudo-edit
   :ensure t)
@@ -644,5 +641,7 @@
   :hook (csharp-mode . omnisharp-mode)
   :init
   (add-to-list 'company-backends 'company-omnisharp))
+(use-package visual-regexp-steroids
+  :ensure t)
 (provide 'init)
 ;;; init.el ends here
