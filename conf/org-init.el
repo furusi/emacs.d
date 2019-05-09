@@ -136,6 +136,9 @@
    (setq org-icalendar-timezone "Asia/Tokyo")
    (defun my-org-mode-hook ()
      (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
+   (add-to-list 'org-babel-load-languages '(org . t))
+   (add-to-list 'org-babel-load-languages '(C . t))
+   (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)
    (add-hook 'org-mode-hook #'my-org-mode-hook))
 
 
