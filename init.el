@@ -61,6 +61,7 @@
  '(org-src-lang-modes
    (quote
     (("html" . web)
+     ("php" . web)
      ("browser" . web)
      ("ocaml" . tuareg)
      ("elisp" . emacs-lisp)
