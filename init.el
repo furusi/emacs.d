@@ -43,7 +43,7 @@
  '(org-babel-load-languages (quote ((emacs-lisp . t) (C . t) (dot . t))))
  '(org-export-backends (quote (ascii html icalendar latex odt taskjuggler)))
  '(org-journal-date-format "%A, %d %B %Y")
- '(org-journal-dir "/Users/furusho/pCloud Drive/org/journal")
+ '(org-journal-dir "/home/furusho/pCloudDrive/org/journal")
  '(org-latex-default-class "bxjsarticle")
  '(org-latex-listings t)
  '(org-latex-listings-options
@@ -95,7 +95,7 @@
    "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")
  '(package-selected-packages
    (quote
-    (visual-regexp-steroids omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm graphviz-dot-mode gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
+    (c-eldoc ggtags graphviz-dot-mode kotlin-mode php-mode visual-regexp-steroids omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
  '(picasm-db-file "~/.emacs.d/lisp/picasm/picasm-db.el")
  '(recentf-auto-cleanup (quote never))
  '(recentf-exclude
@@ -467,7 +467,10 @@
   (add-to-list 'load-path "~/opt/mu-1.0/mu4e/")
   (cond ((display-graphic-p)
          (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family "IPAex\346\230\216\346\234\235")))
-        (t 0)))
+        (t 0))
+  (add-to-list 'face-font-rescale-alist
+               '(".*IPAex.*" . 1.1))
+  (setq org-plantuml-jar-path   "/usr/bin/plantuml"))
 
 (when (equal system-type 'darwin)
   (add-to-list 'load-path "/usr/local/Cellar/mu/1.0/share/emacs/site-lisp/mu/mu4e/")
