@@ -139,7 +139,9 @@
    (add-to-list 'org-babel-load-languages '(org . t))
    (add-to-list 'org-babel-load-languages '(C . t))
    (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)
-   (add-hook 'org-mode-hook #'my-org-mode-hook))
+   (add-hook 'org-mode-hook #'my-org-mode-hook)
+   ;;ob-plantuml
+   (add-to-list 'org-babel-default-header-args:plantuml '(:cmdline . "-charset utf-8")))
 
 
 (use-package org-mobile-sync

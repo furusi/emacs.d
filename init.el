@@ -95,7 +95,7 @@
    "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")
  '(package-selected-packages
    (quote
-    (c-eldoc ggtags graphviz-dot-mode kotlin-mode php-mode visual-regexp-steroids omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
+    (ox-pandoc c-eldoc ggtags graphviz-dot-mode kotlin-mode php-mode visual-regexp-steroids omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
  '(picasm-db-file "~/.emacs.d/lisp/picasm/picasm-db.el")
  '(recentf-auto-cleanup (quote never))
  '(recentf-exclude
@@ -485,7 +485,7 @@
   (add-to-list 'face-font-rescale-alist
                '(".*YuKyokasho.*" . 1.3))
 
-  (setq org-plantuml-jar-path   "/usr/local/opt/plantuml/bin/plantuml"))
+  (setq org-plantuml-jar-path   "/usr/local/opt/plantuml/libexec/plantuml.jar"))
   
 
 
@@ -650,5 +650,20 @@
   (add-to-list 'company-backends 'company-omnisharp))
 (use-package visual-regexp-steroids
   :ensure t)
+
+(use-package ox-pandoc
+  :ensure t
+  :after org-plus-contrib
+  :demand t
+  :config
+  ;; default options for all output formats
+(setq org-pandoc-options '((standalone . t)))
+;; cancel above settings only for 'docx' format
+(setq org-pandoc-options-for-docx '((standalone . nil))))
+(use-package plantuml-mode
+  :ensure t
+  :config
+  (when (eq system-type 'darwin)
+    (setq plantuml-jar-path "/usr/local/opt/plantuml/libexec/plantuml.jar")))
 (provide 'init)
 ;;; init.el ends here
