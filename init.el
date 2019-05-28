@@ -538,20 +538,15 @@
 
 (use-package python
   :mode ("\\.py\\'" . python-mode)
+  :init
+  (add-hook 'python-mode-hook
+            (lambda ()
+              (setq-default indent-tabs-mode t)
+              (setq-default tab-width 4)
+              (setq-default py-indent-tabs-mode t)))
   :config
   (setq python-shell-interpreter "python3")
-  (setq py-python-command "python3")
-
-    (add-hook 'python-mode-hook
-        (lambda ()
-            (setq-default indent-tabs-mode t)
-            (setq-default tab-width 4)
-            (setq-default py-indent-tabs-mode t))))
-
-;; gtags-modeのキーバインドを有効化する
-(setq gtags-suggested-key-mapping t) ; 無効化する場合はコメントアウト
-;; ファイル保存時に自動的にタグをアップデートする
-(setq gtags-auto-update t) ; 無効化する場合はコメントアウト
+  (setq py-python-command "python3"))
 
 (use-package pipenv
   :ensure t
@@ -562,6 +557,13 @@
    #'pipenv-projectile-after-switch-extended))
 
 (put 'set-goal-column 'disabled nil)
+
+;; gtags-modeのキーバインドを有効化する
+(setq gtags-suggested-key-mapping t) ; 無効化する場合はコメントアウト
+;; ファイル保存時に自動的にタグをアップデートする
+(setq gtags-auto-update t) ; 無効化する場合はコメントアウト
+
+
 (use-package lsp-mode
   :commands lsp)
 
@@ -665,5 +667,9 @@
   :config
   (when (eq system-type 'darwin)
     (setq plantuml-jar-path "/usr/local/opt/plantuml/libexec/plantuml.jar")))
+(use-package editorconfig
+  :ensure editorconfig-generate
+  :config
+  (editorconfig-mode 1))
 (provide 'init)
 ;;; init.el ends here
