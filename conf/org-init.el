@@ -36,16 +36,18 @@
   (setq org-agenda-files
         (list
          (concat org-directory "task.org")
-          (concat org-directory "notes.org")
-          (concat org-directory "habit.org")
-          (concat org-directory "event.org")
-          (concat org-directory "inbox.org")
-          (concat org-directory "org-ical.org")))
+         (concat org-directory "notes.org")
+         (concat org-directory "habit.org")
+         (concat org-directory "event.org")
+         (concat org-directory "inbox.org")
+         (concat org-directory "productivity.org")
+         (concat org-directory "org-ical.org")))
   (setq org-refile-targets
-        '(("org-ical.org" . (:level . 1))
-          ("task.org"     . (:level . 1))
-          ("event.org"    . (:level . 1))
-          ("notes.org"    . (:level . 1))))
+        `(("org-ical.org"     . (:level . 1))
+          ("task.org"         . (:level . 1))
+          ("event.org"        . (:level . 1))
+		  ("productivity.org" . (:maxlevel . 2))
+          ("notes.org"        . (:level . 1))))
   (setq org-mobile-files
         (list
          (concat org-directory "task.org")
