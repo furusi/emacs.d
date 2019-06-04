@@ -95,7 +95,7 @@
    "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")
  '(package-selected-packages
    (quote
-    (editorconfig editorconfig-generate ox-pandoc c-eldoc ggtags graphviz-dot-mode kotlin-mode php-mode visual-regexp-steroids omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
+    (counsel-tramp dropbox editorconfig editorconfig-generate ox-pandoc c-eldoc ggtags graphviz-dot-mode kotlin-mode php-mode visual-regexp-steroids omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
  '(picasm-db-file "~/.emacs.d/lisp/picasm/picasm-db.el")
  '(plantuml-jar-path "/usr/local/opt/plantuml/libexec/plantuml.jar")
  '(recentf-auto-cleanup (quote never))
@@ -350,24 +350,35 @@
 (add-to-list 'auto-mode-alist '("\\.html?\\'"     . web-mode))
 
 ;;helm
-
 (use-package helm
   :ensure t
   :bind (("M-x" . helm-M-x)
      ("M-y" . helm-show-kill-ring)
      ("C-x b" . helm-mini)
      ("C-x C-f" . helm-find-files)
-     ("C-x C-r" . helm-recentf))
+     ("C-x j" . helm-recentf))
   :config
+  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
+  (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
+  (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
   (helm-autoresize-mode 1)
   (helm-mode 1))
-
 (use-package helm-config
   :config (helm-mode 1))
 
-(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
-(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
-(define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
+;; ivy/counsel
+;; (use-package counsel
+;;   :ensure t
+;;   :init
+;;   (ivy-mode 1))
+;; (require 'counsel-tramp)
+;; (setq tramp-default-method "ssh")
+
+;; ido
+;; (ido-mode 1)
+;; (ido-everywhere 1)
+;; (setq ido-enable-flex-matching t) ;; 中間/あいまい一致
+
 
 
 (use-package which-key
@@ -529,7 +540,7 @@
 (add-hook 'dired-load-hook
           (load "dired-x")
           (global-set-key "\C-x\C-j" 'skk-mode))
-(global-set-key "\C-z" 'other-window)
+(global-set-key "\C-t" 'other-window)
 ;(cua-mode t) ; cua-modeをオン
 ;(setq cua-enable-cua-keys nil)
 
