@@ -373,8 +373,11 @@
          ("C-s"   . swiper-isearch))
   :init
   (ivy-mode 1))
-(require 'counsel-tramp)
-(setq tramp-default-method "ssh")
+(use-package counsel-tramp
+  :ensure t
+  :config
+  (setq tramp-default-method "ssh"))
+
 
 ;; ido
 ;; (ido-mode 1)
