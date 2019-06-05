@@ -356,13 +356,13 @@
 (setq org-export-latex-format-toc-function 'org-export-latex-no-toc)
 
 ;; reftex with org mode
-(add-hook 'org-mode-hook 'turn-on-reftex)
-(defun org-mode-reftex-setup ()
-  (load-library "reftex")
-  (and (buffer-file-name)
-       (file-exists-p (buffer-file-name))
-       (reftex-parse-all))
-  (define-key org-mode-map (kbd "C-c [") 'reftex-citation))
+;; (add-hook 'org-mode-hook 'turn-on-reftex)
+;; (defun org-mode-reftex-setup ()
+;;   (load-library "reftex")
+;;   (and (buffer-file-name)
+;;        (file-exists-p (buffer-file-name))
+;;        (reftex-parse-all))
+;;   (define-key org-mode-map (kbd "C-c [") 'reftex-citation))
 (use-package ox-reveal
   :ensure t
   :disabled t)
