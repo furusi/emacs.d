@@ -327,7 +327,9 @@
   (setq auto-save-buffers-enhanced-interval 1)
   (auto-save-buffers-enhanced t)
 ;;; Wroteのメッセージを抑制
-  (setq auto-save-buffers-enhanced-quiet-save-p t))
+  (setq auto-save-buffers-enhanced-quiet-save-p t)
+  ;;; tramp mode時の自動保存を抑制
+  (setq auto-save-buffers-enhanced-exclude-regexps '("^/ssh:" "/sudo:" "/multi:")))
 
 
 (use-package web-mode
@@ -495,10 +497,17 @@
   (setenv "PATH" (mapconcat 'identity exec-path ":"))
   ;; Set your installed path
   (setq migemo-dictionary "/usr/local/Cellar/cmigemo/HEAD-5c014a8/share/migemo/utf-8/migemo-dict")
-  (set-face-attribute 'default nil :height 130)
-  (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family "YuKyokasho Yoko"))
   ;; 記号をデフォルトのフォントにしない。(for Emacs 25.2)
   (setq use-default-font-for-symbols nil)
+
+  ;; 源ノ角ゴシック
+  ;; (set-default-font "Source Han Code JP N")
+  ;; (add-to-list 'face-font-rescale-alist
+  ;;              '(".*Source\ Han\ Code\ JP\ N.*" . 1.3))
+
+  ;; 游教科書体
+  (set-face-attribute 'default nil :height 130)
+  (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family "YuKyokasho Yoko"))
   (add-to-list 'face-font-rescale-alist
                '(".*YuKyokasho.*" . 1.3))
 
