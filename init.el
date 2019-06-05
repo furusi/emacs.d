@@ -350,29 +350,31 @@
 (add-to-list 'auto-mode-alist '("\\.html?\\'"     . web-mode))
 
 ;;helm
-(use-package helm
-  :ensure t
-  :bind (("M-x" . helm-M-x)
-     ("M-y" . helm-show-kill-ring)
-     ("C-x b" . helm-mini)
-     ("C-x C-f" . helm-find-files)
-     ("C-x j" . helm-recentf))
-  :config
-  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
-  (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
-  (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
-  (helm-autoresize-mode 1)
-  (helm-mode 1))
-(use-package helm-config
-  :config (helm-mode 1))
+;; (use-package helm
+;;   :ensure t
+;;   :bind (("M-x" . helm-M-x)
+;;      ("M-y" . helm-show-kill-ring)
+;;      ("C-x b" . helm-mini)
+;;      ("C-x C-f" . helm-find-files)
+;;      ("C-x j" . helm-recentf))
+;;   :config
+;;   (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
+;;   (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
+;;   (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
+;;   (helm-autoresize-mode 1)
+;;   (helm-mode 1))
+;; (use-package helm-config
+;;   :config (helm-mode 1))
 
 ;; ivy/counsel
-;; (use-package counsel
-;;   :ensure t
-;;   :init
-;;   (ivy-mode 1))
-;; (require 'counsel-tramp)
-;; (setq tramp-default-method "ssh")
+(use-package counsel
+  :ensure t
+  :bind (("C-x j" . counsel-recentf)
+         ("C-s"   . swiper-isearch))
+  :init
+  (ivy-mode 1))
+(require 'counsel-tramp)
+(setq tramp-default-method "ssh")
 
 ;; ido
 ;; (ido-mode 1)
