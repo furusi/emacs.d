@@ -358,6 +358,7 @@
      ("M-y" . helm-show-kill-ring)
      ("C-x b" . helm-mini)
      ("C-x C-f" . helm-find-files)
+     ("C-c C-s" . helm-occur)
      ("C-x j" . helm-recentf))
   :config
   (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
