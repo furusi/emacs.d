@@ -16,15 +16,17 @@
          ("C-c C-u" . outline-up-heading-latin))
   :init
   (when (eq system-type 'gnu/linux)
-    (if (file-exists-p "~/pCloudDrive/")
-        (progn
-          (setq org-directory (expand-file-name "~/pCloudDrive/org/"))
-          (setq org-mobile-directory "~/pCloudDrive/org/mobile/")) nil))
+    (setq org-directory (expand-file-name "~/pCloudDrive/org/")))
   (when (eq system-type 'darwin)
-    (if (file-exists-p "~/pCloud Drive/")
-        (progn
-          (setq org-directory (expand-file-name "~/pCloud Drive/org/"))
-          (setq org-mobile-directory "~/pCloud Drive/org/mobile/")) nil))
+    (setq org-directory (expand-file-name "~/GoogleDrive/org/")))
+
+  (when (not (file-exists-p org-directory))
+      (setq org-directory (expand-file-name "~/org/"))
+      (make-directory (concat org-directory "mobile/") t))
+
+  (when (file-exists-p org-directory)
+          (setq org-mobile-directory (concat org-directory "mobile/")))
+
   
   (defun outline-up-heading-latin ()
     (interactive)
