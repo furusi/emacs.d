@@ -372,3 +372,8 @@
   :ensure org-plus-contrib
   :config
   (ox-extras-activate '(latex-header-blocks ignore-headlines)))
+(use-package ob-kotlin
+  :ensure t)
+
+(provide 'org-init)
+;;; org-init.el ends here
