@@ -262,8 +262,8 @@
 (use-package company
   :ensure t
   :bind (
-         :map company-mode-map
-              ("C-M-i" . 'company-complete)
+         ;; :map company-mode-map
+         ;;      ((kbd "TAB") . 'company-indent-or-complete-common)
          :map company-active-map
               ("C-n"   . 'company-select-next)
               ("C-p"   . 'company-select-previous)
@@ -274,6 +274,7 @@
               ("C-p"   . 'company-select-previous))
   :config
   (global-company-mode 1)
+  (define-key company-mode-map (kbd "<tab>") #'company-indent-or-complete-common)
   (setq company-minimum-prefix-length 2)
   (setq company-selection-wrap-around t)
   (defvar company-mode/enable-yas t
@@ -626,7 +627,7 @@
   :ensure t
   :config
   (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
-  (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
+  (define-key rust-mode-map (kbd "<tab>") #'company-indent-or-complete-common)
   (setq company-tooltip-align-annotations t))
 (use-package racer
   :ensure t
