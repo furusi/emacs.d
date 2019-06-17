@@ -100,7 +100,7 @@
    "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")
  '(package-selected-packages
    (quote
-    (lsp-java-treemacs dap-java flycheck-rust cargo racer howm counsel-tramp dropbox editorconfig editorconfig-generate ox-pandoc c-eldoc ggtags graphviz-dot-mode kotlin-mode php-mode visual-regexp-steroids omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
+    (python-mode jedi jedi-core lsp-java-treemacs dap-java flycheck-rust cargo racer howm counsel-tramp dropbox editorconfig editorconfig-generate ox-pandoc c-eldoc ggtags graphviz-dot-mode kotlin-mode php-mode visual-regexp-steroids omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
  '(picasm-db-file "~/.emacs.d/lisp/picasm/picasm-db.el")
  '(plantuml-jar-path "/usr/local/opt/plantuml/libexec/plantuml.jar")
  '(recentf-auto-cleanup (quote never))
@@ -552,7 +552,8 @@
   :ensure t )
 
 
-(use-package python
+(use-package python-mode
+  :ensure t
   :mode ("\\.py\\'" . python-mode)
   :init
   (add-hook 'python-mode-hook
@@ -562,7 +563,17 @@
               (setq-default py-indent-tabs-mode t)))
   :config
   (setq python-shell-interpreter "python3")
+  ;; (add-hook 'python-mode-hook #'lsp)
   (setq py-python-command "python3"))
+(use-package jedi
+  :ensure t)
+(use-package company-jedi
+  :ensure t
+  :config
+  (add-hook 'python-mode-hook 'jedi:setup)
+  (setq jedi:complete-on-dot t)
+  (add-to-list 'company-backends 'company-jedi))
+
 
 (use-package pipenv
   :ensure t
