@@ -43,7 +43,7 @@
  '(org-babel-load-languages (quote ((emacs-lisp . t) (C . t) (dot . t))))
  '(org-export-backends (quote (ascii html icalendar latex odt taskjuggler)))
  '(org-journal-date-format "%A, %d %B %Y")
- '(org-journal-dir "/Users/furusho/pCloud Drive/org/journal")
+ '(org-journal-dir "/Users/furusho/GoogleDrive/org/journal")
  '(org-latex-default-class "bxjsarticle")
  '(org-latex-listings t)
  '(org-latex-listings-options
@@ -95,7 +95,7 @@
    "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")
  '(package-selected-packages
    (quote
-    (cargo racer howm counsel-tramp dropbox editorconfig editorconfig-generate ox-pandoc c-eldoc ggtags graphviz-dot-mode kotlin-mode php-mode visual-regexp-steroids omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
+    (lsp-java-treemacs dap-java flycheck-rust cargo racer howm counsel-tramp dropbox editorconfig editorconfig-generate ox-pandoc c-eldoc ggtags graphviz-dot-mode kotlin-mode php-mode visual-regexp-steroids omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
  '(picasm-db-file "~/.emacs.d/lisp/picasm/picasm-db.el")
  '(plantuml-jar-path "/usr/local/opt/plantuml/libexec/plantuml.jar")
  '(recentf-auto-cleanup (quote never))
@@ -424,6 +424,7 @@
     (elisp-slime-nav-mode  . " EN")
     (helm-gtags-mode       . " HG")
     (flymake-mode          . " Fm")
+    (editorconfig-mode     . "")
     ;; Major modes
     (lisp-interaction-mode . "Lisp")
     (python-mode           . "Python")
@@ -631,7 +632,7 @@
   (setq company-tooltip-align-annotations t))
 (use-package racer
   :ensure t
-  :hook ((rust-mode . racer-mode)
+  :hook ((rust-mode  . racer-mode)
          (racer-mode . eldoc-mode)))
 (use-package cargo
   :ensure t)
