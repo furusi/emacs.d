@@ -132,6 +132,11 @@
 (load "mu4e-init")
 (load "magit-init")
 (define-key global-map (kbd "C-c t l") 'toggle-truncate-lines)
+(add-hook 'dired-load-hook
+          (load "dired-x")
+          (global-set-key "\C-x\C-j" 'skk-mode))
+(global-set-key "\C-t" 'other-window)
+
 (setq-default indent-tabs-mode nil)
 
 ;; eww
@@ -278,7 +283,8 @@
   (setq company-minimum-prefix-length 2)
   (setq company-selection-wrap-around t)
   (defvar company-mode/enable-yas t
-  "Enable yasnippet for all backends.")
+    "Enable yasnippet for all backends.")
+  (push 'company-lsp company-backends)
 
   (defun company-mode/backend-with-yas (backend)
 	(if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
@@ -510,18 +516,18 @@
   (setq migemo-dictionary "/usr/local/Cellar/cmigemo/HEAD-5c014a8/share/migemo/utf-8/migemo-dict")
   ;; 記号をデフォルトのフォントにしない。(for Emacs 25.2)
   (setq use-default-font-for-symbols nil)
+  (cond ((display-graphic-p)
+         ;; 源ノ角ゴシック
+         ;; (set-default-font "Source Han Code JP N")
+         ;; (add-to-list 'face-font-rescale-alist
+         ;;              '(".*Source\ Han\ Code\ JP\ N.*" . 1.3))
 
-  ;; 源ノ角ゴシック
-  ;; (set-default-font "Source Han Code JP N")
-  ;; (add-to-list 'face-font-rescale-alist
-  ;;              '(".*Source\ Han\ Code\ JP\ N.*" . 1.3))
-
-  ;; 游教科書体
-  (set-face-attribute 'default nil :height 130)
-  (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family "YuKyokasho Yoko"))
-  (add-to-list 'face-font-rescale-alist
-               '(".*YuKyokasho.*" . 1.3))
-
+         ;; 游教科書体
+         (set-face-attribute 'default nil :height 130)
+         (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family "YuKyokasho Yoko"))
+         (add-to-list 'face-font-rescale-alist
+                      '(".*YuKyokasho.*" . 1.3)))
+        (t 0))
   (setq org-plantuml-jar-path   "/usr/local/opt/plantuml/libexec/plantuml.jar"))
   
 
@@ -562,10 +568,7 @@
   :ensure t)
 (setq-default tab-width 4 indent-tabs-mode nil)
 
-(add-hook 'dired-load-hook
-          (load "dired-x")
-          (global-set-key "\C-x\C-j" 'skk-mode))
-(global-set-key "\C-t" 'other-window)
+
 ;(cua-mode t) ; cua-modeをオン
 ;(setq cua-enable-cua-keys nil)
 
