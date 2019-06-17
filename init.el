@@ -36,6 +36,7 @@
    (quote
     (not org-mode magit-mode custom-mode magit-status-mode)))
  '(company-idle-delay 0.2)
+ '(company-lsp-cache-candidates (quote auto))
  '(dimmer-exclusion-regexp "^\\\\*helm\\\\|^ \\\\*Minibuf\\\\|^\\\\*Calendar\"")
  '(dimmer-fraction 0.3)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
@@ -391,6 +392,8 @@
   :ensure t
   :config
   (yas-global-mode 1))
+(use-package yasnippet-snippets
+  :ensure t)
 
 
 (defvar mode-line-cleaner-alist
@@ -582,7 +585,9 @@
 
 (use-package lsp-ui
   :commands lsp-ui-mode
-  :ensure t)
+  :ensure t
+  :config
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
 (use-package company-lsp
   :commands company-lsp

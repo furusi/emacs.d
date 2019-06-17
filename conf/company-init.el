@@ -24,7 +24,6 @@
   (setq company-selection-wrap-around t)
   (defvar company-mode/enable-yas t
     "Enable yasnippet for all backends.")
-  (push 'company-lsp company-backends)
 
   (defun company-mode/backend-with-yas (backend)
 	(if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
@@ -34,4 +33,8 @@
   ;; (push '(company-semantic :with company-yasnippet) company-backends)
   ;(custom-set-variables '(company-idle-delay nil))
 
-  (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends)))
+  (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
+  (push 'company-lsp company-backends)
+  (setq company-lsp-enable-snippet t)
+  (setq company-lsp-enable-recompletion t))
+
