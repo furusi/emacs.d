@@ -131,6 +131,7 @@
 (load "yatex-init")
 (load "mu4e-init")
 (load "magit-init")
+(load "company-init")
 (define-key global-map (kbd "C-c t l") 'toggle-truncate-lines)
 (add-hook 'dired-load-hook
           (load "dired-x")
@@ -264,38 +265,6 @@
   :config
   (global-undo-tree-mode t))
 
-(use-package company
-  :ensure t
-  :bind (
-         ;; :map company-mode-map
-         ;;      ((kbd "TAB") . 'company-indent-or-complete-common)
-         :map company-active-map
-              ("C-n"   . 'company-select-next)
-              ("C-p"   . 'company-select-previous)
-              ("C-s"   . 'company-filter-candidates)
-              ("C-i"   . 'company-complete-selection)
-         :map company-search-map
-              ("C-n"   . 'company-select-next)
-              ("C-p"   . 'company-select-previous))
-  :config
-  (global-company-mode 1)
-  (define-key company-mode-map (kbd "<tab>") #'company-indent-or-complete-common)
-  (setq company-minimum-prefix-length 2)
-  (setq company-selection-wrap-around t)
-  (defvar company-mode/enable-yas t
-    "Enable yasnippet for all backends.")
-  (push 'company-lsp company-backends)
-
-  (defun company-mode/backend-with-yas (backend)
-	(if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
-		backend
-      (append (if (consp backend) backend (list backend))
-              '(:with company-yasnippet))))
-
-  (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
-  ;; (push '(company-semantic :with company-yasnippet) company-backends)
-  ;(custom-set-variables '(company-idle-delay nil))
-  )
 
 (autoload 'run-prolog   "prolog" "Start a Prolog sub-process." t)
 (autoload 'prolog-mode  "prolog" "Major mode for editing Prolog programs." t)
