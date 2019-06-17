@@ -32,11 +32,15 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(backup-directory-alist (quote ((".*" . "~/.ehist"))))
+ '(company-global-modes
+   (quote
+    (not org-mode magit-mode custom-mode magit-status-mode)))
  '(company-idle-delay 0.2)
  '(dimmer-exclusion-regexp "^\\\\*helm\\\\|^ \\\\*Minibuf\\\\|^\\\\*Calendar\"")
  '(dimmer-fraction 0.3)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(eval-expression-print-length nil)
+ '(global-company-mode t)
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(magit-display-buffer-function (quote magit-display-buffer-fullframe-status-v1))
