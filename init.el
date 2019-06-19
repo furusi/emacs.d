@@ -34,7 +34,7 @@
  '(backup-directory-alist (quote ((".*" . "~/.ehist"))))
  '(company-global-modes
    (quote
-    (not org-mode magit-mode custom-mode magit-status-mode magit-revision-mode)))
+    (not org-mode magit-mode custom-mode magit-status-mode magit-revision-mode magit-diff-mode)))
  '(company-idle-delay 0.2)
  '(company-lsp-cache-candidates (quote auto))
  '(dimmer-exclusion-regexp "^\\\\*helm\\\\|^ \\\\*Minibuf\\\\|^\\\\*Calendar\"")
