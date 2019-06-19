@@ -202,8 +202,6 @@
   (setq eww-search-prefix "http://www.google.co.jp/search?q="))
 
 ;;(setq coding-system-for-read 'utf-8)
-;;(load-theme 'atom-dark t)
-;;(load-theme 'leuven t)
 (use-package poet-theme
   :ensure t
   :disabled t
@@ -593,16 +591,17 @@
 
 (use-package lsp-mode
   :commands lsp)
-
 (use-package lsp-ui
   :commands lsp-ui-mode
   :ensure t
   :config
   (add-hook 'lsp-mode-hook 'lsp-ui-mode))
-
 (use-package company-lsp
   :commands company-lsp
   :ensure t)
+(use-package helm-lsp :commands helm-lsp-workspace-symbol)
+(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+
 (use-package dimmer
   :ensure t
   :init
@@ -663,6 +662,11 @@
 
 (use-package dap-java :after (lsp-java))
 (use-package lsp-java-treemacs :after (treemacs))
+(require 'lsp-java-boot)
+
+;; to enable the lenses
+(add-hook 'lsp-mode-hook #'lsp-lens-mode)
+(add-hook 'java-mode-hook #'lsp-java-boot-lens-mode)
 
 (use-package whitespace
   ;; :disabled t
