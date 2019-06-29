@@ -19,7 +19,9 @@
               ("C-p"   . 'company-select-previous))
   :config
   ;; (global-company-mode 1)
-  (define-key company-mode-map (kbd "<tab>") #'company-indent-or-complete-common)
+  (define-key company-mode-map (kbd "C-M-i") 'company-complete)
+  (custom-set-variables
+   '(company-idle-delay 0.1))
   (setq company-minimum-prefix-length 2)
   (setq company-selection-wrap-around t)
   (defvar company-mode/enable-yas t
