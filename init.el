@@ -331,41 +331,47 @@
 (add-to-list 'auto-mode-alist '("\\.html?\\'"     . web-mode))
 
 ;;helm
-(use-package helm
-  :ensure t
-  :bind (("M-x" . helm-M-x)
-     ("M-y" . helm-show-kill-ring)
-     ("C-x b" . helm-mini)
-     ("C-x C-f" . helm-find-files)
-     ("C-c C-s" . helm-occur)
-     ("C-x j" . helm-recentf))
-  :config
-  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
-  (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
-  (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
-  (helm-autoresize-mode 1)
-  (helm-mode 1))
-(use-package helm-config
-  :config (helm-mode 1))
+;; (use-package helm
+;;   :ensure t
+;;   :bind (("M-x" . helm-M-x)
+;;      ("M-y" . helm-show-kill-ring)
+;;      ("C-x b" . helm-mini)
+;;      ("C-x C-f" . helm-find-files)
+;;      ("C-c C-s" . helm-occur)
+;;      ("C-x j" . helm-recentf))
+;;   :config
+;;   (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
+;;   (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
+;;   (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
+;;   (helm-autoresize-mode 1)
+;;   (helm-mode 1))
+;; (use-package helm-config
+;;   :config (helm-mode 1))
 
 ;; ivy/counsel
-;; (use-package counsel
-;;   :ensure t
-;;   :bind (("C-x j" . counsel-recentf)
-;;          ("C-c C-i" . counsel-imenux)
-;;          ("C-s"   . swiper-isearch))
-;;   :init
-;;   (ivy-mode 1)
-;;   (setq ivy-re-builders-alist
-;;         '((ivy-switch-buffer . ivy--regex-plus)
-;;           (t . ivy--regex-fuzzy)))
-;;   (setq ivy-initial-inputs-alist nil))
-;; (use-package counsel-tramp
-;;   :ensure t
-;;   :config
-;;   (setq tramp-default-method "ssh"))
-;; (use-package flx
-;;   :ensure t)
+(use-package counsel
+  :ensure t
+  :bind (("C-x C-f" . counsel-find-file)
+         ("C-x j" . counsel-recentf)
+         ("C-c C-i" . counsel-imenux)
+         ("C-s"   . swiper-isearch)
+         ("M-y"   . counsel-yank-pop))
+  :init
+  (ivy-mode 1)
+  (setq ivy-re-builders-alist
+        '((ivy-switch-buffer . ivy--regex-plus)
+          (t . ivy--regex-fuzzy)))
+  (setq ivy-initial-inputs-alist nil))
+(use-package counsel-tramp
+  :ensure t
+  :config
+  (setq tramp-default-method "ssh"))
+(use-package flx
+  :ensure t)
+(use-package all-the-icons-ivy
+  :ensure t
+  :config
+  (all-the-icons-ivy-setup))
 
 
 
@@ -488,9 +494,17 @@
   (setenv "PATH" (mapconcat 'identity exec-path ":"))
   ;; Set your installed path
   (setq migemo-dictionary "/usr/local/Cellar/cmigemo/HEAD-5c014a8/share/migemo/utf-8/migemo-dict")
-  ;; 記号をデフォルトのフォントにしない。(for Emacs 25.2)
-  (setq use-default-font-for-symbols nil)
   (cond ((display-graphic-p)
+
+
+         ;;Osaka
+         ;; (set-frame-font "-*-Osaka-normal-normal-normal-*-*-*-*-*-m-0-iso10646-1" 13)
+
+
+         ;; (add-to-list 'face-font-rescale-alist
+         ;;              '(".*Source\ Han\ Code\ JP\ N.*" . 1.3))
+
+
          ;; 源ノ角ゴシック
          ;; (set-default-font "Source Han Code JP N")
          ;; (add-to-list 'face-font-rescale-alist
@@ -500,10 +514,12 @@
          (set-face-attribute 'default nil :height 130)
          (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family "YuKyokasho Yoko"))
          (add-to-list 'face-font-rescale-alist
-                      '(".*YuKyokasho.*" . 1.3)))
+                      '(".*YuKyokasho.*" . 1.3))
+
+         ;; 記号をデフォルトのフォントにしない。(for Emacs 25.2)
+         (setq use-default-font-for-symbols nil))
         (t 0))
   (setq org-plantuml-jar-path   "/usr/local/opt/plantuml/libexec/plantuml.jar"))
-  
 
 
 (use-package migemo
