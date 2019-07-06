@@ -642,6 +642,12 @@
          (racer-mode . eldoc-mode)))
 (use-package cargo
   :ensure t)
+(use-package flycheck-rust
+  :ensure t
+  :config
+  (setq flycheck-rust-cargo-executable "~/.cargo/bin/cargo")
+  (with-eval-after-load 'rust-mode
+    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
 
 (use-package ccls
   :ensure t

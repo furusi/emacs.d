@@ -182,6 +182,22 @@
   :ensure org-plus-contrib
   :defer t)
 
+(use-package ox-eldoc
+  :ensure org-plus-contrib
+  :defer t
+  :config
+  (defadvice org-eldoc-documentation-function (around add-field-info activate)
+    (or
+     (ignore-errors (and (not (org-at-table-hline-p))
+                         (org-table-field-info nil)))
+     ad-do-it))
+
+  (add-hook 'org-mode-hook 'eldoc-mode)
+
+  (eldoc-add-command-completions
+   "org-table-next-" "org-table-previous" "org-cycle"))
+
+
 (use-package ox-latex
   :ensure org-plus-contrib
   :config
