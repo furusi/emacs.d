@@ -635,7 +635,6 @@
   :ensure t
   :config
   (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
-  (define-key rust-mode-map (kbd "<tab>") #'company-indent-or-complete-common)
   (setq company-tooltip-align-annotations t))
 (use-package racer
   :ensure t
