@@ -100,7 +100,7 @@
    "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")
  '(package-selected-packages
    (quote
-    (multi-term back-button python-mode jedi jedi-core lsp-java-treemacs dap-java flycheck-rust cargo racer howm counsel-tramp dropbox editorconfig editorconfig-generate ox-pandoc c-eldoc ggtags graphviz-dot-mode kotlin-mode php-mode visual-regexp-steroids omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
+    (ob-rust multi-term back-button python-mode jedi jedi-core lsp-java-treemacs dap-java flycheck-rust cargo racer howm counsel-tramp dropbox editorconfig editorconfig-generate ox-pandoc c-eldoc ggtags graphviz-dot-mode kotlin-mode php-mode visual-regexp-steroids omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
  '(picasm-db-file "~/.emacs.d/lisp/picasm/picasm-db.el")
  '(plantuml-jar-path "/usr/local/opt/plantuml/libexec/plantuml.jar")
  '(recentf-auto-cleanup (quote never))
@@ -197,6 +197,7 @@
 (use-package gradle-mode)
 
 (use-package eww
+  :commands (eww)
   :config
   (setq eww-search-prefix "http://www.google.co.jp/search?q="))
 
@@ -407,13 +408,13 @@
 (defvar mode-line-cleaner-alist
   '( ;; For minor-mode, first char is 'space'
     (yas-minor-mode        . " Ys")
-    (paredit-mode          . " Pe")
+    (paredit-mode          . "")
     (eldoc-mode            . "")
     (abbrev-mode           . "")
     (undo-tree-mode        . " Ut")
-    (elisp-slime-nav-mode  . " EN")
-    (helm-gtags-mode       . " HG")
-    (flymake-mode          . " Fm")
+    (elisp-slime-nav-mode  . "")
+    (helm-gtags-mode       . "")
+    (flymake-mode          . "")
     (editorconfig-mode     . "")
     ;; Major modes
     (lisp-interaction-mode . "Lisp")
@@ -603,6 +604,7 @@
 ;(setq cua-enable-cua-keys nil)
 
 (use-package php-mode
+  :mode (("\\.php\\'" . web-mode))
   :ensure t )
 
 
@@ -620,9 +622,11 @@
   ;; (add-hook 'python-mode-hook #'lsp)
   (setq py-python-command "python3"))
 (use-package jedi
+  :hook python-mode
   :ensure t)
 (use-package company-jedi
   :ensure t
+  :hook python-mode
   :config
   (add-hook 'python-mode-hook 'jedi:setup)
   (setq jedi:complete-on-dot t)
@@ -646,6 +650,7 @@
 
 
 (use-package lsp-mode
+  :mode (("\\.java\\'" . lsp-mode))
   :commands lsp)
 (use-package lsp-ui
   :commands lsp-ui-mode
@@ -690,6 +695,7 @@
 
 (use-package ccls
   :ensure t
+  :defer t
   :hook ((c-mode c++-mode objc-mode) .
          (lambda () (require 'ccls) (lsp)))
   :config

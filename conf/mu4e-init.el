@@ -6,6 +6,7 @@
 
 (use-package mu4e
   :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e"
+  :commands (mu4e)
   :config
   ;;location of my maildir
   (setq mu4e-maildir (expand-file-name "~/.maildir/gmail"))

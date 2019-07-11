@@ -14,8 +14,14 @@
          :map org-mode-map
          ("C-c C-\'" . org-insert-structure-template)
          ("C-c C-u" . outline-up-heading-latin))
-  :init
-  (when (eq system-type 'gnu/linux)
+  :config
+    (defun outline-up-heading-latin ()
+    (interactive)
+    (outline-up-heading 1 nil)
+    (when (bound-and-true-p skk-mode)
+      (skk-latin-mode nil)))
+
+    (when (eq system-type 'gnu/linux)
     (setq org-directory (expand-file-name "~/pCloudDrive/org/")))
   (when (eq system-type 'darwin)
     (setq org-directory (expand-file-name "~/GoogleDrive/org/")))
@@ -27,14 +33,7 @@
   (when (file-exists-p org-directory)
           (setq org-mobile-directory (concat org-directory "mobile/")))
 
-  
-  (defun outline-up-heading-latin ()
-    (interactive)
-    (outline-up-heading 1 nil)
-    (when (bound-and-true-p skk-mode)
-      (skk-latin-mode nil)))
 
-  :config
   (setq org-agenda-files
         (list
          (concat org-directory "task.org")
@@ -150,6 +149,7 @@
 
 (use-package org-mobile-sync
   :ensure t
+  :after (org)
   :config
   (org-mobile-sync-mode 1))
 (use-package org-ac
@@ -158,10 +158,11 @@
   :config
   (org-ac/config-default))
 (use-package org-mu4e
-    :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e"
-    :config
-    ;;store link to message if in header view, not to header query
-    (setq org-mu4e-link-query-in-headers-mode nil))
+  :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e"
+  :after (org)
+  :config
+  ;;store link to message if in header view, not to header query
+  (setq org-mu4e-link-query-in-headers-mode nil))
 
 (use-package org-journal
   :ensure t
@@ -171,6 +172,7 @@
   (org-journal-date-format "%A, %d %B %Y"))
 
 (use-package ox-rst
+  :after (org)
   :ensure t)
 
 ;;
@@ -200,6 +202,7 @@
 
 (use-package ox-latex
   :ensure org-plus-contrib
+  :after (org)
   :config
   (setq org-latex-default-class "bxjsarticle")
   ;; (setq org-latex-pdf-process '("latexmk -gg -pdfdvi  %f")
@@ -335,9 +338,7 @@
                  ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
                  ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
                  ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
-
-  )
-(add-to-list 'org-latex-classes
+  (add-to-list 'org-latex-classes
              '("luatex-jlreq-tate"
                "\\documentclass[tate,book,jafontscale=1.3]{jlreq}
 
@@ -365,8 +366,7 @@
                  ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
                  ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
                  ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
-
-;; org-export-latex-no-toc
+  ;; org-export-latex-no-toc
 (defun org-export-latex-no-toc (depth)
   (when depth
     (format "%% Org-mode is exporting headings to %s levels.\n"
@@ -381,14 +381,22 @@
 ;;        (file-exists-p (buffer-file-name))
 ;;        (reftex-parse-all))
 ;;   (define-key org-mode-map (kbd "C-c [") 'reftex-citation))
+
+)
+
 (use-package ox-reveal
   :ensure t
   :disabled t)
 (use-package ox-extra
   :ensure org-plus-contrib
+  :after (org)
   :config
   (ox-extras-activate '(latex-header-blocks ignore-headlines)))
 (use-package ob-kotlin
+  :after (org)
+  :ensure t)
+(use-package ob-rust
+  :after (org)
   :ensure t)
 
 (provide 'org-init)
