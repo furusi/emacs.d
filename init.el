@@ -126,6 +126,12 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(add-to-list 'load-path "~/.emacs.d/lisp/picasm")
+(require 'initchart)
+(initchart-record-execution-time-of load file)
+(initchart-record-execution-time-of require feature)
+
+
 
 (recentf-mode 1)
 
@@ -595,9 +601,7 @@
   ;(custom-set-variables '(company-idle-delay nil))
 
   (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
-  (push 'company-lsp company-backends)
-  (setq company-lsp-enable-snippet t)
-  (setq company-lsp-enable-recompletion t))
+)
 
 
 ;(cua-mode t) ; cua-modeをオン
@@ -658,8 +662,14 @@
   :config
   (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 (use-package company-lsp
+  :after company
   :commands company-lsp
-  :ensure t)
+  :ensure t
+  :config
+  (push 'company-lsp company-backends)
+  (setq company-lsp-enable-snippet t)
+  (setq company-lsp-enable-recompletion t))
+
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 
 (use-package dimmer
@@ -715,7 +725,7 @@
   :mode (("\\.kt\\'" . kotlin-mode)))
 
 (use-package projectile :ensure t)
-(use-package treemacs :ensure t)
+(use-package treemacs :after (lsp) :ensure t)
 (use-package hydra :ensure t)
 (use-package lsp-java :ensure t :after lsp
   :config (add-hook 'java-mode-hook 'lsp))
