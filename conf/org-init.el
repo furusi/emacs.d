@@ -166,7 +166,7 @@
 
 (use-package org-journal
   :ensure t
-  :defer t
+  :after org
   :custom
   (org-journal-dir (concat org-directory "journal"))
   (org-journal-date-format "%A, %d %B %Y"))

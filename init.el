@@ -654,7 +654,6 @@
 
 
 (use-package lsp-mode
-  :mode (("\\.java\\'" . lsp-mode))
   :commands lsp)
 (use-package lsp-ui
   :commands lsp-ui-mode
@@ -727,8 +726,11 @@
 (use-package projectile :ensure t)
 (use-package treemacs :after (lsp) :ensure t)
 (use-package hydra :ensure t)
-(use-package lsp-java :ensure t :after lsp
-  :config (add-hook 'java-mode-hook 'lsp))
+(use-package lsp-java
+  :ensure t
+  :after lsp
+  :config
+  (add-hook 'java-mode-hook 'lsp))
 
 (use-package dap-mode
   :ensure t :after lsp-mode
@@ -737,7 +739,7 @@
   (dap-ui-mode t))
 
 (use-package dap-java :after (lsp-java))
-(use-package lsp-java-treemacs :after (treemacs))
+;; (use-package lsp-java-treemacs :after (treemacs))
 (require 'lsp-java-boot)
 
 ;; to enable the lenses
