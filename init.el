@@ -100,7 +100,7 @@
    "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")
  '(package-selected-packages
    (quote
-    (ob-rust multi-term back-button python-mode jedi jedi-core lsp-java-treemacs dap-java flycheck-rust cargo racer howm counsel-tramp dropbox editorconfig editorconfig-generate ox-pandoc c-eldoc ggtags graphviz-dot-mode kotlin-mode php-mode visual-regexp-steroids omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
+    (groovy-mode ob-rust multi-term back-button python-mode jedi jedi-core lsp-java-treemacs dap-java flycheck-rust cargo racer howm counsel-tramp dropbox editorconfig editorconfig-generate ox-pandoc c-eldoc ggtags graphviz-dot-mode kotlin-mode php-mode visual-regexp-steroids omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
  '(picasm-db-file "~/.emacs.d/lisp/picasm/picasm-db.el")
  '(plantuml-jar-path "/usr/local/opt/plantuml/libexec/plantuml.jar")
  '(recentf-auto-cleanup (quote never))
@@ -651,25 +651,27 @@
 (setq gtags-suggested-key-mapping t) ; 無効化する場合はコメントアウト
 ;; ファイル保存時に自動的にタグをアップデートする
 (setq gtags-auto-update t) ; 無効化する場合はコメントアウト
-
-
 (use-package lsp-mode
-  :commands lsp)
-(use-package lsp-ui
-  :commands lsp-ui-mode
-  :ensure t
-  :config
-  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
-(use-package company-lsp
-  :after company
-  :commands company-lsp
-  :ensure t
-  :config
-  (push 'company-lsp company-backends)
-  (setq company-lsp-enable-snippet t)
-  (setq company-lsp-enable-recompletion t))
+  :hook (java-mode . lsp-deferred)
+  :commands (lsp lsp-deferred))
 
+;; optionally
+(use-package lsp-ui :commands lsp-ui-mode)
+(use-package company-lsp :commands company-lsp)
+(use-package helm-lsp :commands helm-lsp-workspace-symbol)
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+;; optionally if you want to use debugger
+(use-package lsp-java :ensure t :after lsp
+  :config (add-hook 'java-mode-hook 'lsp))
+(use-package dap-mode
+  :ensure t :after lsp-mode
+  :config
+  (dap-mode t)
+  (dap-ui-mode t))
+(use-package dap-java :after (lsp-java))
+(use-package hydra :ensure t)
+(use-package projectile :ensure t)
+
 
 (use-package dimmer
   :ensure t
@@ -722,29 +724,6 @@
 (use-package kotlin-mode
   :ensure t
   :mode (("\\.kt\\'" . kotlin-mode)))
-
-(use-package projectile :ensure t)
-(use-package treemacs :after (lsp) :ensure t)
-(use-package hydra :ensure t)
-(use-package lsp-java
-  :ensure t
-  :after lsp
-  :config
-  (add-hook 'java-mode-hook 'lsp))
-
-(use-package dap-mode
-  :ensure t :after lsp-mode
-  :config
-  (dap-mode t)
-  (dap-ui-mode t))
-
-(use-package dap-java :after (lsp-java))
-;; (use-package lsp-java-treemacs :after (treemacs))
-(require 'lsp-java-boot)
-
-;; to enable the lenses
-(add-hook 'lsp-mode-hook #'lsp-lens-mode)
-(add-hook 'java-mode-hook #'lsp-java-boot-lens-mode)
 
 (use-package whitespace
   ;; :disabled t
