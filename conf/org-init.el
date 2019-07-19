@@ -158,6 +158,7 @@
   :config
   (org-ac/config-default))
 (use-package org-mu4e
+  :disabled t
   :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e"
   :after (org)
   :config

@@ -501,7 +501,7 @@
 
 (when (equal system-type 'darwin)
   (setq ns-command-modifier (quote meta))
-  (add-to-list 'load-path "/usr/local/Cellar/mu/1.0/share/emacs/site-lisp/mu/mu4e/")
+  (add-to-list 'load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e/")
   (add-to-list 'exec-path " /usr/local/Cellar/phantomjs/2.1.1/bin/phantomjs/")
   (setenv "PATH" (mapconcat 'identity exec-path ":"))
   ;; Set your installed path
