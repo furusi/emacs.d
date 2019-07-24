@@ -372,6 +372,41 @@
                  ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
                  ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
                  ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
+  (add-to-list 'org-latex-classes
+             '("lectureslide"
+               "\\documentclass[unicode,12pt]{beamer}
+\\usepackage{bxdpx-beamer}
+
+\\usepackage{xeCJK}
+\\usepackage{zxjatype}
+\\usepackage{xltxtra} %便利なパッケージ群
+\\setCJKmonofont{IPAGothic}
+\\usepackage{bm}
+\\usepackage{color}
+\\usepackage{listings}
+\\usepackage{siunitx} %si単位系
+\\usepackage{hyperref} %しおり
+\\usepackage{ascmac} %角丸の枠
+\\usepackage{ulem} %下線
+\\usepackage{amsmath,amssymb} %数式，記号
+\\usefonttheme[onlymath]{serif}
+\\usepackage{minted}
+\\usepackage{capt-of} %キャプション
+\\usepackage{fancyhdr} %ヘッダ，フッタ
+\\usepackage{fancybox} %枠
+\\usepackage{tikz} %描画
+\\usetheme[progressbar=frametitle]{metropolis}
+\\metroset{sectionpage=progressbar, block=fill}
+\\setbeamertemplate{navigation symbols}{}
+\\setbeamertemplate{footline}[frame number]
+\\setbeamertemplate{footline}[page number]
+\\setcounter{page}{1}
+               [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
+                 ("\\section\{%s\}"       . "\\section*\{%s\}")
+                 ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
+                 ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
+                 ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
+                 ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
   ;; org-export-latex-no-toc
 (defun org-export-latex-no-toc (depth)
   (when depth
