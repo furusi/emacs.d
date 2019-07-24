@@ -56,7 +56,7 @@
     (("frame" "single")
      ("basicstyle" "{\\ttfamily\\scriptsize}")
      ("numbers" "left")
-     ("commentstyle" "{\\gtfamily\\scriptsize}")
+     ("commentstyle" "{\\ttfamily\\scriptsize}")
      ("breaklines" "true")
      ("showstringspaces" "false"))))
  '(org-latex-minted-options (quote (("frame" "single") ("linenos" "true"))))

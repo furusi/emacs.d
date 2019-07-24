@@ -211,8 +211,9 @@
   :after (org)
   :config
   (setq org-latex-default-class "bxjsarticle")
-  ;; (setq org-latex-pdf-process '("latexmk -gg -pdfdvi  %f")
-  (setq org-latex-pdf-process '("latexmk %f"))
+  ;; (setq org-latex-pdf-process '("latexmk -gg -pdfdvi  %f"))
+  ;; (setq org-latex-pdf-process '("latexmk %f"))
+  (setq org-latex-pdf-process '("latexmk -gg -pdfxe  %f"))
   (add-to-list 'org-latex-packages-alist '("" "minted"))
   (setq org-highlight-latex-and-related '(latex script entities))
 ;(setq org-latex-pdf-process '("latexmk -e '$lualatex=q/lualatex %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex -o %D %S/' -norc -gg -pdflua %f"))
@@ -380,6 +381,7 @@
 \\usepackage{xeCJK}
 \\usepackage{zxjatype}
 \\usepackage{xltxtra} %便利なパッケージ群
+\\setCJKmainfont{HiraginoSans-W4}
 \\setCJKmonofont{IPAGothic}
 \\usepackage{bm}
 \\usepackage{color}
