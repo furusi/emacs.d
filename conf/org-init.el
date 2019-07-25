@@ -397,6 +397,7 @@
 \\usepackage{fancyhdr} %ヘッダ，フッタ
 \\usepackage{fancybox} %枠
 \\usepackage{tikz} %描画
+\\usepackage{graphicx} %画像貼り付け
 \\usetheme[progressbar=frametitle]{metropolis}
 \\metroset{sectionpage=progressbar, block=fill}
 \\setbeamertemplate{navigation symbols}{}
