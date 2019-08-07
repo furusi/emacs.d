@@ -126,15 +126,14 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-(add-to-list 'load-path "~/.emacs.d/lisp/picasm")
-(require 'initchart)
-(initchart-record-execution-time-of load file)
-(initchart-record-execution-time-of require feature)
+;; (add-to-list 'load-path "~/.emacs.d/lisp/picasm")
+;; (require 'initchart)
+;; (initchart-record-execution-time-of load file)
+;; (initchart-record-execution-time-of require feature)
 
 
 
 (recentf-mode 1)
-
 (use-package use-package-ensure-system-package
   :ensure t)
 (add-to-list 'load-path "~/.emacs.d/conf")
@@ -337,7 +336,7 @@
 (add-to-list 'auto-mode-alist '("\\.html?\\'"     . web-mode))
 
 ;;helm
-(when (eq window-system 'ns)
+(when (or (eq window-system 'ns) (eq window-system 'x))
   (use-package helm
   :ensure t
   :bind (("M-x" . helm-M-x)
@@ -447,6 +446,7 @@
   :config
   (setq exec-path-from-shell-check-startup-files nil)
   (exec-path-from-shell-initialize))
+(add-to-list 'load-path "~/.nix-profile/bin")
 
 
 (use-package spaceline :ensure t
@@ -781,5 +781,17 @@
   :bind (:map term-raw-map
               ("C-h" . term-send-backspace)
               ("C-y" . term-paste)))
+;;; GDB 関連
+;;; 有用なバッファを開くモード
+(setq gdb-many-windows t)
+
+;;; 変数の上にマウスカーソルを置くと値を表示
+(add-hook 'gdb-mode-hook '(lambda () (gud-tooltip-mode t)))
+
+;;; I/O バッファを表示
+(setq gdb-use-separate-io-buffer t)
+
+;;; t にすると mini buffer に値が表示される
+(setq gud-tooltip-echo-area nil)
 (provide 'init)
 ;;; init.el ends here

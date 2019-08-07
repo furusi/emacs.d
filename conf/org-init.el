@@ -82,7 +82,7 @@
            "ノート(見出しから書く)"
            entry
            (file+headline, (concat org-directory "notes.org") "MEMO")
-           "* %U %?\n\n%1\n%a\n%F\n")
+           "* %U %?\n\n\n%a\n%F\n")
           ("r" "読みかけ(リンク付き)" entry
            (file ,(concat org-directory "reading.org"))
            "* %?\n %a\n %U\n")
