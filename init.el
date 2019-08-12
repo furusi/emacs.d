@@ -31,41 +31,38 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(backup-directory-alist (quote ((".*" . "~/.ehist"))))
+ '(backup-directory-alist '((".*" . "~/.ehist")))
  '(company-global-modes
-   (quote
-    (not org-mode magit-mode custom-mode magit-status-mode magit-revision-mode magit-diff-mode)))
+   '(not org-mode magit-mode custom-mode magit-status-mode magit-revision-mode magit-diff-mode))
  '(company-idle-delay 0.2)
- '(company-lsp-cache-candidates (quote auto))
+ '(company-lsp-cache-candidates 'auto)
  '(dimmer-exclusion-regexp "^\\\\*helm\\\\|^ \\\\*Minibuf\\\\|^\\\\*Calendar\"")
  '(dimmer-fraction 0.3)
- '(ediff-window-setup-function (quote ediff-setup-windows-plain))
+ '(ediff-window-setup-function 'ediff-setup-windows-plain)
  '(eval-expression-print-length nil)
  '(global-company-mode t)
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
- '(magit-display-buffer-function (quote magit-display-buffer-fullframe-status-v1))
- '(org-babel-load-languages (quote ((emacs-lisp . t) (C . t) (dot . t))))
- '(org-export-backends (quote (ascii html icalendar latex odt taskjuggler)))
+ '(magit-display-buffer-function 'magit-display-buffer-fullframe-status-v1)
+ '(org-babel-load-languages '((emacs-lisp . t) (C . t) (dot . t)))
+ '(org-export-backends '(ascii html icalendar latex odt taskjuggler))
  '(org-journal-date-format "%A, %d %B %Y")
- '(org-journal-dir "/Users/furusho/GoogleDrive/org/journal")
+ '(org-journal-dir "/home/furusho/pCloudDrive/org/journal")
  '(org-latex-default-class "bxjsarticle")
  '(org-latex-listings t)
  '(org-latex-listings-options
-   (quote
-    (("frame" "single")
+   '(("frame" "single")
      ("basicstyle" "{\\ttfamily\\scriptsize}")
      ("numbers" "left")
      ("commentstyle" "{\\ttfamily\\scriptsize}")
      ("breaklines" "true")
-     ("showstringspaces" "false"))))
- '(org-latex-minted-options (quote (("frame" "single") ("linenos" "true"))))
- '(org-latex-pdf-process (quote ("latexmk -gg -pdfdvi  %f")))
+     ("showstringspaces" "false")))
+ '(org-latex-minted-options '(("frame" "single") ("linenos" "true")))
+ '(org-latex-pdf-process '("latexmk -gg -pdfdvi  %f"))
  '(org-return-follows-link t)
- '(org-rst-headline-underline-characters (quote (45 126 94 58 39 32 95)))
+ '(org-rst-headline-underline-characters '(45 126 94 58 39 32 95))
  '(org-src-lang-modes
-   (quote
-    (("html" . web)
+   '(("html" . web)
      ("php" . php)
      ("browser" . web)
      ("ocaml" . tuareg)
@@ -81,11 +78,10 @@
      ("shell" . sh)
      ("bash" . sh)
      ("dot" . graphviz-dot)
-     ("asm" . picasm))))
+     ("asm" . picasm)))
  '(org-src-preserve-indentation t)
  '(org-structure-template-alist
-   (quote
-    (("n" . "notes")
+   '(("n" . "notes")
      ("a" . "export ascii")
      ("c" . "center")
      ("C" . "comment")
@@ -95,29 +91,26 @@
      ("l" . "export latex")
      ("q" . "quote")
      ("s" . "src")
-     ("v" . "verse"))))
+     ("v" . "verse")))
  '(org-taskjuggler-process-command
    "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")
  '(package-selected-packages
-   (quote
-    (groovy-mode ob-rust multi-term back-button python-mode jedi jedi-core lsp-java-treemacs dap-java flycheck-rust cargo racer howm counsel-tramp dropbox editorconfig editorconfig-generate ox-pandoc c-eldoc ggtags graphviz-dot-mode kotlin-mode php-mode visual-regexp-steroids omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
+   '(0x0 all-the-icons-ivy groovy-mode ob-rust multi-term back-button python-mode jedi jedi-core lsp-java-treemacs dap-java flycheck-rust cargo racer howm counsel-tramp dropbox editorconfig editorconfig-generate ox-pandoc c-eldoc ggtags graphviz-dot-mode kotlin-mode php-mode visual-regexp-steroids omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced))
  '(picasm-db-file "~/.emacs.d/lisp/picasm/picasm-db.el")
  '(plantuml-jar-path "/usr/local/opt/plantuml/libexec/plantuml.jar")
- '(recentf-auto-cleanup (quote never))
+ '(recentf-auto-cleanup 'never)
  '(recentf-exclude
-   (quote
-    ("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|MERGEREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" "/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/" "/\\.emacs\\.d/elpa/")))
+   '("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|MERGEREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" "/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/" "/\\.emacs\\.d/elpa/"))
  '(recentf-max-menu-items 30)
  '(recentf-max-saved-items 2000)
  '(rst-compile-toolsets
-   (quote
-    ((html "rst2html.py" ".html" nil)
+   '((html "rst2html.py" ".html" nil)
      (latex "rst2latex.py" ".tex" nil)
      (newlatex "rst2newlatex" ".tex" nil)
      (pseudoxml "rst2pseudoxml.py" ".xml" nil)
      (xml "rst2xml.py" ".xml" nil)
      (pdf "rst2pdf" ".pdf" "-s ja")
-     (s5 "rst2s5.py" ".html" nil))))
+     (s5 "rst2s5.py" ".html" nil)))
  '(zenburn-scale-org-headlines t)
  '(zenburn-scale-outline-headlines t))
 (custom-set-faces
@@ -336,15 +329,14 @@
 (add-to-list 'auto-mode-alist '("\\.html?\\'"     . web-mode))
 
 ;;helm
-(when (or (eq window-system 'ns) (eq window-system 'x))
-  (use-package helm
+(use-package helm
   :ensure t
   :bind (("M-x" . helm-M-x)
-     ("M-y" . helm-show-kill-ring)
-     ("C-x b" . helm-mini)
-     ("C-x C-f" . helm-find-files)
-     ("C-c C-s" . helm-occur)
-     ("C-x j" . helm-recentf))
+         ("M-y" . helm-show-kill-ring)
+         ("C-x b" . helm-mini)
+         ("C-x C-f" . helm-find-files)
+         ("C-c C-s" . helm-occur)
+         ("C-x j" . helm-recentf))
   :config
   (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
   (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
@@ -353,35 +345,34 @@
   (helm-mode 1))
 (use-package helm-config
   :config (helm-mode 1))
-(use-package helm-lsp :commands helm-lsp-workspace-symbol)
-(use-package all-the-icons
-  :ensure t))
+(use-package helm-lsp  :commands helm-lsp-workspace-symbol)
+(use-package all-the-icons  :ensure t)
 
 ;; ivy/counsel
-(when (eq window-system nil)
-  (use-package counsel
-  :ensure t
-  :bind (("C-x C-f" . counsel-find-file)
-         ("C-x j" . counsel-recentf)
-         ("C-c C-i" . counsel-imenux)
-         ("C-s"   . swiper-isearch)
-         ("M-y"   . counsel-yank-pop))
-  :init
-  (ivy-mode 1)
-  (setq ivy-re-builders-alist
-        '((ivy-switch-buffer . ivy--regex-plus)
-          (t . ivy--regex-fuzzy)))
-  (setq ivy-initial-inputs-alist nil))
-(use-package counsel-tramp
-  :ensure t
-  :config
-  (setq tramp-default-method "ssh"))
-(use-package flx
-  :ensure t)
-(use-package all-the-icons-ivy
-  :ensure t
-  :config
-  (all-the-icons-ivy-setqup)))
+;; (when (eq window-system nil)
+;;   (use-package counsel
+;;   :ensure t
+;;   :bind (("C-x C-f" . counsel-find-file)
+;;          ("C-x j" . counsel-recentf)
+;;          ("C-c C-i" . counsel-imenux)
+;;          ("C-s"   . swiper-isearch)
+;;          ("M-y"   . counsel-yank-pop))
+;;   :init
+;;   (ivy-mode 1)
+;;   (setq ivy-re-builders-alist
+;;         '((ivy-switch-buffer . ivy--regex-plus)
+;;           (t . ivy--regex-fuzzy)))
+;;   (setq ivy-initial-inputs-alist nil))
+;; (use-package counsel-tramp
+;;   :ensure t
+;;   :config
+;;   (setq tramp-default-method "ssh"))
+;; (use-package flx
+;;   :ensure t)
+;; (use-package all-the-icons-ivy
+;;   :ensure t
+;;   :config
+;;   (all-the-icons-ivy-setqup)))
 
 
 
@@ -466,6 +457,7 @@
   :config (spaceline-all-the-icons-theme))
 
 (use-package smart-mode-line
+  :disabled t
   :ensure t
   :init
   (column-number-mode t) ;; 列番号の表示
