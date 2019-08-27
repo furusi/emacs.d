@@ -15,23 +15,23 @@
          ("C-c C-\'" . org-insert-structure-template)
          ("C-c C-u" . outline-up-heading-latin))
   :config
-    (defun outline-up-heading-latin ()
+  (defun outline-up-heading-latin ()
     (interactive)
     (outline-up-heading 1 nil)
     (when (bound-and-true-p skk-mode)
       (skk-latin-mode nil)))
 
-    (when (eq system-type 'gnu/linux)
+  (when (eq system-type 'gnu/linux)
     (setq org-directory (expand-file-name "~/pCloudDrive/org/")))
   (when (eq system-type 'darwin)
     (setq org-directory (expand-file-name "~/GoogleDrive/org/")))
 
   (when (not (file-exists-p org-directory))
-      (setq org-directory (expand-file-name "~/org/"))
-      (make-directory (concat org-directory "mobile/") t))
+    (setq org-directory (expand-file-name "~/org/"))
+    (make-directory (concat org-directory "mobile/") t))
 
   (when (file-exists-p org-directory)
-          (setq org-mobile-directory (concat org-directory "mobile/")))
+    (setq org-mobile-directory (concat org-directory "mobile/")))
 
 
   (setq org-agenda-files
@@ -120,20 +120,18 @@
            "* %U %? %^g\n\n%a\n%F\n"
            :empty-lines 1)))
   (setq org-refile-targets
-    (quote (
-        (nil . (:level . 1))
-        (org-agenda-files . (:level . 1)))))
+        (quote ((nil . (:level . 1))
+                (org-agenda-files . (:level . 1)))))
   ;; コードを評価するとき尋ねない
   (setq org-confirm-babel-evaluate nil)
   ;; 有効にする言語 デフォルトでは elisp のみ
   (org-babel-do-load-languages
-   'org-babel-load-languages   '(
-                                 (python   . t)
-                                 (ruby     . t)
-                                 (plantuml . t)
-                                 (java     . t)
-                                 (perl     . t)
-                                 (dot      . t)))
+   'org-babel-load-languages '((python   . t)
+                               (ruby     . t)
+                               (plantuml . t)
+                               (java     . t)
+                               (perl     . t)
+                               (dot      . t)))
    (setq org-refile-targets
        (quote (("notes.org" :level . 1)
                ("todo.org"  :level . 1)
@@ -142,6 +140,18 @@
    (setq org-use-speed-commands t)
    (setq org-icalendar-alarm-time 30)
    (setq org-icalendar-timezone "Asia/Tokyo")
+
+   ;; htmlで数式
+   (setf org-html-mathjax-options
+         '((path "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")
+           (scale "100")
+           (align "center")
+           (indent "2em")
+           (mathml nil))
+         )
+   (setf org-html-mathjax-template
+         "<script type=\"text/javascript\" src=\"%PATH\"></script>")
+   
    (defun my-org-mode-hook ()
      (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
    (add-to-list 'org-babel-load-languages '(org . t))
@@ -403,6 +413,19 @@
 \\setbeamertemplate{navigation symbols}{}
 \\setbeamertemplate{footline}[frame number]
 \\setbeamertemplate{footline}[page number]
+\\setsansfont[ BoldFont={Fira Sans SemiBold}, ItalicFont={Fira Sans Italic}, BoldItalicFont={Fira Sans SemiBold Italic} ]{Fira Sans}
+\\definecolor{myfg}{HTML}{EC9F4C}
+\\definecolor{mainbg}{HTML}{3F597C}
+\\definecolor{mynormalbg}{HTML}{F2F2F2}
+\\definecolor{mynormalfg}{HTML}{4D4D4D}
+\\definecolor{myexampletitlefg}{HTML}{6d86ab}
+\\setbeamercolor{alerted text}{fg=myfg}
+\\setbeamercolor{frameslide}{fg=mynormalbg,bg=mainbg}
+\\setbeamercolor{palette primary}{bg=mainbg}
+\\setbeamercolor{normal text}{fg=mynormalfg,bg=mynormalbg}
+\\setbeamercolor{block title example}{fg=myexampletitlefg}
+\\setCJKmainfont{BIZ-UDGothic}
+
 \\setcounter{page}{1}
                [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
                  ("\\section\{%s\}"       . "\\section*\{%s\}")
