@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: beamer-colorbox
+# key: beamer-colorbox-env
+# group: org
+# --
+\begin{beamercolorbox}
+[wd=50mm, sep=2pt, rounded=true, shadow=false]
+{frametitle}
+$1
+\end{beamercolorbox}

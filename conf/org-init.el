@@ -413,7 +413,9 @@
 \\setbeamertemplate{navigation symbols}{}
 \\setbeamertemplate{footline}[frame number]
 \\setbeamertemplate{footline}[page number]
+\\setbeamertemplate{itemize items}[triangle]
 \\setsansfont[ BoldFont={Fira Sans SemiBold}, ItalicFont={Fira Sans Italic}, BoldItalicFont={Fira Sans SemiBold Italic} ]{Fira Sans}
+\\setCJKmainfont{BIZ-UDGothic}
 \\definecolor{myfg}{HTML}{EC9F4C}
 \\definecolor{mainbg}{HTML}{3F597C}
 \\definecolor{mynormalbg}{HTML}{F2F2F2}
@@ -424,7 +426,7 @@
 \\setbeamercolor{palette primary}{bg=mainbg}
 \\setbeamercolor{normal text}{fg=mynormalfg,bg=mynormalbg}
 \\setbeamercolor{block title example}{fg=myexampletitlefg}
-\\setCJKmainfont{BIZ-UDGothic}
+\\setbeamerfont{alerted text}{series=\\bfseries}
 
 \\setcounter{page}{1}
                [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
