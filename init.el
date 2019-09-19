@@ -31,38 +31,41 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(backup-directory-alist '((".*" . "~/.ehist")))
+ '(backup-directory-alist (quote ((".*" . "~/.ehist"))))
  '(company-global-modes
-   '(not org-mode magit-mode custom-mode magit-status-mode magit-revision-mode magit-diff-mode))
+   (quote
+    (not org-mode magit-mode custom-mode magit-status-mode magit-revision-mode magit-diff-mode)))
  '(company-idle-delay 0.2)
- '(company-lsp-cache-candidates 'auto)
+ '(company-lsp-cache-candidates (quote auto))
  '(dimmer-exclusion-regexp "^\\\\*helm\\\\|^ \\\\*Minibuf\\\\|^\\\\*Calendar\"")
  '(dimmer-fraction 0.3)
- '(ediff-window-setup-function 'ediff-setup-windows-plain)
+ '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(eval-expression-print-length nil)
  '(global-company-mode t)
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
- '(magit-display-buffer-function 'magit-display-buffer-fullframe-status-v1)
- '(org-babel-load-languages '((emacs-lisp . t) (C . t) (dot . t)))
- '(org-export-backends '(ascii html icalendar latex odt taskjuggler))
+ '(magit-display-buffer-function (quote magit-display-buffer-fullframe-status-v1))
+ '(org-babel-load-languages (quote ((emacs-lisp . t) (C . t) (dot . t))))
+ '(org-export-backends (quote (ascii html icalendar latex odt taskjuggler)))
  '(org-journal-date-format "%A, %d %B %Y")
  '(org-journal-dir "/home/furusho/pCloudDrive/org/journal")
  '(org-latex-default-class "bxjsarticle")
  '(org-latex-listings t)
  '(org-latex-listings-options
-   '(("frame" "single")
+   (quote
+    (("frame" "single")
      ("basicstyle" "{\\ttfamily\\scriptsize}")
      ("numbers" "left")
      ("commentstyle" "{\\ttfamily\\scriptsize}")
      ("breaklines" "true")
-     ("showstringspaces" "false")))
- '(org-latex-minted-options '(("frame" "single") ("linenos" "true")))
- '(org-latex-pdf-process '("latexmk -gg -pdfdvi  %f"))
+     ("showstringspaces" "false"))))
+ '(org-latex-minted-options (quote (("frame" "single") ("linenos" "true"))))
+ '(org-latex-pdf-process (quote ("latexmk -gg -pdfdvi  %f")))
  '(org-return-follows-link t)
- '(org-rst-headline-underline-characters '(45 126 94 58 39 32 95))
+ '(org-rst-headline-underline-characters (quote (45 126 94 58 39 32 95)))
  '(org-src-lang-modes
-   '(("html" . web)
+   (quote
+    (("html" . web)
      ("php" . php)
      ("browser" . web)
      ("ocaml" . tuareg)
@@ -78,10 +81,11 @@
      ("shell" . sh)
      ("bash" . sh)
      ("dot" . graphviz-dot)
-     ("asm" . picasm)))
+     ("asm" . picasm))))
  '(org-src-preserve-indentation t)
  '(org-structure-template-alist
-   '(("n" . "notes")
+   (quote
+    (("n" . "notes")
      ("a" . "export ascii")
      ("c" . "center")
      ("C" . "comment")
@@ -91,26 +95,29 @@
      ("l" . "export latex")
      ("q" . "quote")
      ("s" . "src")
-     ("v" . "verse")))
+     ("v" . "verse"))))
  '(org-taskjuggler-process-command
    "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")
  '(package-selected-packages
-   '(0x0 all-the-icons-ivy groovy-mode ob-rust multi-term back-button python-mode jedi jedi-core lsp-java-treemacs dap-java flycheck-rust cargo racer howm counsel-tramp dropbox editorconfig editorconfig-generate ox-pandoc c-eldoc ggtags graphviz-dot-mode kotlin-mode php-mode visual-regexp-steroids omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced))
+   (quote
+    (0x0 all-the-icons-ivy groovy-mode ob-rust multi-term back-button jedi jedi-core lsp-java-treemacs dap-java flycheck-rust cargo racer howm counsel-tramp dropbox editorconfig editorconfig-generate ox-pandoc c-eldoc ggtags graphviz-dot-mode kotlin-mode php-mode visual-regexp-steroids omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq htmlize helm gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
  '(picasm-db-file "~/.emacs.d/lisp/picasm/picasm-db.el")
  '(plantuml-jar-path "/usr/local/opt/plantuml/libexec/plantuml.jar")
- '(recentf-auto-cleanup 'never)
+ '(recentf-auto-cleanup (quote never))
  '(recentf-exclude
-   '("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|MERGEREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" "/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/" "/\\.emacs\\.d/elpa/"))
+   (quote
+    ("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|MERGEREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" "/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/" "/\\.emacs\\.d/elpa/")))
  '(recentf-max-menu-items 30)
  '(recentf-max-saved-items 2000)
  '(rst-compile-toolsets
-   '((html "rst2html.py" ".html" nil)
+   (quote
+    ((html "rst2html.py" ".html" nil)
      (latex "rst2latex.py" ".tex" nil)
      (newlatex "rst2newlatex" ".tex" nil)
      (pseudoxml "rst2pseudoxml.py" ".xml" nil)
      (xml "rst2xml.py" ".xml" nil)
      (pdf "rst2pdf" ".pdf" "-s ja")
-     (s5 "rst2s5.py" ".html" nil)))
+     (s5 "rst2s5.py" ".html" nil))))
  '(zenburn-scale-org-headlines t)
  '(zenburn-scale-outline-headlines t))
 (custom-set-faces
@@ -199,24 +206,6 @@
   (add-hook 'eww-mode-hook 'eww-mode-hook--disable-image))
 
 
-;; (use-package poet-theme
-;;   :ensure t
-;;   :disabled t
-;;   :config
-;;   (load-theme 'poet t))
-;; (use-package zenburn-theme
-;;   :ensure t
-;;   :disabled t
-;;   :config
-;;   (load-theme 'zenburn t))
-;; (use-package spacemacs-theme
-;;   :ensure t
-;;   :load-path "themes"
-;;   :defer t
-;;   :init
-;;   (load-theme 'spacemacs-dark t))
-
-
 
 (autoload 'run-prolog   "prolog" "Start a Prolog sub-process." t)
 (autoload 'prolog-mode  "prolog" "Major mode for editing Prolog programs." t)
@@ -229,7 +218,6 @@
 
 
 (setq recentf-auto-save-timer (run-with-idle-timer 30 t 'recentf-save-list))
-(put 'narrow-to-region 'disabled nil)
 
 
 
@@ -308,39 +296,6 @@
 (use-package helm-lsp  :commands helm-lsp-workspace-symbol)
 (use-package all-the-icons  :ensure t)
 
-;; ivy/counsel
-;; (when (eq window-system nil)
-;;   (use-package counsel
-;;   :ensure t
-;;   :bind (("C-x C-f" . counsel-find-file)
-;;          ("C-x j" . counsel-recentf)
-;;          ("C-c C-i" . counsel-imenux)
-;;          ("C-s"   . swiper-isearch)
-;;          ("M-y"   . counsel-yank-pop))
-;;   :init
-;;   (ivy-mode 1)
-;;   (setq ivy-re-builders-alist
-;;         '((ivy-switch-buffer . ivy--regex-plus)
-;;           (t . ivy--regex-fuzzy)))
-;;   (setq ivy-initial-inputs-alist nil))
-;; (use-package counsel-tramp
-;;   :ensure t
-;;   :config
-;;   (setq tramp-default-method "ssh"))
-;; (use-package flx
-;;   :ensure t)
-;; (use-package all-the-icons-ivy
-;;   :ensure t
-;;   :config
-;;   (all-the-icons-ivy-setqup)))
-
-
-
-;; ido
-;; (ido-mode 1)
-;; (ido-everywhere 1)
-;; (setq ido-enable-flex-matching t) ;; 中間/あいまい一致
-
 
 
 (use-package which-key
@@ -361,37 +316,6 @@
   :ensure t)
 
 
-(defvar mode-line-cleaner-alist
-  '( ;; For minor-mode, first char is 'space'
-    (yas-minor-mode        . " Ys")
-    (paredit-mode          . "")
-    (eldoc-mode            . "")
-    (abbrev-mode           . "")
-    (undo-tree-mode        . " Ut")
-    (elisp-slime-nav-mode  . "")
-    (helm-gtags-mode       . "")
-    (flymake-mode          . "")
-    (editorconfig-mode     . "")
-    ;; Major modes
-    (lisp-interaction-mode . "Lisp")
-    (python-mode           . "Python")
-    (ruby-mode             . "Ruby")
-    (emacs-lisp-mode       . "Elsp")
-    (markdown-mode         . "Mkd")))
-
-;;mode lineの設定
-(defun clean-mode-line ()
-  (interactive)
-  (loop for (mode . mode-str) in mode-line-cleaner-alist
-        do
-        (let ((old-mode-str (cdr (assq mode minor-mode-alist))))
-          (when old-mode-str
-            (setcar old-mode-str mode-str))
-          ;; major mode
-          (when (eq mode major-mode)
-            (setq mode-name mode-str)))))
-
-(add-hook 'after-change-major-mode-hook 'clean-mode-line)
 (use-package exec-path-from-shell
   :ensure t
   :config
@@ -400,32 +324,6 @@
 (add-to-list 'load-path "~/.nix-profile/bin")
 
 
-(use-package spaceline :ensure t
-  :disabled t
-  :config
-  (setq-default mode-line-format '("%e" (:eval (spaceline-ml-main)))))
-
-(use-package spaceline-config :ensure spaceline
-  :disabled t
-  :config
-  (spaceline-helm-mode 1)
-  (spaceline-spacemacs-theme))
-
-(use-package spaceline-all-the-icons
-  :disabled t
-  :after spaceline
-  :config (spaceline-all-the-icons-theme))
-
-(use-package smart-mode-line
-  :disabled t
-  :ensure t
-  :init
-  (column-number-mode t) ;; 列番号の表示
-  (line-number-mode t) ;; 行番号の表示
-  (defvar sml/no-confirm-load-theme t)
-  (defvar sml/theme 'dark) ;; お好みで
-  (defvar sml/shorten-directory -1) ;; directory pathはフルで表示されたいので
-  (sml/setup))
 
 (use-package keyfreq
   :ensure t
@@ -486,38 +384,6 @@
   (setq org-plantuml-jar-path   "/usr/local/opt/plantuml/libexec/plantuml.jar"))
 
 
-(use-package migemo
-  :disabled t
-  :ensure t
-  :config
-  (setq migemo-command "cmigemo")
-  (setq migemo-options '("-q" "--emacs"))
-  ;; Set your installed path
-  ;;(setq migemo-dictionary "/usr/local/Cellar/cmigemo/HEAD-5c014a8/share/migemo/utf-8/migemo-dict")
-  (setq migemo-user-dictionary nil)
-  (setq migemo-regex-dictionary nil)
-  (setq migemo-coding-system 'utf-8-unix)
-  (migemo-init)
-  (helm-migemo-mode 1))
-
-
-(use-package flycheck
-  :ensure t
-  :init
-  (global-flycheck-mode)
-  :config
-  (setq flycheck-python-pycompile-executable (executable-find "python3"))
-  (setq flycheck-python-flake8-executable (executable-find "flake8"))
-  (setq flycheck-python-pylint-executable (executable-find "pylint")))
-
-;; (with-temp-buffer
-;;   (url-insert-file-contents "https://raw.github.com/steckerhalter/ob-php/master/ob-php.el")
-;;   (eval-buffer))
-;; (require 'ob-php)
-
-;; (add-to-list 'org-babel-load-languages '(php . t))
-
-
 (use-package sudo-edit
   :ensure t)
 (setq-default tab-width 4 indent-tabs-mode nil)
@@ -552,91 +418,42 @@
   ;; (push '(company-semantic :with company-yasnippet) company-backends)
   ;(custom-set-variables '(company-idle-delay nil))
 
-  (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
-)
+  (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends)))
 
-
-;(cua-mode t) ; cua-modeをオン
-;(setq cua-enable-cua-keys nil)
 
 (use-package php-mode
   :mode (("\\.php\\'" . web-mode))
   :ensure t )
 
-
-(use-package python-mode
-  :ensure t
-  :mode ("\\.py\\'" . python-mode)
-  :init
-  (add-hook 'python-mode-hook
-            (lambda ()
-              (setq-default indent-tabs-mode t)
-              (setq-default tab-width 4)
-              (setq-default py-indent-tabs-mode t)))
-  :config
-  (setq python-shell-interpreter "python3")
-  ;; (add-hook 'python-mode-hook #'lsp)
-  (setq py-python-command "python3"))
-(use-package jedi
-  :hook python-mode
-  :ensure t)
-(use-package company-jedi
-  :ensure t
-  :hook python-mode
-  :config
-  (add-hook 'python-mode-hook 'jedi:setup)
-  (setq jedi:complete-on-dot t)
-  (add-to-list 'company-backends 'company-jedi))
-
-
-(use-package pipenv
-  :ensure t
-  :hook (python-mode . pipenv-mode)
-  :init
-  (setq
-   pipenv-projectile-after-switch-function
-   #'pipenv-projectile-after-switch-extended))
-
-(put 'set-goal-column 'disabled nil)
-
-;; gtags-modeのキーバインドを有効化する
-(setq gtags-suggested-key-mapping t) ; 無効化する場合はコメントアウト
-;; ファイル保存時に自動的にタグをアップデートする
-(setq gtags-auto-update t) ; 無効化する場合はコメントアウト
 (use-package lsp-mode
   :hook (java-mode . lsp-deferred)
+  (python-mode . lsp-deferred)
   :commands (lsp lsp-deferred))
 
-;; optionally
-(use-package lsp-ui :commands lsp-ui-mode)
-(use-package company-lsp :commands company-lsp)
+;; ;; optionally
+(use-package lsp-ui
+  :hook (lsp-mode . lsp-ui-mode)
+  :commands lsp-ui-mode)
+;; (use-package company-lsp :commands company-lsp)
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
-(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
-;; optionally if you want to use debugger
-(use-package lsp-java :ensure t :after lsp
-  :config (add-hook 'java-mode-hook 'lsp))
-(use-package dap-mode
-  :ensure t :after lsp-mode
-  :config
-  (dap-mode t)
-  (dap-ui-mode t))
-(use-package dap-java :after (lsp-java))
-(use-package hydra :ensure t)
-(use-package projectile :ensure t)
+;; (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+;; ;; optionally if you want to use debugger
+;; (use-package lsp-java :ensure t :after lsp
+;;   :config (add-hook 'java-mode-hook 'lsp))
+;; (use-package dap-mode
+;;   :ensure t :after lsp-mode
+;;   :config
+;;   (dap-mode t)
+;;   (dap-ui-mode t))
+;; (use-package dap-java :after (lsp-java))
+;; (use-package hydra :ensure t)
+;; (use-package projectile :ensure t)
 
 
-(use-package dimmer
-  :ensure t
-  :init
-  (dimmer-mode)
-  )
-(use-package graphviz-dot-mode
-  :ensure t)
 
-
-;;git clone git@github.com:rswarbrick/picasm.git ~/.emacs.d/lisp/picasm
-(use-package picasm
-  :load-path "~/.emacs.d/lisp/picasm/")
+;; ;;git clone git@github.com:rswarbrick/picasm.git ~/.emacs.d/lisp/picasm
+;; (use-package picasm
+;;   :load-path "~/.emacs.d/lisp/picasm/")
 
 (use-package rust-mode
   :ensure t
@@ -649,12 +466,6 @@
          (racer-mode . eldoc-mode)))
 (use-package cargo
   :ensure t)
-(use-package flycheck-rust
-  :ensure t
-  :config
-  (setq flycheck-rust-cargo-executable "~/.cargo/bin/cargo")
-  (with-eval-after-load 'rust-mode
-    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
 
 (use-package ccls
   :ensure t
@@ -694,45 +505,16 @@
   (setq whitespace-space-regexp "\\(\u3000+\\)")
   (global-whitespace-mode 1))
 
-(use-package omnisharp
-  :ensure t
-  :hook (csharp-mode . omnisharp-mode)
-  :init
-  (add-to-list 'company-backends 'company-omnisharp))
-(use-package visual-regexp-steroids
-  :ensure t)
 
-(use-package ox-pandoc
-  :ensure t
-  :after org-plus-contrib
-  :demand t
-  :config
-  ;; default options for all output formats
-(setq org-pandoc-options '((standalone . t)))
-;; cancel above settings only for 'docx' format
-(setq org-pandoc-options-for-docx '((standalone . nil))))
 (use-package plantuml-mode
   :ensure t
   :config
   (when (eq system-type 'darwin)
     (setq plantuml-jar-path "/usr/local/opt/plantuml/libexec/plantuml.jar")))
-(use-package editorconfig
-  :ensure t
-  :config
-  (editorconfig-mode 1))
-(use-package editorconfig-generate
-  :ensure t)
-(use-package howm
-  :ensure t)
 (use-package back-button
   :ensure t
   :config
   (back-button-mode 1))
-(use-package multi-term
-  :ensure t
-  :bind (:map term-raw-map
-              ("C-h" . term-send-backspace)
-              ("C-y" . term-paste)))
 ;;; GDB 関連
 ;;; 有用なバッファを開くモード
 (setq gdb-many-windows t)
@@ -745,5 +527,40 @@
 
 ;;; t にすると mini buffer に値が表示される
 (setq gud-tooltip-echo-area nil)
+
+;;from https://uwabami.github.io/cc-env/Emacs.html
+(defun my:make-scratch (&optional arg)
+  (interactive)
+  (progn
+    ;; "*scratch*" を作成して buffer-list に放り込む
+    (set-buffer (get-buffer-create "*scratch*"))
+    (funcall initial-major-mode)
+    (erase-buffer)
+    (when (and initial-scratch-message (not inhibit-startup-message))
+      (insert initial-scratch-message))
+    (or arg
+        (progn
+          (setq arg 0)
+          (switch-to-buffer "*scratch*")))
+    (cond ((= arg 0) (message "*scratch* is cleared up."))
+          ((= arg 1) (message "another *scratch* is created")))))
+;;
+(defun my:buffer-name-list ()
+  (mapcar (function buffer-name) (buffer-list)))
+(add-hook 'kill-buffer-query-functions
+          ;; *scratch* バッファで kill-buffer したら内容を消去するだけにする
+          (function (lambda ()
+                      (if (string= "*scratch*" (buffer-name))
+                          (progn (my:make-scratch 0) nil)
+                        t))))
+(add-hook 'after-save-hook
+          ;; *scratch* バッファの内容を保存したら
+          ;; *scratch* バッファを新しく作る.
+          (function
+           (lambda ()
+             (unless (member "*scratch*" (my:buffer-name-list))
+               (my:make-scratch 1)))))
+
 (provide 'init)
 ;;; init.el ends here
+
