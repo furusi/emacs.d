@@ -21,6 +21,10 @@
     (when (bound-and-true-p skk-mode)
       (skk-latin-mode nil)))
 
+(when (equal system-type 'darwin)
+  (setq org-plantuml-jar-path   "/usr/local/opt/plantuml/libexec/plantuml.jar"))
+
+
   (when (eq system-type 'gnu/linux)
     (setq org-directory (expand-file-name "~/pCloudDrive/org/")))
   (when (eq system-type 'darwin)
