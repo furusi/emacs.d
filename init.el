@@ -13,7 +13,7 @@
   (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
   ;; Orgを追加
   (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-  ;;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
+  (add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
   (when (< emacs-major-version 24)
     ;; For important compatibility libraries like cl-lib
     (add-to-list 'package-archives '("gnu" . (concat proto "://elpa.gnu.org/packages/")))))
@@ -141,26 +141,7 @@
           (global-set-key "\C-x\C-j" 'skk-mode))
 (global-set-key "\C-t" 'other-window)
 
-(setq-default indent-tabs-mode nil)
-
-;; eww
-(defun eww-disable-images ()
-  "eww で画像表示させない"
-  (interactive)
-  (setq-local shr-put-image-function 'shr-put-image-alt)
-  (eww-reload))
-(defun eww-enable-images ()
-  "eww で画像表示させる"
-  (interactive)
-  (setq-local shr-put-image-function 'shr-put-image)
-  (eww-reload))
-(defun shr-put-image-alt (spec alt &optional flags)
-  (insert alt))
-;; はじめから非表示
-(defun eww-mode-hook--disable-image ()
-  (setq-local shr-put-image-function 'shr-put-image-alt))
-(add-hook 'eww-mode-hook 'eww-mode-hook--disable-image)
-;; eww
+;; (setq-default indent-tabs-mode nil)
 
 (use-package restart-emacs
   :ensure t)
@@ -198,39 +179,43 @@
 (use-package eww
   :commands (eww)
   :config
-  (setq eww-search-prefix "http://www.google.co.jp/search?q="))
-
-;;(setq coding-system-for-read 'utf-8)
-(use-package poet-theme
-  :ensure t
-  :disabled t
-  :config
-  (load-theme 'poet t))
-(use-package zenburn-theme
-  :ensure t
-  :disabled t
-  :config
-  (load-theme 'zenburn t))
-(use-package spacemacs-theme
-  :ensure t
-  :load-path "themes"
-  :defer t
-  :init
-  (load-theme 'spacemacs-dark t))
-
+  (setq eww-search-prefix "http://www.google.co.jp/search?q=")
+;; eww
+  (defun eww-disable-images ()
+    "eww で画像表示させない"
+    (interactive)
+    (setq-local shr-put-image-function 'shr-put-image-alt)
+    (eww-reload))
+  (defun eww-enable-images ()
+    "eww で画像表示させる"
+    (interactive)
+    (setq-local shr-put-image-function 'shr-put-image)
+    (eww-reload))
+  (defun shr-put-image-alt (spec alt &optional flags)
+    (insert alt))
+  ;; はじめから非表示
+  (defun eww-mode-hook--disable-image ()
+    (setq-local shr-put-image-function 'shr-put-image-alt))
+  (add-hook 'eww-mode-hook 'eww-mode-hook--disable-image))
 
 
-(use-package htmlize
-  :ensure t)
+;; (use-package poet-theme
+;;   :ensure t
+;;   :disabled t
+;;   :config
+;;   (load-theme 'poet t))
+;; (use-package zenburn-theme
+;;   :ensure t
+;;   :disabled t
+;;   :config
+;;   (load-theme 'zenburn t))
+;; (use-package spacemacs-theme
+;;   :ensure t
+;;   :load-path "themes"
+;;   :defer t
+;;   :init
+;;   (load-theme 'spacemacs-dark t))
 
-
-(use-package undo-tree
-  :ensure t
-  :bind (("M-/" . undo-tree-undo))
-  :init
-  (undo-tree-mode)
-  :config
-  (global-undo-tree-mode t))
 
 
 (autoload 'run-prolog   "prolog" "Start a Prolog sub-process." t)
@@ -262,6 +247,15 @@
   ;;; 永続化を無視するファイル名の正規表現
   (setq undohist-ignored-files
         '("/tmp/" "COMMIT_EDITMSG")))
+
+(use-package undo-tree
+  :ensure t
+  :bind (("M-/" . undo-tree-undo))
+  :init
+  (undo-tree-mode)
+  :config
+  (global-undo-tree-mode t))
+
 
 (use-package auto-save-buffers-enhanced
   :ensure t
