@@ -250,7 +250,7 @@
 \\usepackage{graphicx}
 \\usepackage{hyperref}
 \\usepackage{fancyhdr}
-\\usepackage{listings, jlisting}
+\\usepackage{listings}
 \\usepackage{fancybox}
 \\ifdefined\\kanjiskip
   \\usepackage{pxjahyper}
