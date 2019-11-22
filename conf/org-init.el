@@ -389,7 +389,7 @@
                  ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
   (add-to-list 'org-latex-classes
              '("lectureslide"
-               "\\documentclass[unicode,12pt]{beamer}
+               "\\documentclass[unicode,11pt]{beamer}
 \\usepackage{bxdpx-beamer}
 
 \\usepackage{xeCJK}
