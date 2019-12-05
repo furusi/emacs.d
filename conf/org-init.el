@@ -471,6 +471,16 @@
 (use-package ob-rust
   :after (org)
   :ensure t)
+(setq org-publish-project-alist
+      '(("aip3"
+        :base-directory "~/git/advancedinformationprocessing3/org"
+        :publishing-directory "~/git/advancedinformationprocessing3/pub"
+        :base-extension "org"
+        :publishing-function org-html-publish-to-html
+        :with-tags nil
+        :auto-sitemap t
+        :makeindex t
+        :recursive t)))
 
 (provide 'org-init)
 ;;; org-init.el ends here
