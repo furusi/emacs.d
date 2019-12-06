@@ -480,6 +480,12 @@
         :with-tags nil
         :auto-sitemap t
         :makeindex t
+        :recursive t)
+        ("aip3-image"
+        :base-directory "~/git/advancedinformationprocessing3/image"
+        :publishing-directory "~/git/advancedinformationprocessing3/pub/image"
+        :base-extension "jpg\\|png\\|pdf"
+        :publishing-function org-publish-attachment
         :recursive t)))
 
 (provide 'org-init)
