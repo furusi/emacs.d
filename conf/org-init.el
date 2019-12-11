@@ -28,7 +28,7 @@
   (when (eq system-type 'gnu/linux)
     (setq org-directory (expand-file-name "~/pCloudDrive/org/")))
   (when (eq system-type 'darwin)
-    (setq org-directory (expand-file-name "~/GoogleDrive/org/")))
+    (setq org-directory (expand-file-name "~/Dropbox/org/")))
 
   (when (not (file-exists-p org-directory))
     (setq org-directory (expand-file-name "~/org/"))
