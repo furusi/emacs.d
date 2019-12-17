@@ -471,6 +471,10 @@
 (use-package ob-rust
   :after (org)
   :ensure t)
+(use-package ox-asciidoc
+  :after (org)
+  :ensure t)
+
 (setq org-publish-project-alist
       '(("aip3"
         :base-directory "~/git/advancedinformationprocessing3/org"
