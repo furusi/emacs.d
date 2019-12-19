@@ -285,7 +285,8 @@
          ("C-x b" . helm-mini)
          ("C-x C-f" . helm-find-files)
          ("C-c C-s" . helm-occur)
-         ("C-x j" . helm-recentf))
+         ("C-x j" . helm-recentf)
+         ("C-x r l" . helm-bookmarks))
   :config
   (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
   (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
@@ -523,6 +524,7 @@
 (use-package ox-hugo
   :ensure t            ;Auto-install the package from Melpa (optional)
   :after ox)
+(use-package adoc-mode)
 ;;; GDB 関連
 ;;; 有用なバッファを開くモード
 (setq gdb-many-windows t)
