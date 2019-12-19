@@ -81,7 +81,7 @@
      ("shell" . sh)
      ("bash" . sh)
      ("dot" . graphviz-dot)
-     ("asm" . picasm))))
+     ("asm" . asm))))
  '(org-src-preserve-indentation t)
  '(org-structure-template-alist
    (quote

@@ -464,6 +464,7 @@
   :ensure org-plus-contrib
   :after (org)
   :config
+  ;; ignoreタグで見出しを非表示にしつつ内容を表示する
   (ox-extras-activate '(latex-header-blocks ignore-headlines)))
 (use-package ob-kotlin
   :after (org)
@@ -483,6 +484,7 @@
         :publishing-function org-html-publish-to-html
         :with-tags nil
         :auto-sitemap t
+        :with-tags nil
         :makeindex t
         :recursive t)
         ("aip3-image"
