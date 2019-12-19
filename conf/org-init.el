@@ -482,6 +482,7 @@
         :publishing-directory "~/git/advancedinformationprocessing3/pub"
         :base-extension "org"
         :publishing-function org-html-publish-to-html
+        :html-postamble "<a href=\"index.html\">サイトのトップへ戻る</a>"
         :with-tags nil
         :auto-sitemap t
         :with-tags nil

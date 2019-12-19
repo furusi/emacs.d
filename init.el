@@ -519,8 +519,8 @@
   (back-button-mode 1))
 
 (use-package htmlize
-  :ensure t
-  :disabled t) ;;org-publishが動かない
+  :disabled t ;;org-publishが動かない
+  :ensure t)
 (use-package ox-hugo
   :ensure t            ;Auto-install the package from Melpa (optional)
   :after ox)
