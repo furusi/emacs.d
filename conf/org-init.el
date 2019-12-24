@@ -73,7 +73,7 @@
            "* %?\n %U\n")
           ("t" "タスク" entry
            (file ,(concat org-directory "task.org"))
-           "* TODO %? %i\n %a\n %U\n")
+           "* TODO %? %i\n %U\n")
           ("e" "イベント" entry
            (file ,(concat org-directory "event.org"))
            "* EVENT %? %i\n %a\n %U\n")
@@ -81,12 +81,12 @@
            "ノート(本文から書く)"
            entry
            (file+headline, (concat org-directory "notes.org") "MEMO")
-           "* %U \n\n%?\n%a\n%F\n")
+           "* %U \n\n%?\n")
           ("N"
            "ノート(見出しから書く)"
            entry
            (file+headline, (concat org-directory "notes.org") "MEMO")
-           "* %U %?\n\n\n%a\n%F\n")
+           "* %U %?\n\n\n")
           ("r" "読みかけ(リンク付き)" entry
            (file ,(concat org-directory "reading.org"))
            "* %?\n %a\n %U\n")
@@ -121,7 +121,7 @@
            "'あれ'についてのメモ"
            entry
            (file+headline , (concat org-directory "notes.org") "MEMO")
-           "* %U %? %^g\n\n%a\n%F\n"
+           "* %U %? %^g\n\n"
            :empty-lines 1)))
   (setq org-refile-targets
         (quote ((nil . (:level . 1))
