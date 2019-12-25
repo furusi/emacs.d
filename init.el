@@ -544,6 +544,10 @@
 ;;; バックアップファイルを作成しない
 (setq make-backup-files t)
 
+;;;ediff時にorgファイルを全て表示する
+(with-eval-after-load 'outline
+  (add-hook 'ediff-prepare-buffer-hook #'org-show-all))
+
 ;;from https://uwabami.github.io/cc-env/Emacs.html
 (defun my:make-scratch (&optional arg)
   (interactive)
