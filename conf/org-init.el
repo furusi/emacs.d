@@ -475,6 +475,8 @@
 (use-package ox-asciidoc
   :after (org)
   :ensure t)
+(use-package ob-browser
+  :ensure t)
 
 (setq org-publish-project-alist
       '(("aip3"
