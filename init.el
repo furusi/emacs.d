@@ -32,6 +32,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(backup-directory-alist (quote ((".*" . "~/.ehist"))))
+ '(comment-style (quote multi-line))
  '(company-global-modes
    (quote
     (not org-mode magit-mode custom-mode magit-status-mode magit-revision-mode magit-diff-mode)))
