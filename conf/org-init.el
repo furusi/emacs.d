@@ -21,8 +21,8 @@
     (when (bound-and-true-p skk-mode)
       (skk-latin-mode nil)))
 
-(when (equal system-type 'darwin)
-  (setq org-plantuml-jar-path   "/usr/local/opt/plantuml/libexec/plantuml.jar"))
+  (when (equal system-type 'darwin)
+    (setq org-plantuml-jar-path   "/usr/local/opt/plantuml/libexec/plantuml.jar"))
 
 
   (when (eq system-type 'gnu/linux)
