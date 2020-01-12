@@ -1,0 +1,63 @@
+# -*- mode: snippet -*-
+# name: dotの新規グラフ
+# key: dot-new-graph
+# --
+// dotファイルはdigraphまたはgraphで始めます
+// graph_nameはこの例でのグラフ名です。
+digraph graph_name {
+
+  //graph settings
+  graph [
+    charset = "UTF-8";
+    // graphは予約語です。
+    // ここにグラフ全体の設定を行います。
+  ];
+
+  // node common setting
+  node [
+    // nodeは予約語です。
+    // ここで設定した属性はすべてのノードに反映されます。
+    // ノードの共通の設定はここに記述します。
+  ];
+
+  // edge common setting
+  edge [
+    // edgeは予約語です。
+    // ここで設定した属性はすべてのエッジに反映されます。
+    // エッジの共通の設定はここに記述します。
+  ];
+
+  // define alpha node
+  alpha [
+    // alphaという名前はこの例で付けたノード名です。任意の名前を付けることができます。
+    // ここにalphaノード固有の属性を設定します。
+  ];
+
+  // define beta node
+  beta [
+    // betaという名前はこの例で付けたノード名です。任意の名前を付けることができます。
+    // ここにbetaノード固有の属性を設定します。
+  ];
+
+  // define gamma and delta, epsilon node
+  gamma, delta, epsilon [
+    // 複数のノードに同じ属性を設定したい場合はカンマで区切って定義します。
+    // ここにgamma,delta, epsilonノードの属性を設定します。
+  ];
+
+  // define alpha-beta edge
+  alpha -> beta [
+    // ここにalphaからbetaのエッジ固有の属性を設定します。
+  ];
+
+  // define gamma-delta-epsilon edge
+  gamma -> delta -> epsilon [
+    // 複数のノードを繋げることで連続してエッジを定義することができます。
+  ];
+
+  // define subgraph
+  subgraph cluster_sub1 [
+     // ここにサブグラフの属性を設定します。
+  ];
+
+}
