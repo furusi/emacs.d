@@ -435,6 +435,7 @@
 
 (use-package lsp-mode
   :hook ((java-mode . lsp-deferred)
+         (rust-mode . lsp-deferred)
          (python-mode . lsp-deferred))
   :commands (lsp lsp-deferred))
 
@@ -480,7 +481,8 @@
   :hook ((rust-mode  . racer-mode)
          (racer-mode . eldoc-mode)))
 (use-package cargo
-  :ensure t)
+  :ensure t
+  :hook (rust-mode . cargo-minor-mode))
 
 (use-package ccls
   :ensure t
@@ -546,6 +548,8 @@
 (use-package ox-epub
   :ensure t)
 (use-package pandoc
+  :ensure t)
+(use-package graphviz-dot-mode
   :ensure t)
 
 ;;; GDB 関連
