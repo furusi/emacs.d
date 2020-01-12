@@ -101,7 +101,7 @@
    "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")
  '(package-selected-packages
    (quote
-    (review-mode pandoc ox-epub ob-browser htmlize adoc-mode ox-asciidoc ox-hugo org company-arduino arduino-mode pandoc-mode lorem-ipsum undo-propose 0x0 all-the-icons-ivy groovy-mode ob-rust multi-term back-button jedi jedi-core lsp-java-treemacs dap-java flycheck-rust cargo racer howm counsel-tramp dropbox editorconfig editorconfig-generate ox-pandoc c-eldoc ggtags graphviz-dot-mode kotlin-mode php-mode visual-regexp-steroids omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq helm gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
+    (gnu-elpa-keyring-update rustic review-mode pandoc ox-epub ob-browser htmlize adoc-mode ox-asciidoc ox-hugo org company-arduino arduino-mode pandoc-mode lorem-ipsum undo-propose 0x0 all-the-icons-ivy groovy-mode ob-rust multi-term back-button jedi jedi-core lsp-java-treemacs dap-java flycheck-rust cargo racer howm counsel-tramp dropbox editorconfig editorconfig-generate ox-pandoc c-eldoc ggtags graphviz-dot-mode kotlin-mode php-mode visual-regexp-steroids omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq helm gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
  '(php-manual-url (quote ja))
  '(picasm-db-file "~/.emacs.d/lisp/picasm/picasm-db.el")
  '(plantuml-jar-path "/usr/local/opt/plantuml/libexec/plantuml.jar")
@@ -123,6 +123,7 @@
  '(sp-escape-quotes-after-insert nil)
  '(zenburn-scale-org-headlines t)
  '(zenburn-scale-outline-headlines t))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -286,7 +287,7 @@
          ("M-y" . helm-show-kill-ring)
          ("C-x b" . helm-mini)
          ("C-x C-f" . helm-find-files)
-         ("C-c C-s" . helm-occur)
+         ("M-s o" . helm-occur)
          ("C-x j" . helm-recentf)
          ("C-x r l" . helm-bookmarks))
   :config
@@ -356,7 +357,7 @@
 (when (equal system-type 'darwin)
   (setq ns-command-modifier (quote meta))
   (add-to-list 'load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e/")
-  (add-to-list 'exec-path " /usr/local/Cellar/phantomjs/2.1.1/bin/phantomjs/")
+  ;; (add-to-list 'exec-path " /usr/local/Cellar/phantomjs/2.1.1/bin/phantomjs/")
   (setenv "PATH" (mapconcat 'identity exec-path ":"))
   ;; Set your installed path
   (setq migemo-dictionary "/usr/local/Cellar/cmigemo/HEAD-5c014a8/share/migemo/utf-8/migemo-dict")
@@ -406,7 +407,8 @@
               ("C-n"   . 'company-select-next)
               ("C-p"   . 'company-select-previous))
   :hook ((org-mode . company-mode)
-         (racer-mode . company-mode))
+         (racer-mode . company-mode)
+         (rust-mode . company-mode))
   :config
   ;; (global-company-mode 1)
   (define-key company-mode-map (kbd "C-M-i") 'company-complete)
@@ -432,8 +434,8 @@
   :ensure t )
 
 (use-package lsp-mode
-  :hook (java-mode . lsp-deferred)
-  (python-mode . lsp-deferred)
+  :hook ((java-mode . lsp-deferred)
+         (python-mode . lsp-deferred))
   :commands (lsp lsp-deferred))
 
 ;; ;; optionally
@@ -442,15 +444,16 @@
   :commands lsp-ui-mode)
 ;; (use-package company-lsp :commands company-lsp)
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
-;; (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 ;; ;; optionally if you want to use debugger
 ;; (use-package lsp-java :ensure t :after lsp
 ;;   :config (add-hook 'java-mode-hook 'lsp))
 ;; (use-package dap-mode
-;;   :ensure t :after lsp-mode
+;;   :ensure t
+;;   :after lsp-mode
 ;;   :config
-;;   (dap-mode t)
-;;   (dap-ui-mode t))
+;;   (dap-mode 1)
+;;   (dap-ui-mode 1))
 ;; (use-package dap-java :after (lsp-java))
 ;; (use-package hydra :ensure t)
 ;; (use-package projectile :ensure t)
@@ -467,6 +470,11 @@
   (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
   (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
   (setq company-tooltip-align-annotations t))
+(use-package rustic
+  :disabled
+  :ensure t
+  :config
+  (setq rustic-lsp-server 'rust-analyzer))
 (use-package racer
   :ensure t
   :hook ((rust-mode  . racer-mode)
@@ -530,6 +538,8 @@
   :ensure t            ;Auto-install the package from Melpa (optional)
   :after ox)
 (use-package adoc-mode
+  :ensure t)
+(use-package ob-browser
   :ensure t)
 (use-package htmlize
   :ensure t)
