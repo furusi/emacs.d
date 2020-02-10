@@ -21,9 +21,9 @@
         '(("tni" nil ("ティ" . "てぃ"))
           ("dni" nil ("ディ" . "でぃ"))))
   ;; isearch
-  (add-hook 'isearch-mode-hook 'skk-isearch-mode-setup) ; isearch で skk のセットアップ
-  (add-hook 'isearch-mode-end-hook 'skk-isearch-mode-cleanup) ; isearch で skk のクリーンアップ
-  (setq skk-isearch-start-mode 'latin); isearch で skk の初期状態
+  ;; (add-hook 'isearch-mode-hook 'skk-isearch-mode-setup) ; isearch で skk のセットアップ
+  ;; (add-hook 'isearch-mode-end-hook 'skk-isearch-mode-cleanup) ; isearch で skk のクリーンアップ
+  ;; (setq skk-isearch-start-mode 'latin); isearch で skk の初期状態
 
   :config
   (setq skk-egg-like-newline t);;non-nilにするとEnterでの確定時に改行しない

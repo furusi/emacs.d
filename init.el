@@ -31,6 +31,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ace-isearch-function (quote ace-jump-word-mode))
  '(backup-directory-alist (quote ((".*" . "~/.ehist"))))
  '(comment-style (quote multi-line))
  '(company-global-modes
@@ -101,7 +102,7 @@
    "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")
  '(package-selected-packages
    (quote
-    (gnu-elpa-keyring-update rustic review-mode pandoc ox-epub ob-browser htmlize adoc-mode ox-asciidoc ox-hugo org company-arduino arduino-mode pandoc-mode lorem-ipsum undo-propose 0x0 all-the-icons-ivy groovy-mode ob-rust multi-term back-button jedi jedi-core lsp-java-treemacs dap-java flycheck-rust cargo racer howm counsel-tramp dropbox editorconfig editorconfig-generate ox-pandoc c-eldoc ggtags graphviz-dot-mode kotlin-mode php-mode visual-regexp-steroids omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq helm gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
+    (ace-jump-mode ace-isearch helm-swoop helm-migemo migemo gnu-elpa-keyring-update rustic review-mode pandoc ox-epub ob-browser htmlize adoc-mode ox-asciidoc ox-hugo org company-arduino arduino-mode pandoc-mode lorem-ipsum undo-propose 0x0 all-the-icons-ivy groovy-mode ob-rust multi-term back-button jedi jedi-core lsp-java-treemacs dap-java flycheck-rust cargo racer howm counsel-tramp dropbox editorconfig editorconfig-generate ox-pandoc c-eldoc ggtags graphviz-dot-mode kotlin-mode php-mode visual-regexp-steroids omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq helm gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
  '(php-manual-url (quote ja))
  '(picasm-db-file "~/.emacs.d/lisp/picasm/picasm-db.el")
  '(plantuml-jar-path "/usr/local/opt/plantuml/libexec/plantuml.jar")
@@ -120,6 +121,14 @@
      (xml "rst2xml.py" ".xml" nil)
      (pdf "rst2pdf" ".pdf" "-s ja")
      (s5 "rst2s5.py" ".html" nil))))
+ '(skk-isearch-mode-string-alist
+   (quote
+    ((hiragana . "[か] ")
+     (katakana . "[カ] ")
+     (jisx0208-latin . "[英] ")
+     (latin . "")
+     (abbrev . "[aあ] ")
+     (nil . "[--] "))))
  '(sp-escape-quotes-after-insert nil)
  '(zenburn-scale-org-headlines t)
  '(zenburn-scale-outline-headlines t))
@@ -282,6 +291,7 @@
 
 ;;helm
 (use-package helm
+  :after migemo
   :ensure t
   :bind (("M-x" . helm-M-x)
          ("M-y" . helm-show-kill-ring)
@@ -294,6 +304,7 @@
   (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
   (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
   (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
+  (helm-migemo-mode 1)
   (helm-autoresize-mode 1)
   (helm-mode 1))
 (use-package helm-config
@@ -354,13 +365,35 @@
                '(".*IPAex.*" . 1.1))
   (setq org-plantuml-jar-path   "/usr/bin/plantuml"))
 
+  (use-package migemo
+    :ensure t
+    :config
+    (setq migemo-command "/usr/local/bin/cmigemo")
+    (setq migemo-options '("-q" "--emacs"))
+    (setq migemo-coding-system 'utf-8-unix)
+    ;; Set your installed path
+    (when (eq system-type 'darwin)
+      (setq migemo-dictionary "/usr/local/opt/cmigemo/share/migemo/utf-8/migemo-dict"))
+    (setq migemo-user-dictionary nil)
+    (setq migemo-regex-dictionary nil)
+    (load-library "migemo")
+    (migemo-init))
+(use-package helm-swoop
+  :ensure t)
+(use-package ace-jump-mode
+  :ensure t)
+(use-package ace-isearch
+  :ensure t
+  :config
+  (global-ace-isearch-mode 1))
+
+
 (when (equal system-type 'darwin)
   (setq ns-command-modifier (quote meta))
   (add-to-list 'load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e/")
   ;; (add-to-list 'exec-path " /usr/local/Cellar/phantomjs/2.1.1/bin/phantomjs/")
   (setenv "PATH" (mapconcat 'identity exec-path ":"))
-  ;; Set your installed path
-  (setq migemo-dictionary "/usr/local/Cellar/cmigemo/HEAD-5c014a8/share/migemo/utf-8/migemo-dict")
+
   (cond ((display-graphic-p)
 
 
@@ -608,6 +641,13 @@
 (put 'narrow-to-region 'disabled nil)
 (setq ispell-program-name "hunspell")
 (setq ispell-really-hunspell t)
+
+;;行番号を表示
+(if (version<= "26.0.50" emacs-version)
+    (progn
+      (global-display-line-numbers-mode)
+      (setq-default indicate-empty-lines t)
+      (setq-default indicate-buffer-boundaries 'left)))
 
 (provide 'init)
 ;;; init.el ends here
