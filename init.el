@@ -31,7 +31,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ace-isearch-function (quote ace-jump-word-mode))
+ '(ace-isearch-function (quote ace-jump-char-mode))
  '(backup-directory-alist (quote ((".*" . "~/.ehist"))))
  '(comment-style (quote multi-line))
  '(company-global-modes
