@@ -160,17 +160,13 @@
           (load "dired-x")
           (global-set-key "\C-x\C-j" 'skk-mode))
 (global-set-key "\C-t" 'other-window)
-
-;; (setq-default indent-tabs-mode nil)
+(setq-default indent-tabs-mode nil)
 
 (use-package restart-emacs
   :ensure t)
 
 (use-package gradle-mode
   :ensure t)
-
-
-
 
 
 ;; Emacs起動時にrst.elを読み込み
@@ -191,8 +187,6 @@
                 ("\\.php$"   . web-mode)) auto-mode-alist))
 ;; 背景が黒い場合はこうしないと見出しが見づらい
 ;; (setq frame-background-mode 'dark)
-;; 全部スペースでインデントしましょう
-(add-hook 'rst-mode-hook '(lambda() (setq indent-tabs-mode nil)))
 
 (use-package gradle-mode)
 
@@ -424,7 +418,7 @@
 
 (use-package sudo-edit
   :ensure t)
-(setq-default tab-width 4 indent-tabs-mode nil)
+
 
 (use-package company
   :ensure t
@@ -584,6 +578,10 @@
   :ensure t)
 (use-package graphviz-dot-mode
   :ensure t)
+(use-package editorconfig
+  :ensure t
+  :config
+  (editorconfig-mode 1))
 
 ;;; GDB 関連
 ;;; 有用なバッファを開くモード

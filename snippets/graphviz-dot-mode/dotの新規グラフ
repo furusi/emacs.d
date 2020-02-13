@@ -11,6 +11,8 @@ digraph graph_name {
     charset = "UTF-8";
     // graphは予約語です。
     // ここにグラフ全体の設定を行います。
+    // 左から右に並べる
+    // rankdir = LR,
   ];
 
   // node common setting
@@ -31,6 +33,8 @@ digraph graph_name {
   alpha [
     // alphaという名前はこの例で付けたノード名です。任意の名前を付けることができます。
     // ここにalphaノード固有の属性を設定します。
+    // 文字列を定義する
+    // label = ""
   ];
 
   // define beta node
