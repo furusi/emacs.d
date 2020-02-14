@@ -151,10 +151,12 @@
   :ensure t)
 (add-to-list 'load-path "~/.emacs.d/conf")
 (load "org-init")
+(load "skk-init")
+(load "helm-init")
 (load "magit-init")
 (load "yatex-init")
 (load "mu4e-init")
-(load "skk-init")
+
 (define-key global-map (kbd "C-c t l") 'toggle-truncate-lines)
 (add-hook 'dired-load-hook
           (load "dired-x")
@@ -283,27 +285,6 @@
 (add-to-list 'auto-mode-alist '("\\.djhtml\\'"    . web-mode))
 (add-to-list 'auto-mode-alist '("\\.html?\\'"     . web-mode))
 
-;;helm
-(use-package helm
-  :after migemo
-  :ensure t
-  :bind (("M-x" . helm-M-x)
-         ("M-y" . helm-show-kill-ring)
-         ("C-x b" . helm-mini)
-         ("C-x C-f" . helm-find-files)
-         ("M-s o" . helm-occur)
-         ("C-x j" . helm-recentf)
-         ("C-x r l" . helm-bookmarks))
-  :config
-  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
-  (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
-  (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
-  (helm-migemo-mode 1)
-  (helm-autoresize-mode 1)
-  (helm-mode 1))
-(use-package helm-config
-  :config (helm-mode 1))
-(use-package helm-lsp  :commands helm-lsp-workspace-symbol)
 (use-package all-the-icons  :ensure t)
 
 
@@ -372,8 +353,6 @@
     (setq migemo-regex-dictionary nil)
     (load-library "migemo")
     (migemo-init))
-(use-package helm-swoop
-  :ensure t)
 (use-package ace-jump-mode
   :ensure t)
 (use-package ace-isearch
@@ -471,7 +450,6 @@
   :hook (lsp-mode . lsp-ui-mode)
   :commands lsp-ui-mode)
 ;; (use-package company-lsp :commands company-lsp)
-(use-package helm-lsp :commands helm-lsp-workspace-symbol)
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 ;; ;; optionally if you want to use debugger
 ;; (use-package lsp-java :ensure t :after lsp
