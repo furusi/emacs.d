@@ -32,6 +32,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ace-isearch-function (quote ace-jump-char-mode))
+ '(ace-isearch-jump-delay 0.6)
  '(backup-directory-alist (quote ((".*" . "~/.ehist"))))
  '(comment-style (quote multi-line))
  '(company-global-modes
