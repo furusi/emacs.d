@@ -456,6 +456,7 @@
 ;;   (define-key org-mode-map (kbd "C-c [") 'reftex-citation))
 
 )
+(setq org-ditaa-jar-path "/usr/local/opt/ditaa/libexec/ditaa-0.11.0-standalone.jar")
 
 (use-package ox-reveal
   :ensure t
@@ -485,8 +486,10 @@
         :base-extension "org"
         :publishing-function org-html-publish-to-html
         :html-postamble "<a href=\"index.html\">サイトのトップへ戻る</a>"
+        :language "ja"
         :with-tags nil
-        :auto-sitemap t
+        ;; :auto-sitemap t
+        :htmlized-source t
         :with-tags nil
         :makeindex t
         :recursive t)

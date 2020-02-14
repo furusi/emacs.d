@@ -151,9 +151,9 @@
   :ensure t)
 (add-to-list 'load-path "~/.emacs.d/conf")
 (load "org-init")
+(load "magit-init")
 (load "yatex-init")
 (load "mu4e-init")
-(load "magit-init")
 (load "skk-init")
 (define-key global-map (kbd "C-c t l") 'toggle-truncate-lines)
 (add-hook 'dired-load-hook
@@ -561,7 +561,6 @@
   (back-button-mode 1))
 
 (use-package htmlize
-  :disabled t ;;org-publishが動かない
   :ensure t)
 (use-package ox-hugo
   :ensure t            ;Auto-install the package from Melpa (optional)
@@ -569,8 +568,6 @@
 (use-package adoc-mode
   :ensure t)
 (use-package ob-browser
-  :ensure t)
-(use-package htmlize
   :ensure t)
 (use-package ox-epub
   :ensure t)
