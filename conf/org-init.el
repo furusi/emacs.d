@@ -128,6 +128,8 @@
                 (org-agenda-files . (:level . 1)))))
   ;; コードを評価するとき尋ねない
   (setq org-confirm-babel-evaluate nil)
+  ;; export時にコードを評価しない
+  (setq org-export-babel-evaluate nil)
   ;; 有効にする言語 デフォルトでは elisp のみ
   (org-babel-do-load-languages
    'org-babel-load-languages '((python   . t)
