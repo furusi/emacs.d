@@ -341,25 +341,31 @@
                '(".*IPAex.*" . 1.1))
   (setq org-plantuml-jar-path   "/usr/bin/plantuml"))
 
-  (use-package migemo
-    :ensure t
-    :config
+(use-package migemo
+  :ensure t
+  :config
+  (setq migemo-options '("-q" "--emacs"))
+  (setq migemo-coding-system 'utf-8-unix)
+  ;; Set your installed path
+  (when (eq system-type 'darwin)
     (setq migemo-command "/usr/local/bin/cmigemo")
-    (setq migemo-options '("-q" "--emacs"))
-    (setq migemo-coding-system 'utf-8-unix)
-    ;; Set your installed path
-    (when (eq system-type 'darwin)
-      (setq migemo-dictionary "/usr/local/opt/cmigemo/share/migemo/utf-8/migemo-dict"))
-    (setq migemo-user-dictionary nil)
-    (setq migemo-regex-dictionary nil)
-    (load-library "migemo")
-    (migemo-init))
+    (setq migemo-dictionary "/usr/local/opt/cmigemo/share/migemo/utf-8/migemo-dict"))
+  (when (eq system-type 'gnu/linux)
+    (setq migemo-command "/usr/bin/cmigemo")
+    (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict"))
+  (setq migemo-user-dictionary nil)
+  (setq migemo-regex-dictionary nil)
+  (load-library "migemo")
+  (migemo-init))
 (use-package ace-jump-mode
   :ensure t)
 (use-package ace-isearch
   :ensure t
   :config
   (global-ace-isearch-mode 1))
+(use-package helm-swoop
+  :ensure t)
+
 
 
 (when (equal system-type 'darwin)
@@ -558,6 +564,10 @@
   :ensure t
   :config
   (editorconfig-mode 1))
+;; (use-package evil
+;;   :ensure t
+;;   :config
+;;   (evil-mode 1))
 
 ;;; GDB 関連
 ;;; 有用なバッファを開くモード
