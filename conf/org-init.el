@@ -248,7 +248,7 @@
 [NO-DEFAULT-PACKAGES]
 \\usepackage{amsmath}
 \\usepackage{siunitx}
-\\usepackage{newtxtext,newtxmath}
+% \\usepackage{newtxtext,newtxmath}
 \\usepackage{graphicx}
 \\usepackage{hyperref}
 \\usepackage{fancyhdr}
