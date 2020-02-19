@@ -161,6 +161,12 @@
 (define-key global-map (kbd "C-c t l") 'toggle-truncate-lines)
 
 (global-set-key "\C-t" 'other-window)
+(defun which-linux-distribution ()
+  "from lsb_release"
+  (interactive)
+  (when (eq system-type 'gnu/linux)
+    (shell-command-to-string "lsb_release -sd")))
+
 (setq-default indent-tabs-mode nil)
 
 (use-package restart-emacs
@@ -350,7 +356,9 @@
     (setq migemo-dictionary "/usr/local/opt/cmigemo/share/migemo/utf-8/migemo-dict"))
   (when (eq system-type 'gnu/linux)
     (setq migemo-command "/usr/bin/cmigemo")
-    (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict"))
+    (if (string-match-p "arch" operating-system-release)
+        (setq migemo-dictionary "/usr/share/migemo/utf-8/migemo-dict")
+        (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict")))
   (setq migemo-user-dictionary nil)
   (setq migemo-regex-dictionary nil)
   (load-library "migemo")
