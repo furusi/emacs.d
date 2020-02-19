@@ -338,11 +338,12 @@
 
 (when (equal system-type 'gnu/linux)
   (add-to-list 'load-path "~/opt/mu-1.0/mu4e/")
-  (cond ((display-graphic-p)
-         (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family "IPAex\346\230\216\346\234\235")))
-        (t 0))
+  ;;曖昧な文字幅を指定する
+  (aset char-width-table ?→ 1)
+
   (add-to-list 'face-font-rescale-alist
-               '(".*IPAex.*" . 1.1))
+               '(".*源ノ角ゴシック JP.*" . 1.2))
+
   (setq org-plantuml-jar-path   "/usr/bin/plantuml"))
 
 (use-package migemo
@@ -638,6 +639,9 @@
       (global-display-line-numbers-mode)
       (setq-default indicate-empty-lines t)
       (setq-default indicate-buffer-boundaries 'left)))
+
+
+(load-file "~/.emacs.d/lisp/window.el")
 
 (provide 'init)
 ;;; init.el ends here
