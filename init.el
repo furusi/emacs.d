@@ -40,6 +40,7 @@
     (not org-mode magit-mode custom-mode magit-status-mode magit-revision-mode magit-diff-mode)))
  '(company-idle-delay 0.2)
  '(company-lsp-cache-candidates (quote auto))
+ '(custom-enabled-themes (quote (tango-dark)))
  '(dimmer-exclusion-regexp "^\\\\*helm\\\\|^ \\\\*Minibuf\\\\|^\\\\*Calendar\"")
  '(dimmer-fraction 0.3)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
