@@ -159,9 +159,7 @@
 (load "mu4e-init")
 
 (define-key global-map (kbd "C-c t l") 'toggle-truncate-lines)
-(add-hook 'dired-load-hook
-          (load "dired-x")
-          (global-set-key "\C-x\C-j" 'skk-mode))
+
 (global-set-key "\C-t" 'other-window)
 (setq-default indent-tabs-mode nil)
 

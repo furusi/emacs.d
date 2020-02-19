@@ -20,6 +20,9 @@
   (setq skk-rom-kana-rule-list
         '(("tni" nil ("ティ" . "てぃ"))
           ("dni" nil ("ディ" . "でぃ"))))
+  (add-hook 'dired-load-hook
+          (load "dired-x")
+          (global-set-key "\C-x\C-j" 'skk-mode))
   ;; isearch
   ;; (add-hook 'isearch-mode-hook 'skk-isearch-mode-setup) ; isearch で skk のセットアップ
   ;; (add-hook 'isearch-mode-end-hook 'skk-isearch-mode-cleanup) ; isearch で skk のクリーンアップ
