@@ -61,7 +61,7 @@
          (concat org-directory "event.org")))
   (setq org-mobile-inbox-for-pull (concat org-directory "iphone.org"))
   (setq org-tag-alist
-  '(("@OFFICE" . ?o) ("@HOME" . ?h) ("SHOPPING" . ?s)
+  '(("ignore" . ?i) ("@OFFICE" . ?o) ("@HOME" . ?h) ("SHOPPING" . ?s)
     ("MAIL" . ?m) ("PROJECT" . ?p) ("備忘録" . ?b)))
   (setq org-capture-templates
         `(
@@ -128,8 +128,7 @@
                 (org-agenda-files . (:level . 1)))))
   ;; コードを評価するとき尋ねない
   (setq org-confirm-babel-evaluate nil)
-  ;; export時にコードを評価しない
-  (setq org-export-babel-evaluate nil)
+
   ;; 有効にする言語 デフォルトでは elisp のみ
   (org-babel-do-load-languages
    'org-babel-load-languages '((python   . t)
