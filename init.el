@@ -254,8 +254,6 @@
 (use-package undo-tree
   :ensure t
   :bind (("M-/" . undo-tree-undo))
-  :init
-  (undo-tree-mode)
   :config
   (global-undo-tree-mode t))
 
