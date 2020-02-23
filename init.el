@@ -340,18 +340,18 @@
   ;;曖昧な文字幅を指定する
   (aset char-width-table ?→ 2)
 
-
-  (set-face-attribute 'default nil
-                    :family "Source Code Pro")
-  (set-fontset-font
-   nil 'japanese-jisx0208
-   (font-spec :family "源ノ角ゴシック"))
+  (when (eq window-system 'x)
+    (set-face-attribute 'default nil
+                        :family "Source Code Pro")
+    (set-fontset-font
+     nil 'japanese-jisx0208
+     (font-spec :family "源ノ角ゴシック Code JP"))
     (set-fontset-font
      nil '(#x2190 . #x21EF)
-   (font-spec :family "源ノ角ゴシック"))
+     (font-spec :family "源ノ角ゴシック Code JP"))
 
     (add-to-list 'face-font-rescale-alist
-                 '(".*源ノ角ゴシック.*" . 1.2))
+                 '(".*源ノ角ゴシック.*" . 1.2)))
 
   (setq org-plantuml-jar-path   "/usr/bin/plantuml"))
 
