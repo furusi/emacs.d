@@ -149,6 +149,13 @@
 
 
 (recentf-mode 1)
+
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (setq exec-path-from-shell-check-startup-files nil)
+  (exec-path-from-shell-initialize))
+
 (use-package use-package-ensure-system-package
   :ensure t)
 (add-to-list 'load-path "~/.emacs.d/conf")
@@ -311,11 +318,6 @@
   :ensure t)
 
 
-(use-package exec-path-from-shell
-  :ensure t
-  :config
-  (setq exec-path-from-shell-check-startup-files nil)
-  (exec-path-from-shell-initialize))
 (add-to-list 'load-path "~/.nix-profile/bin")
 
 
