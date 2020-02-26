@@ -164,7 +164,10 @@
   :config
   (when (eq system-type 'darwin)
     (setq system-packages-use-sudo nil
-          system-packages-package-manager 'brew)))
+          system-packages-package-manager 'brew))
+  (when (eq system-type 'gnu/linux)
+    (setq system-packages-use-sudo t
+          system-packages-package-manager 'apt)))
 
 (add-to-list 'load-path "~/.emacs.d/conf")
 (load "org-init")
