@@ -167,7 +167,29 @@
           system-packages-package-manager 'brew))
   (when (eq system-type 'gnu/linux)
     (setq system-packages-use-sudo t
-          system-packages-package-manager 'apt)))
+          system-packages-package-manager 'apt))
+  (when (string-match-p "arch" operating-system-release)
+    (add-to-list 'system-packages-supported-package-managers
+                 '(aurman .
+                          ((default-sudo . nil)
+                           (install . "aurman -S")
+                           (search . "aurman -Ss")
+                           (uninstall . "aurman -Rs")
+                           (update . "aurman -Syu")
+                           (clean-cache . "aurman -Sc")
+                           (log . "cat /var/log/pacman.log")
+                           (get-info . "aurman -Qi")
+                           (get-info-remote . "aurman -Si")
+                           (list-files-provided-by . "aurman -Ql")
+                           (verify-all-packages . "aurman -Qkk")
+                           (verify-all-dependencies . "aurman -Dk")
+                           (remove-orphaned . "aurman -Rns $(pacman -Qtdq)")
+                           (list-installed-packages . "aurman -Qe")
+                           (list-installed-packages-all . "aurman -Q")
+                           (list-dependencies-of . "aurman -Qi")
+                           (noconfirm . "--noconfirm"))))
+    (setq system-packages-use-sudo nil
+          system-packages-package-manager 'aurman)))
 
 (add-to-list 'load-path "~/.emacs.d/conf")
 (load "org-init")
