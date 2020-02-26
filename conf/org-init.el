@@ -484,6 +484,7 @@
   :after ox)
 (use-package ox-pandoc
   :ensure t
+  :ensure-system-package pandoc
   :after ox)
 
 (defun org-hugo-new-subtree-post-capture-template ()

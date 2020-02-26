@@ -21,6 +21,8 @@
 (use-package helm-swoop
   :ensure t)
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
+
 (use-package helm-rg
+  :ensure t
   :ensure-system-package (rg . ripgrep))
 
