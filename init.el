@@ -293,6 +293,7 @@
 
 (use-package undo-tree
   :ensure t
+  :pin gnu
   :bind (("M-/" . undo-tree-undo))
   :init
   (global-undo-tree-mode t))
