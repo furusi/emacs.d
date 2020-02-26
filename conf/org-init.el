@@ -482,6 +482,9 @@
 (use-package ox-hugo
   :ensure t
   :after ox)
+(use-package ox-pandoc
+  :ensure t
+  :after ox)
 
 (defun org-hugo-new-subtree-post-capture-template ()
   "Returns `org-capture' template string for new Hugo post.

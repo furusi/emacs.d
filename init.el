@@ -158,6 +158,14 @@
 
 (use-package use-package-ensure-system-package
   :ensure t)
+
+(use-package system-packages
+  :ensure t
+  :config
+  (when (eq system-type 'darwin)
+    (setq system-packages-use-sudo nil
+          system-packages-package-manager 'brew)))
+
 (add-to-list 'load-path "~/.emacs.d/conf")
 (load "org-init")
 (load "skk-init")
@@ -359,6 +367,7 @@
 
 (use-package migemo
   :ensure t
+  :ensure-system-package cmigemo
   :config
   (setq migemo-options '("-q" "--emacs"))
   (setq migemo-coding-system 'utf-8-unix)
