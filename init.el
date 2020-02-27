@@ -150,11 +150,12 @@
 
 (recentf-mode 1)
 
-(use-package exec-path-from-shell
-  :ensure t
-  :config
-  (setq exec-path-from-shell-check-startup-files nil)
-  (exec-path-from-shell-initialize))
+(when (eq system-type 'darwin)
+  (use-package exec-path-from-shell
+    :ensure t
+    :config
+    (setq exec-path-from-shell-check-startup-files nil)
+    (exec-path-from-shell-initialize)))
 
 (use-package use-package-ensure-system-package
   :ensure t)
