@@ -17,28 +17,9 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-;; (require 'package)
-;; (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
-;;                     (not (gnutls-available-p))))
-;;        (proto (if no-ssl "http" "https")))
-;;   ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
-;;   (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
-;;   ;; Orgを追加
-;;   (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-;;   (add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
-;;   (when (< emacs-major-version 24)
-;;     ;; For important compatibility libraries like cl-lib
-;;     (add-to-list 'package-archives '("gnu" . (concat proto "://elpa.gnu.org/packages/")))))
-;; (package-initialize)
-
 (straight-use-package 'use-package)
 
 (setq straight-use-package-by-default t)
-
-;; (eval-when-compile
-;;   (unless (require 'use-package nil t)
-;;     (package-refresh-contents)
-;;     (package-install 'use-package)))
 
 (show-paren-mode t)
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
@@ -227,9 +208,9 @@
 (load "yatex-init")
 (load "mu4e-init")
 
-(define-key global-map (kbd "C-c t l") 'toggle-truncate-lines)
-
+(global-set-key (kbd "C-c t l") 'toggle-truncate-lines)
 (global-set-key "\C-t" 'other-window)
+
 (defun which-linux-distribution ()
   "from lsb_release"
   (interactive)
@@ -258,9 +239,6 @@
     (setq rst-pdf-program "open -a Skim")
     (setq rst-slides-program "open -a Firefox")))
 
-;; 背景が黒い場合はこうしないと見出しが見づらい
-;; (setq frame-background-mode 'dark)
-
 (use-package gradle-mode
   :ensure t)
 
@@ -286,20 +264,7 @@
     (setq-local shr-put-image-function 'shr-put-image-alt))
   (add-hook 'eww-mode-hook 'eww-mode-hook--disable-image))
 
-
-
-(autoload 'run-prolog   "prolog" "Start a Prolog sub-process." t)
-(autoload 'prolog-mode  "prolog" "Major mode for editing Prolog programs." t)
-(autoload 'mercury-mode "prolog" "Major mode for editing Mercury programs." t)
-(setq prolog-system 'swi)
-(setq auto-mode-alist (append '(("\\.pl$" . prolog-mode)
-                                ("\\.swi$" . prolog-mode)
-                                ("\\.m$" . mercury-mode))
-                               auto-mode-alist))
-
-
 (setq recentf-auto-save-timer (run-with-idle-timer 30 t 'recentf-save-list))
-
 
 
 ;; SLIMEのロード
@@ -347,17 +312,10 @@
          ("\\.djhtml\\'"    . web-mode)
          ("\\.html?\\'"     . web-mode))
   :config
-  ;; (setq web-mode-extra-snippets
-  ;;       '(("php" . (("print" . "<?php do { ?>\n\n<?php } while (|); ?>")
-  ;;                   ("debug" . "<?php error_log(__LINE__); ?>")))
-  ;;         ))
   (setq web-mode-extra-snippets
         '(("php" . (("print" . "print(\"|\")"))))))
 
-
 (use-package all-the-icons  :ensure t)
-
-
 
 (use-package which-key
   :ensure t
@@ -368,7 +326,7 @@
   ;; (which-key-setup-side-window-right-bottom) ;両方使う
   (which-key-mode 1))
 
-;;yasnippet
+;;;yasnippet
 (use-package yasnippet
   :ensure t
   :config
@@ -427,16 +385,11 @@
   :ensure t
   :config
   (global-ace-isearch-mode 1))
-(use-package helm-swoop
-  :ensure t)
-
 
 
 (when (equal system-type 'darwin)
   (setq ns-command-modifier (quote meta))
   (add-to-list 'load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e/")
-  ;; (add-to-list 'exec-path " /usr/local/Cellar/phantomjs/2.1.1/bin/phantomjs/")
-  (setenv "PATH" (mapconcat 'identity exec-path ":"))
   (cond ((display-graphic-p)
          ;;Osaka
          ;; (set-frame-font "-*-Osaka-normal-normal-normal-*-*-*-*-*-m-0-iso10646-1" 13)
@@ -452,8 +405,7 @@
          (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family "YuKyokasho Yoko"))
          (add-to-list 'face-font-rescale-alist
                       '(".*YuKyokasho.*" . 1.3)))
-        (t 0))
-  (setq org-plantuml-jar-path   "/usr/local/opt/plantuml/libexec/plantuml.jar"))
+        (t 0)))
 
 ;; 記号をデフォルトのフォントにしない。(for Emacs 25.2)
 (setq use-default-font-for-symbols nil)
@@ -468,6 +420,8 @@
   :bind (
          ;; :map company-mode-map
          ;;      ((kbd "TAB") . 'company-indent-or-complete-common)
+         :map company-mode-map
+              ("C-M-i" . 'company-complete)
          :map company-active-map
               ("C-n"   . 'company-select-next)
               ("C-p"   . 'company-select-previous)
@@ -480,8 +434,6 @@
          (racer-mode . company-mode)
          (rust-mode . company-mode))
   :config
-  ;; (global-company-mode 1)
-  (define-key company-mode-map (kbd "C-M-i") 'company-complete)
   (setq company-idle-delay 0) ; 遅延なしにすぐ表示
   (setq company-minimum-prefix-length 2)
   (setq company-selection-wrap-around t)
@@ -493,8 +445,6 @@
         backend
       (append (if (consp backend) backend (list backend))
               '(:with company-yasnippet))))
-  ;; (push '(company-semantic :with company-yasnippet) company-backends)
-  ;(custom-set-variables '(company-idle-delay nil))
 
   (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends)))
 
@@ -529,19 +479,26 @@
   :init
   (push 'company-lsp company-backends))
 
-(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
-;; ;; optionally if you want to use debugger
-;; (use-package lsp-java :ensure t :after lsp
-;;   :config (add-hook 'java-mode-hook 'lsp))
-;; (use-package dap-mode
-;;   :ensure t
-;;   :after lsp-mode
-;;   :config
-;;   (dap-mode 1)
-;;   (dap-ui-mode 1))
-;; (use-package dap-java :after (lsp-java))
-;; (use-package hydra :ensure t)
-;; (use-package projectile :ensure t)
+(use-package lsp-treemacs
+  :commands lsp-treemacs-errors-list)
+;; optionally if you want to use debugger
+(use-package lsp-java
+  :ensure t
+  :after lsp
+  :config (add-hook 'java-mode-hook 'lsp))
+(use-package dap-mode
+  :ensure t
+  :after lsp-mode
+  :config
+  (dap-mode 1)
+  (dap-ui-mode 1))
+(use-package dap-java
+  :straight dap-mode
+  :after (lsp-java))
+(use-package
+    hydra :ensure t)
+(use-package projectile
+  :ensure t)
 
 
 
@@ -552,6 +509,7 @@
 (use-package rust-mode
   :ensure t
   :mode (("\\.rs\\'" . rust-mode))
+  :bind (("C-i" . #'company-indent-or-complete-common))
   :config
   (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
   (setq company-tooltip-align-annotations t))
@@ -575,8 +533,8 @@
          (lambda () (require 'ccls) (lsp)))
   :config
   (when (eq system-type 'darwin)
-  (when (executable-find "/usr/local/opt/ccls/bin/ccls")
-    (setq ccls-executable "/usr/local/opt/ccls/bin/ccls"))))
+    (when (executable-find "/usr/local/opt/ccls/bin/ccls")
+      (setq ccls-executable "/usr/local/opt/ccls/bin/ccls"))))
 
 
 
@@ -590,9 +548,7 @@
   :mode (("\\.kt\\'" . kotlin-mode)))
 
 (use-package whitespace
-  ;; :disabled t
   :config
-  ;; 空白
   (set-face-foreground 'whitespace-space nil)
   (set-face-background 'whitespace-space "gray33")
   (setq whitespace-style '(face
@@ -635,11 +591,6 @@
   :config
   (setq easy-hugo-org-header t)
   (setq easy-hugo-default-ext ".org"))
-
-;; (use-package evil
-;;   :ensure t
-;;   :config
-;;   (evil-mode 1))
 
 ;;; GDB 関連
 ;;; 有用なバッファを開くモード
