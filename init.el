@@ -234,7 +234,8 @@
 ;; 背景が黒い場合はこうしないと見出しが見づらい
 ;; (setq frame-background-mode 'dark)
 
-(use-package gradle-mode)
+(use-package gradle-mode
+  :ensure t)
 
 (use-package eww
   :commands (eww)
@@ -385,9 +386,7 @@
      (font-spec :family "源ノ角ゴシック Code JP"))
 
     (add-to-list 'face-font-rescale-alist
-                 '(".*源ノ角ゴシック.*" . 1.2)))
-
-  (setq org-plantuml-jar-path   "/usr/bin/plantuml"))
+                 '(".*源ノ角ゴシック.*" . 1.2))))
 
 (use-package migemo
   :ensure t
@@ -582,6 +581,7 @@
 
 (use-package plantuml-mode
   :ensure t
+  :ensure-system-package plantuml
   :config
   (when (eq system-type 'darwin)
     (setq plantuml-jar-path "/usr/local/opt/plantuml/libexec/plantuml.jar")))
