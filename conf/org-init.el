@@ -459,9 +459,6 @@
 )
 (setq org-ditaa-jar-path "/usr/local/opt/ditaa/libexec/ditaa-0.11.0-standalone.jar")
 
-(use-package ox-reveal
-  :ensure t
-  :disabled t)
 (use-package ox-extra
   :ensure org-plus-contrib
   :after (org)
@@ -486,6 +483,10 @@
   :ensure t
   :ensure-system-package pandoc
   :after ox)
+(use-package org-download
+  :ensure t
+  :after org
+  :hook ((org-mode . org-download-enable)))
 
 (defun org-hugo-new-subtree-post-capture-template ()
   "Returns `org-capture' template string for new Hugo post.
