@@ -17,6 +17,8 @@
   (helm-autoresize-mode 1)
   (helm-mode 1))
 (use-package helm-config
+  :straight helm
+  :after helm
   :config (helm-mode 1))
 (use-package helm-swoop
   :ensure t)

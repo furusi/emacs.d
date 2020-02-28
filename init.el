@@ -4,24 +4,41 @@
 
 ;;; Code:
 
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
-(require 'package)
-(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
-                    (not (gnutls-available-p))))
-       (proto (if no-ssl "http" "https")))
-  ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
-  (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
-  ;; Orgを追加
-  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-  (add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
-  (when (< emacs-major-version 24)
-    ;; For important compatibility libraries like cl-lib
-    (add-to-list 'package-archives '("gnu" . (concat proto "://elpa.gnu.org/packages/")))))
-(package-initialize)
-(eval-when-compile
-  (unless (require 'use-package nil t)
-    (package-refresh-contents)
-    (package-install 'use-package)))
+;; (require 'package)
+;; (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+;;                     (not (gnutls-available-p))))
+;;        (proto (if no-ssl "http" "https")))
+;;   ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
+;;   (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
+;;   ;; Orgを追加
+;;   (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+;;   (add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
+;;   (when (< emacs-major-version 24)
+;;     ;; For important compatibility libraries like cl-lib
+;;     (add-to-list 'package-archives '("gnu" . (concat proto "://elpa.gnu.org/packages/")))))
+;; (package-initialize)
+
+(straight-use-package 'use-package)
+
+(setq straight-use-package-by-default t)
+
+;; (eval-when-compile
+;;   (unless (require 'use-package nil t)
+;;     (package-refresh-contents)
+;;     (package-install 'use-package)))
 
 (show-paren-mode t)
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
@@ -302,7 +319,6 @@
 
 (use-package undo-tree
   :ensure t
-  :pin gnu
   :bind (("M-/" . undo-tree-undo))
   :init
   (global-undo-tree-mode t))
@@ -565,7 +581,7 @@
 
 
 (use-package smartparens-config
-  :ensure smartparens
+  :straight smartparens
   :init
   (smartparens-global-mode))
 

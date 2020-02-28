@@ -6,7 +6,7 @@
 
 (use-package org
   :mode (("\\.org$" . org-mode))
-  :ensure org-plus-contrib
+  :straight org-plus-contrib
   :bind (("\C-cc" . org-capture)
          ("\C-cl" . org-store-link)
          ("\C-ca" . org-agenda)
@@ -202,11 +202,10 @@
 ;; Org Mode LaTeX Export
 
 (use-package ox-bibtex
-  :ensure org-plus-contrib
+  :straight org-plus-contrib
   :defer t)
-
 (use-package ox-eldoc
-  :ensure org-plus-contrib
+  :straight org-plus-contrib
   :defer t
   :config
   (defadvice org-eldoc-documentation-function (around add-field-info activate)
@@ -222,7 +221,7 @@
 
 
 (use-package ox-latex
-  :ensure org-plus-contrib
+  :straight org-plus-contrib
   :after (org)
   :config
   (setq org-latex-default-class "bxjsarticle")
@@ -460,7 +459,7 @@
 (setq org-ditaa-jar-path "/usr/local/opt/ditaa/libexec/ditaa-0.11.0-standalone.jar")
 
 (use-package ox-extra
-  :ensure org-plus-contrib
+  :straight org-plus-contrib
   :after (org)
   :config
   ;; ignoreタグで見出しを非表示にしつつ内容を表示する
