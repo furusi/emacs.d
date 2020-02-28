@@ -473,8 +473,8 @@
     "Enable yasnippet for all backends.")
 
   (defun company-mode/backend-with-yas (backend)
-	(if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
-		backend
+    (if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
+        backend
       (append (if (consp backend) backend (list backend))
               '(:with company-yasnippet))))
   ;; (push '(company-semantic :with company-yasnippet) company-backends)
@@ -496,9 +496,23 @@
 
 ;; ;; optionally
 (use-package lsp-ui
+  :ensure t
   :hook (lsp-mode . lsp-ui-mode)
-  :commands lsp-ui-mode)
-;; (use-package company-lsp :commands company-lsp)
+  :commands lsp-ui-mode
+  :after lsp-mode)
+
+(use-package company-lsp
+  :commands company-lsp
+  :custom
+  (company-lsp-cache-candidates nil)
+  (company-lsp-async t)
+  (company-lsp-enable-recompletion t)
+  (company-lsp-enable-snippet t)
+  :after
+  (:all lsp-mode lsp-ui company yasnippet)
+  :init
+  (push 'company-lsp company-backends))
+
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 ;; ;; optionally if you want to use debugger
 ;; (use-package lsp-java :ensure t :after lsp
@@ -540,7 +554,6 @@
 
 (use-package ccls
   :ensure t
-  :defer t
   :ensure-system-package ccls
   :hook ((c-mode c++-mode objc-mode) .
          (lambda () (require 'ccls) (lsp)))
