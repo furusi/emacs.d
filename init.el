@@ -221,6 +221,8 @@
 ;; Emacs起動時にrst.elを読み込み
 (use-package rst
   :ensure t
+  :mode (("\\.rst$"  . rst-mode)
+         ("\\.rest$" . rst-mode))
   :bind (
          :map rst-mode-map
               ("M-RET" . rst-insert-list))
@@ -229,11 +231,6 @@
     (setq rst-pdf-program "open -a Skim")
     (setq rst-slides-program "open -a Firefox")))
 
-;; 拡張子の*.rst, *.restのファイルをrst-modeで開く
-(setq auto-mode-alist
-      (append '(( "\\.rst$"  . rst-mode)
-                ( "\\.rest$" . rst-mode)
-                ("\\.php$"   . web-mode)) auto-mode-alist))
 ;; 背景が黒い場合はこうしないと見出しが見づらい
 ;; (setq frame-background-mode 'dark)
 
@@ -303,17 +300,25 @@
 (use-package auto-save-buffers-enhanced
   :ensure t
   :config
-  ;;; 1秒後に保存
+  ;; 1秒後に保存
   (setq auto-save-buffers-enhanced-interval 1)
   (auto-save-buffers-enhanced t)
-;;; Wroteのメッセージを抑制
+  ;; Wroteのメッセージを抑制
   (setq auto-save-buffers-enhanced-quiet-save-p t)
-  ;;; tramp mode時の自動保存を抑制
+  ;; tramp mode時の自動保存を抑制
   (setq auto-save-buffers-enhanced-exclude-regexps '("^/ssh:" "/sudo:" "/multi:")))
 
 
 (use-package web-mode
   :ensure t
+  :mode (("\\.phtml\\'"     . web-mode)
+         ("\\.tpl\\.php\\'" . web-mode)
+         ("\\.[gj]sp\\'"    . web-mode)
+         ("\\.as[cp]x\\'"   . web-mode)
+         ("\\.erb\\'"       . web-mode)
+         ("\\.mustache\\'"  . web-mode)
+         ("\\.djhtml\\'"    . web-mode)
+         ("\\.html?\\'"     . web-mode))
   :config
   ;; (setq web-mode-extra-snippets
   ;;       '(("php" . (("print" . "<?php do { ?>\n\n<?php } while (|); ?>")
@@ -322,14 +327,6 @@
   (setq web-mode-extra-snippets
         '(("php" . (("print" . "print(\"|\")"))))))
 
-(add-to-list 'auto-mode-alist '("\\.phtml\\'"     . web-mode))
-(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.[gj]sp\\'"    . web-mode))
-(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'"   . web-mode))
-(add-to-list 'auto-mode-alist '("\\.erb\\'"       . web-mode))
-(add-to-list 'auto-mode-alist '("\\.mustache\\'"  . web-mode))
-(add-to-list 'auto-mode-alist '("\\.djhtml\\'"    . web-mode))
-(add-to-list 'auto-mode-alist '("\\.html?\\'"     . web-mode))
 
 (use-package all-the-icons  :ensure t)
 
@@ -338,10 +335,10 @@
 (use-package which-key
   :ensure t
   :config
-;;; 3つの表示方法どれか1つ選ぶ
+  ;; 3つの表示方法どれか1つ選ぶ
   (which-key-setup-side-window-bottom)    ;ミニバッファ
-;; (which-key-setup-side-window-right)     ;右端
-;; (which-key-setup-side-window-right-bottom) ;両方使う
+  ;; (which-key-setup-side-window-right)     ;右端
+  ;; (which-key-setup-side-window-right-bottom) ;両方使う
   (which-key-mode 1))
 
 ;;yasnippet
@@ -527,8 +524,8 @@
 
 (use-package rust-mode
   :ensure t
+  :mode (("\\.rs\\'" . rust-mode))
   :config
-  (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
   (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
   (setq company-tooltip-align-annotations t))
 (use-package rustic
