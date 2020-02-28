@@ -418,10 +418,8 @@
 (use-package company
   :ensure t
   :bind (
-         ;; :map company-mode-map
-         ;;      ((kbd "TAB") . 'company-indent-or-complete-common)
          :map company-mode-map
-              ("C-M-i" . 'company-complete)
+              ("C-M-i" . 'company-indent-or-complete-common)
          :map company-active-map
               ("C-n"   . 'company-select-next)
               ("C-p"   . 'company-select-previous)
@@ -455,7 +453,8 @@
 
 (use-package lsp-mode
   :ensure t
-  :hook ((java-mode . lsp-deferred)
+  :hook ((cc-mode . lsp-deferred)
+         (java-mode . lsp-deferred)
          (rust-mode . lsp-deferred)
          (python-mode . lsp-deferred))
   :commands (lsp lsp-deferred))
@@ -534,7 +533,16 @@
   :config
   (when (eq system-type 'darwin)
     (when (executable-find "/usr/local/opt/ccls/bin/ccls")
-      (setq ccls-executable "/usr/local/opt/ccls/bin/ccls"))))
+      (setq ccls-executable "/usr/local/opt/ccls/bin/ccls"))
+    (setq ccls-initialization-options
+        '(:clang (:extraArgs ["-isystem/Library/Developer/CommandLineTools/usr/include/c++/v1"
+                              "-isystem/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include"
+                              "-isystem/usr/local/include"
+                              "-isystem/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"
+                              "-isystem/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"
+                              "-isystem/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include"
+                              "-isystem/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks"]
+                  :resourceDir "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0")))))
 
 
 
