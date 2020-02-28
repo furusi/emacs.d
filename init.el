@@ -26,6 +26,16 @@
 (show-paren-mode t)
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
+;; Language and Character Code
+(set-language-environment 'Japanese)
+(prefer-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-buffer-file-coding-system 'utf-8)
+(setq default-buffer-file-coding-system 'utf-8)
+(setq file-name-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -351,24 +361,12 @@
   :ensure t)
 
 
-(add-to-list 'load-path "~/.nix-profile/bin")
-
-
-
 (use-package keyfreq
   :ensure t
   :config
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1))
 
-(set-language-environment 'Japanese)
-(prefer-coding-system 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-(set-buffer-file-coding-system 'utf-8)
-(setq default-buffer-file-coding-system 'utf-8)
-(setq file-name-coding-system 'utf-8)
-(set-default-coding-systems 'utf-8)
 
 (when (equal system-type 'gnu/linux)
   (add-to-list 'load-path "~/opt/mu-1.0/mu4e/")
