@@ -599,6 +599,9 @@
   :config
   (setq easy-hugo-org-header t)
   (setq easy-hugo-default-ext ".org"))
+(use-package npm-mode
+  :ensure t
+  :ensure-system-package npm)
 
 ;;; GDB 関連
 ;;; 有用なバッファを開くモード
