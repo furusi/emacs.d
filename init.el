@@ -620,14 +620,7 @@
 
 (use-package htmlize
   :ensure t)
-(use-package ox-hugo
-  :ensure t            ;Auto-install the package from Melpa (optional)
-  :after ox)
 (use-package adoc-mode
-  :ensure t)
-(use-package ob-browser
-  :ensure t)
-(use-package ox-epub
   :ensure t)
 (use-package pandoc
   :ensure t)
