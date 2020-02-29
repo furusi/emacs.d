@@ -391,22 +391,24 @@
 (when (equal system-type 'darwin)
   (setq ns-command-modifier (quote meta))
   (add-to-list 'load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e/")
-  (cond ((display-graphic-p)
-         ;;Osaka
-         ;; (set-frame-font "-*-Osaka-normal-normal-normal-*-*-*-*-*-m-0-iso10646-1" 13)
-         ;; (add-to-list 'face-font-rescale-alist
-         ;;              '(".*Source\ Han\ Code\ JP\ N.*" . 1.3))
-         ;; 源ノ角ゴシック
-         ;; (set-default-font "Source Han Code JP N")
-         ;; (add-to-list 'face-font-rescale-alist
-         ;;              '(".*Source\ Han\ Code\ JP\ N.*" . 1.3))
+  (when window-system 'ns
+        ;; 游教科書体
+        ;; (set-face-attribute 'default nil :height 130)
+        ;; (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family "YuKyokasho Yoko"))
+        ;; (add-to-list 'face-font-rescale-alist
+        ;;              '(".*YuKyokasho.*" . 1.3))
+        ;; 源ノ角ゴシック
+        (set-face-attribute 'default nil
+                            :family "Source Code Pro")
+        (set-fontset-font
+         nil 'japanese-jisx0208
+         (font-spec :family "Source Han Sans"))
+        (set-fontset-font
+         nil '(#x2190 . #x21EF)
+         (font-spec :family "Source Han Sans"))
 
-         ;; 游教科書体
-         (set-face-attribute 'default nil :height 130)
-         (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family "YuKyokasho Yoko"))
-         (add-to-list 'face-font-rescale-alist
-                      '(".*YuKyokasho.*" . 1.3)))
-        (t 0)))
+        (add-to-list 'face-font-rescale-alist
+                     '(".Source Han Sans" . 1.2))))
 
 ;; 記号をデフォルトのフォントにしない。(for Emacs 25.2)
 (setq use-default-font-for-symbols nil)
