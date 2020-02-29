@@ -128,12 +128,15 @@
 
   ;; 有効にする言語 デフォルトでは elisp のみ
   (org-babel-do-load-languages
-   'org-babel-load-languages '((python   . t)
+   'org-babel-load-languages '((C        . t)
+                               (org      . t)
+                               (python   . t)
                                (ruby     . t)
                                (plantuml . t)
                                (java     . t)
                                (perl     . t)
                                (dot      . t)))
+
    (setq org-use-speed-commands t)
    (setq org-icalendar-alarm-time 30)
    (setq org-icalendar-timezone "Asia/Tokyo")
@@ -151,8 +154,6 @@
    
    (defun my-org-mode-hook ()
      (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
-   (add-to-list 'org-babel-load-languages '(org . t))
-   (add-to-list 'org-babel-load-languages '(C . t))
    (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)
    (add-hook 'org-mode-hook #'my-org-mode-hook)
    ;;ob-plantuml
@@ -164,11 +165,6 @@
   :after (org)
   :config
   (org-mobile-sync-mode 1))
-(use-package org-ac
-  :ensure t
-  :defer t
-  :config
-  (org-ac/config-default))
 (use-package org-mu4e
   :disabled t
   :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e"
@@ -188,7 +184,7 @@
   :after (org)
   :ensure t)
 (use-package ox-hugo
-  :ensure t            ;Auto-install the package from Melpa (optional)
+  :ensure t
   :after ox)
 (use-package ob-browser
   :ensure t)
