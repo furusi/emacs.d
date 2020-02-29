@@ -157,8 +157,9 @@
 (defun which-linux-distribution ()
   "from lsb_release"
   (interactive)
-  (when (eq system-type 'gnu/linux)
-    (shell-command-to-string "lsb_release -sd")))
+  (if (eq system-type 'gnu/linux)
+      (shell-command-to-string "lsb_release -sd")
+    ""))
 
 
 (recentf-mode 1)
