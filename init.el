@@ -154,6 +154,11 @@
 ;; (initchart-record-execution-time-of load file)
 ;; (initchart-record-execution-time-of require feature)
 
+(defun which-linux-distribution ()
+  "from lsb_release"
+  (interactive)
+  (when (eq system-type 'gnu/linux)
+    (shell-command-to-string "lsb_release -sd")))
 
 
 (recentf-mode 1)
@@ -174,9 +179,9 @@
   (when (eq system-type 'darwin)
     (setq system-packages-use-sudo nil
           system-packages-package-manager 'brew))
-  (when (eq system-type 'gnu/linux)
-    (setq system-packages-use-sudo t
-          system-packages-package-manager 'apt))
+  (when (string= (car (split-string (which-linux-distribution))) "Ubuntu")
+    (setq system-packages-use-sudo nil
+          system-packages-package-manager 'brew))
   (when (string-match-p "arch" operating-system-release)
     (add-to-list 'system-packages-supported-package-managers
                  '(aurman .
@@ -211,11 +216,6 @@
 (global-set-key (kbd "C-c t l") 'toggle-truncate-lines)
 (global-set-key "\C-t" 'other-window)
 
-(defun which-linux-distribution ()
-  "from lsb_release"
-  (interactive)
-  (when (eq system-type 'gnu/linux)
-    (shell-command-to-string "lsb_release -sd")))
 
 (setq-default indent-tabs-mode nil)
 
