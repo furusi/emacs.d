@@ -428,9 +428,14 @@
          :map company-search-map
               ("C-n"   . 'company-select-next)
               ("C-p"   . 'company-select-previous))
-  :hook ((org-mode . company-mode)
-         (racer-mode . company-mode)
-         (rust-mode . company-mode))
+  :hook ((emacs-lisp-mode   . company-mode)
+         (c-mode            . company-mode)
+         (shell-script-mode . company-mode)
+         (sh-mode           . company-mode)
+         (shell-mode        . company-mode)
+         (org-mode          . company-mode)
+         (racer-mode        . company-mode)
+         (rust-mode         . company-mode))
   :config
   (setq company-idle-delay 0) ; 遅延なしにすぐ表示
   (setq company-minimum-prefix-length 2)
@@ -475,7 +480,7 @@
   (company-lsp-enable-snippet t)
   :after
   (:all lsp-mode lsp-ui company yasnippet)
-  :init
+  :config
   (push 'company-lsp company-backends))
 
 (use-package lsp-treemacs
@@ -508,7 +513,6 @@
 (use-package rust-mode
   :ensure t
   :mode (("\\.rs\\'" . rust-mode))
-  :bind (("C-i" . #'company-indent-or-complete-common))
   :config
   (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
   (setq company-tooltip-align-annotations t))
