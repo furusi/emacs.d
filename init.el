@@ -352,10 +352,10 @@
                         :family "Source Code Pro")
     (set-fontset-font
      nil 'japanese-jisx0208
-     (font-spec :family "源ノ角ゴシック Code JP"))
+     (font-spec :family "源ノ角ゴシック"))
     (set-fontset-font
      nil '(#x2190 . #x21EF)
-     (font-spec :family "源ノ角ゴシック Code JP"))
+     (font-spec :family "源ノ角ゴシック"))
 
     (add-to-list 'face-font-rescale-alist
                  '(".*源ノ角ゴシック.*" . 1.2))))
