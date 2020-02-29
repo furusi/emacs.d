@@ -51,8 +51,8 @@
         `(("org-ical.org"     . (:level . 1))
           ("task.org"         . (:level . 1))
           ("event.org"        . (:level . 1))
-		  ("productivity.org" . (:maxlevel . 2))
-          ("notes.org"        . (:level . 1))))
+          ("productivity.org" . (:maxlevel . 2))
+          ("notes.org"        . (:level . 2))))
   (setq org-mobile-files
         (list
          (concat org-directory "task.org")
@@ -123,9 +123,6 @@
            (file+headline , (concat org-directory "notes.org") "MEMO")
            "* %U %? %^g\n\n"
            :empty-lines 1)))
-  (setq org-refile-targets
-        (quote ((nil . (:level . 1))
-                (org-agenda-files . (:level . 1)))))
   ;; コードを評価するとき尋ねない
   (setq org-confirm-babel-evaluate nil)
 
@@ -137,11 +134,6 @@
                                (java     . t)
                                (perl     . t)
                                (dot      . t)))
-   (setq org-refile-targets
-       (quote (("notes.org" :level . 1)
-               ("todo.org"  :level . 1)
-               ("event.org" :level . 1)
-               ("task.org"  :level . 1))))
    (setq org-use-speed-commands t)
    (setq org-icalendar-alarm-time 30)
    (setq org-icalendar-timezone "Asia/Tokyo")
