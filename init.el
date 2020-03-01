@@ -164,9 +164,8 @@
 
 (recentf-mode 1)
 
-(when (eq system-type 'darwin)
+(when (memq system-type '(darwin gnu/linux))
   (use-package exec-path-from-shell
-    :ensure t
     :config
     (setq exec-path-from-shell-check-startup-files nil)
     (exec-path-from-shell-initialize)))
