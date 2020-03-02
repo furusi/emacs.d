@@ -457,6 +457,21 @@
 (use-package php-mode
   :mode (("\\.php\\'" . php-mode))
   :ensure t )
+(use-package ac-php
+  :after php-mode)
+(use-package company-php
+  :after (:all company php-mode ac-php)
+  :hook (php-mode . (lambda ()
+             ;; Enable company-mode
+             (company-mode t)
+             ;; (require 'company-php)
+
+             ;; Enable ElDoc support (optional)
+             (ac-php-core-eldoc-setup)
+
+             (set (make-local-variable 'company-backends)
+                  '((company-ac-php-backend company-dabbrev-code)
+                    company-capf company-files)))))
 
 (use-package lsp-mode
   :ensure t
