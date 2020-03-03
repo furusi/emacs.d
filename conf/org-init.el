@@ -128,13 +128,15 @@
 
   ;; 有効にする言語 デフォルトでは elisp のみ
   (org-babel-do-load-languages
-   'org-babel-load-languages '((C        . t)
-                               (org      . t)
-                               (python   . t)
-                               (ruby     . t)
-                               (plantuml . t)
-                               (java     . t)
-                               (perl     . t)
+   'org-babel-load-languages '((C          . t)
+                               (org        . t)
+                               (python     . t)
+                               (lisp       . t)
+                               (emacs-lisp . t)
+                               (ruby       . t)
+                               (plantuml   . t)
+                               (java       . t)
+                               (perl       . t)
                                (dot      . t)))
 
    (setq org-use-speed-commands t)

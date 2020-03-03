@@ -269,10 +269,11 @@
 
 ;; SLIMEのロード
 (use-package slime
-  :ensure t
+  :straight slime-company
+  :ensure-system-package sbcl
   :config
   (setq inferior-lisp-program "sbcl")
-  (slime-setup '(slime-repl slime-fancy slime-banner)))
+  (slime-setup '(slime-fancy slime-company)))
 
 (use-package undohist
   :ensure t
@@ -436,6 +437,7 @@
          (sh-mode           . company-mode)
          (shell-mode        . company-mode)
          (org-mode          . company-mode)
+         (lisp-mode         . company-mode)
          (racer-mode        . company-mode)
          (rust-mode         . company-mode))
   :config
