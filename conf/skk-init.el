@@ -26,6 +26,8 @@
               "~/.emacs.d/skk-get-jisyo/SKK-JISYO.zipcode"
               "~/.emacs.d/skk-get-jisyo/SKK-JISYO.okinawa"
               "~/.emacs.d/skk-get-jisyo/SKK-JISYO.propernoun"))
+  ;; 全角・半角カタカナを変換候補にする
+  (setq skk-search-katakana 'jisx0201-kana)
   (setq skk-use-act t)
   (setq skk-henkan-show-candidates-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
   (setq-default skk-kutouten-type 'en)
