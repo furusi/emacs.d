@@ -44,7 +44,10 @@
   (setq skk-egg-like-newline t);;non-nilにするとEnterでの確定時に改行しない
   ;; ▼モードで BS を押したときには確定しないで前候補を表示する
   (setq skk-delete-implies-kakutei nil)
-  (require 'skk-study))
+  (require 'skk-study)
+  ;; ▼モード中で=漢字の読み方を指定する
+  (setq skk-hint-start-char ?=)
+  (require 'skk-hint))
 
 (provide 'skk-init)
 ;;; skk-init.el ends here
