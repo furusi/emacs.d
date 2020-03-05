@@ -26,6 +26,8 @@
               "~/.emacs.d/skk-get-jisyo/SKK-JISYO.zipcode"
               "~/.emacs.d/skk-get-jisyo/SKK-JISYO.okinawa"
               "~/.emacs.d/skk-get-jisyo/SKK-JISYO.propernoun"))
+  ;; サ行変格活用の動詞も送りあり変換出来るようにする
+  (setq skk-search-sagyo-henkaku t)
   ;; 全角・半角カタカナを変換候補にする
   (setq skk-search-katakana 'jisx0201-kana)
   (setq skk-use-act t)
