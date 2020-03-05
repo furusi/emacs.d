@@ -222,9 +222,6 @@
 (use-package restart-emacs
   :ensure t)
 
-(use-package gradle-mode
-  :ensure t)
-
 
 ;; Emacs起動時にrst.elを読み込み
 (use-package rst
@@ -240,7 +237,7 @@
     (setq rst-slides-program "open -a Firefox")))
 
 (use-package gradle-mode
-  :ensure t)
+  :mode (("\\.gradle$" . gradle-mode)))
 
 (use-package eww
   :commands (eww)
@@ -539,6 +536,8 @@
 (use-package cargo
   :ensure t
   :hook (rust-mode . cargo-minor-mode))
+
+(use-package android-mode)
 
 (use-package ccls
   :ensure t
