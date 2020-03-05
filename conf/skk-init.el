@@ -10,9 +10,9 @@
 (use-package ddskk
   :straight (ddskk :type git :host github :repo "skk-dev/ddskk")
   :bind (("C-x C-j" . skk-mode))
+  :hook (skk-load . (lambda () (require 'context-skk))) ;自動的に英字モードになる
   :init
   (setq skk-large-jisyo "~/.emacs.d/skk-get-jisyo/SKK-JISYO.L")
-  (setq skk-search-katakana t)
   (setq skk-extra-jisyo-file-list
         (list "~/.emacs.d/skk-get-jisyo/SKK-JISYO.lisp"
               "~/.emacs.d/skk-get-jisyo/SKK-JISYO.station"
