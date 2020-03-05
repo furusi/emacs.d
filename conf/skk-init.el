@@ -13,6 +13,19 @@
   :init
   (setq skk-large-jisyo "~/.emacs.d/skk-get-jisyo/SKK-JISYO.L")
   (setq skk-search-katakana t)
+  (setq skk-extra-jisyo-file-list
+        (list "~/.emacs.d/skk-get-jisyo/SKK-JISYO.lisp"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.station"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.assoc"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.edict"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.law"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.jinmei"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.fullname"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.geo"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.itaiji"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.zipcode"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.okinawa"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.propernoun"))
   (setq skk-use-act t)
   (setq skk-henkan-show-candidates-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
   (setq-default skk-kutouten-type 'en)
