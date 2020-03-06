@@ -17,6 +17,7 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+(setq use-package-enable-imenu-support t)
 (straight-use-package 'use-package)
 
 (setq straight-use-package-by-default t)
@@ -466,16 +467,13 @@
                     company-capf company-files)))))
 
 (use-package lsp-mode
-  :ensure t
-  :hook ((cc-mode . lsp-deferred)
-         (java-mode . lsp-deferred)
-         (rust-mode . lsp-deferred)
-         (python-mode . lsp-deferred))
-  :commands (lsp lsp-deferred))
+  :commands (lsp lsp-deferred)
+  :hook ((cc-mode     . lsp-deferred)
+         (rust-mode   . lsp-deferred)
+         (python-mode . lsp-deferred)))
 
 ;; ;; optionally
 (use-package lsp-ui
-  :ensure t
   :hook (lsp-mode . lsp-ui-mode)
   :commands lsp-ui-mode
   :after lsp-mode)
@@ -496,11 +494,9 @@
   :commands lsp-treemacs-errors-list)
 ;; optionally if you want to use debugger
 (use-package lsp-java
-  :ensure t
-  :after lsp
-  :config (add-hook 'java-mode-hook 'lsp))
+  :after lsp-mode
+  :hook (java-mode . lsp-deferred))
 (use-package dap-mode
-  :ensure t
   :after lsp-mode
   :config
   (dap-mode 1)
@@ -508,11 +504,15 @@
 (use-package dap-java
   :straight dap-mode
   :after (lsp-java))
-(use-package
-    hydra :ensure t)
+(use-package lsp-java-boot
+  :straight nil
+  :hook ((lsp-mode . lsp-lens-mode)
+         (java-mode . lsp-java-lens-mode)))
+
+(use-package hydra
+  :ensure t)
 (use-package projectile
   :ensure t)
-
 
 
 ;; ;;git clone git@github.com:rswarbrick/picasm.git ~/.emacs.d/lisp/picasm
@@ -617,6 +617,13 @@
 (use-package npm-mode
   :ensure t
   :ensure-system-package npm)
+(use-package autodisass-java-bytecode
+  :defer t)
+
+(use-package google-c-style
+  :defer t
+  :commands
+  (google-set-c-style))
 (use-package regex-tool)
 (use-package org-seek
   :commands (org-seek-string org-seek-regexp org-seek-headlines)
@@ -625,7 +632,8 @@
   (setq org-seek-search-tool 'ripgrep))
 (use-package easy-kill
   :bind (("M-w" . easy-kill)
-         ("C-SPC" . easy-mark)))
+         ;; ("C-SPC" . easy-mark)
+         ))
 
 
 ;;; GDB 関連
