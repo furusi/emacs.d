@@ -215,8 +215,12 @@
 
 (global-set-key (kbd "C-c t l") 'toggle-truncate-lines)
 (global-set-key "\C-t" 'other-window)
+(global-set-key (kbd "C-M-SPC") 'rectangle-mark-mode)
 
-
+;; C-u C-SPCの後C-SPCだけでマークを遡れる
+(setq set-mark-command-repeat-pop t)
+;; マークの数を32に増やす
+(setq mark-ring-max 32)
 (setq-default indent-tabs-mode nil)
 
 (use-package restart-emacs
@@ -228,8 +232,7 @@
   :ensure t
   :mode (("\\.rst$"  . rst-mode)
          ("\\.rest$" . rst-mode))
-  :bind (
-         :map rst-mode-map
+  :bind (:map rst-mode-map
               ("M-RET" . rst-insert-list))
   :config
   (when (eq system-type 'darwin)
@@ -281,8 +284,6 @@
         '("/tmp/" "COMMIT_EDITMSG")))
 
 (use-package undo-tree
-  :ensure t
-  :bind (("M-/" . undo-tree-undo))
   :init
   (global-undo-tree-mode t))
 
@@ -616,6 +617,16 @@
 (use-package npm-mode
   :ensure t
   :ensure-system-package npm)
+(use-package regex-tool)
+(use-package org-seek
+  :commands (org-seek-string org-seek-regexp org-seek-headlines)
+  :ensure-system-package (rg . ripgrep)
+  :config
+  (setq org-seek-search-tool 'ripgrep))
+(use-package easy-kill
+  :bind (("M-w" . easy-kill)
+         ("C-SPC" . easy-mark)))
+
 
 ;;; GDB 関連
 ;;; 有用なバッファを開くモード
