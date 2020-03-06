@@ -196,10 +196,10 @@
 ;; Org Mode LaTeX Export
 
 (use-package ox-bibtex
-  :straight org-plus-contrib
+  :straight nil
   :defer t)
 (use-package ox-eldoc
-  :straight org-plus-contrib
+  :straight nil
   :defer t
   :config
   (defadvice org-eldoc-documentation-function (around add-field-info activate)
@@ -215,7 +215,7 @@
 
 
 (use-package ox-latex
-  :straight org-plus-contrib
+  :straight nil
   :after (org)
   :config
   (setq org-latex-default-class "bxjsarticle")
@@ -453,7 +453,7 @@
 (setq org-ditaa-jar-path "/usr/local/opt/ditaa/libexec/ditaa-0.11.0-standalone.jar")
 
 (use-package ox-extra
-  :straight org-plus-contrib
+  :straight nil
   :after (org)
   :config
   ;; ignoreタグで見出しを非表示にしつつ内容を表示する
