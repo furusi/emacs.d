@@ -206,13 +206,6 @@
     (setq system-packages-use-sudo nil
           system-packages-package-manager 'aurman)))
 
-(add-to-list 'load-path "~/.emacs.d/conf")
-(load "org-init")
-(load "skk-init")
-(load "helm-init")
-(load "magit-init")
-(load "yatex-init")
-(load "mu4e-init")
 
 (global-set-key (kbd "C-c t l") 'toggle-truncate-lines)
 (global-set-key "\C-t" 'other-window)
@@ -247,7 +240,6 @@
   :commands (eww)
   :config
   (setq eww-search-prefix "http://www.google.co.jp/search?q=")
-;; eww
   (defun eww-disable-images ()
     "eww で画像表示させない"
     (interactive)
@@ -341,21 +333,7 @@
   (keyfreq-autosave-mode 1))
 
 
-(when (equal system-type 'gnu/linux)
-  (add-to-list 'load-path "~/opt/mu-1.0/mu4e/")
-  ;;曖昧な文字幅を指定する
-  (aset char-width-table ?→ 2)
 
-  (when (eq window-system 'x)
-    (set-face-attribute 'default nil
-                        :family "源ノ角ゴシック Code JP")
-
-    ;; org-modeのtableのフォントを設定
-        (set-face-attribute 'org-table nil
-                            :family "IPAゴシック")
-
-    (add-to-list 'face-font-rescale-alist
-                 '(".*IPAゴシック.*" . 0.85))))
 
 (use-package migemo
   :ensure t
@@ -371,7 +349,7 @@
     (setq migemo-command "/usr/bin/cmigemo")
     (if (string-match-p "arch" operating-system-release)
         (setq migemo-dictionary "/usr/share/migemo/utf-8/migemo-dict")
-        (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict")))
+      (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict")))
   (setq migemo-user-dictionary nil)
   (setq migemo-regex-dictionary nil)
   (load-library "migemo")
@@ -379,97 +357,9 @@
 (use-package ace-jump-mode
   :ensure t)
 (use-package ace-isearch
-  :ensure t
+  :after helm
   :config
   (global-ace-isearch-mode 1))
-
-
-(when (equal system-type 'darwin)
-  (setq ns-command-modifier (quote meta))
-  (add-to-list 'load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e/")
-  (when window-system 'ns
-        ;; 游教科書体
-        ;; (set-face-attribute 'default nil
-        ;;                     :family "YuKyokasho Yoko")
-        ;; 源ノ角ゴシック
-        (set-face-attribute 'default nil
-                            :family "Source Han Code JP")
-        ;; org-modeのtableのフォントを設定
-        (set-face-attribute 'org-table nil
-                            :family "IPAGothic")
-
-        ))
-
-;; 記号をデフォルトのフォントにしない。(for Emacs 25.2)
-(setq use-default-font-for-symbols nil)
-
-(use-package magit
-  :ensure t
-  :bind (("C-x g" . magit-status))
-  :config
-  (setq magit-diff-refine-hunk 'all))
-
-(use-package mu4e
-  :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e"
-  :commands (mu4e)
-  :config
-  ;;location of my maildir
-  (setq mu4e-maildir (expand-file-name "~/.maildir/gmail"))
-  ;;command used to get mail
-  ;; use this for testing
-  ;;(setq mu4e-get-mail-command "true")
-  ;; use this to sync with mbsync
-  (setq mu4e-get-mail-command "mbsync gmail")
-
-  ;;rename files when moving
-  ;;NEEDED FOR MBSYNC
-  (setq mu4e-change-filenames-when-moving t)
-  ;; don't save message to Sent Messages, Gmail/IMAP takes care of this
-  (setq mu4e-sent-messages-behavior 'delete)
-
-  ;; something about ourselves
-  (load "~/.mailinfo.el")
-  ;; show images
-  (setq mu4e-show-images t)
-  ;; configuration for sending mail
-  (setq message-send-mail-function 'smtpmail-send-it
-        smtpmail-stream-type 'starttls
-        smtpmail-default-smtp-server "smtp.gmail.com"
-        smtpmail-smtp-server "smtp.gmail.com"
-        smtpmail-smtp-service 587)
-  (setq mu4e-refile-folder
-        (lambda (msg)
-          (cond
-           ;; messages to the mu mailing list go to the /mu folder
-           ((mu4e-message-contact-field-matches msg :to
-                                                "mu-discuss@googlegroups.com")
-            "/mu")
-           ;; messages sent directly to me go to /archive
-           ;; also `mu4e-user-mail-address-p' can be used
-           ((mu4e-message-contact-field-matches msg :to "me@example.com")
-            "/private")
-           ;; messages with football or soccer in the subject go to /football
-           ((string-match
-             "football\\|soccer"              (mu4e-message-field msg :subject))
-            "/football")
-           ;; messages sent by me go to the sent folder
-           ;;((find-if
-           ;;  (lambda (addr)
-           ;;  (mu4e-message-contact-field-matches msg :from addr))
-           ;;     mu4e-user-mail-address-list)
-           ;;  mu4e-sent-folder)
-           ;; everything else goes to /archive
-           ;; important to have a catch-all at the end!
-           (t  "/archive"))))
-  ;; don't keep message buffers around
-  (setq message-kill-buffer-on-exit t)
-  ;; save attachment to my desktop (this can also be a function)
-  (setq mu4e-attachment-dir "~/Downloads")
-  (setq mu4e-maildir-shortcuts
-        '( ("/inbox"   . ?i)
-           ("/sent"    . ?s)
-           ("/trash"   . ?t)
-           ("/archive" . ?a))))
 
 ;; Org-mode
 (use-package org
@@ -490,7 +380,8 @@
       (skk-latin-mode nil)))
 
   (when (equal system-type 'darwin)
-    (setq org-plantuml-jar-path   "/usr/local/opt/plantuml/libexec/plantuml.jar"))
+    (setq org-plantuml-jar-path
+          "/usr/local/opt/plantuml/libexec/plantuml.jar"))
 
 
   (when (eq system-type 'gnu/linux)
@@ -529,8 +420,8 @@
          (concat org-directory "event.org")))
   (setq org-mobile-inbox-for-pull (concat org-directory "iphone.org"))
   (setq org-tag-alist
-  '(("ignore" . ?i) ("@OFFICE" . ?o) ("@HOME" . ?h) ("SHOPPING" . ?s)
-    ("MAIL" . ?m) ("PROJECT" . ?p) ("備忘録" . ?b)))
+        '(("ignore" . ?i) ("@OFFICE" . ?o) ("@HOME" . ?h) ("SHOPPING" . ?s)
+          ("MAIL" . ?m) ("PROJECT" . ?p) ("備忘録" . ?b)))
   (setq org-capture-templates
         `(
           ("i" "インボックス" entry
@@ -605,72 +496,74 @@
                                (plantuml   . t)
                                (java       . t)
                                (perl       . t)
-                               (dot      . t)))
+                               (dot        . t)))
 
-   (setq org-use-speed-commands t)
-   (setq org-icalendar-alarm-time 30)
-   (setq org-icalendar-timezone "Asia/Tokyo")
+  (setq org-use-speed-commands t)
+  (setq org-icalendar-alarm-time 30)
+  (setq org-icalendar-timezone "Asia/Tokyo")
 
-   ;; htmlで数式
-   (setf org-html-mathjax-options
-         '((path "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")
-           (scale "100")
-           (align "center")
-           (indent "2em")
-           (mathml nil))
-         )
-   (setf org-html-mathjax-template
-         "<script type=\"text/javascript\" src=\"%PATH\"></script>")
+  ;; htmlで数式
+  (setf org-html-mathjax-options
+        '((path "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")
+          (scale "100")
+          (align "center")
+          (indent "2em")
+          (mathml nil)))
+  (setf org-html-mathjax-template
+        "<script type=\"text/javascript\" src=\"%PATH\"></script>")
 
-   ;; ddskk
-   (use-package ddskk
-  :straight (ddskk :type git :host github :repo "skk-dev/ddskk")
-  :bind (("C-x C-j" . skk-mode))
-  :hook (skk-load . (lambda () (require 'context-skk))) ;自動的に英字モードになる
-  :init
-  (setq skk-large-jisyo "~/.emacs.d/skk-get-jisyo/SKK-JISYO.L")
-  (setq skk-extra-jisyo-file-list
-        (list "~/.emacs.d/skk-get-jisyo/SKK-JISYO.lisp"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.station"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.assoc"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.edict"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.law"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.jinmei"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.fullname"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.geo"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.itaiji"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.zipcode"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.okinawa"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.propernoun"))
-  ;; サ行変格活用の動詞も送りあり変換出来るようにする
-  (setq skk-search-sagyo-henkaku t)
-  ;; 全角・半角カタカナを変換候補にする
-  (setq skk-search-katakana 'jisx0201-kana)
-  (setq skk-use-act t)
-  (setq skk-henkan-show-candidates-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
-  (setq-default skk-kutouten-type 'en)
-  ;; 動的補完
-  (setq skk-dcomp-activate t)
-  (setq skk-rom-kana-rule-list
-        '(("tni" nil ("ティ" . "てぃ"))
-          ("dni" nil ("ディ" . "でぃ"))))
-  (add-hook 'dired-load-hook
-            (load "dired-x")
-            (global-set-key "\C-x\C-j" 'skk-mode))
-  (setq skk-egg-like-newline t);;non-nilにするとEnterでの確定時に改行しない
-  ;; ▼モードで BS を押したときには確定しないで前候補を表示する
-  (setq skk-delete-implies-kakutei nil)
-  (require 'skk-study)
-  ;; ▼モード中で=漢字の読み方を指定する
-  (setq skk-hint-start-char ?=)
-  (require 'skk-hint))
+  ;; ddskk
+  (use-package ddskk
+    :straight (ddskk :type git :host github :repo "skk-dev/ddskk")
+    :bind (("C-x C-j" . skk-mode))
+    :hook (skk-load . (lambda () (require 'context-skk))) ;自動的に英字モードになる
+    :init
+    (setq skk-large-jisyo "~/.emacs.d/skk-get-jisyo/SKK-JISYO.L")
+    (setq skk-extra-jisyo-file-list
+          (list "~/.emacs.d/skk-get-jisyo/SKK-JISYO.lisp"
+                "~/.emacs.d/skk-get-jisyo/SKK-JISYO.station"
+                "~/.emacs.d/skk-get-jisyo/SKK-JISYO.assoc"
+                "~/.emacs.d/skk-get-jisyo/SKK-JISYO.edict"
+                "~/.emacs.d/skk-get-jisyo/SKK-JISYO.law"
+                "~/.emacs.d/skk-get-jisyo/SKK-JISYO.jinmei"
+                "~/.emacs.d/skk-get-jisyo/SKK-JISYO.fullname"
+                "~/.emacs.d/skk-get-jisyo/SKK-JISYO.geo"
+                "~/.emacs.d/skk-get-jisyo/SKK-JISYO.itaiji"
+                "~/.emacs.d/skk-get-jisyo/SKK-JISYO.zipcode"
+                "~/.emacs.d/skk-get-jisyo/SKK-JISYO.okinawa"
+                "~/.emacs.d/skk-get-jisyo/SKK-JISYO.propernoun"))
+    ;; サ行変格活用の動詞も送りあり変換出来るようにする
+    (setq skk-search-sagyo-henkaku t)
+    ;; 全角・半角カタカナを変換候補にする
+    (setq skk-search-katakana 'jisx0201-kana)
+    (setq skk-use-act t)
+    (setq skk-henkan-show-candidates-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
+    (setq-default skk-kutouten-type 'en)
+    ;; 動的補完
+    (setq skk-dcomp-activate t)
+    (setq skk-rom-kana-rule-list
+          '(("tni" nil ("ティ" . "てぃ"))
+            ("dni" nil ("ディ" . "でぃ"))))
+    (add-hook 'dired-load-hook
+              (load "dired-x")
+              (global-set-key "\C-x\C-j" 'skk-mode))
+    (setq skk-egg-like-newline t);;non-nilにするとEnterでの確定時に改行しない
+    ;; ▼モードで BS を押したときには確定しないで前候補を表示する
+    (setq skk-delete-implies-kakutei nil)
+    (require 'skk-study)
+    ;; ▼モード中で=漢字の読み方を指定する
+    (setq skk-hint-start-char ?=)
+    (require 'skk-hint))
 
-   (defun my-org-mode-hook ()
-     (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
-   (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)
-   (add-hook 'org-mode-hook #'my-org-mode-hook)
-   ;;ob-plantuml
-   (add-to-list 'org-babel-default-header-args:plantuml '(:cmdline . "-charset utf-8")))
+  (defun my-org-mode-hook ()
+    (add-hook 'completion-at-point-functions
+              'pcomplete-completions-at-point nil t))
+  (org-babel-do-load-languages
+   'org-babel-load-languages org-babel-load-languages)
+  (add-hook 'org-mode-hook #'my-org-mode-hook)
+  ;;ob-plantuml
+  (add-to-list 'org-babel-default-header-args:plantuml
+               '(:cmdline . "-charset utf-8")))
 (use-package org-mobile-sync
   :ensure t
   :after (org)
@@ -732,9 +625,10 @@
   ;; (setq org-latex-pdf-process '("latexmk %f"))
   (setq org-latex-pdf-process '("latexmk -gg -pdfxe  %f"))
   (add-to-list 'org-latex-packages-alist '("" "minted"))
-  (setq org-highlight-latex-and-related '(latex script entities))
-;(setq org-latex-pdf-process '("latexmk -e '$lualatex=q/lualatex %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex -o %D %S/' -norc -gg -pdflua %f"))
-                                        ;(setq org-export-in-background t)
+  (setq org-highlight-latex-and-related
+        '(latex script entities))
+  ;;(setq org-latex-pdf-process '("latexmk -e '$lualatex=q/lualatex %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex -o %D %S/' -norc -gg -pdflua %f"))
+  ;;(setq org-export-in-background t)
   (when (equal system-type 'darwin)
     (setq org-file-apps
           '(("pdf" . "open -a Skim %s"))))
@@ -863,8 +757,8 @@
                  ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
                  ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
   (add-to-list 'org-latex-classes
-             '("luatex-jlreq-tate"
-               "\\documentclass[tate,book,jafontscale=1.3]{jlreq}
+               '("luatex-jlreq-tate"
+                 "\\documentclass[tate,book,jafontscale=1.3]{jlreq}
 
 \\usepackage[T1]{fontenc}
 \\usepackage{lmodern}
@@ -891,8 +785,8 @@
                  ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
                  ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
   (add-to-list 'org-latex-classes
-             '("lectureslide"
-               "\\documentclass[unicode,11pt]{beamer}
+               '("lectureslide"
+                 "\\documentclass[unicode,11pt]{beamer}
 \\usepackage{bxdpx-beamer}
 
 \\usepackage{xeCJK}
@@ -943,23 +837,24 @@
                  ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
                  ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
   ;; org-export-latex-no-toc
-(defun org-export-latex-no-toc (depth)
-  (when depth
-    (format "%% Org-mode is exporting headings to %s levels.\n"
-            depth)))
-(setq org-export-latex-format-toc-function 'org-export-latex-no-toc)
+  (defun org-export-latex-no-toc (depth)
+    (when depth
+      (format "%% Org-mode is exporting headings to %s levels.\n"
+              depth)))
+  (setq org-export-latex-format-toc-function 'org-export-latex-no-toc)
 
-;; reftex with org mode
-;; (add-hook 'org-mode-hook 'turn-on-reftex)
-;; (defun org-mode-reftex-setup ()
-;;   (load-library "reftex")
-;;   (and (buffer-file-name)
-;;        (file-exists-p (buffer-file-name))
-;;        (reftex-parse-all))
-;;   (define-key org-mode-map (kbd "C-c [") 'reftex-citation))
+  ;; reftex with org mode
+  ;; (add-hook 'org-mode-hook 'turn-on-reftex)
+  ;; (defun org-mode-reftex-setup ()
+  ;;   (load-library "reftex")
+  ;;   (and (buffer-file-name)
+  ;;        (file-exists-p (buffer-file-name))
+  ;;        (reftex-parse-all))
+  ;;   (define-key org-mode-map (kbd "C-c [") 'reftex-citation))
 
-)
-(setq org-ditaa-jar-path "/usr/local/opt/ditaa/libexec/ditaa-0.11.0-standalone.jar")
+  )
+(setq org-ditaa-jar-path
+      "/usr/local/opt/ditaa/libexec/ditaa-0.11.0-standalone.jar")
 
 (use-package ox-extra
   :straight nil
@@ -1015,24 +910,128 @@ See `org-capture-templates' for more information."
 
 (setq org-publish-project-alist
       '(("aip3"
-        :base-directory "~/git/advancedinformationprocessing3/org"
-        :publishing-directory "~/git/advancedinformationprocessing3/pub"
-        :base-extension "org"
-        :publishing-function org-html-publish-to-html
-        :html-postamble "<a href=\"index.html\">サイトのトップへ戻る</a>"
-        :language "ja"
-        :with-tags nil
-        ;; :auto-sitemap t
-        :htmlized-source t
-        :with-tags nil
-        :makeindex t
-        :recursive t)
+         :base-directory "~/git/advancedinformationprocessing3/org"
+         :publishing-directory "~/git/advancedinformationprocessing3/pub"
+         :base-extension "org"
+         :publishing-function org-html-publish-to-html
+         :html-postamble "<a href=\"index.html\">サイトのトップへ戻る</a>"
+         :language "ja"
+         :with-tags nil
+         ;; :auto-sitemap t
+         :htmlized-source t
+         :with-tags nil
+         :makeindex t
+         :recursive t)
         ("aip3-image"
-        :base-directory "~/git/advancedinformationprocessing3/image"
-        :publishing-directory "~/git/advancedinformationprocessing3/pub/image"
-        :base-extension "jpg\\|png\\|pdf"
-        :publishing-function org-publish-attachment
-        :recursive t)))
+         :base-directory "~/git/advancedinformationprocessing3/image"
+         :publishing-directory "~/git/advancedinformationprocessing3/pub/image"
+         :base-extension "jpg\\|png\\|pdf"
+         :publishing-function org-publish-attachment
+         :recursive t)))
+
+
+(when (equal system-type 'darwin)
+  (setq ns-command-modifier (quote meta))
+  (add-to-list 'load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e/")
+  (when window-system 'ns
+        ;; 游教科書体
+        ;; (set-face-attribute 'default nil
+        ;;                     :family "YuKyokasho Yoko")
+        ;; 源ノ角ゴシック
+        (set-face-attribute 'default nil
+                            :family "Source Han Code JP")
+        ;; org-modeのtableのフォントを設定
+        (set-face-attribute 'org-table nil
+                            :family "IPAGothic")
+
+        ))
+(when (equal system-type 'gnu/linux)
+  (add-to-list 'load-path "~/opt/mu-1.0/mu4e/")
+  ;;曖昧な文字幅を指定する
+  (aset char-width-table ?→ 2)
+
+  (when (eq window-system 'x)
+    (set-face-attribute 'default nil
+                        :family "源ノ角ゴシック Code JP")
+
+    ;; org-modeのtableのフォントを設定
+    (set-face-attribute 'org-table nil
+                        :family "IPAゴシック")
+
+    (add-to-list 'face-font-rescale-alist
+                 '(".*IPAゴシック.*" . 0.85))))
+
+;; 記号をデフォルトのフォントにしない。(for Emacs 25.2)
+(setq use-default-font-for-symbols nil)
+
+(use-package magit
+  :ensure t
+  :bind (("C-x g" . magit-status))
+  :config
+  (setq magit-diff-refine-hunk 'all))
+
+(use-package mu4e
+  :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e"
+  :commands (mu4e)
+  :config
+  ;;location of my maildir
+  (setq mu4e-maildir (expand-file-name "~/.maildir/gmail"))
+  ;;command used to get mail
+  ;; use this for testing
+  ;;(setq mu4e-get-mail-command "true")
+  ;; use this to sync with mbsync
+  (setq mu4e-get-mail-command "mbsync gmail")
+
+  ;;rename files when moving
+  ;;NEEDED FOR MBSYNC
+  (setq mu4e-change-filenames-when-moving t)
+  ;; don't save message to Sent Messages, Gmail/IMAP takes care of this
+  (setq mu4e-sent-messages-behavior 'delete)
+
+  ;; something about ourselves
+  (load "~/.mailinfo.el")
+  ;; show images
+  (setq mu4e-show-images t)
+  ;; configuration for sending mail
+  (setq message-send-mail-function 'smtpmail-send-it
+        smtpmail-stream-type 'starttls
+        smtpmail-default-smtp-server "smtp.gmail.com"
+        smtpmail-smtp-server "smtp.gmail.com"
+        smtpmail-smtp-service 587)
+  (setq mu4e-refile-folder
+        (lambda (msg)
+          (cond
+           ;; messages to the mu mailing list go to the /mu folder
+           ((mu4e-message-contact-field-matches msg :to
+                                                "mu-discuss@googlegroups.com")
+            "/mu")
+           ;; messages sent directly to me go to /archive
+           ;; also `mu4e-user-mail-address-p' can be used
+           ((mu4e-message-contact-field-matches msg :to "me@example.com")
+            "/private")
+           ;; messages with football or soccer in the subject go to /football
+           ((string-match
+             "football\\|soccer"              (mu4e-message-field msg :subject))
+            "/football")
+           ;; messages sent by me go to the sent folder
+           ;;((find-if
+           ;;  (lambda (addr)
+           ;;  (mu4e-message-contact-field-matches msg :from addr))
+           ;;     mu4e-user-mail-address-list)
+           ;;  mu4e-sent-folder)
+           ;; everything else goes to /archive
+           ;; important to have a catch-all at the end!
+           (t  "/archive"))))
+  ;; don't keep message buffers around
+  (setq message-kill-buffer-on-exit t)
+  ;; save attachment to my desktop (this can also be a function)
+  (setq mu4e-attachment-dir "~/Downloads")
+  (setq mu4e-maildir-shortcuts
+        '( ("/inbox"   . ?i)
+           ("/sent"    . ?s)
+           ("/trash"   . ?t)
+           ("/archive" . ?a))))
+
 
 
 ;;helm
@@ -1124,33 +1123,35 @@ See `org-capture-templates' for more information."
   (setq YaTeX-use-AMS-LaTeX t)
   (setq YaTeX-dvi2-command-ext-alist
         '(("TeXworks\\|texworks\\|texstudio\\|mupdf\\|SumatraPDF\\|Preview\\|Skim\\|TeXShop\\|evince\\|atril\\|xreader\\|okular\\|zathura\\|qpdfview\\|Firefox\\|firefox\\|chrome\\|chromium\\|MicrosoftEdge\\|microsoft-edge\\|Adobe\\|Acrobat\\|AcroRd32\\|acroread\\|pdfopen\\|xdg-open\\|open\\|start" . ".pdf")))
- ;(setq tex-command "ptex2pdf -u -l -ot '-synctex=1'")
- ;(setq tex-command "lualatex -synctex=1")
- ;(setq tex-command "latexmk")
+  ;;(setq tex-command "ptex2pdf -u -l -ot '-synctex=1'")
+  ;;(setq tex-command "lualatex -synctex=1")
+  ;;(setq tex-command "latexmk")
   (setq tex-command "latexmk -e '$latex=q/uplatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$biber=q/biber %O --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex %O -o %D %S/' -e '$dvipdf=q/dvipdfmx %O -o %D %S/' -shell-escape -norc -gg -pdfdvi")
- ;(setq tex-command "latexmk -e '$lualatex=q/lualatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$biber=q/biber %O --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex %O -o %D %S/' -norc -gg -pdflua")
+  ;;(setq tex-command "latexmk -e '$lualatex=q/lualatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$biber=q/biber %O --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex %O -o %D %S/' -norc -gg -pdflua")
   (setq bibtex-command "latexmk -e '$latex=q/uplatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$biber=q/biber %O --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex %O -o %D %S/' -e '$dvipdf=q/dvipdfmx %O -o %D %S/' -norc -gg -pdfdvi")
   (setq makeindex-command "latexmk -e '$latex=q/uplatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$biber=q/biber %O --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex %O -o %D %S/' -e '$dvipdf=q/dvipdfmx %O -o %D %S/' -norc -gg -pdfdvi")
   (setq dvi2-command "open -a Skim")
- ;(setq dvi2-command "open -a Preview")
- ;(setq dvi2-command "open -a TeXShop")
- ;(setq dvi2-command "/Applications/TeXworks.app/Contents/MacOS/TeXworks")
- ;(setq dvi2-command "/Applications/texstudio.app/Contents/MacOS/texstudio --pdf-viewer-only")
+  ;;(setq dvi2-command "open -a Preview")
+  ;;(setq dvi2-command "open -a TeXShop")
+  ;;(setq dvi2-command "/Applications/TeXworks.app/Contents/MacOS/TeXworks")
+  ;;(setq dvi2-command "/Applications/texstudio.app/Contents/MacOS/texstudio --pdf-viewer-only")
   (setq tex-pdfview-command "open -a Skim")
- ;(setq tex-pdfview-command "open -a Preview")
- ;(setq tex-pdfview-command "open -a TeXShop")
- ;(setq tex-pdfview-command "/Applications/TeXworks.app/Contents/MacOS/TeXworks")
- ;(setq tex-pdfview-command "/Applications/texstudio.app/Contents/MacOS/texstudio --pdf-viewer-only")
+  ;;(setq tex-pdfview-command "open -a Preview")
+  ;;(setq tex-pdfview-command "open -a TeXShop")
+  ;;(setq tex-pdfview-command "/Applications/TeXworks.app/Contents/MacOS/TeXworks")
+                                        ;(setq tex-pdfview-command "/Applications/texstudio.app/Contents/MacOS/texstudio --pdf-viewer-only")
   (setq dviprint-command-format "open -a \"Adobe Acrobat Reader DC\" `echo %s | gsed -e \"s/\\.[^.]*$/\\.pdf/\"`")
   (add-hook 'yatex-mode-hook
-          '(lambda ()
-             (auto-fill-mode -1)))
+            '(lambda ()
+               (auto-fill-mode -1)))
   (add-hook 'yatex-mode-hook
-          '(lambda ()
-             (reftex-mode 1)
-             (define-key reftex-mode-map (concat YaTeX-prefix ">") 'YaTeX-comment-region)
-             (define-key reftex-mode-map (concat YaTeX-prefix "<") 'YaTeX-uncomment-region))))
-; for yatex
+            '(lambda ()
+               (reftex-mode 1)
+               (define-key reftex-mode-map
+                 (concat YaTeX-prefix ">") 'YaTeX-comment-region)
+               (define-key reftex-mode-map
+                 (concat YaTeX-prefix "<") 'YaTeX-uncomment-region))))
+;; for yatex
 (when (equal system-type 'darwin)
   (setenv "PATH" "/usr/local/bin:/Library/TeX/texbin/:/Applications/Skim.app/Contents/SharedSupport:$PATH" t)
   (setq exec-path (append '("/usr/local/bin" "/Library/TeX/texbin" "/Applications/Skim.app/Contents/SharedSupport") exec-path)))
@@ -1163,16 +1164,16 @@ See `org-capture-templates' for more information."
 (use-package company-php
   :after (:all company php-mode ac-php)
   :hook (php-mode . (lambda ()
-             ;; Enable company-mode
-             (company-mode t)
-             ;; (require 'company-php)
+                      ;; Enable company-mode
+                      (company-mode t)
+                      ;; (require 'company-php)
 
-             ;; Enable ElDoc support (optional)
-             (ac-php-core-eldoc-setup)
+                      ;; Enable ElDoc support (optional)
+                      (ac-php-core-eldoc-setup)
 
-             (set (make-local-variable 'company-backends)
-                  '((company-ac-php-backend company-dabbrev-code)
-                    company-capf company-files)))))
+                      (set (make-local-variable 'company-backends)
+                           '((company-ac-php-backend company-dabbrev-code)
+                             company-capf company-files)))))
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
@@ -1258,14 +1259,14 @@ See `org-capture-templates' for more information."
     (when (executable-find "/usr/local/opt/ccls/bin/ccls")
       (setq ccls-executable "/usr/local/opt/ccls/bin/ccls"))
     (setq ccls-initialization-options
-        '(:clang (:extraArgs ["-isystem/Library/Developer/CommandLineTools/usr/include/c++/v1"
-                              "-isystem/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include"
-                              "-isystem/usr/local/include"
-                              "-isystem/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"
-                              "-isystem/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"
-                              "-isystem/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include"
-                              "-isystem/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks"]
-                  :resourceDir "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0")))))
+          '(:clang (:extraArgs ["-isystem/Library/Developer/CommandLineTools/usr/include/c++/v1"
+                                "-isystem/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include"
+                                "-isystem/usr/local/include"
+                                "-isystem/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"
+                                "-isystem/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"
+                                "-isystem/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include"
+                                "-isystem/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks"]
+                               :resourceDir "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0")))))
 
 
 
@@ -1283,13 +1284,13 @@ See `org-capture-templates' for more information."
   (set-face-foreground 'whitespace-space nil)
   (set-face-background 'whitespace-space "gray33")
   (setq whitespace-style '(face
-                         ;; trailing
-                         ;; tabs
-                         spaces
-                         ;; empty
-                         ;; space-mark
-                         ;; tab-mark
-                         ))
+                           ;; trailing
+                           ;; tabs
+                           spaces
+                           ;; empty
+                           ;; space-mark
+                           ;; tab-mark
+                           ))
   (setq whitespace-space-regexp "\\(\u3000+\\)")
   (global-whitespace-mode 1))
 
@@ -1299,7 +1300,8 @@ See `org-capture-templates' for more information."
   :ensure-system-package plantuml
   :config
   (when (eq system-type 'darwin)
-    (setq plantuml-jar-path "/usr/local/opt/plantuml/libexec/plantuml.jar")))
+    (setq plantuml-jar-path
+          "/usr/local/opt/plantuml/libexec/plantuml.jar")))
 (use-package back-button
   :ensure t
   :config
