@@ -290,7 +290,6 @@
 
 
 (use-package auto-save-buffers-enhanced
-  :ensure t
   :config
   ;; 1秒後に保存
   (setq auto-save-buffers-enhanced-interval 1)
@@ -1341,8 +1340,7 @@ See `org-capture-templates' for more information."
   (setq org-seek-search-tool 'ripgrep))
 (use-package easy-kill
   :bind (("M-w" . easy-kill)
-         ;; ("C-SPC" . easy-mark)
-         ))
+         ("C-SPC" . easy-mark)))
 
 
 ;;; GDB 関連
