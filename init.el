@@ -338,6 +338,8 @@
 (use-package migemo
   :ensure t
   :ensure-system-package cmigemo
+  :bind ((:map isearch-mode-map
+               ("C-y" . isearch-yank-kill)))
   :config
   (setq migemo-options '("-q" "--emacs"))
   (setq migemo-coding-system 'utf-8-unix)
@@ -354,12 +356,7 @@
   (setq migemo-regex-dictionary nil)
   (load-library "migemo")
   (migemo-init))
-(use-package ace-jump-mode
-  :ensure t)
-(use-package ace-isearch
-  :after helm
-  :config
-  (global-ace-isearch-mode 1))
+(use-package ace-jump-mode)
 
 ;; Org-mode
 (use-package org
@@ -1036,7 +1033,6 @@ See `org-capture-templates' for more information."
 
 ;;helm
 (use-package helm
-  :after migemo
   :ensure t
   :bind (("M-x" . helm-M-x)
          ("M-y" . helm-show-kill-ring)
@@ -1049,7 +1045,6 @@ See `org-capture-templates' for more information."
   (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
   (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
   (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
-  (helm-migemo-mode 1)
   (helm-autoresize-mode 1)
   (helm-mode 1))
 (use-package helm-config
@@ -1057,7 +1052,9 @@ See `org-capture-templates' for more information."
   :after helm
   :config (helm-mode 1))
 (use-package helm-swoop
-  :ensure t)
+  :after (:all helm migemo)
+  :config
+  (helm-migemo-mode 1))
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 
 (use-package helm-rg
