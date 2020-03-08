@@ -404,6 +404,668 @@
 ;; 記号をデフォルトのフォントにしない。(for Emacs 25.2)
 (setq use-default-font-for-symbols nil)
 
+(use-package magit
+  :ensure t
+  :bind (("C-x g" . magit-status))
+  :config
+  (setq magit-diff-refine-hunk 'all))
+
+(use-package mu4e
+  :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e"
+  :commands (mu4e)
+  :config
+  ;;location of my maildir
+  (setq mu4e-maildir (expand-file-name "~/.maildir/gmail"))
+  ;;command used to get mail
+  ;; use this for testing
+  ;;(setq mu4e-get-mail-command "true")
+  ;; use this to sync with mbsync
+  (setq mu4e-get-mail-command "mbsync gmail")
+
+  ;;rename files when moving
+  ;;NEEDED FOR MBSYNC
+  (setq mu4e-change-filenames-when-moving t)
+  ;; don't save message to Sent Messages, Gmail/IMAP takes care of this
+  (setq mu4e-sent-messages-behavior 'delete)
+
+  ;; something about ourselves
+  (load "~/.mailinfo.el")
+  ;; show images
+  (setq mu4e-show-images t)
+  ;; configuration for sending mail
+  (setq message-send-mail-function 'smtpmail-send-it
+        smtpmail-stream-type 'starttls
+        smtpmail-default-smtp-server "smtp.gmail.com"
+        smtpmail-smtp-server "smtp.gmail.com"
+        smtpmail-smtp-service 587)
+  (setq mu4e-refile-folder
+        (lambda (msg)
+          (cond
+           ;; messages to the mu mailing list go to the /mu folder
+           ((mu4e-message-contact-field-matches msg :to
+                                                "mu-discuss@googlegroups.com")
+            "/mu")
+           ;; messages sent directly to me go to /archive
+           ;; also `mu4e-user-mail-address-p' can be used
+           ((mu4e-message-contact-field-matches msg :to "me@example.com")
+            "/private")
+           ;; messages with football or soccer in the subject go to /football
+           ((string-match
+             "football\\|soccer"              (mu4e-message-field msg :subject))
+            "/football")
+           ;; messages sent by me go to the sent folder
+           ;;((find-if
+           ;;  (lambda (addr)
+           ;;  (mu4e-message-contact-field-matches msg :from addr))
+           ;;     mu4e-user-mail-address-list)
+           ;;  mu4e-sent-folder)
+           ;; everything else goes to /archive
+           ;; important to have a catch-all at the end!
+           (t  "/archive"))))
+  ;; don't keep message buffers around
+  (setq message-kill-buffer-on-exit t)
+  ;; save attachment to my desktop (this can also be a function)
+  (setq mu4e-attachment-dir "~/Downloads")
+  (setq mu4e-maildir-shortcuts
+        '( ("/inbox"   . ?i)
+           ("/sent"    . ?s)
+           ("/trash"   . ?t)
+           ("/archive" . ?a))))
+
+;; Org-mode
+(use-package org
+  :mode (("\\.org$" . org-mode))
+  :straight org-plus-contrib
+  :bind (("\C-cc" . org-capture)
+         ("\C-cl" . org-store-link)
+         ("\C-ca" . org-agenda)
+         ("\C-cb" . org-iswitchb)
+         :map org-mode-map
+         ("C-c C-\'" . org-insert-structure-template)
+         ("C-c C-u" . outline-up-heading-latin))
+  :config
+  (defun outline-up-heading-latin ()
+    (interactive)
+    (outline-up-heading 1 nil)
+    (when (bound-and-true-p skk-mode)
+      (skk-latin-mode nil)))
+
+  (when (equal system-type 'darwin)
+    (setq org-plantuml-jar-path   "/usr/local/opt/plantuml/libexec/plantuml.jar"))
+
+
+  (when (eq system-type 'gnu/linux)
+    (setq org-directory (expand-file-name "~/pCloudDrive/org/")))
+  (when (eq system-type 'darwin)
+    (setq org-directory (expand-file-name "~/Dropbox/org/")))
+
+  (when (not (file-exists-p org-directory))
+    (setq org-directory (expand-file-name "~/org/"))
+    (make-directory (concat org-directory "mobile/") t))
+
+  (when (file-exists-p org-directory)
+    (setq org-mobile-directory (concat org-directory "mobile/")))
+
+
+  (setq org-agenda-files
+        (list
+         (concat org-directory "task.org")
+         (concat org-directory "notes.org")
+         (concat org-directory "habit.org")
+         (concat org-directory "event.org")
+         (concat org-directory "inbox.org")
+         (concat org-directory "productivity.org")
+         (concat org-directory "org-ical.org")))
+  (setq org-refile-targets
+        `(("org-ical.org"     . (:level . 1))
+          ("task.org"         . (:level . 1))
+          ("event.org"        . (:level . 1))
+          ("productivity.org" . (:maxlevel . 2))
+          ("notes.org"        . (:level . 2))))
+  (setq org-mobile-files
+        (list
+         (concat org-directory "task.org")
+         (concat org-directory "notes.org")
+         (concat org-directory "iphone.org")
+         (concat org-directory "event.org")))
+  (setq org-mobile-inbox-for-pull (concat org-directory "iphone.org"))
+  (setq org-tag-alist
+  '(("ignore" . ?i) ("@OFFICE" . ?o) ("@HOME" . ?h) ("SHOPPING" . ?s)
+    ("MAIL" . ?m) ("PROJECT" . ?p) ("備忘録" . ?b)))
+  (setq org-capture-templates
+        `(
+          ("i" "インボックス" entry
+           (file ,(concat org-directory "inbox.org"))
+           "* %? %i\n %U\n")
+          ;; ("h" "定期的にやること" entry
+          ;;  (file ,(concat org-directory "habit.org"))
+          ;;  "* %?\n %U\n")
+          ("t" "タスク" entry
+           (file ,(concat org-directory "task.org"))
+           "* TODO %? %i\n %U\n")
+          ("e" "イベント" entry
+           (file ,(concat org-directory "event.org"))
+           "* EVENT %? %i\n %a\n %U\n")
+          ("n"
+           "ノート(本文から書く)"
+           entry
+           (file+headline, (concat org-directory "notes.org") "MEMO")
+           "* %U \n\n%?\n")
+          ("N"
+           "ノート(見出しから書く)"
+           entry
+           (file+headline, (concat org-directory "notes.org") "MEMO")
+           "* %U %?\n\n\n")
+          ("r" "読みかけ(リンク付き)" entry
+           (file ,(concat org-directory "reading.org"))
+           "* %?\n %a\n %U\n")
+          ("m"
+           "みんなで会議"
+           entry
+           (file+datetree (concat org-directory "minutes.org"))
+           "* %T %?"
+           :empty-lines 1
+           :jump-to-captured 1)
+          ("p"
+           "ぱっと 読み返したいと思ったとき"
+           plain
+           (file+headline nil "PLAIN")
+           "%?"
+           :empty-lines 1
+           :jump-to-captured 1
+           :unnarrowed 1)
+          ("g"
+           "とりあえず 仕事を放り込む"
+           entry
+           (file+headline (concat org-directory "gtd.org") "GTD")
+           "** TODO %T %?\n   Entered on %U    %i\n"
+           :empty-lines 1)
+          ("i"
+           "itemのテスト"
+           item
+           (file+headline (concat org-directory "gtd.org") "GTD")
+           "** TODO %T %?\n   Entered on %U    %i\n"
+           :empty-lines 1)
+          ("z"
+           "'あれ'についてのメモ"
+           entry
+           (file+headline , (concat org-directory "notes.org") "MEMO")
+           "* %U %? %^g\n\n"
+           :empty-lines 1)))
+  ;; コードを評価するとき尋ねない
+  (setq org-confirm-babel-evaluate nil)
+
+  ;; 有効にする言語 デフォルトでは elisp のみ
+  (org-babel-do-load-languages
+   'org-babel-load-languages '((C          . t)
+                               (org        . t)
+                               (python     . t)
+                               (lisp       . t)
+                               (emacs-lisp . t)
+                               (ruby       . t)
+                               (plantuml   . t)
+                               (java       . t)
+                               (perl       . t)
+                               (dot      . t)))
+
+   (setq org-use-speed-commands t)
+   (setq org-icalendar-alarm-time 30)
+   (setq org-icalendar-timezone "Asia/Tokyo")
+
+   ;; htmlで数式
+   (setf org-html-mathjax-options
+         '((path "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")
+           (scale "100")
+           (align "center")
+           (indent "2em")
+           (mathml nil))
+         )
+   (setf org-html-mathjax-template
+         "<script type=\"text/javascript\" src=\"%PATH\"></script>")
+
+   ;; ddskk
+   (use-package ddskk
+  :straight (ddskk :type git :host github :repo "skk-dev/ddskk")
+  :bind (("C-x C-j" . skk-mode))
+  :hook (skk-load . (lambda () (require 'context-skk))) ;自動的に英字モードになる
+  :init
+  (setq skk-large-jisyo "~/.emacs.d/skk-get-jisyo/SKK-JISYO.L")
+  (setq skk-extra-jisyo-file-list
+        (list "~/.emacs.d/skk-get-jisyo/SKK-JISYO.lisp"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.station"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.assoc"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.edict"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.law"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.jinmei"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.fullname"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.geo"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.itaiji"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.zipcode"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.okinawa"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.propernoun"))
+  ;; サ行変格活用の動詞も送りあり変換出来るようにする
+  (setq skk-search-sagyo-henkaku t)
+  ;; 全角・半角カタカナを変換候補にする
+  (setq skk-search-katakana 'jisx0201-kana)
+  (setq skk-use-act t)
+  (setq skk-henkan-show-candidates-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
+  (setq-default skk-kutouten-type 'en)
+  ;; 動的補完
+  (setq skk-dcomp-activate t)
+  (setq skk-rom-kana-rule-list
+        '(("tni" nil ("ティ" . "てぃ"))
+          ("dni" nil ("ディ" . "でぃ"))))
+  (add-hook 'dired-load-hook
+            (load "dired-x")
+            (global-set-key "\C-x\C-j" 'skk-mode))
+  (setq skk-egg-like-newline t);;non-nilにするとEnterでの確定時に改行しない
+  ;; ▼モードで BS を押したときには確定しないで前候補を表示する
+  (setq skk-delete-implies-kakutei nil)
+  (require 'skk-study)
+  ;; ▼モード中で=漢字の読み方を指定する
+  (setq skk-hint-start-char ?=)
+  (require 'skk-hint))
+
+   (defun my-org-mode-hook ()
+     (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
+   (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)
+   (add-hook 'org-mode-hook #'my-org-mode-hook)
+   ;;ob-plantuml
+   (add-to-list 'org-babel-default-header-args:plantuml '(:cmdline . "-charset utf-8")))
+(use-package org-mobile-sync
+  :ensure t
+  :after (org)
+  :config
+  (org-mobile-sync-mode 1))
+(use-package org-mu4e
+  :disabled t
+  :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e"
+  :after (org)
+  :config
+  ;;store link to message if in header view, not to header query
+  (setq org-mu4e-link-query-in-headers-mode nil))
+
+(use-package org-journal
+  :ensure t
+  :after org
+  :custom
+  (org-journal-dir (concat org-directory "journal"))
+  (org-journal-date-format "%A, %d %B %Y"))
+
+(use-package ox-rst
+  :after (org)
+  :ensure t)
+(use-package ox-hugo
+  :ensure t
+  :after ox)
+(use-package ob-browser
+  :ensure t)
+(use-package ox-epub
+  :ensure t)
+
+;; Org Mode LaTeX Export
+
+(use-package ox-bibtex
+  :straight nil
+  :defer t)
+(use-package ox-eldoc
+  :straight nil
+  :defer t
+  :config
+  (defadvice org-eldoc-documentation-function (around add-field-info activate)
+    (or
+     (ignore-errors (and (not (org-at-table-hline-p))
+                         (org-table-field-info nil)))
+     ad-do-it))
+
+  (add-hook 'org-mode-hook 'eldoc-mode)
+
+  (eldoc-add-command-completions
+   "org-table-next-" "org-table-previous" "org-cycle"))
+
+
+(use-package ox-latex
+  :straight nil
+  :after (org)
+  :config
+  (setq org-latex-default-class "bxjsarticle")
+  ;; (setq org-latex-pdf-process '("latexmk -gg -pdfdvi  %f"))
+  ;; (setq org-latex-pdf-process '("latexmk %f"))
+  (setq org-latex-pdf-process '("latexmk -gg -pdfxe  %f"))
+  (add-to-list 'org-latex-packages-alist '("" "minted"))
+  (setq org-highlight-latex-and-related '(latex script entities))
+;(setq org-latex-pdf-process '("latexmk -e '$lualatex=q/lualatex %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex -o %D %S/' -norc -gg -pdflua %f"))
+                                        ;(setq org-export-in-background t)
+  (when (equal system-type 'darwin)
+    (setq org-file-apps
+          '(("pdf" . "open -a Skim %s"))))
+  (when (equal system-type 'gnu/linux)
+    (setq org-file-apps
+          '(("pdf" . "evince %s"))))
+
+  (add-to-list 'org-latex-classes
+               '("bxjsarticle"
+                 ;; "\\documentclass[twocolumn,autodetect-engine,dvi=dvipdfmx,10pt,a4paper,ja=standard]{bxjsarticle}
+                 "\\documentclass[autodetect-engine,dvi=dvipdfmx,10pt,a4paper,ja=standard]{bxjsarticle}
+[NO-DEFAULT-PACKAGES]
+\\usepackage{amsmath}
+\\usepackage{siunitx}
+% \\usepackage{newtxtext,newtxmath}
+\\usepackage{graphicx}
+\\usepackage{hyperref}
+\\usepackage{fancyhdr}
+\\usepackage{listings}
+\\usepackage{fancybox}
+\\ifdefined\\kanjiskip
+  \\usepackage{pxjahyper}
+  \\hypersetup{colorlinks=false}
+\\else
+  \\ifdefined\\XeTeXversion
+      \\hypersetup{colorlinks=true}
+  \\else
+    \\ifdefined\\directlua
+      \\hypersetup{pdfencoding=auto,colorlinks=true}
+    \\else
+      \\hypersetup{unicode,colorlinks=true}
+    \\fi
+  \\fi
+\\fi"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+  (add-to-list 'org-latex-classes
+               '("beamer"
+                 "\\documentclass[unicode,dvipdfmx,cjk]{beamer}
+\\usepackage{bxdpx-beamer}
+\\usepackage{siunitx}
+\\usepackage{pxjahyper}
+\\usepackage{minijs}
+\\renewcommand{\\kanjifamilydefault}{\\gtdefault}
+\\newcommand{\\uline}[1]{\\underline{#1}}
+               [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
+                 ("\\section\{%s\}"       . "\\section*\{%s\}")
+                 ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
+                 ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")))
+  (add-to-list 'org-latex-classes
+               '("beamer-lualatex"
+                 "\\documentclass[unicode,12pt]{beamer}
+\\usepackage{luatexja}
+\\usepackage[ipaex]{luatexja-preset}
+\\renewcommand{\kanjifamilydefault}{\gtdefault}
+\\usepackage{bxdpx-beamer}
+\\usepackage{siunitx}
+\\usepackage{pxjahyper}
+\\usepackage{minijs}
+\\renewcommand{\\kanjifamilydefault}{\\gtdefault}
+\\newcommand{\\uline}[1]{\\underline{#1}}
+               [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
+                 ("\\section\{%s\}"       . "\\section*\{%s\}")
+                 ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
+                 ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")))
+  (add-to-list 'org-latex-classes
+               '("ieicej"
+
+                 "\\documentclass[paper]{ieicej}
+\\usepackage[dvipdfmx]{graphicx}
+\\usepackage[T1]{fontenc}
+\\usepackage{lmodern}
+\\usepackage{textcomp}
+\\usepackage{latexsym}
+\\usepackage{tabularx}
+\\usepackage{dcolumn}
+
+\\setcounter{page}{1}
+               [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
+                 ("\\section\{%s\}"       . "\\section*\{%s\}")
+                 ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
+                 ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
+                 ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
+                 ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
+  (setq org-latex-with-hyperref nil) ;ieicej出力時エラー対策
+  (add-to-list 'org-latex-classes
+               '("tategaki"
+
+                 "\\documentclass[tate,book,jafontscale=1.3]{jlreq}
+\\usepackage[dvipdfmx]{graphicx}
+\\usepackage[T1]{fontenc}
+\\usepackage{lmodern}
+\\usepackage{textcomp}
+\\usepackage{latexsym}
+\\usepackage{tabularx}
+\\usepackage{dcolumn}
+
+\\setcounter{page}{1}
+               [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
+                 ("\\section\{%s\}"       . "\\section*\{%s\}")
+                 ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
+                 ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
+                 ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
+                 ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
+  (add-to-list 'org-latex-classes
+               '("jlreq-yoko"
+
+                 "\\documentclass[book,jafontscale=1.3]{jlreq}
+\\usepackage[dvipdfmx]{graphicx}
+\\usepackage[T1]{fontenc}
+\\usepackage{lmodern}
+\\usepackage{textcomp}
+\\usepackage{latexsym}
+\\usepackage{tabularx}
+\\usepackage{dcolumn}
+
+\\setcounter{page}{1}
+               [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
+                 ("\\section\{%s\}"       . "\\section*\{%s\}")
+                 ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
+                 ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
+                 ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
+                 ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
+  (add-to-list 'org-latex-classes
+             '("luatex-jlreq-tate"
+               "\\documentclass[tate,book,jafontscale=1.3]{jlreq}
+
+\\usepackage[T1]{fontenc}
+\\usepackage{lmodern}
+\\usepackage{textcomp}
+\\usepackage{latexsym}
+\\usepackage{tabularx}
+\\usepackage{dcolumn}
+\\usepackage{luatexja-fontspec}
+
+\\setmainfont[Ligatures=TeX]{TeXGyreTermes}
+\\setsansfont[Ligatures=TeX]{TeXGyreHeros}
+
+\\setmainjfont[BoldFont=IPAexGothic]{YuKyokasho Medium}
+\\setsansjfont{IPAexGothic}
+
+\\newjfontfamily\\jisninety[CJKShape=JIS1990]{IPAexMincho}
+
+
+\\setcounter{page}{1}
+               [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
+                 ("\\section\{%s\}"       . "\\section*\{%s\}")
+                 ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
+                 ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
+                 ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
+                 ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
+  (add-to-list 'org-latex-classes
+             '("lectureslide"
+               "\\documentclass[unicode,11pt]{beamer}
+\\usepackage{bxdpx-beamer}
+
+\\usepackage{xeCJK}
+\\usepackage{zxjatype}
+\\usepackage{xltxtra} %便利なパッケージ群
+\\setCJKmainfont{HiraginoSans-W4}
+\\setCJKmonofont{IPAGothic}
+\\usepackage{bm}
+\\usepackage{color}
+\\usepackage{listings}
+\\usepackage{siunitx} %si単位系
+\\usepackage{hyperref} %しおり
+\\usepackage{ascmac} %角丸の枠
+\\usepackage{ulem} %下線
+\\usepackage{amsmath,amssymb} %数式，記号
+\\usefonttheme[onlymath]{serif}
+\\usepackage{minted}
+\\usepackage{capt-of} %キャプション
+\\usepackage{fancyhdr} %ヘッダ，フッタ
+\\usepackage{fancybox} %枠
+\\usepackage{tikz} %描画
+\\usepackage{graphicx} %画像貼り付け
+\\usetheme[progressbar=frametitle]{metropolis}
+\\metroset{sectionpage=progressbar, block=fill}
+\\setbeamertemplate{navigation symbols}{}
+\\setbeamertemplate{footline}[frame number]
+\\setbeamertemplate{footline}[page number]
+\\setbeamertemplate{itemize items}[triangle]
+\\setsansfont[ BoldFont={Fira Sans SemiBold}, ItalicFont={Fira Sans Italic}, BoldItalicFont={Fira Sans SemiBold Italic} ]{Fira Sans}
+\\setCJKmainfont{BIZ-UDGothic}
+\\definecolor{myfg}{HTML}{EC9F4C}
+\\definecolor{mainbg}{HTML}{3F597C}
+\\definecolor{mynormalbg}{HTML}{F2F2F2}
+\\definecolor{mynormalfg}{HTML}{4D4D4D}
+\\definecolor{myexampletitlefg}{HTML}{6d86ab}
+\\setbeamercolor{alerted text}{fg=myfg}
+\\setbeamercolor{frameslide}{fg=mynormalbg,bg=mainbg}
+\\setbeamercolor{palette primary}{bg=mainbg}
+\\setbeamercolor{normal text}{fg=mynormalfg,bg=mynormalbg}
+\\setbeamercolor{block title example}{fg=myexampletitlefg}
+\\setbeamerfont{alerted text}{series=\\bfseries}
+
+\\setcounter{page}{1}
+               [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
+                 ("\\section\{%s\}"       . "\\section*\{%s\}")
+                 ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
+                 ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
+                 ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
+                 ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
+  ;; org-export-latex-no-toc
+(defun org-export-latex-no-toc (depth)
+  (when depth
+    (format "%% Org-mode is exporting headings to %s levels.\n"
+            depth)))
+(setq org-export-latex-format-toc-function 'org-export-latex-no-toc)
+
+;; reftex with org mode
+;; (add-hook 'org-mode-hook 'turn-on-reftex)
+;; (defun org-mode-reftex-setup ()
+;;   (load-library "reftex")
+;;   (and (buffer-file-name)
+;;        (file-exists-p (buffer-file-name))
+;;        (reftex-parse-all))
+;;   (define-key org-mode-map (kbd "C-c [") 'reftex-citation))
+
+)
+(setq org-ditaa-jar-path "/usr/local/opt/ditaa/libexec/ditaa-0.11.0-standalone.jar")
+
+(use-package ox-extra
+  :straight nil
+  :after (org)
+  :config
+  ;; ignoreタグで見出しを非表示にしつつ内容を表示する
+  (ox-extras-activate '(latex-header-blocks ignore-headlines)))
+(use-package ob-kotlin
+  :after (org)
+  :ensure t)
+(use-package ob-rust
+  :after (org)
+  :ensure t)
+(use-package ox-asciidoc
+  :after (org)
+  :ensure t)
+(use-package ob-browser
+  :ensure t)
+(use-package ox-hugo
+  :ensure t
+  :after ox)
+(use-package ox-pandoc
+  :ensure t
+  :ensure-system-package pandoc
+  :after ox)
+(use-package org-download
+  :ensure t
+  :after org
+  :hook ((org-mode . org-download-enable)))
+
+(defun org-hugo-new-subtree-post-capture-template ()
+  "Returns `org-capture' template string for new Hugo post.
+See `org-capture-templates' for more information."
+  (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
+         (fname (org-hugo-slug title)))
+    (mapconcat #'identity
+               `(
+                 ,(concat "* TODO " title)
+                 ":PROPERTIES:"
+                 ,(concat ":EXPORT_FILE_NAME: " fname)
+                 ":END:"
+                 "%?\n")          ;Place the cursor here finally
+               "\n")))
+(add-to-list 'org-capture-templates
+             '("h"                ;`org-capture' binding + h
+               "Hugo post"
+               entry
+               ;; It is assumed that below file is present in `org-directory'
+               ;; and that it has a "Blog Ideas" heading. It can even be a
+               ;; symlink pointing to the actual location of all-posts.org!
+               (file+olp "all-posts.org" "Blog Ideas")
+               (function org-hugo-new-subtree-post-capture-template)))
+
+(setq org-publish-project-alist
+      '(("aip3"
+        :base-directory "~/git/advancedinformationprocessing3/org"
+        :publishing-directory "~/git/advancedinformationprocessing3/pub"
+        :base-extension "org"
+        :publishing-function org-html-publish-to-html
+        :html-postamble "<a href=\"index.html\">サイトのトップへ戻る</a>"
+        :language "ja"
+        :with-tags nil
+        ;; :auto-sitemap t
+        :htmlized-source t
+        :with-tags nil
+        :makeindex t
+        :recursive t)
+        ("aip3-image"
+        :base-directory "~/git/advancedinformationprocessing3/image"
+        :publishing-directory "~/git/advancedinformationprocessing3/pub/image"
+        :base-extension "jpg\\|png\\|pdf"
+        :publishing-function org-publish-attachment
+        :recursive t)))
+
+
+;;helm
+(use-package helm
+  :after migemo
+  :ensure t
+  :bind (("M-x" . helm-M-x)
+         ("M-y" . helm-show-kill-ring)
+         ("C-x b" . helm-mini)
+         ("C-x C-f" . helm-find-files)
+         ("M-s o" . helm-occur)
+         ("C-x j" . helm-recentf)
+         ("C-x r l" . helm-bookmarks))
+  :config
+  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
+  (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
+  (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
+  (helm-migemo-mode 1)
+  (helm-autoresize-mode 1)
+  (helm-mode 1))
+(use-package helm-config
+  :straight helm
+  :after helm
+  :config (helm-mode 1))
+(use-package helm-swoop
+  :ensure t)
+(use-package helm-lsp :commands helm-lsp-workspace-symbol)
+
+(use-package helm-rg
+  :ensure t
+  :ensure-system-package (rg . ripgrep))
+
 
 (use-package sudo-edit
   :ensure t)
@@ -446,6 +1108,53 @@
 
   (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends)))
 
+(use-package yatex
+  :ensure t
+  :mode
+  (("\\.tex$" . yatex-mode)
+   ("\\.ltx$" . yatex-mode)
+   ("\\.cls$" . yatex-mode)
+   ("\\.sty$" . yatex-mode)
+   ("\\.clo$" . yatex-mode)
+   ("\\.bbl$" . yatex-mode))
+  :config
+  (setq YaTeX-inhibit-prefix-letter t)
+  (setq YaTeX-kanji-code nil)
+  (setq YaTeX-latex-message-code 'utf-8)
+  (setq YaTeX-use-LaTeX2e t)
+  (setq YaTeX-use-AMS-LaTeX t)
+  (setq YaTeX-dvi2-command-ext-alist
+        '(("TeXworks\\|texworks\\|texstudio\\|mupdf\\|SumatraPDF\\|Preview\\|Skim\\|TeXShop\\|evince\\|atril\\|xreader\\|okular\\|zathura\\|qpdfview\\|Firefox\\|firefox\\|chrome\\|chromium\\|MicrosoftEdge\\|microsoft-edge\\|Adobe\\|Acrobat\\|AcroRd32\\|acroread\\|pdfopen\\|xdg-open\\|open\\|start" . ".pdf")))
+ ;(setq tex-command "ptex2pdf -u -l -ot '-synctex=1'")
+ ;(setq tex-command "lualatex -synctex=1")
+ ;(setq tex-command "latexmk")
+  (setq tex-command "latexmk -e '$latex=q/uplatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$biber=q/biber %O --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex %O -o %D %S/' -e '$dvipdf=q/dvipdfmx %O -o %D %S/' -shell-escape -norc -gg -pdfdvi")
+ ;(setq tex-command "latexmk -e '$lualatex=q/lualatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$biber=q/biber %O --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex %O -o %D %S/' -norc -gg -pdflua")
+  (setq bibtex-command "latexmk -e '$latex=q/uplatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$biber=q/biber %O --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex %O -o %D %S/' -e '$dvipdf=q/dvipdfmx %O -o %D %S/' -norc -gg -pdfdvi")
+  (setq makeindex-command "latexmk -e '$latex=q/uplatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$biber=q/biber %O --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex %O -o %D %S/' -e '$dvipdf=q/dvipdfmx %O -o %D %S/' -norc -gg -pdfdvi")
+  (setq dvi2-command "open -a Skim")
+ ;(setq dvi2-command "open -a Preview")
+ ;(setq dvi2-command "open -a TeXShop")
+ ;(setq dvi2-command "/Applications/TeXworks.app/Contents/MacOS/TeXworks")
+ ;(setq dvi2-command "/Applications/texstudio.app/Contents/MacOS/texstudio --pdf-viewer-only")
+  (setq tex-pdfview-command "open -a Skim")
+ ;(setq tex-pdfview-command "open -a Preview")
+ ;(setq tex-pdfview-command "open -a TeXShop")
+ ;(setq tex-pdfview-command "/Applications/TeXworks.app/Contents/MacOS/TeXworks")
+ ;(setq tex-pdfview-command "/Applications/texstudio.app/Contents/MacOS/texstudio --pdf-viewer-only")
+  (setq dviprint-command-format "open -a \"Adobe Acrobat Reader DC\" `echo %s | gsed -e \"s/\\.[^.]*$/\\.pdf/\"`")
+  (add-hook 'yatex-mode-hook
+          '(lambda ()
+             (auto-fill-mode -1)))
+  (add-hook 'yatex-mode-hook
+          '(lambda ()
+             (reftex-mode 1)
+             (define-key reftex-mode-map (concat YaTeX-prefix ">") 'YaTeX-comment-region)
+             (define-key reftex-mode-map (concat YaTeX-prefix "<") 'YaTeX-uncomment-region))))
+; for yatex
+(when (equal system-type 'darwin)
+  (setenv "PATH" "/usr/local/bin:/Library/TeX/texbin/:/Applications/Skim.app/Contents/SharedSupport:$PATH" t)
+  (setq exec-path (append '("/usr/local/bin" "/Library/TeX/texbin" "/Applications/Skim.app/Contents/SharedSupport") exec-path)))
 
 (use-package php-mode
   :mode (("\\.php\\'" . php-mode))
