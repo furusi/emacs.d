@@ -40,8 +40,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ace-isearch-function (quote ace-jump-char-mode))
- '(ace-isearch-jump-delay 0.6)
  '(backup-directory-alist (quote ((".*" . "~/.ehist"))))
  '(comment-style (quote multi-line))
  '(company-global-modes
@@ -332,31 +330,6 @@
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1))
 
-
-
-
-(use-package migemo
-  :ensure t
-  :ensure-system-package cmigemo
-  :bind ((:map isearch-mode-map
-               ("C-y" . isearch-yank-kill)))
-  :config
-  (setq migemo-options '("-q" "--emacs"))
-  (setq migemo-coding-system 'utf-8-unix)
-  ;; Set your installed path
-  (when (eq system-type 'darwin)
-    (setq migemo-command "/usr/local/bin/cmigemo")
-    (setq migemo-dictionary "/usr/local/opt/cmigemo/share/migemo/utf-8/migemo-dict"))
-  (when (eq system-type 'gnu/linux)
-    (setq migemo-command "/usr/bin/cmigemo")
-    (if (string-match-p "arch" operating-system-release)
-        (setq migemo-dictionary "/usr/share/migemo/utf-8/migemo-dict")
-      (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict")))
-  (setq migemo-user-dictionary nil)
-  (setq migemo-regex-dictionary nil)
-  (load-library "migemo")
-  (migemo-init))
-(use-package ace-jump-mode)
 
 ;; Org-mode
 (use-package org
@@ -1030,10 +1003,27 @@ See `org-capture-templates' for more information."
            ("/archive" . ?a))))
 
 
-
+(use-package migemo
+  :ensure-system-package cmigemo
+  :config
+  (setq migemo-options '("-q" "--emacs"))
+  (setq migemo-coding-system 'utf-8-unix)
+  ;; Set your installed path
+  (when (eq system-type 'darwin)
+    (setq migemo-command "/usr/local/bin/cmigemo")
+    (setq migemo-dictionary "/usr/local/opt/cmigemo/share/migemo/utf-8/migemo-dict"))
+  (when (eq system-type 'gnu/linux)
+    (setq migemo-command "/usr/bin/cmigemo")
+    (if (string-match-p "arch" operating-system-release)
+        (setq migemo-dictionary "/usr/share/migemo/utf-8/migemo-dict")
+      (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict")))
+  (setq migemo-user-dictionary nil)
+  (setq migemo-regex-dictionary nil)
+  (load-library "migemo")
+  (migemo-init))
 ;;helm
-(use-package helm
-  :ensure t
+(use-package helm-config
+  :straight helm
   :bind (("M-x" . helm-M-x)
          ("M-y" . helm-show-kill-ring)
          ("C-x b" . helm-mini)
@@ -1047,13 +1037,44 @@ See `org-capture-templates' for more information."
   (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
   (helm-autoresize-mode 1)
   (helm-mode 1))
-(use-package helm-config
-  :straight helm
-  :after helm
-  :config (helm-mode 1))
+
 (use-package helm-swoop
-  :after (:all helm migemo)
+  :bind (;; ("M-i" . helm-swoop)
+         ;; ("M-I" . helm-swoop-back-to-last-point)
+         ;; ("C-c M-i" . helm-multi-swoop)
+         ;; ("C-x M-i" . helm-multi-swoop-all)
+         :map isearch-mode-map
+         ("M-i" . helm-swoop-from-isearch)
+         :map helm-swoop-map
+         ("M-i" . helm-multi-swoop-all-from-helm-swoop)
+         ("M-m" . helm-multi-swoop-current-mode-from-helm-swoop)
+         ("C-r" . helm-previous-line)
+         ("C-s" . helm-next-line)
+         :map helm-multi-swoop-map
+         ("C-r" . helm-previous-line)
+         ("C-s" . helm-next-line))
   :config
+  ;; Save buffer when helm-multi-swoop-edit complete
+  (setq helm-multi-swoop-edit-save t)
+
+  ;; If this value is t, split window inside the current window
+  (setq helm-swoop-split-with-multiple-windows nil)
+
+  ;; Split direcion. 'split-window-vertically or 'split-window-horizontally
+  (setq helm-swoop-split-direction 'split-window-vertically)
+
+  ;; If nil, you can slightly boost invoke speed in exchange for text color
+  (setq helm-swoop-speed-or-color nil)
+
+  ;; ;; Go to the opposite side of line from the end or beginning of line
+  (setq helm-swoop-move-to-line-cycle t)
+
+  ;; Optional face for line numbers
+  ;; Face name is `helm-swoop-line-number-face`
+  (setq helm-swoop-use-line-number-face t)
+
+  ;; If you would like to use migemo, enable helm's migemo feature
+  (straight-use-package helm-migemo)
   (helm-migemo-mode 1))
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 
