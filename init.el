@@ -23,7 +23,7 @@
 (setq straight-use-package-by-default t)
 
 (show-paren-mode t)
-(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+;; (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
 ;; Language and Character Code
 (set-language-environment 'Japanese)
@@ -1024,36 +1024,32 @@ See `org-capture-templates' for more information."
 ;;helm
 (use-package helm-config
   :straight helm
-  :bind (("M-x" . helm-M-x)
-         ("M-y" . helm-show-kill-ring)
-         ("C-x b" . helm-mini)
-         ("C-x C-f" . helm-find-files)
-         ("M-s o" . helm-occur)
-         ("C-x j" . helm-recentf)
-         ("C-x r l" . helm-bookmarks))
   :config
+  (helm-mode 1)
+  (helm-autoresize-mode 1)
+  (helm-migemo-mode 1)
+  (global-set-key (kbd "M-x") 'helm-M-x)
+  (global-set-key (kbd "M-y")     'helm-show-kill-ring)
+  (global-set-key (kbd "C-x b")   'helm-mini)
+  (global-set-key (kbd "C-x C-f") 'helm-find-files)
+  (global-set-key (kbd "M-s o")   'helm-occur)
+  (global-set-key (kbd "C-x j")   'helm-recentf)
+  (global-set-key (kbd "C-x r l") 'helm-bookmarks)
   (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
   (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
   (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
-  (helm-autoresize-mode 1)
-  (helm-mode 1))
+  )
 
 (use-package helm-swoop
-  :bind (;; ("M-i" . helm-swoop)
-         ;; ("M-I" . helm-swoop-back-to-last-point)
-         ;; ("C-c M-i" . helm-multi-swoop)
-         ;; ("C-x M-i" . helm-multi-swoop-all)
-         :map isearch-mode-map
-         ("M-i" . helm-swoop-from-isearch)
-         :map helm-swoop-map
-         ("M-i" . helm-multi-swoop-all-from-helm-swoop)
-         ("M-m" . helm-multi-swoop-current-mode-from-helm-swoop)
-         ("C-r" . helm-previous-line)
-         ("C-s" . helm-next-line)
-         :map helm-multi-swoop-map
-         ("C-r" . helm-previous-line)
-         ("C-s" . helm-next-line))
   :config
+  (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch) ; rebind tab to do persistent action
+  (define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop)         
+  (define-key helm-swoop-map (kbd "M-m") 'helm-multi-swoop-current-mode-from-helm-swoop)
+  (define-key helm-swoop-map (kbd "M-r") 'helm-previous-line)
+  (define-key helm-swoop-map (kbd "M-s") 'helm-next-line)
+  (define-key helm-multi-swoop-map (kbd "C-r") 'helm-previous-line)
+  (define-key helm-multi-swoop-map (kbd "C-s") 'helm-next-line)
+
   ;; Save buffer when helm-multi-swoop-edit complete
   (setq helm-multi-swoop-edit-save t)
 
@@ -1071,11 +1067,8 @@ See `org-capture-templates' for more information."
 
   ;; Optional face for line numbers
   ;; Face name is `helm-swoop-line-number-face`
-  (setq helm-swoop-use-line-number-face t)
+  (setq helm-swoop-use-line-number-face t))
 
-  ;; If you would like to use migemo, enable helm's migemo feature
-  (straight-use-package helm-migemo)
-  (helm-migemo-mode 1))
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 
 (use-package helm-rg
