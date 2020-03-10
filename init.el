@@ -40,6 +40,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ace-isearch-use-jump nil)
  '(backup-directory-alist (quote ((".*" . "~/.ehist"))))
  '(comment-style (quote multi-line))
  '(company-global-modes
@@ -1052,41 +1053,18 @@ See `org-capture-templates' for more information."
   (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
   )
 
-(use-package helm-swoop
-  :config
-  (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch) ; rebind tab to do persistent action
-  (define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop)         
-  (define-key helm-swoop-map (kbd "M-m") 'helm-multi-swoop-current-mode-from-helm-swoop)
-  (define-key helm-swoop-map (kbd "M-r") 'helm-previous-line)
-  (define-key helm-swoop-map (kbd "M-s") 'helm-next-line)
-  (define-key helm-multi-swoop-map (kbd "C-r") 'helm-previous-line)
-  (define-key helm-multi-swoop-map (kbd "C-s") 'helm-next-line)
-
-  ;; Save buffer when helm-multi-swoop-edit complete
-  (setq helm-multi-swoop-edit-save t)
-
-  ;; If this value is t, split window inside the current window
-  (setq helm-swoop-split-with-multiple-windows nil)
-
-  ;; Split direcion. 'split-window-vertically or 'split-window-horizontally
-  (setq helm-swoop-split-direction 'split-window-vertically)
-
-  ;; If nil, you can slightly boost invoke speed in exchange for text color
-  (setq helm-swoop-speed-or-color nil)
-
-  ;; ;; Go to the opposite side of line from the end or beginning of line
-  (setq helm-swoop-move-to-line-cycle t)
-
-  ;; Optional face for line numbers
-  ;; Face name is `helm-swoop-line-number-face`
-  (setq helm-swoop-use-line-number-face t))
+(use-package helm-swoop)
 
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 
 (use-package helm-rg
   :ensure t
   :ensure-system-package (rg . ripgrep))
-
+(use-package ace-jump-mode)
+(use-package ace-isearch
+  :after (ace-jump-mode helm-swoop)
+  :config
+  (global-ace-isearch-mode +1))
 
 (use-package sudo-edit
   :ensure t)
@@ -1273,7 +1251,7 @@ See `org-capture-templates' for more information."
 (use-package android-mode)
 
 (use-package ccls
-  :ensure t
+  :commands ccls
   :ensure-system-package ccls
   :hook ((c-mode c++-mode objc-mode) .
          (lambda () (require 'ccls) (lsp)))
