@@ -17,7 +17,7 @@
  ("company-mode" . "94e22c45e92cf220abb9b5a582f85aa99c06004d")
  ("dap-mode" . "e7a5144ce746942b00a21d35a1ca8be71195f5d4")
  ("dash.el" . "721436b04da4e2795387cb48a98ac6de37ece0fd")
- ("ddskk" . "e5aca023583851f1444bccd9da6fd14f61cc6c06")
+ ("ddskk" . "d37de64796dfe124a20946d19b3e1cda53aaeec3")
  ("easy-kill" . "2a6309d98aa6b71df6bbbcdf15cab3187c521a6b")
  ("editorconfig-emacs" . "19de0ec1bac67c5a76a4dd3d8ffe6c5411ace1af")
  ("emacs-async" . "86aef2c38e7d35e8509b7feeee3e989d825eba91")
