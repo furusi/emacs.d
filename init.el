@@ -139,6 +139,7 @@
      (abbrev . "[aあ] ")
      (nil . "[--] "))))
  '(sp-escape-quotes-after-insert nil)
+ '(use-package-compute-statistics t)
  '(zenburn-scale-org-headlines t)
  '(zenburn-scale-outline-headlines t))
 
@@ -152,6 +153,12 @@
 ;; (require 'initchart)
 ;; (initchart-record-execution-time-of load file)
 ;; (initchart-record-execution-time-of require feature)
+(use-package initchart
+  :disabled t
+  :straight (initchart :type git :host github :repo "yuttie/initchart")
+  :config
+  (initchart-record-execution-time-of load file)
+  (initchart-record-execution-time-of require feature))
 
 (defun which-linux-distribution ()
   "from lsb_release"
