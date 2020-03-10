@@ -350,6 +350,17 @@
          ("C-c C-\'" . org-insert-structure-template)
          ("C-c C-u" . outline-up-heading-latin))
   :config
+  (when window-system 'ns
+        ;; org-modeのtableのフォントを設定
+        (set-face-attribute 'org-table nil
+                            :family "IPAGothic"))
+  (when (eq window-system 'x)
+    (set-face-attribute 'org-table nil
+                        :family "IPAゴシック")
+
+    (add-to-list 'face-font-rescale-alist
+                 '(".*IPAゴシック.*" . 0.85)))
+
   (defun outline-up-heading-latin ()
     (interactive)
     (outline-up-heading 1 nil)
@@ -917,10 +928,6 @@ See `org-capture-templates' for more information."
         ;; 源ノ角ゴシック
         (set-face-attribute 'default nil
                             :family "Source Han Code JP")
-        ;; org-modeのtableのフォントを設定
-        (set-face-attribute 'org-table nil
-                            :family "IPAGothic")
-
         ))
 (when (equal system-type 'gnu/linux)
   (add-to-list 'load-path "~/opt/mu-1.0/mu4e/")
@@ -929,14 +936,7 @@ See `org-capture-templates' for more information."
 
   (when (eq window-system 'x)
     (set-face-attribute 'default nil
-                        :family "源ノ角ゴシック Code JP")
-
-    ;; org-modeのtableのフォントを設定
-    (set-face-attribute 'org-table nil
-                        :family "IPAゴシック")
-
-    (add-to-list 'face-font-rescale-alist
-                 '(".*IPAゴシック.*" . 0.85))))
+                        :family "源ノ角ゴシック Code JP")))
 
 ;; 記号をデフォルトのフォントにしない。(for Emacs 25.2)
 (setq use-default-font-for-symbols nil)
