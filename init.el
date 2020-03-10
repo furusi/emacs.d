@@ -337,6 +337,49 @@
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1))
 
+;; ddskk
+(use-package ddskk
+  :straight (ddskk :type git :host github :repo "skk-dev/ddskk")
+  :commands skk-mode
+  :bind (("C-x C-j" . skk-mode))
+  :hook (skk-mode . (lambda () (require 'context-skk))) ;自動的に英字モードになる
+  :init
+  (setq skk-large-jisyo "~/.emacs.d/skk-get-jisyo/SKK-JISYO.L")
+  (setq skk-extra-jisyo-file-list
+        (list "~/.emacs.d/skk-get-jisyo/SKK-JISYO.lisp"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.station"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.assoc"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.edict"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.law"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.jinmei"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.fullname"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.geo"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.itaiji"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.zipcode"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.okinawa"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.propernoun"))
+  ;; サ行変格活用の動詞も送りあり変換出来るようにする
+  (setq skk-search-sagyo-henkaku t)
+  ;; 全角・半角カタカナを変換候補にする
+  (setq skk-search-katakana 'jisx0201-kana)
+  (setq skk-use-act t)
+  (setq skk-henkan-show-candidates-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
+  (setq-default skk-kutouten-type 'en)
+  ;; 動的補完
+  (setq skk-dcomp-activate t)
+  (setq skk-rom-kana-rule-list
+        '(("tni" nil ("ティ" . "てぃ"))
+          ("dni" nil ("ディ" . "でぃ"))))
+  (add-hook 'dired-load-hook
+            (load "dired-x")
+            (global-set-key "\C-x\C-j" 'skk-mode))
+  (setq skk-egg-like-newline t);;non-nilにするとEnterでの確定時に改行しない
+  ;; ▼モードで BS を押したときには確定しないで前候補を表示する
+  (setq skk-delete-implies-kakutei nil)
+  (require 'skk-study)
+  ;; ▼モード中で=漢字の読み方を指定する
+  (setq skk-hint-start-char ?=)
+  (require 'skk-hint))
 
 ;; Org-mode
 (use-package org
@@ -381,10 +424,6 @@
     (setq org-directory (expand-file-name "~/org/"))
     (make-directory (concat org-directory "mobile/") t))
 
-  (when (file-exists-p org-directory)
-    (setq org-mobile-directory (concat org-directory "mobile/")))
-
-
   (setq org-agenda-files
         (list
          (concat org-directory "task.org")
@@ -400,19 +439,11 @@
           ("event.org"        . (:level . 1))
           ("productivity.org" . (:maxlevel . 2))
           ("notes.org"        . (:level . 2))))
-  (setq org-mobile-files
-        (list
-         (concat org-directory "task.org")
-         (concat org-directory "notes.org")
-         (concat org-directory "iphone.org")
-         (concat org-directory "event.org")))
-  (setq org-mobile-inbox-for-pull (concat org-directory "iphone.org"))
   (setq org-tag-alist
         '(("ignore" . ?i) ("@OFFICE" . ?o) ("@HOME" . ?h) ("SHOPPING" . ?s)
           ("MAIL" . ?m) ("PROJECT" . ?p) ("備忘録" . ?b)))
-  (setq org-capture-templates
-        `(
-          ("i" "インボックス" entry
+    (setq org-capture-templates
+        `(("i" "インボックス" entry
            (file ,(concat org-directory "inbox.org"))
            "* %? %i\n %U\n")
           ;; ("h" "定期的にやること" entry
@@ -500,48 +531,7 @@
   (setf org-html-mathjax-template
         "<script type=\"text/javascript\" src=\"%PATH\"></script>")
 
-  ;; ddskk
-  (use-package ddskk
-    :straight (ddskk :type git :host github :repo "skk-dev/ddskk")
-    :bind (("C-x C-j" . skk-mode))
-    :hook (skk-load . (lambda () (require 'context-skk))) ;自動的に英字モードになる
-    :init
-    (setq skk-large-jisyo "~/.emacs.d/skk-get-jisyo/SKK-JISYO.L")
-    (setq skk-extra-jisyo-file-list
-          (list "~/.emacs.d/skk-get-jisyo/SKK-JISYO.lisp"
-                "~/.emacs.d/skk-get-jisyo/SKK-JISYO.station"
-                "~/.emacs.d/skk-get-jisyo/SKK-JISYO.assoc"
-                "~/.emacs.d/skk-get-jisyo/SKK-JISYO.edict"
-                "~/.emacs.d/skk-get-jisyo/SKK-JISYO.law"
-                "~/.emacs.d/skk-get-jisyo/SKK-JISYO.jinmei"
-                "~/.emacs.d/skk-get-jisyo/SKK-JISYO.fullname"
-                "~/.emacs.d/skk-get-jisyo/SKK-JISYO.geo"
-                "~/.emacs.d/skk-get-jisyo/SKK-JISYO.itaiji"
-                "~/.emacs.d/skk-get-jisyo/SKK-JISYO.zipcode"
-                "~/.emacs.d/skk-get-jisyo/SKK-JISYO.okinawa"
-                "~/.emacs.d/skk-get-jisyo/SKK-JISYO.propernoun"))
-    ;; サ行変格活用の動詞も送りあり変換出来るようにする
-    (setq skk-search-sagyo-henkaku t)
-    ;; 全角・半角カタカナを変換候補にする
-    (setq skk-search-katakana 'jisx0201-kana)
-    (setq skk-use-act t)
-    (setq skk-henkan-show-candidates-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
-    (setq-default skk-kutouten-type 'en)
-    ;; 動的補完
-    (setq skk-dcomp-activate t)
-    (setq skk-rom-kana-rule-list
-          '(("tni" nil ("ティ" . "てぃ"))
-            ("dni" nil ("ディ" . "でぃ"))))
-    (add-hook 'dired-load-hook
-              (load "dired-x")
-              (global-set-key "\C-x\C-j" 'skk-mode))
-    (setq skk-egg-like-newline t);;non-nilにするとEnterでの確定時に改行しない
-    ;; ▼モードで BS を押したときには確定しないで前候補を表示する
-    (setq skk-delete-implies-kakutei nil)
-    (require 'skk-study)
-    ;; ▼モード中で=漢字の読み方を指定する
-    (setq skk-hint-start-char ?=)
-    (require 'skk-hint))
+
 
   (defun my-org-mode-hook ()
     (add-hook 'completion-at-point-functions
@@ -551,12 +541,42 @@
   (add-hook 'org-mode-hook #'my-org-mode-hook)
   ;;ob-plantuml
   (add-to-list 'org-babel-default-header-args:plantuml
-               '(:cmdline . "-charset utf-8")))
+               '(:cmdline . "-charset utf-8"))
+  (setq org-publish-project-alist
+      '(("aip3"
+         :base-directory "~/git/advancedinformationprocessing3/org"
+         :publishing-directory "~/git/advancedinformationprocessing3/pub"
+         :base-extension "org"
+         :publishing-function org-html-publish-to-html
+         :html-postamble "<a href=\"index.html\">サイトのトップへ戻る</a>"
+         :language "ja"
+         :with-tags nil
+         ;; :auto-sitemap t
+         :htmlized-source t
+         :with-tags nil
+         :makeindex t
+         :recursive t)
+        ("aip3-image"
+         :base-directory "~/git/advancedinformationprocessing3/image"
+         :publishing-directory "~/git/advancedinformationprocessing3/pub/image"
+         :base-extension "jpg\\|png\\|pdf"
+         :publishing-function org-publish-attachment
+         :recursive t))))
+
 (use-package org-mobile-sync
-  :ensure t
+  :disabled t
   :after (org)
   :config
-  (org-mobile-sync-mode 1))
+  (org-mobile-sync-mode 1)
+  (when (file-exists-p org-directory)
+    (setq org-mobile-directory (concat org-directory "mobile/"))
+    (setq org-mobile-files
+        (list
+         (concat org-directory "task.org")
+         (concat org-directory "notes.org")
+         (concat org-directory "iphone.org")
+         (concat org-directory "event.org")))
+    (setq org-mobile-inbox-for-pull (concat org-directory "iphone.org"))))
 (use-package org-mu4e
   :disabled t
   :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e"
@@ -577,11 +597,11 @@
   :ensure t)
 (use-package ox-hugo
   :ensure t
-  :after ox)
+  :after org)
 (use-package ob-browser
-  :ensure t)
+  :after org)
 (use-package ox-epub
-  :ensure t)
+  :after org)
 
 ;; Org Mode LaTeX Export
 
@@ -859,21 +879,11 @@
 (use-package ox-asciidoc
   :after (org)
   :ensure t)
-(use-package ob-browser
-  :ensure t)
 (use-package ox-hugo
   :ensure t
-  :after ox)
-(use-package ox-pandoc
-  :ensure t
-  :ensure-system-package pandoc
-  :after ox)
-(use-package org-download
-  :ensure t
-  :after org
-  :hook ((org-mode . org-download-enable)))
-
-(defun org-hugo-new-subtree-post-capture-template ()
+  :after ox
+  :config
+  (defun org-hugo-new-subtree-post-capture-template ()
   "Returns `org-capture' template string for new Hugo post.
 See `org-capture-templates' for more information."
   (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
@@ -886,7 +896,7 @@ See `org-capture-templates' for more information."
                  ":END:"
                  "%?\n")          ;Place the cursor here finally
                "\n")))
-(add-to-list 'org-capture-templates
+  (add-to-list 'org-capture-templates
              '("h"                ;`org-capture' binding + h
                "Hugo post"
                entry
@@ -894,28 +904,23 @@ See `org-capture-templates' for more information."
                ;; and that it has a "Blog Ideas" heading. It can even be a
                ;; symlink pointing to the actual location of all-posts.org!
                (file+olp "all-posts.org" "Blog Ideas")
-               (function org-hugo-new-subtree-post-capture-template)))
+               (function org-hugo-new-subtree-post-capture-template))))
 
-(setq org-publish-project-alist
-      '(("aip3"
-         :base-directory "~/git/advancedinformationprocessing3/org"
-         :publishing-directory "~/git/advancedinformationprocessing3/pub"
-         :base-extension "org"
-         :publishing-function org-html-publish-to-html
-         :html-postamble "<a href=\"index.html\">サイトのトップへ戻る</a>"
-         :language "ja"
-         :with-tags nil
-         ;; :auto-sitemap t
-         :htmlized-source t
-         :with-tags nil
-         :makeindex t
-         :recursive t)
-        ("aip3-image"
-         :base-directory "~/git/advancedinformationprocessing3/image"
-         :publishing-directory "~/git/advancedinformationprocessing3/pub/image"
-         :base-extension "jpg\\|png\\|pdf"
-         :publishing-function org-publish-attachment
-         :recursive t)))
+(use-package ox-pandoc
+  :ensure t
+  :ensure-system-package pandoc
+  :after ox)
+(use-package org-download
+  :ensure t
+  :after org
+  :hook ((org-mode . org-download-enable)))
+(use-package org-seek
+  :commands (org-seek-string org-seek-regexp org-seek-headlines)
+  :ensure-system-package (rg . ripgrep)
+  :config
+  (setq org-seek-search-tool 'ripgrep))
+
+
 
 
 (when (equal system-type 'darwin)
@@ -1353,11 +1358,7 @@ See `org-capture-templates' for more information."
   :commands
   (google-set-c-style))
 (use-package regex-tool)
-(use-package org-seek
-  :commands (org-seek-string org-seek-regexp org-seek-headlines)
-  :ensure-system-package (rg . ripgrep)
-  :config
-  (setq org-seek-search-tool 'ripgrep))
+
 (use-package easy-kill
   :bind (("M-w" . easy-kill)
          ("C-SPC" . easy-mark)))
