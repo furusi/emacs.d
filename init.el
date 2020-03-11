@@ -293,10 +293,23 @@
 ;; SLIMEのロード
 (use-package slime
   :straight slime-company
-  :ensure-system-package sbcl
+  :ensure-system-package (sbcl clisp)
   :config
-  (setq inferior-lisp-program "sbcl")
-  (slime-setup '(slime-fancy slime-company)))
+  (setq inferior-lisp-program "clisp")
+  ;; (slime-setup '(slime-fancy slime-company))
+  (setq slime-net-coding-system 'utf-8-unix)
+  (setq slime-contribs '(slime-fancy slime-company))
+  (defun slime-space\\skk-insert (origfun &rest arglist)
+    "skkの変換(スペース)がslime-spaceに食われてしまうのを回避"
+    (apply (cond (skk-henkan-mode
+                  ;; skk-henkan-mode中であれば(▽▼の時)skk-insertへ処理を投げる
+                  #'skk-insert)
+                 (t
+                  ;; それ以外は通常のslime-space
+                  origfun))
+           arglist))
+  ;; (advice-add 'slime-space :around #'slime-space\\skk-insert)
+  (advice-add 'slime-autodoc-space :around #'slime-space\\skk-insert))
 
 (use-package undohist
   :ensure t
