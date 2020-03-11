@@ -396,9 +396,13 @@
   (when window-system 'ns
         ;; org-modeのtableのフォントを設定
         (set-face-attribute 'org-table nil
+                            :family "IPAGothic")
+        (set-face-attribute 'org-formula nil
                             :family "IPAGothic"))
   (when (eq window-system 'x)
     (set-face-attribute 'org-table nil
+                        :family "IPAゴシック")
+    (set-face-attribute 'org-formula nil
                         :family "IPAゴシック")
 
     (add-to-list 'face-font-rescale-alist
