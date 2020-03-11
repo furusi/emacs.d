@@ -215,7 +215,6 @@
 
 (global-set-key (kbd "C-c t l") 'toggle-truncate-lines)
 (global-set-key "\C-t" 'other-window)
-(global-set-key (kbd "C-M-SPC") 'rectangle-mark-mode)
 
 ;; C-u C-SPCの後C-SPCだけでマークを遡れる
 (setq set-mark-command-repeat-pop t)
@@ -1303,10 +1302,6 @@ See `org-capture-templates' for more information."
   (when (eq system-type 'darwin)
     (setq plantuml-jar-path
           "/usr/local/opt/plantuml/libexec/plantuml.jar")))
-(use-package back-button
-  :ensure t
-  :config
-  (back-button-mode 1))
 
 (use-package htmlize
   :ensure t)
@@ -1338,9 +1333,10 @@ See `org-capture-templates' for more information."
 (use-package regex-tool)
 
 (use-package easy-kill
-  :bind (("M-w" . easy-kill)
-         ("C-SPC" . easy-mark)))
-
+  :commands (easy-kill easy-mark)
+  :config
+  (global-set-key [remap kill-ring-save] #'easy-kill)
+  (global-set-key [remap mark-sexp] #'easy-mark))
 
 ;;; GDB 関連
 ;;; 有用なバッファを開くモード
