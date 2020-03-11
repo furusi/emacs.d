@@ -51,6 +51,31 @@
  '(custom-enabled-themes (quote (tango)))
  '(dimmer-exclusion-regexp "^\\\\*helm\\\\|^ \\\\*Minibuf\\\\|^\\\\*Calendar\"")
  '(dimmer-fraction 0.3)
+ '(easy-kill-alist
+   (quote
+    ((84 string-up-to-char-backward "")
+     (116 string-to-char-backward "")
+     (70 string-up-to-char-forward "")
+     (102 string-to-char-forward "")
+     (62 buffer-after-point "")
+     (60 buffer-before-point "")
+     (98 buffer "")
+     (36 forward-line-edge "")
+     (94 backward-line-edge "")
+     (119 word " ")
+     (115 sexp "
+")
+     (108 list "
+")
+     (102 filename "
+")
+     (100 defun "
+
+")
+     (68 defun-name " ")
+     (101 line "
+")
+     (98 buffer-file-name nil))))
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(eval-expression-print-length nil)
  '(global-company-mode t)
@@ -1341,6 +1366,7 @@ See `org-capture-templates' for more information."
   :config
   (global-set-key [remap kill-ring-save] #'easy-kill)
   (global-set-key [remap mark-sexp] #'easy-mark))
+(use-package easy-kill-extras)
 
 ;;; GDB 関連
 ;;; 有用なバッファを開くモード
