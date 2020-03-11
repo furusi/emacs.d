@@ -164,6 +164,9 @@
      (latin . "")
      (abbrev . "[aあ] ")
      (nil . "[--] "))))
+ '(slime-auto-start (quote ask))
+ '(slime-company-completion (quote fuzzy))
+ '(slime-complete-symbol*-fancy t)
  '(sp-escape-quotes-after-insert nil)
  '(use-package-compute-statistics t)
  '(zenburn-scale-org-headlines t)
@@ -294,11 +297,16 @@
 (use-package slime
   :straight slime-company
   :ensure-system-package (sbcl clisp)
+  :hook ((lisp-mode . slime-mode)
+         (slime-repl-mode
+          . (lambda () (add-to-list
+                        'company-backends
+                        '(company-dabbrev-code company-slime)))))
   :config
   (setq inferior-lisp-program "clisp")
   ;; (slime-setup '(slime-fancy slime-company))
   (setq slime-net-coding-system 'utf-8-unix)
-  (setq slime-contribs '(slime-fancy slime-company))
+  (slime-setup '(slime-fancy slime-company))
   (defun slime-space\\skk-insert (origfun &rest arglist)
     "skkの変換(スペース)がslime-spaceに食われてしまうのを回避"
     (apply (cond (skk-henkan-mode
