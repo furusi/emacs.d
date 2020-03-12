@@ -16,7 +16,7 @@
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
-
+(setq straight-base-dir (concat "~/.emacs.d/packages/" emacs-version "/"))
 (setq use-package-enable-imenu-support t)
 (straight-use-package 'use-package)
 
@@ -168,6 +168,7 @@
  '(slime-company-completion (quote fuzzy))
  '(slime-complete-symbol*-fancy t)
  '(sp-escape-quotes-after-insert nil)
+ '(straight-profiles '((nil . "~/.emacs.d/straight/versions/default.el")))
  '(use-package-compute-statistics t)
  '(zenburn-scale-org-headlines t)
  '(zenburn-scale-outline-headlines t))
