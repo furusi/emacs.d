@@ -301,7 +301,7 @@
          (slime-repl-mode
           . (lambda () (add-to-list
                         'company-backends
-                        '(company-dabbrev-code company-slime)))))
+                        '(company-slime company-dabbrev-code)))))
   :config
   (setq inferior-lisp-program "clisp")
   ;; (slime-setup '(slime-fancy slime-company))
