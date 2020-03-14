@@ -1400,6 +1400,7 @@ See `org-capture-templates' for more information."
   (global-set-key [remap kill-ring-save] #'easy-kill)
   (global-set-key [remap mark-sexp] #'easy-mark))
 (use-package easy-kill-extras)
+(use-package solarized-theme)
 
 ;;; GDB 関連
 ;;; 有用なバッファを開くモード
