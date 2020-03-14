@@ -410,6 +410,11 @@
               "~/.emacs.d/skk-get-jisyo/SKK-JISYO.zipcode"
               "~/.emacs.d/skk-get-jisyo/SKK-JISYO.okinawa"
               "~/.emacs.d/skk-get-jisyo/SKK-JISYO.propernoun"))
+;; isearch
+(add-hook 'isearch-mode-hook 'skk-isearch-mode-setup) ; isearch で skk のセットアップ
+(add-hook 'isearch-mode-end-hook 'skk-isearch-mode-cleanup) ; isearch で skk のクリーンアップ
+(setq skk-isearch-start-mode 'latin); isearch で skk の初期状態
+
   ;; サ行変格活用の動詞も送りあり変換出来るようにする
   (setq skk-search-sagyo-henkaku t)
   ;; 全角・半角カタカナを変換候補にする
