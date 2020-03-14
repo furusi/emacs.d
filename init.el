@@ -160,7 +160,7 @@
      (s5 "rst2s5.py" ".html" nil))))
  '(skk-isearch-mode-string-alist
    (quote
-    ((hiragana . "[か] ")
+    ((hiragana . "")
      (katakana . "[カ] ")
      (jisx0208-latin . "[英] ")
      (latin . "")
@@ -243,14 +243,18 @@
           system-packages-package-manager 'aurman)))
 
 
-(global-set-key (kbd "C-c t l") 'toggle-truncate-lines)
-(global-set-key "\C-t" 'other-window)
+(bind-keys ("C-c t l" . toggle-truncate-lines)
+           ("C-t" . other-window)
+           ("C-o" . my-insert-newline-and-indent)
+           :map isearch-mode-map
+           ("C-o" . isearch-exit))
 
 ;; C-u C-SPCの後C-SPCだけでマークを遡れる
 (setq set-mark-command-repeat-pop t)
 ;; マークの数を32に増やす
 (setq mark-ring-max 32)
 (setq-default indent-tabs-mode nil)
+(setq-default truncate-lines t)         ;文字列を折り返さない
 
 (use-package restart-emacs
   :ensure t)
@@ -1122,7 +1126,6 @@ See `org-capture-templates' for more information."
 
 
 (use-package company
-  :ensure t
   :bind (
          :map company-mode-map
               ("C-M-i" . 'company-indent-or-complete-common)
@@ -1410,6 +1413,16 @@ See `org-capture-templates' for more information."
 ;;;ediff時にorgファイルを全て表示する
 (with-eval-after-load 'outline
   (add-hook 'ediff-prepare-buffer-hook #'org-show-all))
+;; https://gist.github.com/tek-nishi/a7fc3933be5e62c7eeaa
+(defun my-insert-newline-and-indent(arg)
+  "カーソル行の上や下に一行挿入してインデント(前置引数が４だと上の行に挿入)"
+  (interactive "p")
+  (let ((p (if (eq arg 4)
+               1
+             2)))
+    (move-beginning-of-line p)
+    (open-line 1)
+    (indent-for-tab-command)))
 
 ;;from https://uwabami.github.io/cc-env/Emacs.html
 (defun my:make-scratch (&optional arg)
