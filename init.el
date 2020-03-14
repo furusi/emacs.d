@@ -1096,17 +1096,19 @@ See `org-capture-templates' for more information."
   (helm-mode 1)
   (helm-autoresize-mode 1)
   (helm-migemo-mode 1)
-  (global-set-key (kbd "M-x") 'helm-M-x)
-  (global-set-key (kbd "M-y")     'helm-show-kill-ring)
-  (global-set-key (kbd "C-x b")   'helm-mini)
-  (global-set-key (kbd "C-x C-f") 'helm-find-files)
-  (global-set-key (kbd "M-s o")   'helm-occur)
-  (global-set-key (kbd "C-x j")   'helm-recentf)
-  (global-set-key (kbd "C-x r l") 'helm-bookmarks)
-  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
-  (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
-  (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
-  )
+  (bind-keys* ("M-x"      . helm-M-x)
+              ("M-y"      . helm-show-kill-ring)
+              ("C-x b"    . helm-mini)
+              ("C-x C-f"  . helm-find-files)
+              ("M-s o"    . helm-occur)
+              ("C-x j"    . helm-recentf)
+              ("C-x r l"  . helm-bookmarks)
+              :map helm-map
+              ("<tab>"  . helm-execute-persistent-action) ;rebind tab to do persistent action
+              ("C-i"    . helm-execute-persistent-action) ;make TAB works in terminal
+              ("C-z"    . helm-select-action)             ;list actions using C-z
+              :map isearch-mode-map
+              ("C-i" . helm-occur-from-isearch)))
 
 (use-package helm-swoop)
 
