@@ -5,8 +5,12 @@
 ;;; Code:
 
 (defvar bootstrap-version)
+(setq straight-base-dir (concat user-emacs-directory emacs-version "/"))
+(setq straight-profiles (list (cons nil (concat user-emacs-directory "straight/versions/default.el"))))
+
+
 (let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" straight-base-dir))
       (bootstrap-version 5))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
@@ -16,7 +20,6 @@
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
-(setq straight-base-dir (concat "~/.emacs.d/packages/" emacs-version "/"))
 (setq use-package-enable-imenu-support t)
 (straight-use-package 'use-package)
 
@@ -85,7 +88,6 @@
  '(org-babel-load-languages (quote ((emacs-lisp . t) (C . t) (dot . t))))
  '(org-export-backends (quote (ascii html icalendar latex md odt taskjuggler)))
  '(org-journal-date-format "%A, %d %B %Y")
- '(org-journal-dir "/Users/furusho/Dropbox/org/journal")
  '(org-latex-default-class "bxjsarticle")
  '(org-latex-listings t)
  '(org-latex-listings-options
@@ -168,7 +170,6 @@
  '(slime-company-completion (quote fuzzy))
  '(slime-complete-symbol*-fancy t)
  '(sp-escape-quotes-after-insert nil)
- '(straight-profiles '((nil . "~/.emacs.d/straight/versions/default.el")))
  '(use-package-compute-statistics t)
  '(zenburn-scale-org-headlines t)
  '(zenburn-scale-outline-headlines t))
@@ -1455,7 +1456,7 @@ See `org-capture-templates' for more information."
       (setq-default indicate-buffer-boundaries 'left)))
 
 
-(load-file "~/.emacs.d/lisp/window.el")
+(load-file (concat user-emacs-directory "lisp/window.el"))
 
 (provide 'init)
 ;;; init.el ends here
