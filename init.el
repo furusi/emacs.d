@@ -1309,7 +1309,8 @@ See `org-capture-templates' for more information."
   :ensure t
   :hook (rust-mode . cargo-minor-mode))
 
-(use-package android-mode)
+(use-package android-mode
+  :disabled t)
 
 (use-package ccls
   :commands ccls
@@ -1377,12 +1378,12 @@ See `org-capture-templates' for more information."
   :config
   (editorconfig-mode 1))
 (use-package easy-hugo
-  :ensure t
+  :disabled t
   :config
   (setq easy-hugo-org-header t)
   (setq easy-hugo-default-ext ".org"))
 (use-package npm-mode
-  :ensure t
+  :disabled t
   :ensure-system-package npm)
 (use-package autodisass-java-bytecode
   :defer t)
