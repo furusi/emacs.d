@@ -5,7 +5,7 @@
 ;;; Code:
 
 (defvar bootstrap-version)
-(setq straight-base-dir (concat user-emacs-directory emacs-version "/"))
+(setq straight-base-dir (concat user-emacs-directory "packages/" emacs-version "/"))
 (setq straight-profiles (list (cons nil (concat user-emacs-directory "straight/versions/default.el"))))
 
 
@@ -1374,7 +1374,6 @@ See `org-capture-templates' for more information."
 (use-package graphviz-dot-mode
   :ensure t)
 (use-package editorconfig
-  :ensure t
   :config
   (editorconfig-mode 1))
 (use-package easy-hugo
