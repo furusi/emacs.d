@@ -165,7 +165,7 @@
      (jisx0208-latin . "[英] ")
      (latin . "")
      (abbrev . "[aあ] ")
-     (nil . "[--] "))))
+     (nil . ""))))
  '(slime-auto-start (quote ask))
  '(slime-company-completion (quote fuzzy))
  '(slime-complete-symbol*-fancy t)
@@ -259,6 +259,59 @@
 
 (use-package restart-emacs
   :ensure t)
+
+;; ddskk
+(use-package ddskk
+  :straight (ddskk :type git :host github :repo "skk-dev/ddskk")
+  :commands skk-mode
+  :bind (("C-x C-j" . skk-mode)
+         :map minibuffer-local-map
+         ("C-j" . skk-kakutei))
+  :hook (skk-mode . (lambda () (require 'context-skk))) ;自動的に英字モードになる
+  :init
+  (setq skk-large-jisyo "~/.emacs.d/skk-get-jisyo/SKK-JISYO.L")
+  (setq skk-extra-jisyo-file-list
+        (list "~/.emacs.d/skk-get-jisyo/SKK-JISYO.lisp"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.station"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.assoc"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.edict"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.law"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.jinmei"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.fullname"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.geo"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.itaiji"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.zipcode"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.okinawa"
+              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.propernoun"))
+  ;; isearch
+  (add-hook 'isearch-mode-hook 'skk-isearch-mode-setup) ; isearch で skk のセットアップ
+  (add-hook 'isearch-mode-end-hook 'skk-isearch-mode-cleanup) ; isearch で skk のクリーンアップ
+  (add-hook 'helm-exit-minibuffer-hook 'skk-isearch-mode-cleanup)
+  (setq skk-isearch-start-mode 'latin); isearch で skk の初期状態
+
+
+  ;; サ行変格活用の動詞も送りあり変換出来るようにする
+  (setq skk-search-sagyo-henkaku t)
+  ;; 全角・半角カタカナを変換候補にする
+  (setq skk-search-katakana 'jisx0201-kana)
+  (setq skk-use-act t)
+  (setq skk-henkan-show-candidates-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
+  (setq-default skk-kutouten-type 'en)
+  ;; 動的補完
+  (setq skk-dcomp-activate t)
+  (setq skk-rom-kana-rule-list
+        '(("tni" nil ("ティ" . "てぃ"))
+          ("dni" nil ("ディ" . "でぃ"))))
+  (add-hook 'dired-load-hook
+            (load "dired-x")
+            (global-set-key "\C-x\C-j" 'skk-mode))
+  (setq skk-egg-like-newline t);;non-nilにするとEnterでの確定時に改行しない
+  ;; ▼モードで BS を押したときには確定しないで前候補を表示する
+  (setq skk-delete-implies-kakutei nil)
+  (require 'skk-study)
+  ;; ▼モード中で=漢字の読み方を指定する
+  (setq skk-hint-start-char ?=)
+  (require 'skk-hint))
 
 
 ;; Emacs起動時にrst.elを読み込み
@@ -389,59 +442,6 @@
   :config
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1))
-
-;; ddskk
-(use-package ddskk
-  :straight (ddskk :type git :host github :repo "skk-dev/ddskk")
-  :commands skk-mode
-  :bind (("C-x C-j" . skk-mode)
-         :map minibuffer-local-map
-         ("C-j" . skk-kakutei))
-  :hook (skk-mode . (lambda () (require 'context-skk))) ;自動的に英字モードになる
-  :init
-  (setq skk-large-jisyo "~/.emacs.d/skk-get-jisyo/SKK-JISYO.L")
-  (setq skk-extra-jisyo-file-list
-        (list "~/.emacs.d/skk-get-jisyo/SKK-JISYO.lisp"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.station"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.assoc"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.edict"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.law"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.jinmei"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.fullname"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.geo"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.itaiji"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.zipcode"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.okinawa"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.propernoun"))
-  ;; isearch
-  (add-hook 'isearch-mode-hook 'skk-isearch-mode-setup) ; isearch で skk のセットアップ
-  (add-hook 'isearch-mode-end-hook 'skk-isearch-mode-cleanup) ; isearch で skk のクリーンアップ
-  (add-hook 'helm-exit-minibuffer-hook 'skk-isearch-mode-cleanup)
-  (setq skk-isearch-start-mode 'latin); isearch で skk の初期状態
-
-
-  ;; サ行変格活用の動詞も送りあり変換出来るようにする
-  (setq skk-search-sagyo-henkaku t)
-  ;; 全角・半角カタカナを変換候補にする
-  (setq skk-search-katakana 'jisx0201-kana)
-  (setq skk-use-act t)
-  (setq skk-henkan-show-candidates-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
-  (setq-default skk-kutouten-type 'en)
-  ;; 動的補完
-  (setq skk-dcomp-activate t)
-  (setq skk-rom-kana-rule-list
-        '(("tni" nil ("ティ" . "てぃ"))
-          ("dni" nil ("ディ" . "でぃ"))))
-  (add-hook 'dired-load-hook
-            (load "dired-x")
-            (global-set-key "\C-x\C-j" 'skk-mode))
-  (setq skk-egg-like-newline t);;non-nilにするとEnterでの確定時に改行しない
-  ;; ▼モードで BS を押したときには確定しないで前候補を表示する
-  (setq skk-delete-implies-kakutei nil)
-  (require 'skk-study)
-  ;; ▼モード中で=漢字の読み方を指定する
-  (setq skk-hint-start-char ?=)
-  (require 'skk-hint))
 
 ;; Org-mode
 (use-package org
