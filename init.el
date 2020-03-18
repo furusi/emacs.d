@@ -202,7 +202,7 @@
 
 (recentf-mode 1)
 
-(when (memq system-type '(darwin gnu/linux))
+(when (eq system-type 'darwin)
   (use-package exec-path-from-shell
     :config
     (setq exec-path-from-shell-check-startup-files nil)
@@ -587,6 +587,10 @@
   (setq org-use-speed-commands t)
   (setq org-icalendar-alarm-time 30)
   (setq org-icalendar-timezone "Asia/Tokyo")
+  ;; カーソルが見出しにある場合latinモードになる
+  (custom-add-frequent-value 'context-skk-context-check-hook
+                             #'org-at-heading-p)
+  (custom-reevaluate-setting 'context-skk-context-check-hook)
 
   ;; htmlで数式
   (setf org-html-mathjax-options
@@ -1018,7 +1022,7 @@ See `org-capture-templates' for more information."
   :bind (("C-x g" . magit-status))
   :config
   (setq magit-diff-refine-hunk 'all)
-  ;;;ediff時にorgファイルを全て表示する
+  ;; ediff時にorgファイルを全て表示する
   (with-eval-after-load 'outline
     (add-hook 'ediff-prepare-buffer-hook #'org-show-all)))
 
@@ -1438,9 +1442,6 @@ See `org-capture-templates' for more information."
 ;;; バックアップファイルを作成しない
 (setq make-backup-files t)
 
-;;;ediff時にorgファイルを全て表示する
-(with-eval-after-load 'outline
-  (add-hook 'ediff-prepare-buffer-hook #'org-show-all))
 ;; https://gist.github.com/tek-nishi/a7fc3933be5e62c7eeaa
 (defun my-insert-newline-and-indent(arg)
   "カーソル行の上や下に一行挿入してインデント(前置引数が４だと上の行に挿入)"
