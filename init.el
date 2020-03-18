@@ -1401,6 +1401,16 @@ See `org-capture-templates' for more information."
   (global-set-key [remap mark-sexp] #'easy-mark))
 (use-package easy-kill-extras)
 (use-package solarized-theme)
+(use-package markdown-mode
+  :straight nil
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "multimarkdown")
+  :config
+  (when window-system 'ns
+        (set-face-attribute 'markdown-table-face nil
+                            :family "IPAGothic")))
 
 ;;; GDB 関連
 ;;; 有用なバッファを開くモード
