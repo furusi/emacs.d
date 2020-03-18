@@ -445,6 +445,7 @@
 
 ;; Org-mode
 (use-package org
+  :commands (org-show-all)
   :mode (("\\.org$" . org-mode))
   :straight org-plus-contrib
   :bind (("\C-cc" . org-capture)
@@ -1016,7 +1017,10 @@ See `org-capture-templates' for more information."
   :ensure t
   :bind (("C-x g" . magit-status))
   :config
-  (setq magit-diff-refine-hunk 'all))
+  (setq magit-diff-refine-hunk 'all)
+  ;;;ediff時にorgファイルを全て表示する
+  (with-eval-after-load 'outline
+    (add-hook 'ediff-prepare-buffer-hook #'org-show-all)))
 
 (use-package mu4e
   :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e"
