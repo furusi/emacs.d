@@ -171,6 +171,7 @@
  '(slime-complete-symbol*-fancy t)
  '(sp-escape-quotes-after-insert nil)
  '(use-package-compute-statistics t)
+ '(vc-follow-symlinks t)
  '(zenburn-scale-org-headlines t)
  '(zenburn-scale-outline-headlines t))
 
