@@ -394,7 +394,9 @@
 (use-package ddskk
   :straight (ddskk :type git :host github :repo "skk-dev/ddskk")
   :commands skk-mode
-  :bind (("C-x C-j" . skk-mode))
+  :bind (("C-x C-j" . skk-mode)
+         :map minibuffer-local-map
+         ("C-j" . skk-kakutei))
   :hook (skk-mode . (lambda () (require 'context-skk))) ;自動的に英字モードになる
   :init
   (setq skk-large-jisyo "~/.emacs.d/skk-get-jisyo/SKK-JISYO.L")
@@ -411,10 +413,12 @@
               "~/.emacs.d/skk-get-jisyo/SKK-JISYO.zipcode"
               "~/.emacs.d/skk-get-jisyo/SKK-JISYO.okinawa"
               "~/.emacs.d/skk-get-jisyo/SKK-JISYO.propernoun"))
-;; isearch
-(add-hook 'isearch-mode-hook 'skk-isearch-mode-setup) ; isearch で skk のセットアップ
-(add-hook 'isearch-mode-end-hook 'skk-isearch-mode-cleanup) ; isearch で skk のクリーンアップ
-(setq skk-isearch-start-mode 'latin); isearch で skk の初期状態
+  ;; isearch
+  (add-hook 'isearch-mode-hook 'skk-isearch-mode-setup) ; isearch で skk のセットアップ
+  (add-hook 'isearch-mode-end-hook 'skk-isearch-mode-cleanup) ; isearch で skk のクリーンアップ
+  (add-hook 'helm-exit-minibuffer-hook 'skk-isearch-mode-cleanup)
+  (setq skk-isearch-start-mode 'latin); isearch で skk の初期状態
+
 
   ;; サ行変格活用の動詞も送りあり変換出来るようにする
   (setq skk-search-sagyo-henkaku t)
@@ -1116,7 +1120,8 @@ See `org-capture-templates' for more information."
               :map isearch-mode-map
               ("C-i" . helm-occur-from-isearch)))
 
-(use-package helm-swoop)
+(use-package helm-swoop
+  :disabled t)
 
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 
