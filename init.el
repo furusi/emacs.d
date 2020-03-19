@@ -217,11 +217,9 @@
     (setq exec-path-from-shell-check-startup-files nil)
     (exec-path-from-shell-initialize)))
 
-(use-package use-package-ensure-system-package
-  :ensure t)
+(use-package use-package-ensure-system-package)
 
 (use-package system-packages
-  :ensure t
   :config
   (when (eq system-type 'darwin)
     (setq system-packages-use-sudo nil
@@ -266,8 +264,7 @@
 (setq-default indent-tabs-mode nil)
 (setq-default truncate-lines t)         ;文字列を折り返さない
 
-(use-package restart-emacs
-  :ensure t)
+(use-package restart-emacs)
 
 ;; ddskk
 (use-package ddskk
@@ -325,7 +322,6 @@
 
 ;; Emacs起動時にrst.elを読み込み
 (use-package rst
-  :ensure t
   :mode (("\\.rst$"  . rst-mode)
          ("\\.rest$" . rst-mode))
   :bind (:map rst-mode-map
@@ -389,7 +385,6 @@
   (advice-add 'slime-autodoc-space :around #'slime-space\\skk-insert))
 
 (use-package undohist
-  :ensure t
   :config
   (undohist-initialize)
   ;;; 永続化を無視するファイル名の正規表現
@@ -413,7 +408,6 @@
 
 
 (use-package web-mode
-  :ensure t
   :mode (("\\.phtml\\'"     . web-mode)
          ("\\.tpl\\.php\\'" . web-mode)
          ("\\.[gj]sp\\'"    . web-mode)
@@ -426,10 +420,9 @@
   (setq web-mode-extra-snippets
         '(("php" . (("print" . "print(\"|\")"))))))
 
-(use-package all-the-icons  :ensure t)
+(use-package all-the-icons)
 
 (use-package which-key
-  :ensure t
   :config
   ;; 3つの表示方法どれか1つ選ぶ
   (which-key-setup-side-window-bottom)    ;ミニバッファ
@@ -439,15 +432,12 @@
 
 ;;;yasnippet
 (use-package yasnippet
-  :ensure t
   :config
   (yas-global-mode 1))
-(use-package yasnippet-snippets
-  :ensure t)
+(use-package yasnippet-snippets)
 
 
 (use-package keyfreq
-  :ensure t
   :config
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1))
@@ -665,17 +655,14 @@
   (setq org-mu4e-link-query-in-headers-mode nil))
 
 (use-package org-journal
-  :ensure t
   :after org
   :custom
   (org-journal-dir (concat org-directory "journal"))
   (org-journal-date-format "%A, %d %B %Y"))
 
 (use-package ox-rst
-  :after (org)
-  :ensure t)
+  :after (org))
 (use-package ox-hugo
-  :ensure t
   :after org)
 (use-package ob-browser
   :after org)
@@ -950,16 +937,12 @@
   ;; ignoreタグで見出しを非表示にしつつ内容を表示する
   (ox-extras-activate '(latex-header-blocks ignore-headlines)))
 (use-package ob-kotlin
-  :after (org)
-  :ensure t)
+  :after (org))
 (use-package ob-rust
-  :after (org)
-  :ensure t)
+  :after (org))
 (use-package ox-asciidoc
-  :after (org)
-  :ensure t)
+  :after (org))
 (use-package ox-hugo
-  :ensure t
   :after ox
   :config
   (defun org-hugo-new-subtree-post-capture-template ()
@@ -986,11 +969,9 @@ See `org-capture-templates' for more information."
                (function org-hugo-new-subtree-post-capture-template))))
 
 (use-package ox-pandoc
-  :ensure t
   :ensure-system-package pandoc
   :after ox)
 (use-package org-download
-  :ensure t
   :after org
   :hook ((org-mode . org-download-enable)))
 (use-package org-seek
@@ -1011,8 +992,7 @@ See `org-capture-templates' for more information."
         ;;                     :family "YuKyokasho Yoko")
         ;; 源ノ角ゴシック
         (set-face-attribute 'default nil
-                            :family "Source Han Code JP")
-        ))
+                            :family "Source Han Code JP")))
 (when (equal system-type 'gnu/linux)
   (add-to-list 'load-path "~/opt/mu-1.0/mu4e/")
   ;;曖昧な文字幅を指定する
@@ -1026,7 +1006,6 @@ See `org-capture-templates' for more information."
 (setq use-default-font-for-symbols nil)
 
 (use-package magit
-  :ensure t
   :bind (("C-x g" . magit-status))
   :config
   (setq magit-diff-refine-hunk 'all)
@@ -1142,7 +1121,6 @@ See `org-capture-templates' for more information."
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 
 (use-package helm-rg
-  :ensure t
   :ensure-system-package (rg . ripgrep))
 (use-package ace-jump-mode)
 (use-package ace-isearch
@@ -1150,8 +1128,7 @@ See `org-capture-templates' for more information."
   :config
   (global-ace-isearch-mode +1))
 
-(use-package sudo-edit
-  :ensure t)
+(use-package sudo-edit)
 
 
 (use-package company
@@ -1191,7 +1168,6 @@ See `org-capture-templates' for more information."
   (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends)))
 
 (use-package yatex
-  :ensure t
   :mode
   (("\\.tex$" . yatex-mode)
    ("\\.ltx$" . yatex-mode)
@@ -1241,8 +1217,7 @@ See `org-capture-templates' for more information."
   (setq exec-path (append '("/usr/local/bin" "/Library/TeX/texbin" "/Applications/Skim.app/Contents/SharedSupport") exec-path)))
 
 (use-package php-mode
-  :mode (("\\.php\\'" . php-mode))
-  :ensure t )
+  :mode (("\\.php\\'" . php-mode)))
 (use-package ac-php
   :after php-mode)
 (use-package company-php
@@ -1302,10 +1277,8 @@ See `org-capture-templates' for more information."
   :hook ((lsp-mode . lsp-lens-mode)
          (java-mode . lsp-java-lens-mode)))
 
-(use-package hydra
-  :ensure t)
-(use-package projectile
-  :ensure t)
+(use-package hydra)
+(use-package projectile)
 
 
 ;; ;;git clone git@github.com:rswarbrick/picasm.git ~/.emacs.d/lisp/picasm
@@ -1313,22 +1286,18 @@ See `org-capture-templates' for more information."
 ;;   :load-path "~/.emacs.d/lisp/picasm/")
 
 (use-package rust-mode
-  :ensure t
   :mode (("\\.rs\\'" . rust-mode))
   :config
   (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
   (setq company-tooltip-align-annotations t))
 (use-package rustic
   :disabled
-  :ensure t
   :config
   (setq rustic-lsp-server 'rust-analyzer))
 (use-package racer
-  :ensure t
   :hook ((rust-mode  . racer-mode)
          (racer-mode . eldoc-mode)))
 (use-package cargo
-  :ensure t
   :hook (rust-mode . cargo-minor-mode))
 
 (use-package android-mode
@@ -1361,7 +1330,6 @@ See `org-capture-templates' for more information."
   (smartparens-global-mode))
 
 (use-package kotlin-mode
-  :ensure t
   :mode (("\\.kt\\'" . kotlin-mode)))
 
 (use-package whitespace
@@ -1381,21 +1349,16 @@ See `org-capture-templates' for more information."
 
 
 (use-package plantuml-mode
-  :ensure t
   :ensure-system-package plantuml
   :config
   (when (eq system-type 'darwin)
     (setq plantuml-jar-path
           "/usr/local/opt/plantuml/libexec/plantuml.jar")))
 
-(use-package htmlize
-  :ensure t)
-(use-package adoc-mode
-  :ensure t)
-(use-package pandoc
-  :ensure t)
-(use-package graphviz-dot-mode
-  :ensure t)
+(use-package htmlize)
+(use-package adoc-mode)
+(use-package pandoc)
+(use-package graphviz-dot-mode)
 (use-package editorconfig
   :config
   (editorconfig-mode 1))
