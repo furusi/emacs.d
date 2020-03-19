@@ -51,6 +51,7 @@
     (not org-mode magit-mode custom-mode magit-status-mode magit-revision-mode magit-diff-mode)))
  '(company-idle-delay 0.2)
  '(company-lsp-cache-candidates (quote auto))
+ '(context-skk-mode-off-message "[context-skk] 日本語入力 off")
  '(custom-enabled-themes (quote (tango)))
  '(dimmer-exclusion-regexp "^\\\\*helm\\\\|^ \\\\*Minibuf\\\\|^\\\\*Calendar\"")
  '(dimmer-fraction 0.3)
@@ -199,6 +200,14 @@
       (shell-command-to-string "lsb_release -sd")
     ""))
 
+;; Define a read-only directory class
+(dir-locals-set-class-variables 'read-only
+ '((nil . ((buffer-read-only . t)))))
+
+;; Associate directories with the read-only class
+(dolist (dir (list
+              (concat user-emacs-directory "packages/")))
+  (dir-locals-set-directory-class (file-truename dir) 'read-only))
 
 (recentf-mode 1)
 
