@@ -465,20 +465,19 @@
          ("C-c C-\'" . org-insert-structure-template)
          ("C-c C-u" . outline-up-heading-latin))
   :config
-  (when window-system 'ns
-        ;; org-modeのtableのフォントを設定
-        (set-face-attribute 'org-table nil
-                            :family "IPAGothic")
-        (set-face-attribute 'org-formula nil
-                            :family "IPAGothic"))
-  (when (eq window-system 'x)
-    (set-face-attribute 'org-table nil
-                        :family "IPAゴシック")
-    (set-face-attribute 'org-formula nil
-                        :family "IPAゴシック")
+  ;; org-modeの固定幅フォントを設定
+  (mapc (lambda (face)
+          (set-face-attribute (car face) nil
+                              :family (cdr face)))
+        (mapcar (lambda (face)
+                  (cons face
+                        (cond
+                         ((eq window-system 'ns) "IPAGothic")
+                         ((eq window-system 'x) "IPAゴシック"))))
+                '(org-table org-formula)))
 
-    (add-to-list 'face-font-rescale-alist
-                 '(".*IPAゴシック.*" . 0.85)))
+  (add-to-list 'face-font-rescale-alist
+               '(".*IPAゴシック.*" . 0.85))
 
   (defun outline-up-heading-latin ()
     (interactive)
