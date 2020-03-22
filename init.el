@@ -1392,6 +1392,7 @@ See `org-capture-templates' for more information."
   (when window-system 'ns
         (set-face-attribute 'markdown-table-face nil
                             :family "IPAGothic")))
+(use-package docker)
 
 ;;; GDB 関連
 ;;; 有用なバッファを開くモード
