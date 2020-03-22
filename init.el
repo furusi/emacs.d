@@ -52,9 +52,9 @@
  '(company-lsp-cache-candidates nil t)
  '(context-skk-context-check-hook
    (quote
-   (context-skk-out-of-string-or-comment-in-programming-mode-p context-skk-on-keymap-defined-area-p context-skk-in-read-only-p
+    (context-skk-out-of-string-or-comment-in-programming-mode-p context-skk-on-keymap-defined-area-p context-skk-in-read-only-p
                                                                 (lambda nil
-                                                                  (looking-at "\\*+ "))))
+                                                                  (looking-at "\\*+ ")))))
  '(context-skk-mode-off-message "[context-skk] 日本語入力 off")
  '(custom-enabled-themes (quote (tango)))
  '(dimmer-exclusion-regexp "^\\\\*helm\\\\|^ \\\\*Minibuf\\\\|^\\\\*Calendar\"")
