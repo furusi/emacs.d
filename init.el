@@ -450,25 +450,18 @@
          ("\C-ca" . org-agenda)
          ("\C-cb" . org-iswitchb)
          :map org-mode-map
-         ("C-c C-\'" . org-insert-structure-template)
-         ("C-c C-u" . outline-up-heading-latin))
+         ("C-c C-\'" . org-insert-structure-template))
   :config
   ;; org-modeの固定幅フォントを設定
   (let ((fontset (cond
                  ((eq window-system 'ns) "IPAGothic")
                  ((eq window-system 'x) "IPAゴシック"))))
-    (set-face-attribute 'org-table nil   :family fontset)
+    (set-face-attribute 'org-table   nil :family fontset)
     (set-face-attribute 'org-formula nil :family fontset)
-    (set-face-attribute 'org-date nil    :family fontset))
+    (set-face-attribute 'org-date    nil :family fontset))
 
   (add-to-list 'face-font-rescale-alist
                '(".*IPAゴシック.*" . 0.85))
-
-  (defun outline-up-heading-latin ()
-    (interactive)
-    (outline-up-heading 1 nil)
-    (when (bound-and-true-p skk-mode)
-      (skk-latin-mode nil)))
 
   (when (equal system-type 'darwin)
     (setq org-plantuml-jar-path
