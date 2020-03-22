@@ -185,11 +185,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
-;; (add-to-list 'load-path "~/.emacs.d/lisp/picasm")
-;; (require 'initchart)
-;; (initchart-record-execution-time-of load file)
-;; (initchart-record-execution-time-of require feature)
+ '(org-table ((t (:foreground "cornflower blue")))))
+
 (use-package initchart
   :disabled t
   :straight (initchart :type git :host github :repo "yuttie/initchart")
@@ -1375,7 +1372,10 @@ See `org-capture-templates' for more information."
   (global-set-key [remap kill-ring-save] #'easy-kill)
   (global-set-key [remap mark-sexp] #'easy-mark))
 (use-package easy-kill-extras)
-(use-package solarized-theme)
+(use-package solarized-theme
+  :disabled t
+  :config
+  (load-theme 'solarized-dark t))
 (use-package markdown-mode
   :straight nil
   :mode (("README\\.md\\'" . gfm-mode)
