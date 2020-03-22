@@ -206,7 +206,9 @@
 
 (recentf-mode 1)
 
-(when (eq system-type 'darwin)
+(when (or (eq system-type 'darwin)
+          (string=
+           (car (split-string (which-linux-distribution))) "Ubuntu"))
   (use-package exec-path-from-shell
     :config
     (setq exec-path-from-shell-check-startup-files nil)
@@ -1117,6 +1119,7 @@ See `org-capture-templates' for more information."
   :ensure-system-package (rg . ripgrep))
 (use-package ace-jump-mode)
 (use-package ace-isearch
+  :disabled t
   :after (ace-jump-mode helm-swoop)
   :config
   (global-ace-isearch-mode +1))
