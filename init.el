@@ -451,11 +451,12 @@
   :config
   ;; org-modeの固定幅フォントを設定
   (let ((fontset (cond
-                 ((eq window-system 'ns) "IPAGothic")
+                 ((eq window-system 'ns) "Osaka")
                  ((eq window-system 'x) "IPAゴシック"))))
-    (set-face-attribute 'org-table   nil :family fontset)
-    (set-face-attribute 'org-formula nil :family fontset)
-    (set-face-attribute 'org-date    nil :family fontset))
+    (dolist (face '(org-table
+                    org-formula
+                    org-date))
+      (set-face-attribute face nil :family fontset)))
 
   (add-to-list 'face-font-rescale-alist
                '(".*IPAゴシック.*" . 0.85))
@@ -971,7 +972,7 @@ See `org-capture-templates' for more information."
 (when (equal system-type 'darwin)
   (setq ns-command-modifier (quote meta))
   (add-to-list 'load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e/")
-  (when window-system 'ns
+  (when (eq window-system 'ns)
         ;; 游教科書体
         ;; (set-face-attribute 'default nil
         ;;                     :family "YuKyokasho Yoko")
@@ -1383,7 +1384,7 @@ See `org-capture-templates' for more information."
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown")
   :config
-  (when window-system 'ns
+  (when (eq window-system 'ns)
         (set-face-attribute 'markdown-table-face nil
                             :family "IPAGothic")))
 (use-package docker)
