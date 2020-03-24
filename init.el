@@ -960,7 +960,25 @@ See `org-capture-templates' for more information."
   :ensure-system-package (rg . ripgrep)
   :config
   (setq org-seek-search-tool 'ripgrep))
+(use-package org-pdftools
+  :disabled t
+  :straight (org-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
+  :config (setq org-pdftools-root-dir (concat (getenv "HOME") "/GoogleDrive/Books"))
+  (with-eval-after-load 'org
+    (org-link-set-parameters "pdftools"
+                             :follow #'org-pdftools-open
+                             :complete #'org-pdftools-complete-link
+                             :store #'org-pdftools-store-link
+                             :export #'org-pdftools-export)
+    (add-hook 'org-store-link-functions 'org-pdftools-store-link)))
 
+(use-package org-noter
+  :disabled t
+  :after (org))
+(use-package org-noter-pdftools
+  :disabled t
+  :straight nil
+  :after (org-noter))
 
 
 
@@ -1387,7 +1405,10 @@ See `org-capture-templates' for more information."
   ;; https://github.com/politza/pdf-tools#installation
   :mode (("\\.pdf\\'" . pdf-view-mode))
   :config
-  (pdf-tools-install))
+  (pdf-tools-install)
+  (display-line-numbers-mode -1)
+  (setq pdf-annot-activate-created-annotations t)
+  (setq pdf-view-resize-factor 1.1))
 
 ;;; GDB 関連
 ;;; 有用なバッファを開くモード
