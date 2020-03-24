@@ -25,6 +25,7 @@
 (setq straight-use-package-by-default t)
 
 (show-paren-mode t)
+(tool-bar-mode -1)
 ;; (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
 ;; Language and Character Code
