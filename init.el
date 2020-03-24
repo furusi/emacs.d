@@ -50,7 +50,6 @@
     (context-skk-out-of-string-or-comment-in-programming-mode-p context-skk-on-keymap-defined-area-p context-skk-in-read-only-p
                                                                 (lambda nil
                                                                   (looking-at "\\*+ ")))))
- '(context-skk-mode-off-message "[context-skk] 日本語入力 off")
  '(custom-enabled-themes (quote (tango)))
  '(dimmer-exclusion-regexp "^\\\\*helm\\\\|^ \\\\*Minibuf\\\\|^\\\\*Calendar\"")
  '(dimmer-fraction 0.3)
@@ -305,7 +304,9 @@
   (require 'skk-study)
   ;; ▼モード中で=漢字の読み方を指定する
   (setq skk-hint-start-char ?=)
-  (require 'skk-hint))
+  (require 'skk-hint)
+  :config
+  (setq skk-japanese-message-and-error nil))
 
 
 ;; Emacs起動時にrst.elを読み込み
