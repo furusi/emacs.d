@@ -961,7 +961,6 @@ See `org-capture-templates' for more information."
   :config
   (setq org-seek-search-tool 'ripgrep))
 (use-package org-pdftools
-  :disabled t
   :straight (org-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
   :config (setq org-pdftools-root-dir (concat (getenv "HOME") "/GoogleDrive/Books"))
   (with-eval-after-load 'org
@@ -973,10 +972,8 @@ See `org-capture-templates' for more information."
     (add-hook 'org-store-link-functions 'org-pdftools-store-link)))
 
 (use-package org-noter
-  :disabled t
   :after (org))
 (use-package org-noter-pdftools
-  :disabled t
   :straight nil
   :after (org-noter))
 
