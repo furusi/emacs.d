@@ -289,7 +289,6 @@
   (add-hook 'helm-exit-minibuffer-hook 'skk-isearch-mode-cleanup)
   (setq skk-isearch-start-mode 'latin); isearch で skk の初期状態
 
-
   ;; サ行変格活用の動詞も送りあり変換出来るようにする
   (setq skk-search-sagyo-henkaku t)
   ;; 全角・半角カタカナを変換候補にする
@@ -1388,6 +1387,11 @@ See `org-capture-templates' for more information."
         (set-face-attribute 'markdown-table-face nil
                             :family "IPAGothic")))
 (use-package docker)
+(use-package pdf-tools
+  ;; https://github.com/politza/pdf-tools#installation
+  :mode (("\\.pdf\\'" . pdf-view-mode))
+  :config
+  (pdf-tools-install))
 
 ;;; GDB 関連
 ;;; 有用なバッファを開くモード
