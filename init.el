@@ -362,7 +362,7 @@
   (setq inferior-lisp-program "clisp")
   ;; (slime-setup '(slime-fancy slime-company))
   (setq slime-net-coding-system 'utf-8-unix)
-  (slime-setup '(slime-fancy slime-company))
+  (slime-setup '(slime-fancy slime-company slime-indentation))
   (defun slime-space\\skk-insert (origfun &rest arglist)
     "skkの変換(スペース)がslime-spaceに食われてしまうのを回避"
     (apply (cond (skk-henkan-mode
@@ -447,7 +447,7 @@
   :config
   ;; org-modeの固定幅フォントを設定
   (let ((fontset (cond
-                 ((eq window-system 'ns) "Osaka")
+                 ((eq window-system 'ns) "IPAGothic")
                  ((eq window-system 'x) "IPAゴシック"))))
     (dolist (face '(org-table
                     org-formula
