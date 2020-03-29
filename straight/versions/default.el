@@ -63,6 +63,8 @@
  ("org-asciidoc" . "e931362e641f97d17dc738d22bb461e54045786d")
  ("org-download" . "b96fd7ba02cbdae95cc37970ebcfae8afa8b25d2")
  ("org-journal" . "664c08e12cde19ce7dca645ba9accecda7266c32")
+ ("org-noter" . "9ead81d42dd4dd5074782d239b2efddf9b8b7b3d")
+ ("org-pdftools" . "5a393dba1db318bb3437e36080483d62089aa363")
  ("org-seek.el" . "1f51e6634e3b9a6a29d335d0d14370a6ffef2265")
  ("ox-epub" . "c9629ef4b4bc40d51afefd8c0bb2c683931e6409")
  ("ox-hugo" . "1c1e3ec46785d93f4de2e71fc32604bd7c0fed40")
