@@ -306,6 +306,14 @@
   ;; ▼モード中で=漢字の読み方を指定する
   (setq skk-hint-start-char ?=)
   (require 'skk-hint)
+  ;; @@ skk-search-web.el
+  (setq skk-use-search-web t)
+  (when skk-use-search-web
+  ;; ;; 辞書変換が尽きたら Google CGI API for Japanese Input による変換を実行
+  ;; ;; https://www.google.co.jp/ime/cgiapi.html
+  (add-to-list 'skk-search-prog-list
+  	       '(skk-search-web 'skk-google-cgi-api-for-japanese-input)
+  	       t))
   :config
   (setq skk-japanese-message-and-error nil))
 
