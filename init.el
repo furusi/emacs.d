@@ -307,13 +307,13 @@
   (setq skk-hint-start-char ?=)
   (require 'skk-hint)
   ;; @@ skk-search-web.el
-  (setq skk-use-search-web t)
-  (when skk-use-search-web
+  ;; (setq skk-use-search-web t)
+  ;; (when skk-use-search-web
   ;; ;; 辞書変換が尽きたら Google CGI API for Japanese Input による変換を実行
   ;; ;; https://www.google.co.jp/ime/cgiapi.html
-  (add-to-list 'skk-search-prog-list
-  	       '(skk-search-web 'skk-google-cgi-api-for-japanese-input)
-  	       t))
+  ;; (add-to-list 'skk-search-prog-list
+  ;; 	       '(skk-search-web 'skk-google-cgi-api-for-japanese-input)
+  ;; 	       t))
   :config
   (setq skk-japanese-message-and-error nil))
 
@@ -1415,6 +1415,7 @@ See `org-capture-templates' for more information."
   (display-line-numbers-mode -1)
   (setq pdf-annot-activate-created-annotations t)
   (setq pdf-view-resize-factor 1.1))
+(use-package org-re-reveal)
 
 ;;; GDB 関連
 ;;; 有用なバッファを開くモード
