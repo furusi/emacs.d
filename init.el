@@ -47,9 +47,13 @@
  '(company-lsp-cache-candidates nil t)
  '(context-skk-context-check-hook
    (quote
-    (context-skk-out-of-string-or-comment-in-programming-mode-p context-skk-on-keymap-defined-area-p context-skk-in-read-only-p
-                                                                (lambda nil
-                                                                  (looking-at "\\*+ ")))))
+    (context-skk-out-of-string-or-comment-in-programming-mode-p
+     context-skk-on-keymap-defined-area-p
+     context-skk-in-read-only-p
+     (lambda nil
+       (looking-at "\\*+ "))
+     (lambda nil
+       (looking-at "\\#\\+BEGIN_")))))
  '(custom-enabled-themes (quote (tango)))
  '(dimmer-exclusion-regexp "^\\\\*helm\\\\|^ \\\\*Minibuf\\\\|^\\\\*Calendar\"")
  '(dimmer-fraction 0.3)
@@ -1416,6 +1420,8 @@ See `org-capture-templates' for more information."
   (setq pdf-annot-activate-created-annotations t)
   (setq pdf-view-resize-factor 1.1))
 (use-package org-re-reveal)
+(use-package flycheck
+  :init (global-flycheck-mode))
 
 ;;; GDB 関連
 ;;; 有用なバッファを開くモード
