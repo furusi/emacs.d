@@ -364,7 +364,7 @@
 ;; SLIMEのロード
 (use-package slime
   :straight slime-company
-  :ensure-system-package (sbcl clisp)
+;;  :ensure-system-package (sbcl clisp)
   :hook ((lisp-mode . slime-mode)
          (slime-repl-mode
           . (lambda () (add-to-list
@@ -963,14 +963,14 @@ See `org-capture-templates' for more information."
                (function org-hugo-new-subtree-post-capture-template))))
 
 (use-package ox-pandoc
-  :ensure-system-package pandoc
+;;  :ensure-system-package pandoc
   :after ox)
 (use-package org-download
   :after org
   :hook ((org-mode . org-download-enable)))
 (use-package org-seek
   :commands (org-seek-string org-seek-regexp org-seek-headlines)
-  :ensure-system-package (rg . ripgrep)
+;;  :ensure-system-package (rg . ripgrep)
   :config
   (setq org-seek-search-tool 'ripgrep))
 (use-package org-pdftools
@@ -1131,7 +1131,8 @@ See `org-capture-templates' for more information."
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 
 (use-package helm-rg
-  :ensure-system-package (rg . ripgrep))
+;;  :ensure-system-package (rg . ripgrep)
+)
 (use-package ace-jump-mode)
 (use-package ace-isearch
   :disabled t
@@ -1175,7 +1176,6 @@ See `org-capture-templates' for more information."
         backend
       (append (if (consp backend) backend (list backend))
               '(:with company-yasnippet))))
-
   (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends)))
 
 (use-package yatex
@@ -1316,7 +1316,7 @@ See `org-capture-templates' for more information."
 
 (use-package ccls
   :commands ccls
-  :ensure-system-package ccls
+;;  :ensure-system-package ccls
   :hook ((c-mode c++-mode objc-mode) .
          (lambda () (require 'ccls) (lsp)))
   :config
@@ -1360,7 +1360,7 @@ See `org-capture-templates' for more information."
 
 
 (use-package plantuml-mode
-  :ensure-system-package plantuml
+;;  :ensure-system-package plantuml
   :config
   (when (eq system-type 'darwin)
     (setq plantuml-jar-path
@@ -1380,7 +1380,8 @@ See `org-capture-templates' for more information."
   (setq easy-hugo-default-ext ".org"))
 (use-package npm-mode
   :disabled t
-  :ensure-system-package npm)
+;;  :ensure-system-package npm
+)
 (use-package autodisass-java-bytecode
   :defer t)
 
