@@ -192,6 +192,14 @@
 
 (recentf-mode 1)
 
+;;行番号を表示
+(if (version<= "26.0.50" emacs-version)
+    (progn
+      (global-display-line-numbers-mode)
+      (setq-default indicate-empty-lines t)
+      (setq-default indicate-buffer-boundaries 'left)))
+
+
 (when (or (eq system-type 'darwin)
           (string=
            (car (split-string (which-linux-distribution))) "Ubuntu"))
@@ -248,7 +256,34 @@
 (setq-default indent-tabs-mode nil)
 (setq-default truncate-lines t)         ;文字列を折り返さない
 
+(when (equal system-type 'darwin)
+  (setq ns-command-modifier (quote meta))
+  (add-to-list 'load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e/")
+  (when (eq window-system 'ns)
+        ;; 游教科書体
+        ;; (set-face-attribute 'default nil
+        ;;                     :family "YuKyokasho Yoko")
+        ;; 源ノ角ゴシック
+        (set-face-attribute 'default nil
+                            :family "Source Han Code JP")))
+(when (equal system-type 'gnu/linux)
+  (add-to-list 'load-path "~/opt/mu-1.0/mu4e/")
+  ;;曖昧な文字幅を指定する
+  (aset char-width-table ?→ 2)
+
+  (when (eq window-system 'x)
+    (set-face-attribute 'default nil
+                        :family "源ノ角ゴシック Code JP")))
+
+;; 記号をデフォルトのフォントにしない。(for Emacs 25.2)
+(setq use-default-font-for-symbols nil)
+
+
 (use-package restart-emacs)
+
+(use-package sudo-edit)
+
+
 
 ;; ddskk
 (use-package ddskk
@@ -313,20 +348,6 @@
   (setq skk-japanese-message-and-error nil))
 
 
-;; Emacs起動時にrst.elを読み込み
-(use-package rst
-  :mode (("\\.rst$"  . rst-mode)
-         ("\\.rest$" . rst-mode))
-  :bind (:map rst-mode-map
-              ("M-RET" . rst-insert-list))
-  :config
-  (when (eq system-type 'darwin)
-    (setq rst-pdf-program "open -a Skim")
-    (setq rst-slides-program "open -a Firefox")))
-
-(use-package gradle-mode
-  :mode (("\\.gradle$" . gradle-mode)))
-
 (use-package eww
   :commands (eww)
   :straight nil
@@ -349,10 +370,145 @@
     (setq-local shr-put-image-function 'shr-put-image-alt))
   (add-hook 'eww-mode-hook 'eww-mode-hook--disable-image))
 
+(use-package magit
+  :bind (("C-x g" . magit-status))
+  :config
+  (setq magit-diff-refine-hunk 'all)
+  ;; ediff時にorgファイルを全て表示する
+  (with-eval-after-load 'outline
+    (add-hook 'ediff-prepare-buffer-hook #'org-show-all)))
+
+(use-package migemo
+  :ensure-system-package cmigemo
+  :config
+  (setq migemo-options '("-q" "--emacs"))
+  (setq migemo-coding-system 'utf-8-unix)
+  ;; Set your installed path
+  (setq migemo-command
+        (cond ((eq system-type 'darwin)    "/usr/local/bin/cmigemo")
+              ((eq system-type 'gnu/linux) "/usr/bin/cmigemo")))
+  (setq migemo-dictionary
+        (cond ((eq system-type 'darwin)
+               "/usr/local/opt/cmigemo/share/migemo/utf-8/migemo-dict")
+              ((string-match-p "arch" operating-system-release)
+               "/usr/share/migemo/utf-8/migemo-dict")
+              (t "/usr/share/cmigemo/utf-8/migemo-dict")))
+  (setq migemo-user-dictionary nil)
+  (setq migemo-regex-dictionary nil)
+  (load-library "migemo")
+  (migemo-init))
+
+
+
 (setq recentf-auto-save-timer (run-with-idle-timer 30 t 'recentf-save-list))
 
 
 ;; SLIMEのロード
+
+
+(use-package undohist
+  :config
+  (undohist-initialize)
+  ;;; 永続化を無視するファイル名の正規表現
+  (setq undohist-ignored-files
+        '("/tmp/" "COMMIT_EDITMSG")))
+
+(use-package undo-tree
+  :init
+  (global-undo-tree-mode t))
+
+
+(use-package auto-save-buffers-enhanced
+  :config
+  ;; 1秒後に保存
+  (setq auto-save-buffers-enhanced-interval 1)
+  (auto-save-buffers-enhanced t)
+  ;; Wroteのメッセージを抑制
+  (setq auto-save-buffers-enhanced-quiet-save-p t)
+  ;; tramp mode時の自動保存を抑制
+  (setq auto-save-buffers-enhanced-exclude-regexps '("^/ssh:" "/sudo:" "/multi:")))
+
+;; helm
+(use-package helm-config
+  :straight helm
+  :config
+  (helm-mode 1)
+  (helm-autoresize-mode 1)
+  (helm-migemo-mode 1)
+  (bind-keys* ("M-x"      . helm-M-x)
+              ("M-y"      . helm-show-kill-ring)
+              ("C-x b"    . helm-mini)
+              ("C-x C-f"  . helm-find-files)
+              ("M-s o"    . helm-occur)
+              ("C-x j"    . helm-recentf)
+              ("C-x r l"  . helm-bookmarks)
+              :map helm-map
+              ("<tab>"  . helm-execute-persistent-action) ;rebind tab to do persistent action
+              ("C-i"    . helm-execute-persistent-action) ;make TAB works in terminal
+              ("C-z"    . helm-select-action)             ;list actions using C-z
+              :map isearch-mode-map
+              ("C-i" . helm-occur-from-isearch)))
+
+(use-package helm-swoop
+  :disabled t)
+
+(use-package helm-lsp :commands helm-lsp-workspace-symbol)
+
+(use-package helm-rg
+;;  :ensure-system-package (rg . ripgrep)
+)
+(use-package ace-jump-mode)
+(use-package ace-isearch
+  :disabled t
+  :after (ace-jump-mode helm-swoop)
+  :config
+  (global-ace-isearch-mode +1))
+
+(use-package easy-kill
+  :commands (easy-kill easy-mark)
+  :config
+  (global-set-key [remap kill-ring-save] #'easy-kill)
+  (global-set-key [remap mark-sexp] #'easy-mark))
+(use-package easy-kill-extras)
+
+
+(use-package all-the-icons)
+
+(use-package which-key
+  :config
+  ;; 3つの表示方法どれか1つ選ぶ
+  (which-key-setup-side-window-bottom)    ;ミニバッファ
+  ;; (which-key-setup-side-window-right)     ;右端
+  ;; (which-key-setup-side-window-right-bottom) ;両方使う
+  (which-key-mode 1))
+
+;;;yasnippet
+(use-package yasnippet
+  :config
+  (yas-global-mode 1))
+(use-package yasnippet-snippets)
+
+
+(use-package keyfreq
+  :config
+  (keyfreq-mode 1)
+  (keyfreq-autosave-mode 1))
+
+;; Emacs起動時にrst.elを読み込み
+(use-package rst
+  :mode (("\\.rst$"  . rst-mode)
+         ("\\.rest$" . rst-mode))
+  :bind (:map rst-mode-map
+              ("M-RET" . rst-insert-list))
+  :config
+  (when (eq system-type 'darwin)
+    (setq rst-pdf-program "open -a Skim")
+    (setq rst-slides-program "open -a Firefox")))
+
+(use-package gradle-mode
+  :mode (("\\.gradle$" . gradle-mode)))
+
+
 (use-package slime
   :straight slime-company
 ;;  :ensure-system-package (sbcl clisp)
@@ -378,29 +534,6 @@
   ;; (advice-add 'slime-space :around #'slime-space\\skk-insert)
   (advice-add 'slime-autodoc-space :around #'slime-space\\skk-insert))
 
-(use-package undohist
-  :config
-  (undohist-initialize)
-  ;;; 永続化を無視するファイル名の正規表現
-  (setq undohist-ignored-files
-        '("/tmp/" "COMMIT_EDITMSG")))
-
-(use-package undo-tree
-  :init
-  (global-undo-tree-mode t))
-
-
-(use-package auto-save-buffers-enhanced
-  :config
-  ;; 1秒後に保存
-  (setq auto-save-buffers-enhanced-interval 1)
-  (auto-save-buffers-enhanced t)
-  ;; Wroteのメッセージを抑制
-  (setq auto-save-buffers-enhanced-quiet-save-p t)
-  ;; tramp mode時の自動保存を抑制
-  (setq auto-save-buffers-enhanced-exclude-regexps '("^/ssh:" "/sudo:" "/multi:")))
-
-
 (use-package web-mode
   :mode (("\\.phtml\\'"     . web-mode)
          ("\\.tpl\\.php\\'" . web-mode)
@@ -413,28 +546,6 @@
   :config
   (setq web-mode-extra-snippets
         '(("php" . (("print" . "print(\"|\")"))))))
-
-(use-package all-the-icons)
-
-(use-package which-key
-  :config
-  ;; 3つの表示方法どれか1つ選ぶ
-  (which-key-setup-side-window-bottom)    ;ミニバッファ
-  ;; (which-key-setup-side-window-right)     ;右端
-  ;; (which-key-setup-side-window-right-bottom) ;両方使う
-  (which-key-mode 1))
-
-;;;yasnippet
-(use-package yasnippet
-  :config
-  (yas-global-mode 1))
-(use-package yasnippet-snippets)
-
-
-(use-package keyfreq
-  :config
-  (keyfreq-mode 1)
-  (keyfreq-autosave-mode 1))
 
 ;; Org-mode
 (use-package org
@@ -983,35 +1094,6 @@ See `org-capture-templates' for more information."
 
 
 
-(when (equal system-type 'darwin)
-  (setq ns-command-modifier (quote meta))
-  (add-to-list 'load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e/")
-  (when (eq window-system 'ns)
-        ;; 游教科書体
-        ;; (set-face-attribute 'default nil
-        ;;                     :family "YuKyokasho Yoko")
-        ;; 源ノ角ゴシック
-        (set-face-attribute 'default nil
-                            :family "Source Han Code JP")))
-(when (equal system-type 'gnu/linux)
-  (add-to-list 'load-path "~/opt/mu-1.0/mu4e/")
-  ;;曖昧な文字幅を指定する
-  (aset char-width-table ?→ 2)
-
-  (when (eq window-system 'x)
-    (set-face-attribute 'default nil
-                        :family "源ノ角ゴシック Code JP")))
-
-;; 記号をデフォルトのフォントにしない。(for Emacs 25.2)
-(setq use-default-font-for-symbols nil)
-
-(use-package magit
-  :bind (("C-x g" . magit-status))
-  :config
-  (setq magit-diff-refine-hunk 'all)
-  ;; ediff時にorgファイルを全て表示する
-  (with-eval-after-load 'outline
-    (add-hook 'ediff-prepare-buffer-hook #'org-show-all)))
 
 (use-package mu4e
   :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e"
@@ -1076,62 +1158,7 @@ See `org-capture-templates' for more information."
            ("/archive" . ?a))))
 
 
-(use-package migemo
-  :ensure-system-package cmigemo
-  :config
-  (setq migemo-options '("-q" "--emacs"))
-  (setq migemo-coding-system 'utf-8-unix)
-  ;; Set your installed path
-  (setq migemo-command
-        (cond ((eq system-type 'darwin)    "/usr/local/bin/cmigemo")
-              ((eq system-type 'gnu/linux) "/usr/bin/cmigemo")))
-  (setq migemo-dictionary
-        (cond ((eq system-type 'darwin)
-               "/usr/local/opt/cmigemo/share/migemo/utf-8/migemo-dict")
-              ((string-match-p "arch" operating-system-release)
-               "/usr/share/migemo/utf-8/migemo-dict")
-              (t "/usr/share/cmigemo/utf-8/migemo-dict")))
-  (setq migemo-user-dictionary nil)
-  (setq migemo-regex-dictionary nil)
-  (load-library "migemo")
-  (migemo-init))
-;;helm
-(use-package helm-config
-  :straight helm
-  :config
-  (helm-mode 1)
-  (helm-autoresize-mode 1)
-  (helm-migemo-mode 1)
-  (bind-keys* ("M-x"      . helm-M-x)
-              ("M-y"      . helm-show-kill-ring)
-              ("C-x b"    . helm-mini)
-              ("C-x C-f"  . helm-find-files)
-              ("M-s o"    . helm-occur)
-              ("C-x j"    . helm-recentf)
-              ("C-x r l"  . helm-bookmarks)
-              :map helm-map
-              ("<tab>"  . helm-execute-persistent-action) ;rebind tab to do persistent action
-              ("C-i"    . helm-execute-persistent-action) ;make TAB works in terminal
-              ("C-z"    . helm-select-action)             ;list actions using C-z
-              :map isearch-mode-map
-              ("C-i" . helm-occur-from-isearch)))
 
-(use-package helm-swoop
-  :disabled t)
-
-(use-package helm-lsp :commands helm-lsp-workspace-symbol)
-
-(use-package helm-rg
-;;  :ensure-system-package (rg . ripgrep)
-)
-(use-package ace-jump-mode)
-(use-package ace-isearch
-  :disabled t
-  :after (ace-jump-mode helm-swoop)
-  :config
-  (global-ace-isearch-mode +1))
-
-(use-package sudo-edit)
 
 
 (use-package company
@@ -1248,7 +1275,7 @@ See `org-capture-templates' for more information."
                           (require 'lsp-python-ms)
                           (lsp-deferred))))  ; or lsp
 
-;; ;; optionally
+;; optionally
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
   :commands lsp-ui-mode
@@ -1388,12 +1415,6 @@ See `org-capture-templates' for more information."
   (google-set-c-style))
 (use-package regex-tool)
 
-(use-package easy-kill
-  :commands (easy-kill easy-mark)
-  :config
-  (global-set-key [remap kill-ring-save] #'easy-kill)
-  (global-set-key [remap mark-sexp] #'easy-mark))
-(use-package easy-kill-extras)
 (use-package solarized-theme
   :disabled t
   :config
@@ -1484,13 +1505,6 @@ See `org-capture-templates' for more information."
 (put 'narrow-to-region 'disabled nil)
 (setq ispell-program-name "hunspell")
 (setq ispell-really-hunspell t)
-
-;;行番号を表示
-(if (version<= "26.0.50" emacs-version)
-    (progn
-      (global-display-line-numbers-mode)
-      (setq-default indicate-empty-lines t)
-      (setq-default indicate-buffer-boundaries 'left)))
 
 
 (load-file (concat user-emacs-directory "lisp/window.el"))
