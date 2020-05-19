@@ -88,6 +88,7 @@
  '(magit-display-buffer-function 'magit-display-buffer-fullframe-status-v1)
  '(org-babel-load-languages '((emacs-lisp . t) (C . t) (dot . t)))
  '(org-export-backends '(ascii html icalendar latex md odt taskjuggler))
+ '(lsp-python-ms-python-executable-cmd "python3")
  '(org-journal-date-format "%A, %d %B %Y")
  '(org-latex-default-class "bxjsarticle")
  '(org-latex-listings t)
