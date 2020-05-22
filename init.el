@@ -820,6 +820,7 @@
 \\usepackage{fancyhdr}
 \\usepackage{listings}
 \\usepackage{fancybox}
+\\newcommand{\\uline}[1]{\\underline{#1}}
 \\ifdefined\\kanjiskip
   \\usepackage{pxjahyper}
   \\hypersetup{colorlinks=false}
@@ -869,6 +870,20 @@
                  ("\\section\{%s\}"       . "\\section*\{%s\}")
                  ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
                  ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")))
+  (add-to-list 'org-latex-classes
+               '("jsarticle"
+           "\\documentclass[11pt,a4paper]{jsarticle}
+\\usepackage{amsmath}
+\\usepackage{amsthm}
+\\usepackage{bm}
+\\usepackage[dvipdfmx,hiresbb]{graphicx}
+\\usepackage[dvipdfmx]{color}"
+           ("\\section{%s}" . "\\section*{%s}")
+           ("\\subsection{%s}" . "\\subsection*{%s}")
+           ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+           ("\\paragraph{%s}" . "\\paragraph*{%s}")
+           ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
   (add-to-list 'org-latex-classes
                '("ieicej"
 
