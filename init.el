@@ -38,25 +38,32 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ace-isearch-use-jump nil)
- '(backup-directory-alist '((".*" . "~/.ehist")))
- '(comment-style 'multi-line)
+ '(backup-directory-alist (quote ((".*" . "~/.ehist"))))
+ '(comment-style (quote multi-line))
  '(company-global-modes
-   '(not org-mode magit-mode custom-mode magit-status-mode magit-revision-mode magit-diff-mode))
+   (quote
+    (not org-mode magit-mode custom-mode magit-status-mode magit-revision-mode magit-diff-mode)))
  '(company-idle-delay 0.2)
+ '(company-lsp-async t)
  '(company-lsp-cache-candidates nil)
+ '(company-lsp-enable-recompletion t)
+ '(company-lsp-enable-snippet t)
  '(context-skk-context-check-hook
-   '(context-skk-out-of-string-or-comment-in-programming-mode-p context-skk-on-keymap-defined-area-p context-skk-in-read-only-p
+   (quote
+    (context-skk-out-of-string-or-comment-in-programming-mode-p context-skk-on-keymap-defined-area-p context-skk-in-read-only-p
                                                                 (lambda nil
                                                                   (looking-at "\\*+ "))
                                                                 (lambda nil
-                                                                  (looking-at "\\#\\+BEGIN_"))))
+                                                                  (looking-at "\\#\\+BEGIN_")))))
  '(context-skk-programming-mode
-   '(ada-mode antlr-mode asm-mode autoconf-mode awk-mode c-mode objc-mode java-mode idl-mode pike-mode cperl-mode delphi-mode f90-mode fortran-mode icon-mode idlwave-mode inferior-lisp-mode lisp-mode m4-mode makefile-mode metafont-mode modula-2-mode octave-mode pascal-mode perl-mode prolog-mode ps-mode postscript-mode ruby-mode scheme-mode sh-mode simula-mode tcl-mode vhdl-mode emacs-lisp-mode python-mode))
- '(custom-enabled-themes '(tango))
+   (quote
+    (ada-mode antlr-mode asm-mode autoconf-mode awk-mode c-mode objc-mode java-mode idl-mode pike-mode cperl-mode delphi-mode f90-mode fortran-mode icon-mode idlwave-mode inferior-lisp-mode lisp-mode m4-mode makefile-mode metafont-mode modula-2-mode octave-mode pascal-mode perl-mode prolog-mode ps-mode postscript-mode ruby-mode scheme-mode sh-mode simula-mode tcl-mode vhdl-mode emacs-lisp-mode python-mode)))
+ '(custom-enabled-themes (quote (tango-dark)))
  '(dimmer-exclusion-regexp "^\\\\*helm\\\\|^ \\\\*Minibuf\\\\|^\\\\*Calendar\"")
  '(dimmer-fraction 0.3)
  '(easy-kill-alist
-   '((84 string-up-to-char-backward "")
+   (quote
+    ((84 string-up-to-char-backward "")
      (116 string-to-char-backward "")
      (70 string-up-to-char-forward "")
      (102 string-to-char-forward "")
@@ -78,33 +85,36 @@
      (68 defun-name " ")
      (101 line "
 ")
-     (98 buffer-file-name nil)))
- '(ediff-window-setup-function 'ediff-setup-windows-plain)
+     (98 buffer-file-name nil))))
+ '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(elpy-rpc-python-command "python3")
  '(eval-expression-print-length nil)
  '(global-company-mode t)
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
- '(magit-display-buffer-function 'magit-display-buffer-fullframe-status-v1)
- '(org-babel-load-languages '((emacs-lisp . t) (C . t) (dot . t)))
- '(org-export-backends '(ascii html icalendar latex md odt taskjuggler))
  '(lsp-python-ms-python-executable-cmd "python3")
+ '(magit-display-buffer-function (quote magit-display-buffer-fullframe-status-v1))
+ '(org-babel-load-languages (quote ((emacs-lisp . t) (C . t) (dot . t) (java . t))))
+ '(org-export-backends (quote (ascii html icalendar latex md odt taskjuggler)))
  '(org-journal-date-format "%A, %d %B %Y")
+ '(org-journal-dir "/Users/furusho/Dropbox/org/journal")
  '(org-latex-default-class "bxjsarticle")
  '(org-latex-listings t)
  '(org-latex-listings-options
-   '(("frame" "single")
+   (quote
+    (("frame" "single")
      ("basicstyle" "{\\ttfamily\\scriptsize}")
      ("numbers" "left")
      ("commentstyle" "{\\ttfamily\\scriptsize}")
      ("breaklines" "true")
-     ("showstringspaces" "false")))
- '(org-latex-minted-options '(("frame" "single") ("linenos" "true")))
- '(org-latex-pdf-process '("latexmk -gg -pdfdvi  %f"))
+     ("showstringspaces" "false"))))
+ '(org-latex-minted-options (quote (("frame" "single") ("linenos" "true"))))
+ '(org-latex-pdf-process (quote ("latexmk -gg -pdfdvi  %f")))
  '(org-return-follows-link t)
- '(org-rst-headline-underline-characters '(45 126 94 58 39 32 95))
+ '(org-rst-headline-underline-characters (quote (45 126 94 58 39 32 95)))
  '(org-src-lang-modes
-   '(("html" . web)
+   (quote
+    (("html" . web)
      ("php" . php)
      ("browser" . web)
      ("ocaml" . tuareg)
@@ -120,10 +130,11 @@
      ("shell" . sh)
      ("bash" . sh)
      ("dot" . graphviz-dot)
-     ("asm" . asm)))
+     ("asm" . asm))))
  '(org-src-preserve-indentation t)
  '(org-structure-template-alist
-   '(("n" . "notes")
+   (quote
+    (("n" . "notes")
      ("a" . "export ascii")
      ("c" . "center")
      ("C" . "comment")
@@ -133,36 +144,40 @@
      ("l" . "export latex")
      ("q" . "quote")
      ("s" . "src")
-     ("v" . "verse")))
+     ("v" . "verse"))))
  '(org-taskjuggler-process-command
    "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")
  '(package-selected-packages
-   '(easy-hugo lsp-mode use-package-ensure-system-package spinner company yasnippet all-the-icons ob-kotlin ace-jump-mode ace-isearch helm-swoop helm-migemo migemo gnu-elpa-keyring-update rustic review-mode pandoc ox-epub ob-browser htmlize adoc-mode ox-asciidoc ox-hugo org company-arduino arduino-mode pandoc-mode lorem-ipsum undo-propose 0x0 all-the-icons-ivy groovy-mode ob-rust multi-term back-button jedi jedi-core lsp-java-treemacs dap-java flycheck-rust cargo racer howm counsel-tramp dropbox editorconfig editorconfig-generate ox-pandoc c-eldoc ggtags graphviz-dot-mode kotlin-mode php-mode visual-regexp-steroids omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq helm gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced))
- '(php-manual-url 'ja)
+   (quote
+    (easy-hugo lsp-mode use-package-ensure-system-package spinner company yasnippet all-the-icons ob-kotlin ace-jump-mode ace-isearch helm-swoop helm-migemo migemo gnu-elpa-keyring-update rustic review-mode pandoc ox-epub ob-browser htmlize adoc-mode ox-asciidoc ox-hugo org company-arduino arduino-mode pandoc-mode lorem-ipsum undo-propose 0x0 all-the-icons-ivy groovy-mode ob-rust multi-term back-button jedi jedi-core lsp-java-treemacs dap-java flycheck-rust cargo racer howm counsel-tramp dropbox editorconfig editorconfig-generate ox-pandoc c-eldoc ggtags graphviz-dot-mode kotlin-mode php-mode visual-regexp-steroids omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq helm gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced)))
+ '(php-manual-url (quote ja))
  '(picasm-db-file "~/.emacs.d/lisp/picasm/picasm-db.el")
  '(plantuml-jar-path "/usr/local/opt/plantuml/libexec/plantuml.jar")
- '(recentf-auto-cleanup 'never)
+ '(recentf-auto-cleanup (quote never))
  '(recentf-exclude
-   '("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|MERGEREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" "/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/" "/\\.emacs\\.d/elpa/"))
+   (quote
+    ("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|MERGEREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" "/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/" "/\\.emacs\\.d/elpa/")))
  '(recentf-max-menu-items 30)
  '(recentf-max-saved-items 2000)
  '(rst-compile-toolsets
-   '((html "rst2html.py" ".html" nil)
+   (quote
+    ((html "rst2html.py" ".html" nil)
      (latex "rst2latex.py" ".tex" nil)
      (newlatex "rst2newlatex" ".tex" nil)
      (pseudoxml "rst2pseudoxml.py" ".xml" nil)
      (xml "rst2xml.py" ".xml" nil)
      (pdf "rst2pdf" ".pdf" "-s ja")
-     (s5 "rst2s5.py" ".html" nil)))
+     (s5 "rst2s5.py" ".html" nil))))
  '(skk-isearch-mode-string-alist
-   '((hiragana . "")
+   (quote
+    ((hiragana . "")
      (katakana . "[カ] ")
      (jisx0208-latin . "[英] ")
      (latin . "")
      (abbrev . "[aあ] ")
-     (nil . "")))
- '(slime-auto-start 'ask)
- '(slime-company-completion 'fuzzy)
+     (nil . ""))))
+ '(slime-auto-start (quote ask))
+ '(slime-company-completion (quote fuzzy))
  '(slime-complete-symbol*-fancy t)
  '(sp-escape-quotes-after-insert nil)
  '(use-package-compute-statistics t)
