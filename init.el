@@ -99,7 +99,7 @@
  '(org-journal-date-format "%A, %d %B %Y")
  '(org-journal-dir "/Users/furusho/Dropbox/org/journal")
  '(org-latex-default-class "bxjsarticle")
- '(org-latex-listings t)
+ '(org-latex-listings (quote minted))
  '(org-latex-listings-options
    (quote
     (("frame" "single")
