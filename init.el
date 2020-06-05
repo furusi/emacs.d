@@ -108,7 +108,11 @@
      ("commentstyle" "{\\ttfamily\\scriptsize}")
      ("breaklines" "true")
      ("showstringspaces" "false"))))
- '(org-latex-minted-options (quote (("frame" "single") ("linenos" "true"))))
+ '(org-latex-minted-options
+   (quote
+    (("frame" "single")
+     ("linenos" "true")
+     ("breaklines" ""))))
  '(org-latex-pdf-process (quote ("latexmk -gg -pdfdvi  %f")))
  '(org-return-follows-link t)
  '(org-rst-headline-underline-characters (quote (45 126 94 58 39 32 95)))
