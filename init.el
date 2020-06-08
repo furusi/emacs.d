@@ -90,6 +90,7 @@
  '(elpy-rpc-python-command "python3")
  '(eval-expression-print-length nil)
  '(global-company-mode t)
+ '(helm-completion-style (quote emacs))
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(lsp-python-ms-python-executable-cmd "python3")
@@ -108,11 +109,7 @@
      ("commentstyle" "{\\ttfamily\\scriptsize}")
      ("breaklines" "true")
      ("showstringspaces" "false"))))
- '(org-latex-minted-options
-   (quote
-    (("frame" "single")
-     ("linenos" "true")
-     ("breaklines" ""))))
+ '(org-latex-minted-options (quote (("frame" "single") ("breaklines" ""))))
  '(org-latex-pdf-process (quote ("latexmk -gg -pdfdvi  %f")))
  '(org-return-follows-link t)
  '(org-rst-headline-underline-characters (quote (45 126 94 58 39 32 95)))
