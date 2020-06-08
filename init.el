@@ -58,7 +58,7 @@
  '(context-skk-programming-mode
    (quote
     (ada-mode antlr-mode asm-mode autoconf-mode awk-mode c-mode objc-mode java-mode idl-mode pike-mode cperl-mode delphi-mode f90-mode fortran-mode icon-mode idlwave-mode inferior-lisp-mode lisp-mode m4-mode makefile-mode metafont-mode modula-2-mode octave-mode pascal-mode perl-mode prolog-mode ps-mode postscript-mode ruby-mode scheme-mode sh-mode simula-mode tcl-mode vhdl-mode emacs-lisp-mode python-mode)))
- '(custom-enabled-themes (quote (tango-dark)))
+ '(custom-enabled-themes nil)
  '(dimmer-exclusion-regexp "^\\\\*helm\\\\|^ \\\\*Minibuf\\\\|^\\\\*Calendar\"")
  '(dimmer-fraction 0.3)
  '(easy-kill-alist
@@ -194,6 +194,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(lsp-lsp-flycheck-warning-unnecessary-face ((t (:background "gray68"))) t)
+ '(lsp-ui-sideline-code-action ((t (:foreground "yellow3"))))
  '(org-table ((t (:foreground "cornflower blue")))))
 
 (use-package initchart
