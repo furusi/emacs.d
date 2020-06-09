@@ -35,6 +35,7 @@
  ("flycheck" . "19f351f4b13be82ddc37f842a49d02d14ea789fe")
  ("gnu-elpa-mirror" . "bc2110cbf5ae44a167c87b89b113cfca1a6ed3ca")
  ("graphviz-dot-mode" . "3642a0a5f41a80c8ecef7c6143d514200b80e194")
+ ("grip-mode" . "9615c4774727a719d38313a679d70f2a2c6aca68")
  ("helm" . "fd429c68e7a73e9d398f7fe620ae16b7d6e3b0a7")
  ("helm-lsp" . "6f62659cc528b7e37ffcc8fb356633acd7031be8")
  ("helm-rg" . "785a80fe5cc87e27c5ea3d00a70049028d9e2847")

@@ -396,6 +396,9 @@
   ;; ediff時にorgファイルを全て表示する
   (with-eval-after-load 'outline
     (add-hook 'ediff-prepare-buffer-hook #'org-show-all)))
+(use-package grip-mode
+  :bind (:map markdown-mode-command-map
+         ("g" . grip-mode)))
 
 (use-package migemo
   :ensure-system-package cmigemo
