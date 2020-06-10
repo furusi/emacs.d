@@ -1311,6 +1311,12 @@ See `org-capture-templates' for more information."
   :hook (python-mode . (lambda ()
                           (require 'lsp-python-ms)
                           (lsp-deferred))))  ; or lsp
+(use-package pipenv
+  :hook (python-mode . pipenv-mode)
+  :init
+  (setq
+   pipenv-projectile-after-switch-function
+   #'pipenv-projectile-after-switch-extended))
 
 ;; optionally
 (use-package lsp-ui
