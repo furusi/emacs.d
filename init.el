@@ -111,11 +111,15 @@
      ("showstringspaces" "false"))))
  '(org-latex-minted-options (quote (("frame" "single") ("breaklines" ""))))
  '(org-latex-pdf-process (quote ("latexmk -gg -pdfdvi  %f")))
+ '(org-link-file-path-type (quote relative))
  '(org-return-follows-link t)
  '(org-rst-headline-underline-characters (quote (45 126 94 58 39 32 95)))
  '(org-src-lang-modes
    (quote
-    (("html" . web)
+    (("arduino" . arduino)
+     ("browser" . html)
+     ("redis" . redis)
+     ("html" . web)
      ("php" . php)
      ("browser" . web)
      ("ocaml" . tuareg)
@@ -131,7 +135,8 @@
      ("shell" . sh)
      ("bash" . sh)
      ("dot" . graphviz-dot)
-     ("asm" . asm))))
+     ("asm" . asm)
+     ("python" . python))))
  '(org-src-preserve-indentation t)
  '(org-structure-template-alist
    (quote
