@@ -112,6 +112,7 @@
  '(org-latex-minted-options (quote (("frame" "single") ("breaklines" ""))))
  '(org-latex-pdf-process (quote ("latexmk -gg -pdfdvi  %f")))
  '(org-link-file-path-type (quote relative))
+ '(org-list-allow-alphabetical t)
  '(org-return-follows-link t)
  '(org-rst-headline-underline-characters (quote (45 126 94 58 39 32 95)))
  '(org-src-lang-modes
@@ -1478,6 +1479,9 @@ See `org-capture-templates' for more information."
         (set-face-attribute 'markdown-table-face nil
                             :family "IPAGothic")))
 (use-package docker)
+(use-package review-mode
+  :mode (("\\.re\\'" . review-mode)))
+(use-package csv-mode)
 (use-package pdf-tools
   ;; https://github.com/politza/pdf-tools#installation
   :mode (("\\.pdf\\'" . pdf-view-mode))
