@@ -3,7 +3,7 @@
 ;;; Commentary:
 
 ;;; Code:
-
+(setq system-time-locale "C")
 (defvar bootstrap-version)
 (setq straight-base-dir (concat user-emacs-directory "packages/" emacs-version "/"))
 (setq straight-profiles (list (cons nil (concat user-emacs-directory "straight/versions/default.el"))))
