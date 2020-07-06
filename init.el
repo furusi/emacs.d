@@ -781,6 +781,7 @@
 
 (use-package org-journal
   :after org
+  :commands org-journal-new-entry
   :custom
   (org-journal-dir (concat org-directory "journal"))
   (org-journal-date-format "%A, %d %B %Y"))
@@ -1120,6 +1121,7 @@ See `org-capture-templates' for more information."
   :config
   (setq org-seek-search-tool 'ripgrep))
 (use-package org-pdftools
+  :after org
   :straight (org-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
   :config (setq org-pdftools-root-dir (concat (getenv "HOME") "/GoogleDrive/Books"))
   (with-eval-after-load 'org
@@ -1500,7 +1502,8 @@ See `org-capture-templates' for more information."
   (display-line-numbers-mode -1)
   (setq pdf-annot-activate-created-annotations t)
   (setq pdf-view-resize-factor 1.1))
-(use-package org-re-reveal)
+(use-package org-re-reveal
+  :after org)
 (use-package flycheck
   :init (global-flycheck-mode))
 
