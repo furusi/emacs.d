@@ -110,6 +110,14 @@
      ("commentstyle" "{\\ttfamily\\scriptsize}")
      ("breaklines" "true")
      ("showstringspaces" "false"))))
+ '(org-latex-minted-langs
+   (quote
+    ((emacs-lisp "common-lisp")
+     (cc "c++")
+     (cperl "perl")
+     (shell-script "bash")
+     (caml "ocaml")
+     (conf "ini"))))
  '(org-latex-minted-options (quote (("frame" "single") ("breaklines" ""))))
  '(org-latex-pdf-process (quote ("latexmk -gg -pdfdvi  %f")))
  '(org-link-file-path-type (quote relative))
