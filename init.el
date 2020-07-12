@@ -1366,6 +1366,7 @@ See `org-capture-templates' for more information."
 
 (use-package hydra)
 (use-package projectile)
+(use-package projectile-ripgrep)
 
 
 ;; ;;git clone git@github.com:rswarbrick/picasm.git ~/.emacs.d/lisp/picasm
