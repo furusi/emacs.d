@@ -104,6 +104,7 @@
  '(org-export-backends (quote (ascii html icalendar latex md odt taskjuggler)))
  '(org-journal-date-format "%A, %d %B %Y")
  '(org-journal-dir "/Users/furusho/Dropbox/org/journal")
+ '(org-latex-compiler "xelatex")
  '(org-latex-default-class "bxjsarticle")
  '(org-latex-listings (quote minted))
  '(org-latex-listings-options
