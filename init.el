@@ -1139,7 +1139,7 @@ See `org-capture-templates' for more information."
 (use-package org-noter
   :after (org))
 (use-package org-noter-pdftools
-  :straight nil
+  :straight (initchart :type git :host github :repo "fuxialexander/org-pdftools")
   :after (org-noter))
 
 
