@@ -463,7 +463,7 @@
   ;; Wroteのメッセージを抑制
   (setq auto-save-buffers-enhanced-quiet-save-p t)
   ;; tramp mode時の自動保存を抑制
-  (setq auto-save-buffers-enhanced-exclude-regexps '("^/ssh:" "/sudo:" "/multi:")))
+  (setq auto-save-buffers-enhanced-exclude-regexps '("^/ssh:" "^/scp:" "/sudo:" "/multi:")))
 
 ;; helm
 (use-package helm-config
