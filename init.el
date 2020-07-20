@@ -630,7 +630,8 @@
          (concat org-directory "inbox.org")
          (concat org-directory "productivity.org")
          (concat org-directory "org-ical.org")
-         (concat org-directory "notes/")))
+         (concat org-directory "notes/")
+         (concat org-directory "googlecalendar/")))
   (setq org-refile-targets
         '((org-agenda-files :maxlevel . 2)))
   (setq org-tag-alist
@@ -1509,6 +1510,10 @@ See `org-capture-templates' for more information."
   (setq pdf-view-resize-factor 1.1))
 (use-package org-re-reveal
   :after org)
+(use-package org-gcal
+  :after org
+  :config
+  (load "~/Dropbox/org/googlecalendar/org-gcal-config.el"))
 (use-package flycheck
   :init (global-flycheck-mode))
 
