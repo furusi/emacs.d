@@ -1365,7 +1365,7 @@ See `org-capture-templates' for more information."
   :after
   (:all lsp-mode lsp-ui company yasnippet)
   :config
-  (push 'company-lsp company-backends))
+  (push '(company-lsp company-dabbrev-code) company-backends))
 
 (use-package lsp-treemacs
   :commands lsp-treemacs-errors-list)
