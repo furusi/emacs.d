@@ -42,9 +42,6 @@
  '(ace-isearch-use-jump nil)
  '(backup-directory-alist (quote ((".*" . "~/.ehist"))))
  '(comment-style (quote multi-line))
- '(company-global-modes
-   (quote
-    (not org-mode magit-mode custom-mode magit-status-mode magit-revision-mode magit-diff-mode)))
  '(company-idle-delay 0.2)
  '(company-lsp-async t)
  '(company-lsp-cache-candidates nil)
@@ -92,7 +89,6 @@
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(elpy-rpc-python-command "python3")
  '(eval-expression-print-length nil)
- '(global-company-mode t)
  '(helm-candidate-number-limit 300)
  '(helm-completion-style (quote emacs))
  '(indent-tabs-mode nil)
@@ -214,7 +210,6 @@
  '(org-table ((t (:foreground "cornflower blue")))))
 
 (use-package initchart
-  :disabled t
   :straight (initchart :type git :host github :repo "yuttie/initchart")
   :config
   (initchart-record-execution-time-of load file)
@@ -239,6 +234,7 @@
 (use-package exec-path-from-shell
   :config
   (setq exec-path-from-shell-check-startup-files nil)
+  (add-to-list 'exec-path-from-shell-variables "PYTHONPATH")
   (exec-path-from-shell-initialize))
 
 (use-package use-package-ensure-system-package)
@@ -665,7 +661,7 @@
           ("m"
            "みんなで会議"
            entry
-           (file+datetree (concat org-directory "minutes.org"))
+           (file+olp+datetree (concat org-directory "minutes.org") "会議")
            "* %T %?"
            :empty-lines 1
            :jump-to-captured 1)
@@ -1340,8 +1336,21 @@ See `org-capture-templates' for more information."
 
 (use-package lsp-python-ms
   :hook (python-mode . (lambda ()
-                          (require 'lsp-python-ms)
-                          (lsp-deferred))))  ; or lsp
+                         (require 'lsp-python-ms)
+                         (when (file-exists-p
+                                (concat (projectile-project-root buffer-file-name) ".venv/"))
+                           (setq lsp-python-ms-extra-paths
+                                 (format
+                                  "%s/site-packages"
+                                  (car(last
+                                    (directory-files
+                                     (concat
+                                      ;; (projectile-project-root buffer-file-name)
+                                      (projectile-project-root "~/git/gpslogger/myfolium.py")
+                                      ".venv/lib/")
+                                     t)))))
+                           (message "lsp-python-ms-extra-paths `%s'" lsp-python-ms-extra-paths))
+                         (lsp-deferred))))  ; or lsp
 (use-package pipenv
   :hook (python-mode . pipenv-mode)
   :init
@@ -1354,18 +1363,6 @@ See `org-capture-templates' for more information."
   :hook (lsp-mode . lsp-ui-mode)
   :commands lsp-ui-mode
   :after lsp-mode)
-
-(use-package company-lsp
-  :commands company-lsp
-  :custom
-  (company-lsp-cache-candidates nil)
-  (company-lsp-async t)
-  (company-lsp-enable-recompletion t)
-  (company-lsp-enable-snippet t)
-  :after
-  (:all lsp-mode lsp-ui company yasnippet)
-  :config
-  (push '(company-lsp company-dabbrev-code) company-backends))
 
 (use-package lsp-treemacs
   :commands lsp-treemacs-errors-list)
@@ -1387,7 +1384,9 @@ See `org-capture-templates' for more information."
          (java-mode . lsp-java-lens-mode)))
 
 (use-package hydra)
-(use-package projectile)
+(use-package projectile
+  :config
+  (add-to-list 'projectile-project-root-files ".Pipfile"))
 (use-package projectile-ripgrep)
 
 
