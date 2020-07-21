@@ -103,7 +103,6 @@
  '(org-babel-load-languages (quote ((emacs-lisp . t) (C . t) (dot . t) (java . t))))
  '(org-export-backends (quote (ascii html icalendar latex md odt taskjuggler)))
  '(org-journal-date-format "%A, %d %B %Y")
- '(org-journal-dir "/Users/furusho/Dropbox/org/journal")
  '(org-latex-compiler "xelatex")
  '(org-latex-default-class "bxjsarticle")
  '(org-latex-listings (quote minted))
@@ -1140,11 +1139,20 @@ See `org-capture-templates' for more information."
 (use-package org-noter
   :after (org))
 (use-package org-noter-pdftools
-  :straight (initchart :type git :host github :repo "fuxialexander/org-pdftools")
+  :straight (org-noter-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
   :after (org-noter))
 
-
-
+(use-package org-roam
+  :straight (org-roam :type git :host github :repo "org-roam/org-roam")
+  :custom
+  (org-roam-directory "~/Dropbox/org/")
+  :bind (:map org-roam-mode-map
+              (("C-c n l" . org-roam)
+               ("C-c n f" . org-roam-find-file)
+               ("C-c n g" . org-roam-graph-show))
+              :map org-mode-map
+              (("C-c n i" . org-roam-insert))
+              (("C-c n I" . org-roam-insert-immediate))))
 
 (use-package mu4e
   :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e"
