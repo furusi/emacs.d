@@ -168,6 +168,7 @@
  '(php-manual-url (quote ja))
  '(picasm-db-file "~/.emacs.d/lisp/picasm/picasm-db.el")
  '(plantuml-jar-path "/usr/local/opt/plantuml/libexec/plantuml.jar")
+ '(python-shell-interpreter "python3")
  '(recentf-auto-cleanup (quote never))
  '(recentf-exclude
    (quote
@@ -210,6 +211,7 @@
  '(org-table ((t (:foreground "cornflower blue")))))
 
 (use-package initchart
+  :disabled t
   :straight (initchart :type git :host github :repo "yuttie/initchart")
   :config
   (initchart-record-execution-time-of load file)
@@ -1335,6 +1337,7 @@ See `org-capture-templates' for more information."
          ))
 
 (use-package lsp-python-ms
+  :init (setq lsp-python-ms-auto-install-server t)
   :hook (python-mode . (lambda ()
                          (require 'lsp-python-ms)
                          (when (file-exists-p
@@ -1345,8 +1348,7 @@ See `org-capture-templates' for more information."
                                   (car(last
                                     (directory-files
                                      (concat
-                                      ;; (projectile-project-root buffer-file-name)
-                                      (projectile-project-root "~/git/gpslogger/myfolium.py")
+                                      (projectile-project-root buffer-file-name)
                                       ".venv/lib/")
                                      t)))))
                            (message "lsp-python-ms-extra-paths `%s'" lsp-python-ms-extra-paths))
