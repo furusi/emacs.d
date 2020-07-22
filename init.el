@@ -313,7 +313,12 @@
 (use-package restart-emacs)
 
 (use-package sudo-edit)
-
+(use-package projectile
+  :config
+  (mapcar (lambda (e)
+            (add-to-list
+             'projectile-project-root-files-bottom-up e))
+          '(".Pipfile" "MANIFEST.MF")))
 
 
 ;; ddskk
@@ -1386,9 +1391,7 @@ See `org-capture-templates' for more information."
          (java-mode . lsp-java-lens-mode)))
 
 (use-package hydra)
-(use-package projectile
-  :config
-  (add-to-list 'projectile-project-root-files ".Pipfile"))
+
 (use-package projectile-ripgrep)
 
 
