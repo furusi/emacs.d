@@ -54,9 +54,6 @@
                                                                   (looking-at "\\*+ "))
                                                                 (lambda nil
                                                                   (looking-at "\\#\\+BEGIN_")))))
- '(context-skk-programming-mode
-   (quote
-    (ada-mode antlr-mode asm-mode autoconf-mode awk-mode c-mode objc-mode java-mode idl-mode pike-mode cperl-mode delphi-mode f90-mode fortran-mode icon-mode idlwave-mode inferior-lisp-mode lisp-mode m4-mode makefile-mode metafont-mode modula-2-mode octave-mode pascal-mode perl-mode prolog-mode ps-mode postscript-mode ruby-mode scheme-mode sh-mode simula-mode tcl-mode vhdl-mode emacs-lisp-mode python-mode)))
  '(custom-enabled-themes nil)
  '(dimmer-exclusion-regexp "^\\\\*helm\\\\|^ \\\\*Minibuf\\\\|^\\\\*Calendar\"")
  '(dimmer-fraction 0.3)
@@ -322,13 +319,13 @@
 
 
 ;; ddskk
-(use-package ddskk
+(use-package skk
   :straight (ddskk :type git :host github :repo "skk-dev/ddskk")
   :commands skk-mode
   :bind (("C-x C-j" . skk-mode)
          :map minibuffer-local-map
          ("C-j" . skk-kakutei))
-  :hook (skk-mode . (lambda () (require 'context-skk))) ;自動的に英字モードになる
+  :hook (skk-load . (lambda () (require 'context-skk))) ;自動的に英字モードになる
   :init
   (setq skk-large-jisyo "~/.emacs.d/skk-get-jisyo/SKK-JISYO.L")
   (setq skk-extra-jisyo-file-list
@@ -380,8 +377,11 @@
   ;; (add-to-list 'skk-search-prog-list
   ;; 	       '(skk-search-web 'skk-google-cgi-api-for-japanese-input)
   ;; 	       t))
-  :config
-  (setq skk-japanese-message-and-error nil))
+  (setq skk-auto-insert-paren t)
+  (add-to-list 'context-skk-programming-mode 'python-mode)
+  (setq context-skk-mode-off-message "[context-skk] 日本語入力 off")
+  (setq skk-auto-insert-paren t)
+  (context-skk-mode))
 
 
 (use-package eww
