@@ -379,6 +379,7 @@
   ;; 	       t))
   (setq skk-auto-insert-paren t)
   (add-to-list 'context-skk-programming-mode 'python-mode)
+  (add-to-list 'context-skk-programming-mode 'rustic-mode)
   (setq context-skk-mode-off-message "[context-skk] 日本語入力 off")
   (setq skk-auto-insert-paren t)
   (context-skk-mode))
@@ -1241,9 +1242,7 @@ See `org-capture-templates' for more information."
          (sh-mode           . company-mode)
          (shell-mode        . company-mode)
          (org-mode          . company-mode)
-         (lisp-mode         . company-mode)
-         (racer-mode        . company-mode)
-         (rust-mode         . company-mode))
+         (lisp-mode         . company-mode))
   :config
   (setq company-idle-delay 0) ; 遅延なしにすぐ表示
   (setq company-minimum-prefix-length 2)
@@ -1337,7 +1336,6 @@ See `org-capture-templates' for more information."
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :hook ((cc-mode     . lsp-deferred)
-         (rust-mode   . lsp-deferred)
          ;; (python-mode . lsp-deferred)
          ))
 
@@ -1367,6 +1365,15 @@ See `org-capture-templates' for more information."
 
 ;; optionally
 (use-package lsp-ui
+  :custom
+  (lsp-ui-doc-enable t)
+  (lsp-ui-doc-header t)
+  (lsp-ui-doc-include-signature t)
+  (lsp-ui-doc-position 'top) ;; top, bottom, or at-point
+  (lsp-ui-doc-max-width 150)
+  (lsp-ui-doc-max-height 30)
+  (lsp-ui-doc-use-childframe t)
+  (lsp-ui-doc-use-webkit t)
   :hook (lsp-mode . lsp-ui-mode)
   :commands lsp-ui-mode
   :after lsp-mode)
@@ -1399,20 +1406,9 @@ See `org-capture-templates' for more information."
 ;; (use-package picasm
 ;;   :load-path "~/.emacs.d/lisp/picasm/")
 
-(use-package rust-mode
-  :mode (("\\.rs\\'" . rust-mode))
-  :config
-  (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
-  (setq company-tooltip-align-annotations t))
 (use-package rustic
-  :disabled
-  :config
+  :init
   (setq rustic-lsp-server 'rust-analyzer))
-(use-package racer
-  :hook ((rust-mode  . racer-mode)
-         (racer-mode . eldoc-mode)))
-(use-package cargo
-  :hook (rust-mode . cargo-minor-mode))
 
 (use-package android-mode
   :disabled t)
