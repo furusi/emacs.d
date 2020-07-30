@@ -1341,6 +1341,7 @@ See `org-capture-templates' for more information."
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
+  :custom (lsp-prefer-capf t)
   :hook ((cc-mode     . lsp-deferred)
          ;; (python-mode . lsp-deferred)
          ))
@@ -1376,10 +1377,18 @@ See `org-capture-templates' for more information."
   (lsp-ui-doc-header t)
   (lsp-ui-doc-include-signature t)
   (lsp-ui-doc-position 'top) ;; top, bottom, or at-point
-  (lsp-ui-doc-max-width 150)
-  (lsp-ui-doc-max-height 30)
+  (lsp-ui-doc-max-width 60)
+  (lsp-ui-doc-max-height 20)
   (lsp-ui-doc-use-childframe t)
-  (lsp-ui-doc-use-webkit t)
+  (lsp-ui-doc-use-webkit nil)
+  
+  (lsp-ui-sideline-enable t)
+  (lsp-ui-sideline-ignore-duplicate t)
+  (lsp-ui-sideline-show-symbol t)
+  (lsp-ui-sideline-show-hover t)
+  (lsp-ui-sideline-show-diagnostics t)
+  (lsp-ui-sideline-show-code-actions t)
+  
   :hook (lsp-mode . lsp-ui-mode)
   :commands lsp-ui-mode
   :after lsp-mode)
@@ -1388,7 +1397,6 @@ See `org-capture-templates' for more information."
   :commands lsp-treemacs-errors-list)
 ;; optionally if you want to use debugger
 (use-package lsp-java
-  :after lsp-mode
   :hook (java-mode . lsp-deferred))
 (use-package dap-mode
   :after lsp-mode
@@ -1396,15 +1404,9 @@ See `org-capture-templates' for more information."
   (dap-mode 1)
   (dap-ui-mode 1))
 (use-package dap-java
-  :straight dap-mode
+  :straight lsp-java
   :after (lsp-java))
-(use-package lsp-java-boot
-  :straight nil
-  :hook ((lsp-mode . lsp-lens-mode)
-         (java-mode . lsp-java-lens-mode)))
-
 (use-package hydra)
-
 (use-package projectile-ripgrep)
 
 
