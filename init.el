@@ -1595,5 +1595,22 @@ See `org-capture-templates' for more information."
 
 (load-file (concat user-emacs-directory "lisp/window.el"))
 
+;; 読み込み専用で開く設定を持ったクラスを定義
+(dir-locals-set-class-variables
+ 'read-only
+ '((nil .((buffer-read-only . t)))))
+;; クラスをディレクトリに関連づける
+(dolist (dir(mapcar (lambda (str)
+                      (format
+                       "%spackages/%s/straight/repos/"
+                       user-emacs-directory
+                       str))
+                    (cddr
+                     (directory-files
+                      (concat
+                       user-emacs-directory
+                       "packages/")))))
+  (dir-locals-set-directory-class (file-truename dir) 'read-only))
+
 (provide 'init)
 ;;; init.el ends here
