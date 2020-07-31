@@ -1317,14 +1317,9 @@ See `org-capture-templates' for more information."
 (use-package ac-php
   :after php-mode)
 (use-package flycheck-phpstan
-  :config
-  (defun my-php-mode-hook ()
-    "My PHP-mode hook."
-    (require 'flycheck-phpstan)
-    (flycheck-mode t)
-    (flycheck-select-checker 'phpstan))
-
-  (add-hook 'php-mode-hook 'my-php-mode-hook))
+  :hook (php-mode . (lambda ()
+                      (require 'flycheck-phpstan)
+                      (flycheck-mode t))))
 (use-package company-php
   :after (:all company php-mode ac-php)
   :hook (php-mode . (lambda ()

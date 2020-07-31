@@ -84,7 +84,7 @@
  ("pdf-tools" . "0159cb1ab36f75879151e5ea24a6918ef58e50a3")
  ("persist" . "bbd57894134e06ec71251c1318055c0f8fd6e05b")
  ("pfuture" . "d7926de3ba0105a36cfd00811fd6278aea903eef")
- ("php-mode" . "547a31d71991e7bb1d9e5d1ce45b6be6e5740058")
+ ("php-mode" . "3a91ac35d34b6d7ee690886b449e144b53675fea")
  ("phpstan.el" . "2f715a186c5fe6576de83d4c0b64a37e2bfce101")
  ("pipenv.el" . "b730bb509e8b60af9f5ab1f1e6c3458d1d95d789")
  ("pkg-info" . "76ba7415480687d05a4353b27fea2ae02b8d9d61")
