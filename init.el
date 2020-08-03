@@ -332,6 +332,7 @@
          :map minibuffer-local-map
          ("C-j" . skk-kakutei))
   :hook (skk-load . (lambda () (require 'context-skk))) ;自動的に英字モードになる
+  :custom (skk-share-private-jisyo  t)
   :init
   (setq skk-large-jisyo "~/.emacs.d/skk-get-jisyo/SKK-JISYO.L")
   (setq skk-extra-jisyo-file-list
