@@ -799,7 +799,8 @@
   :commands org-journal-new-entry
   :custom
   (org-journal-dir (concat org-directory "journal"))
-  (org-journal-date-format "%A, %d %B %Y"))
+  (org-journal-date-format "%A, %d %B %Y")
+  (org-journal-file-header "# -*- mode: org-journal; -*-"))
 
 (use-package ox-rst
   :after (org))
