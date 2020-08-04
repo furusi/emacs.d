@@ -316,12 +316,7 @@
 (use-package restart-emacs)
 
 (use-package sudo-edit)
-(use-package projectile
-  :config
-  (mapcar (lambda (e)
-            (add-to-list
-             'projectile-project-root-files-bottom-up e))
-          '(".Pipfile" "MANIFEST.MF")))
+(use-package projectile)
 
 
 ;; ddskk
@@ -1339,7 +1334,7 @@ See `org-capture-templates' for more information."
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
-  :custom (lsp-prefer-capf t)
+  :custom ((lsp-prefer-capf t))
   :hook ((cc-mode     . lsp-deferred)
          ;; (python-mode . lsp-deferred)
          ))
