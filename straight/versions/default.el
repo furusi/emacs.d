@@ -36,7 +36,7 @@
  ("f.el" . "1814209e2ff43cf2e6d38c4cd476218915f550fb")
  ("flycheck" . "19f351f4b13be82ddc37f842a49d02d14ea789fe")
  ("gntp.el" . "767571135e2c0985944017dc59b0be79af222ef5")
- ("gnu-elpa-mirror" . "dbf94d86c7363be032e127a90db3100876a9f847")
+ ("gnu-elpa-mirror" . "0e7ddc6ebc6f80a81bb76aae0d517ed519cd2772")
  ("graphviz-dot-mode" . "3642a0a5f41a80c8ecef7c6143d514200b80e194")
  ("grip-mode" . "9615c4774727a719d38313a679d70f2a2c6aca68")
  ("helm" . "ac5eb045e59ad0f9bc4c0c8235eb5c30910c1500")
@@ -49,7 +49,6 @@
  ("json-snatcher" . "c4cecc0a5051bd364373aa499c47a1bb7a5ac51c")
  ("keyfreq" . "e5fe9d585ce882f1ba9afa5d894eaa82c79be4f4")
  ("kotlin-mode" . "ab610996820b5cbdb032edbf8747661131603ab8")
- ("let-alist" . "ef3c02fa292b6e32769945bbbfb7f2e5ac574b64")
  ("log4e" . "7df0c1ff4656f8f993b87064b1567618eadb5546")
  ("lsp-java" . "fbd04cff52521f393408a219125d3a0727705045")
  ("lsp-mode" . "0131f1f4c9e7823955c3b1f80881fcd7c2eaa551")
@@ -71,8 +70,6 @@
  ("org-download" . "b96fd7ba02cbdae95cc37970ebcfae8afa8b25d2")
  ("org-gcal.el" . "744505832b34e07b44a5d97d8720b2d7492d7fc9")
  ("org-journal" . "664c08e12cde19ce7dca645ba9accecda7266c32")
- ("org-noter" . "9ead81d42dd4dd5074782d239b2efddf9b8b7b3d")
- ("org-pdftools" . "e91718176c77315a42660067210e934c8305af86")
  ("org-re-reveal" . "a9e9d4ef88417b3af7741a8d8f444ece820e7a3b")
  ("org-roam" . "30fab7bcc4be858b12b9a31a8c66ab1b1aadb6d6")
  ("org-seek.el" . "1f51e6634e3b9a6a29d335d0d14370a6ffef2265")
@@ -120,4 +117,4 @@
  ("yasnippet" . "3bf9a3b1af37174a004798b7195826af0123fa6a")
  ("yasnippet-snippets" . "612be838d2e50c3601c349d7842702d95e17682a")
  ("yatex" . "9566a091ef4c598a85fb67404e2e30c042d2b0f7"))
-:alpha
+:beta
