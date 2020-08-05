@@ -28,7 +28,7 @@
 
 (show-paren-mode t)
 (tool-bar-mode -1)
-;; (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
 ;; Language and Character Code
 (set-language-environment 'Japanese)
@@ -124,6 +124,32 @@
  '(org-latex-minted-options (quote (("frame" "single") ("breaklines" ""))))
  '(org-link-file-path-type (quote relative))
  '(org-list-allow-alphabetical t)
+ '(org-preview-latex-process-alist
+   (quote
+    ((dvipng :programs
+             ("latex" "dvipng")
+             :description "dvi > png" :message "you need to install the programs: latex and dvipng." :image-input-type "dvi" :image-output-type "png" :image-size-adjust
+             (1.0 . 1.0)
+             :latex-compiler
+             ("latex -interaction nonstopmode -output-directory %o %f")
+             :image-converter
+             ("dvipng -D %D -T tight -o %O %f"))
+     (dvisvgm :programs
+              ("latex" "dvisvgm")
+              :description "dvi > svg" :message "you need to install the programs: latex and dvisvgm." :use-xcolor t :image-input-type "xdv" :image-output-type "svg" :image-size-adjust
+              (1.7 . 1.5)
+              :latex-compiler
+              ("xelatex -no-pdf -interaction nonstopmode -output-directory %o %f")
+              :image-converter
+              ("dvisvgm %f -n -b min -c %S -o %O"))
+     (imagemagick :programs
+                  ("latex" "convert")
+                  :description "pdf > png" :message "you need to install the programs: latex and imagemagick." :image-input-type "pdf" :image-output-type "png" :image-size-adjust
+                  (1.0 . 1.0)
+                  :latex-compiler
+                  ("pdflatex -interaction nonstopmode -output-directory %o %f")
+                  :image-converter
+                  ("convert -density %D -trim -antialias %f -quality 100 %O")))))
  '(org-return-follows-link t)
  '(org-rst-headline-underline-characters (quote (45 126 94 58 39 32 95)))
  '(org-src-lang-modes
@@ -601,7 +627,11 @@
          ("\C-cb" . org-iswitchb)
          :map org-mode-map
          ("C-c C-\'" . org-insert-structure-template))
+  :custom
+  ((org-preview-latex-default-process 'dvisvgm))
   :config
+  (setq org-format-latex-options
+        (plist-put org-format-latex-options :scale 2.0))
   ;; org-modeの固定幅フォントを設定
   (let ((fontset (cond
                  ((eq window-system 'ns) "Noto Sans Mono CJK JP")
@@ -660,7 +690,7 @@
            "ノート(本文から書く)"
            entry
            (file+headline, (concat org-directory "notes.org") "MEMO")
-           "* %U \n\n%?\n")
+           "* %U \n%?")
           ("N"
            "ノート(見出しから書く)"
            entry
@@ -1132,23 +1162,23 @@ See `org-capture-templates' for more information."
 ;;  :ensure-system-package (rg . ripgrep)
   :config
   (setq org-seek-search-tool 'ripgrep))
-(use-package org-pdftools
-  :after org
-  :straight (org-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
-  :config (setq org-pdftools-root-dir (concat (getenv "HOME") "/GoogleDrive/Books"))
-  (with-eval-after-load 'org
-    (org-link-set-parameters "pdftools"
-                             :follow #'org-pdftools-open
-                             :complete #'org-pdftools-complete-link
-                             :store #'org-pdftools-store-link
-                             :export #'org-pdftools-export)
-    (add-hook 'org-store-link-functions 'org-pdftools-store-link)))
+;; (use-package org-pdftools
+;;   :after org
+;;   :straight (org-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
+;;   :config (setq org-pdftools-root-dir (concat (getenv "HOME") "/GoogleDrive/Books"))
+;;   (with-eval-after-load 'org
+;;     (org-link-set-parameters "pdftools"
+;;                              :follow #'org-pdftools-open
+;;                              :complete #'org-pdftools-complete-link
+;;                              :store #'org-pdftools-store-link
+;;                              :export #'org-pdftools-export)
+;;     (add-hook 'org-store-link-functions 'org-pdftools-store-link)))
 
-(use-package org-noter
-  :after (org))
-(use-package org-noter-pdftools
-  :straight (org-noter-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
-  :after (org-noter))
+;; (use-package org-noter
+;;   :after (org))
+;; (use-package org-noter-pdftools
+;;   :straight (org-noter-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
+;;   :after (org-noter))
 
 (use-package org-roam
   :straight (org-roam :type git :host github :repo "org-roam/org-roam")
