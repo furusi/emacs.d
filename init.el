@@ -326,12 +326,14 @@
          :map minibuffer-local-map
          ("C-j" . skk-kakutei))
   :hook (skk-load . (lambda () (require 'context-skk))) ;自動的に英字モードになる
-  :custom (skk-share-private-jisyo  t)
+  :custom ((skk-share-private-jisyo  t)
+           (skk-get-jisyo-directory
+            (format "%sskk-get-jisyo/" user-emacs-directory)))
   :init
-  (setq skk-large-jisyo (format "%sskk-get-jisyo/SKK-JISYO.L" user-emacs-directory))
+  (setq skk-large-jisyo (format "%sSKK-JISYO.L" skk-get-jisyo-directory))
   (setq skk-extra-jisyo-file-list
         (mapcar (lambda (x)
-                  (format "%sskk-get-jisyo/%s" user-emacs-directory x))
+                  (format "%s%s" skk-get-jisyo-directory x))
                 '("SKK-JISYO.lisp" "SKK-JISYO.station"
                      "SKK-JISYO.assoc" "SKK-JISYO.edict"
                      "SKK-JISYO.law" "SKK-JISYO.jinmei"
