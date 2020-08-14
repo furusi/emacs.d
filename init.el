@@ -355,20 +355,17 @@
   :hook (skk-load . (lambda () (require 'context-skk))) ;自動的に英字モードになる
   :custom (skk-share-private-jisyo  t)
   :init
-  (setq skk-large-jisyo "~/.emacs.d/skk-get-jisyo/SKK-JISYO.L")
+  (setq skk-large-jisyo (format "%sskk-get-jisyo/SKK-JISYO.L" user-emacs-directory))
   (setq skk-extra-jisyo-file-list
-        (list "~/.emacs.d/skk-get-jisyo/SKK-JISYO.lisp"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.station"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.assoc"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.edict"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.law"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.jinmei"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.fullname"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.geo"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.itaiji"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.zipcode"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.okinawa"
-              "~/.emacs.d/skk-get-jisyo/SKK-JISYO.propernoun"))
+        (mapcar (lambda (x)
+                  (format "%sskk-get-jisyo/%s" user-emacs-directory x))
+                '("SKK-JISYO.lisp" "SKK-JISYO.station"
+                     "SKK-JISYO.assoc" "SKK-JISYO.edict"
+                     "SKK-JISYO.law" "SKK-JISYO.jinmei"
+                     "SKK-JISYO.fullname" "SKK-JISYO.geo"
+                     "SKK-JISYO.itaiji" "SKK-JISYO.zipcode"
+                     "SKK-JISYO.okinawa" "SKK-JISYO.propernoun")))
+
   ;; isearch
   (add-hook 'isearch-mode-hook 'skk-isearch-mode-setup) ; isearch で skk のセットアップ
   (add-hook 'isearch-mode-end-hook 'skk-isearch-mode-cleanup) ; isearch で skk のクリーンアップ
