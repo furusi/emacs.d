@@ -1348,14 +1348,15 @@ See `org-capture-templates' for more information."
                          (when (file-exists-p
                                 (concat (projectile-project-root buffer-file-name) ".venv/"))
                            (setq lsp-python-ms-extra-paths
-                                 (format
-                                  "%s/site-packages"
-                                  (car(last
-                                    (directory-files
-                                     (concat
-                                      (projectile-project-root buffer-file-name)
-                                      ".venv/lib/")
-                                     t)))))
+                                 (vector
+                                  (format
+                                   "%s/site-packages"
+                                   (car
+                                    (last (directory-files
+                                           (concat
+                                            (projectile-project-root buffer-file-name)
+                                            ".venv/lib/")
+                                           t))))))
                            (message "lsp-python-ms-extra-paths `%s'" lsp-python-ms-extra-paths))
                          (lsp-deferred))))  ; or lsp
 (use-package pipenv
