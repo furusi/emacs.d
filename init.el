@@ -1509,6 +1509,7 @@ See `org-capture-templates' for more information."
         (set-face-attribute 'markdown-table-face nil
                             :family "IPAGothic")))
 (use-package docker)
+(use-package docker-compose-mode)
 (use-package review-mode
   :mode (("\\.re\\'" . review-mode)))
 (use-package csv-mode)
