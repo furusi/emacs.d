@@ -717,6 +717,7 @@
                                (ruby       . t)
                                (plantuml   . t)
                                (java       . t)
+                               (gnuplot    . t)
                                (perl       . t)
                                (dot        . t)))
 
@@ -1539,6 +1540,7 @@ See `org-capture-templates' for more information."
   (load "~/Dropbox/org/googlecalendar/org-gcal-config.el"))
 (use-package flycheck
   :init (global-flycheck-mode))
+(use-package gnuplot)
 
 ;;; GDB 関連
 ;;; 有用なバッファを開くモード
