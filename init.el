@@ -837,7 +837,7 @@
   (setq org-latex-default-class "bxjsarticle")
   ;; (setq org-latex-pdf-process '("latexmk -gg -pdfdvi  %f"))
   ;; (setq org-latex-pdf-process '("latexmk %f"))
-  (setq org-latex-pdf-process '("latexmk -gg -pdfxe  %f"))
+  (setq org-latex-pdf-process '("latexmk -gg -pdflua  %f"))
   (add-to-list 'org-latex-packages-alist '("" "minted"))
   (setq org-highlight-latex-and-related
         '(latex script entities))
@@ -849,7 +849,17 @@
   (when (equal system-type 'gnu/linux)
     (setq org-file-apps
           '(("pdf" . "evince %s"))))
-
+  (add-to-list 'org-latex-classes
+               '("lualatex-yukyokasho"
+                 "\\documentclass{jlreq}
+\\usepackage{luatexja} % ltjclasses, ltjsclasses を使うときはこの行不要
+\\usepackage{luatexja-fontspec}
+\\setmainjfont{YuKyokasho Yoko Medium}"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
   (add-to-list 'org-latex-classes
                '("bxjsarticle"
                  ;; "\\documentclass[twocolumn,autodetect-engine,dvi=dvipdfmx,10pt,a4paper,ja=standard]{bxjsarticle}
