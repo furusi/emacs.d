@@ -540,14 +540,16 @@
 
 (use-package slime
   :straight slime-company
-;;  :ensure-system-package (sbcl clisp)
+  ;;  :ensure-system-package (sbcl clisp)
+  :if (file-exists-p "~/.roswell/helper.el")
   :hook ((lisp-mode . slime-mode)
          (slime-repl-mode
           . (lambda () (add-to-list
                         'company-backends
                         '(company-slime company-dabbrev-code)))))
+  :init
+  (load (expand-file-name "~/.roswell/helper.el"))
   :config
-  (setq inferior-lisp-program "clisp")
   ;; (slime-setup '(slime-fancy slime-company))
   (setq slime-net-coding-system 'utf-8-unix)
   (slime-setup '(slime-fancy slime-company slime-indentation))
@@ -561,7 +563,15 @@
                   origfun))
            arglist))
   ;; (advice-add 'slime-space :around #'slime-space\\skk-insert)
-  (advice-add 'slime-autodoc-space :around #'slime-space\\skk-insert))
+  (advice-add 'slime-autodoc-space :around #'slime-space\\skk-insert)
+  ;; (let ((path "/usr/local/share/doc/hyperspec/HyperSpec/"))
+  ;;   (when (file-exists-p path)
+  ;;   (setq common-lisp-hyperspec-root  path)
+  ;;   (setq common-lisp-hyperspec-symbol-table
+  ;;         (concat common-lisp-hyperspec-root "Data/Map_Sym.txt")
+  ;;         common-lisp-hyperspec-issuex-table
+  ;;         (concat common-lisp-hyperspec-root "Data/Map_IssX.txt"))))
+  (setq browse-url-browser-function 'eww-browse-url))
 
 (use-package web-mode
   :mode (("\\.phtml\\'"     . web-mode)
