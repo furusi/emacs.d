@@ -630,8 +630,8 @@
 
   (setq org-agenda-files
         (list
+         (concat org-directory "agenda/")
          (concat org-directory "task.org")
-         (concat org-directory "notes.org")
          (concat org-directory "habit.org")
          (concat org-directory "event.org")
          (concat org-directory "inbox.org")
@@ -737,12 +737,19 @@
           (mathml nil)))
   (setf org-html-mathjax-template
         "<script type=\"text/javascript\" src=\"%PATH\"></script>")
-
-
+  
+  (defun org-todo-list-current-file (&optional arg)
+  "Like `org-todo-list', but using only the current buffer's file."
+  (interactive "P")
+  (let ((org-agenda-files (list (buffer-file-name (current-buffer)))))
+    (if (null (car org-agenda-files))
+        (error "%s is not visiting a file" (buffer-name (current-buffer)))
+      (org-todo-list arg))))
 
   (defun my-org-mode-hook ()
     (add-hook 'completion-at-point-functions
-              'pcomplete-completions-at-point nil t))
+              'pcomplete-completions-at-point nil t)
+    (face-remap-add-relative 'default :height 173))
   (org-babel-do-load-languages
    'org-babel-load-languages org-babel-load-languages)
   (add-hook 'org-mode-hook #'my-org-mode-hook)
