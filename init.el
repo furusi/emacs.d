@@ -1144,23 +1144,23 @@ See `org-capture-templates' for more information."
 ;;  :ensure-system-package (rg . ripgrep)
   :config
   (setq org-seek-search-tool 'ripgrep))
-;; (use-package org-pdftools
-;;   :after org
-;;   :straight (org-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
-;;   :config (setq org-pdftools-root-dir (concat (getenv "HOME") "/GoogleDrive/Books"))
-;;   (with-eval-after-load 'org
-;;     (org-link-set-parameters "pdftools"
-;;                              :follow #'org-pdftools-open
-;;                              :complete #'org-pdftools-complete-link
-;;                              :store #'org-pdftools-store-link
-;;                              :export #'org-pdftools-export)
-;;     (add-hook 'org-store-link-functions 'org-pdftools-store-link)))
+(use-package org-pdftools
+  :after org
+  :straight (org-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
+  :config (setq org-pdftools-root-dir (concat (getenv "HOME") "/GoogleDrive/Books"))
+  (with-eval-after-load 'org
+    (org-link-set-parameters "pdftools"
+                             :follow #'org-pdftools-open
+                             :complete #'org-pdftools-complete-link
+                             :store #'org-pdftools-store-link
+                             :export #'org-pdftools-export)
+    (add-hook 'org-store-link-functions 'org-pdftools-store-link)))
 
-;; (use-package org-noter
-;;   :after (org))
-;; (use-package org-noter-pdftools
-;;   :straight (org-noter-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
-;;   :after (org-noter))
+(use-package org-noter
+  :after (org))
+(use-package org-noter-pdftools
+  :straight (org-noter-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
+  :after (org-noter))
 
 (use-package org-roam
   :straight (org-roam :type git :host github :repo "org-roam/org-roam")
