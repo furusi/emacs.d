@@ -84,11 +84,13 @@
      ("breaklines" "true")
      ("showstringspaces" "false")))
  '(org-latex-minted-langs
-   '((emacs-lisp "common-lisp")
+   '((rust "rust")
+     (emacs-lisp "common-lisp")
      (cc "c++")
      (cperl "perl")
      (shell-script "bash")
      (caml "ocaml")
+     (bash "bash")
      (conf "ini")))
  '(org-latex-minted-options '(("frame" "single") ("breaklines" "")))
  '(org-link-file-path-type 'relative)
@@ -856,6 +858,16 @@
   (when (equal system-type 'gnu/linux)
     (setq org-file-apps
           '(("pdf" . "evince %s"))))
+  (add-to-list 'org-latex-classes
+               '("lualatex-jlreq"
+                 "\\documentclass[]{jlreq}
+\\usepackage{luatexja} % ltjclasses, ltjsclasses を使うときはこの行不要
+\\usepackage{luatexja-fontspec}"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
   (add-to-list 'org-latex-classes
                '("lualatex-yukyokasho"
                  "\\documentclass[]{jlreq}
