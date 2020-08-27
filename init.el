@@ -708,6 +708,8 @@
   ;; コードを評価するとき尋ねない
   (setq org-confirm-babel-evaluate nil)
 
+  (add-to-list 'org-babel-tangle-lang-exts
+               '("C" . "c"))
   ;; 有効にする言語 デフォルトでは elisp のみ
   (org-babel-do-load-languages
    'org-babel-load-languages '((C          . t)
@@ -1121,8 +1123,6 @@
   ;; ignoreタグで見出しを非表示にしつつ内容を表示する
   (ox-extras-activate '(latex-header-blocks ignore-headlines)))
 (use-package ob-kotlin
-  :after (org))
-(use-package ob-rust
   :after (org))
 (use-package ox-asciidoc
   :after (org))
