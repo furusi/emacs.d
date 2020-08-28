@@ -1440,6 +1440,7 @@ See `org-capture-templates' for more information."
 ;;   :load-path "~/.emacs.d/lisp/picasm/")
 
 (use-package rustic
+  :hook (rust-mode . rustic-mode)
   :init
   (setq rustic-lsp-server 'rust-analyzer))
 
