@@ -67,6 +67,7 @@
  '(helm-completion-style 'emacs)
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
+ '(leaf-alias-keyword-alist '((:ensure . :straight)))
  '(lsp-python-ms-python-executable-cmd "python3")
  '(magit-display-buffer-function 'magit-display-buffer-fullframe-status-v1)
  '(org-babel-java-compiler "javac -encoding UTF-8")
@@ -159,6 +160,10 @@
      ("v" . "verse")))
  '(org-taskjuggler-process-command
    "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")
+ '(package-archives
+   '(("org" . "https://orgmode.org/elpa/")
+     ("melpa" . "https://melpa.org/packages/")
+     ("gnu" . "https://elpa.gnu.org/packages/")))
  '(package-selected-packages
    '(easy-hugo lsp-mode use-package-ensure-system-package spinner company yasnippet all-the-icons ob-kotlin ace-jump-mode ace-isearch helm-swoop helm-migemo migemo gnu-elpa-keyring-update rustic review-mode pandoc ox-epub ob-browser htmlize adoc-mode ox-asciidoc ox-hugo org company-arduino arduino-mode pandoc-mode lorem-ipsum undo-propose 0x0 all-the-icons-ivy groovy-mode ob-rust multi-term back-button jedi jedi-core lsp-java-treemacs dap-java flycheck-rust cargo racer howm counsel-tramp dropbox editorconfig editorconfig-generate ox-pandoc c-eldoc ggtags graphviz-dot-mode kotlin-mode php-mode visual-regexp-steroids omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq helm gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced))
  '(php-manual-url 'ja)
@@ -303,10 +308,10 @@
 (setq use-default-font-for-symbols nil)
 
 
-(use-package restart-emacs)
+(leaf restart-emacs :straight t)
 
-(use-package sudo-edit)
-(use-package projectile)
+(leaf sudo-edit :straight t)
+(leaf projectile :straight t)
 
 
 ;; ddskk
@@ -317,7 +322,7 @@
          :map minibuffer-local-map
          ("C-j" . skk-kakutei))
   :hook (skk-load . (lambda () (require 'context-skk))) ;自動的に英字モードになる
-  :custom ((skk-share-private-jisyo  t)
+  :custom ((skk-share-private-jisyo t)
            (skk-get-jisyo-directory
             (format "%sskk-get-jisyo/" user-emacs-directory)))
   :init
@@ -437,14 +442,15 @@
 ;; SLIMEのロード
 
 
-(use-package undohist
+(leaf undohist :straight t
+  :require t
   :config
   (undohist-initialize)
   ;;; 永続化を無視するファイル名の正規表現
   (setq undohist-ignored-files
         '("/tmp/" "COMMIT_EDITMSG")))
 
-(use-package undo-tree
+(leaf undo-tree :straight t
   :init
   (global-undo-tree-mode t))
 
@@ -1439,15 +1445,15 @@ See `org-capture-templates' for more information."
 ;; (use-package picasm
 ;;   :load-path "~/.emacs.d/lisp/picasm/")
 
-(use-package rustic
-  :hook (rust-mode . rustic-mode)
+(leaf rustic :straight t
+  :hook (rust-mode-hook . rustic-mode)
   :init
   (setq rustic-lsp-server 'rust-analyzer))
 
 (use-package android-mode
   :disabled t)
 
-(use-package ccls
+(leaf ccls :straight t
   :commands ccls
 ;;  :ensure-system-package ccls
   :hook ((c-mode c++-mode objc-mode) .
@@ -1499,10 +1505,10 @@ See `org-capture-templates' for more information."
     (setq plantuml-jar-path
           "/usr/local/opt/plantuml/libexec/plantuml.jar")))
 
-(use-package htmlize)
-(use-package adoc-mode)
-(use-package pandoc)
-(use-package graphviz-dot-mode)
+(leaf htmlize :straight t)
+(leaf adoc-mode :straight t)
+(leaf pandoc :straight t)
+(leaf graphviz-dot-mode :straight t)
 (use-package editorconfig
   :config
   (editorconfig-mode 1))
