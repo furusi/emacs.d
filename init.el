@@ -1625,7 +1625,12 @@ See `org-capture-templates' for more information."
 (setq ispell-really-hunspell t)
 
 
-(load-file (concat user-emacs-directory "lisp/window.el"))
+
+(dolist (file (cddr (directory-files (concat
+                                      user-emacs-directory
+                                      "lisp/"))))
+  (load-file (concat user-emacs-directory "lisp/" file)))
+
 
 ;; 読み込み専用で開く設定を持ったクラスを定義
 (dir-locals-set-class-variables
