@@ -183,13 +183,6 @@
      (xml "rst2xml.py" ".xml" nil)
      (pdf "rst2pdf" ".pdf" "-s ja")
      (s5 "rst2s5.py" ".html" nil)))
- '(skk-isearch-mode-string-alist
-   '((hiragana . "")
-     (katakana . "[カ] ")
-     (jisx0208-latin . "[英] ")
-     (latin . "")
-     (abbrev . "[aあ] ")
-     (nil . "")))
  '(slime-auto-start 'ask)
  '(slime-company-completion 'fuzzy)
  '(slime-complete-symbol*-fancy t)
@@ -493,7 +486,20 @@
 
 (use-package helm-rg
 ;;  :ensure-system-package (rg . ripgrep)
-)
+  )
+(leaf rg
+  :bind (("C-c s" . rg-menu))
+  :straight t
+  :require t)
+(leaf helm-make
+  :straight t)
+(leaf highlight-symbol
+  :straight t
+  :require t)
+(leaf expand-region
+  :straight t
+  :require t
+  :bind (("C-," . er/expand-region)))
 (use-package ace-jump-mode)
 (use-package ace-isearch
   :disabled t
@@ -634,8 +640,7 @@
     (setq org-directory (expand-file-name "~/Dropbox/org/")))
   
   (when (not (file-exists-p org-directory))
-    (setq org-directory (expand-file-name "~/org/"))
-    (make-directory (concat org-directory "mobile/") t))
+    (setq org-directory (expand-file-name "~/org/")))
 
   (setq org-agenda-files
         (list
@@ -788,20 +793,7 @@
          :publishing-function org-publish-attachment
          :recursive t))))
 
-(use-package org-mobile-sync
-  :disabled t
-  :after (org)
-  :config
-  (org-mobile-sync-mode 1)
-  (when (file-exists-p org-directory)
-    (setq org-mobile-directory (concat org-directory "mobile/"))
-    (setq org-mobile-files
-        (list
-         (concat org-directory "task.org")
-         (concat org-directory "notes.org")
-         (concat org-directory "iphone.org")
-         (concat org-directory "event.org")))
-    (setq org-mobile-inbox-for-pull (concat org-directory "iphone.org"))))
+
 (use-package org-mu4e
   :disabled t
   :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e"
@@ -1448,6 +1440,7 @@ See `org-capture-templates' for more information."
 
 (leaf rustic :straight t
   :hook (rust-mode-hook . rustic-mode)
+  :require t
   :init
   (setq rustic-lsp-server 'rust-analyzer))
 
@@ -1477,8 +1470,8 @@ See `org-capture-templates' for more information."
 
 (leaf smartparens-config
   :straight smartparens
-  :after
-  (smartparens-global-mode))
+  :require t
+  :hook (after-init-hook . smartparens-global-mode))
 
 (use-package kotlin-mode
   :mode (("\\.kt\\'" . kotlin-mode)))
