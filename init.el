@@ -73,7 +73,7 @@
  '(org-babel-java-compiler "javac -encoding UTF-8")
  '(org-babel-load-languages '((emacs-lisp . t) (C . t) (dot . t) (java . t)))
  '(org-export-backends '(ascii html icalendar latex md odt taskjuggler))
- '(org-journal-date-format "%A, %d %B %Y")
+ '(org-journal-date-format "%A, %d %B %Y" t)
  '(org-latex-compiler "lualatex")
  '(org-latex-default-class "bxjsarticle")
  '(org-latex-listings 'minted)
@@ -509,9 +509,9 @@
 (use-package easy-kill-extras)
 
 
-(use-package all-the-icons)
+(leaf all-the-icons :straight t)
 
-(use-package which-key
+(leaf which-key :straight t
   :config
   ;; 3つの表示方法どれか1つ選ぶ
   (which-key-setup-side-window-bottom)    ;ミニバッファ
@@ -520,13 +520,14 @@
   (which-key-mode 1))
 
 ;;;yasnippet
-(use-package yasnippet
+(leaf yasnippet
+  :straight t
   :config
   (yas-global-mode 1))
-(use-package yasnippet-snippets)
+(leaf yasnippet-snippets :straight t)
 
 
-(use-package keyfreq
+(leaf keyfreq :straight t
   :config
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1))
@@ -579,7 +580,7 @@
   ;;         (concat common-lisp-hyperspec-root "Data/Map_Sym.txt")
   ;;         common-lisp-hyperspec-issuex-table
   ;;         (concat common-lisp-hyperspec-root "Data/Map_IssX.txt"))))
-  (setq browse-url-browser-function 'eww-browse-url))
+  )
 
 (use-package web-mode
   :mode (("\\.phtml\\'"     . web-mode)
@@ -1437,8 +1438,8 @@ See `org-capture-templates' for more information."
 (use-package dap-java
   :straight lsp-java
   :after (lsp-java))
-(use-package hydra)
-(use-package projectile-ripgrep)
+(leaf hydra :straight t)
+(leaf projectile-ripgrep :straight t)
 
 
 ;; ;;git clone git@github.com:rswarbrick/picasm.git ~/.emacs.d/lisp/picasm
@@ -1474,9 +1475,9 @@ See `org-capture-templates' for more information."
 
 
 
-(use-package smartparens-config
+(leaf smartparens-config
   :straight smartparens
-  :init
+  :after
   (smartparens-global-mode))
 
 (use-package kotlin-mode
@@ -1559,13 +1560,15 @@ See `org-capture-templates' for more information."
   (setq pdf-view-resize-factor 1.1))
 (use-package org-re-reveal
   :after org)
-(use-package org-gcal
+(leaf org-gcal
+  :straight t
   :after org
+  :require t
   :config
   (load "~/Dropbox/org/googlecalendar/org-gcal-config.el"))
-(use-package flycheck
+(leaf flycheck :straight t
   :init (global-flycheck-mode))
-(use-package gnuplot)
+(leaf gnuplot :straight t)
 
 ;;; GDB 関連
 ;;; 有用なバッファを開くモード
