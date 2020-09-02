@@ -508,11 +508,13 @@
   (global-ace-isearch-mode +1))
 
 (use-package easy-kill
+  :disabled t
   :commands (easy-kill easy-mark)
   :config
   (global-set-key [remap kill-ring-save] #'easy-kill)
   (global-set-key [remap mark-sexp] #'easy-mark))
-(use-package easy-kill-extras)
+(use-package easy-kill-extras
+  :disabled t)
 
 
 (leaf all-the-icons :straight t)
