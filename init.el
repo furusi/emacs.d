@@ -1561,8 +1561,7 @@ See `org-capture-templates' for more information."
   :require t
   :config
   (load "~/Dropbox/org/googlecalendar/org-gcal-config.el"))
-(leaf flycheck :straight t
-  :init (global-flycheck-mode))
+(leaf flycheck :straight t)
 (leaf gnuplot :straight t)
 
 ;;; GDB 関連
