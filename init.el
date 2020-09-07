@@ -479,12 +479,14 @@
               :map isearch-mode-map
               ("C-i" . helm-occur-from-isearch)))
 
-(use-package helm-swoop
+(leaf helm-swoop
+  :straight t
   :disabled t)
 
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 
-(use-package helm-rg
+(leaf helm-rg
+  :straight t
 ;;  :ensure-system-package (rg . ripgrep)
   )
 (leaf rg
@@ -1446,7 +1448,8 @@ See `org-capture-templates' for more information."
   :init
   (setq rustic-lsp-server 'rust-analyzer))
 
-(use-package android-mode
+(leaf android-mode
+  :straight t
   :disabled t)
 
 (leaf ccls :straight t
@@ -1505,7 +1508,8 @@ See `org-capture-templates' for more information."
 (leaf adoc-mode :straight t)
 (leaf pandoc :straight t)
 (leaf graphviz-dot-mode :straight t)
-(use-package editorconfig
+(leaf editorconfig
+  :straight t
   :config
   (editorconfig-mode 1))
 (use-package easy-hugo
@@ -1524,7 +1528,7 @@ See `org-capture-templates' for more information."
   :defer t
   :commands
   (google-set-c-style))
-(use-package regex-tool)
+(leaf regex-tool :straight t)
 
 (use-package solarized-theme
   :disabled t
@@ -1540,11 +1544,11 @@ See `org-capture-templates' for more information."
   (when (eq window-system 'ns)
         (set-face-attribute 'markdown-table-face nil
                             :family "IPAGothic")))
-(use-package docker)
-(use-package docker-compose-mode)
+(leaf docker :straight t)
+(leaf docker-compose-mode :straight t)
 (use-package review-mode
   :mode (("\\.re\\'" . review-mode)))
-(use-package csv-mode)
+(leaf csv-mode :straight t)
 (use-package pdf-tools
   ;; https://github.com/politza/pdf-tools#installation
   :mode (("\\.pdf\\'" . pdf-view-mode))
