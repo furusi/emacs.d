@@ -1424,8 +1424,10 @@ See `org-capture-templates' for more information."
 (use-package lsp-treemacs
   :commands lsp-treemacs-errors-list)
 ;; optionally if you want to use debugger
-(use-package lsp-java
-  :hook (java-mode . lsp-deferred))
+(leaf lsp-java
+  :straight t
+  :hook (java-mode-hook . lsp-deferred)
+  :bind (("M-." . lsp-find-definition)))
 (use-package dap-mode
   :after lsp-mode
   :config
