@@ -459,42 +459,53 @@
   (setq auto-save-buffers-enhanced-exclude-regexps '("^/ssh:" "^/scp:" "/sudo:" "/multi:")))
 
 ;; helm
-(use-package helm-config
-  :straight helm
+(leaf *helm
+  :config
+  (leaf helm
+  :straight t
+  :require helm-config
+  :bind (("M-x"      . helm-M-x)
+         ("M-y"      . helm-show-kill-ring)
+         ("C-x b"    . helm-mini)
+         ("C-x C-f"  . helm-find-files)
+         ("M-s o"    . helm-occur)
+         ("C-x j"    . helm-recentf)
+         ("C-x r l"  . helm-bookmarks)
+         (:helm-map
+          ("<tab>"  . helm-execute-persistent-action) ;rebind tab to do persistent action
+          ("C-i"    . helm-execute-persistent-action) ;make TAB works in terminal
+          ("C-z"    . helm-select-action)             ;list actions using C-z
+          )
+         (:isearch-mode-map
+          :package isearch
+          ("C-i" . helm-occur-from-isearch)))
   :config
   (helm-mode 1)
   (helm-autoresize-mode 1)
-  (helm-migemo-mode 1)
-  (bind-keys* ("M-x"      . helm-M-x)
-              ("M-y"      . helm-show-kill-ring)
-              ("C-x b"    . helm-mini)
-              ("C-x C-f"  . helm-find-files)
-              ("M-s o"    . helm-occur)
-              ("C-x j"    . helm-recentf)
-              ("C-x r l"  . helm-bookmarks)
-              :map helm-map
-              ("<tab>"  . helm-execute-persistent-action) ;rebind tab to do persistent action
-              ("C-i"    . helm-execute-persistent-action) ;make TAB works in terminal
-              ("C-z"    . helm-select-action)             ;list actions using C-z
-              :map isearch-mode-map
-              ("C-i" . helm-occur-from-isearch)))
-
-(leaf helm-swoop
+  (helm-migemo-mode 1))
+  (leaf helm-projectile
+  :after helm
+  :straight t
+  :require t
+  :config
+  (helm-projectile-on))
+  (leaf helm-swoop
   :straight t
   :disabled t)
-
-(use-package helm-lsp :commands helm-lsp-workspace-symbol)
-
-(leaf helm-rg
+  (leaf helm-lsp
+  :straight t
+  :commands helm-lsp-workspace-symbol)
+  (leaf helm-rg
   :straight t
 ;;  :ensure-system-package (rg . ripgrep)
   )
+  (leaf helm-make
+  :straight t))
+
 (leaf rg
   :bind (("C-c s" . rg-menu))
   :straight t
   :require t)
-(leaf helm-make
-  :straight t)
 (leaf highlight-symbol
   :straight t
   :require t)
@@ -1427,7 +1438,8 @@ See `org-capture-templates' for more information."
 (leaf lsp-java
   :straight t
   :hook (java-mode-hook . lsp-deferred)
-  :bind (("M-." . lsp-find-definition)))
+  :bind ((:lsp-mode-map
+          ("M-." . lsp-find-definition))))
 (use-package dap-mode
   :after lsp-mode
   :config
