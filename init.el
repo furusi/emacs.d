@@ -304,7 +304,12 @@
 (leaf restart-emacs :straight t)
 
 (leaf sudo-edit :straight t)
-(leaf projectile :straight t)
+(leaf projectile
+  :bind ((:projectile-mode-map
+          ("C-c p" . projectile-command-map)))
+  :straight t
+  :config
+  (projectile-mode +1))
 
 
 ;; ddskk
