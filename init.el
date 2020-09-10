@@ -309,7 +309,11 @@
           ("C-c p" . projectile-command-map)))
   :straight t
   :config
-  (projectile-mode +1))
+  (projectile-mode +1)
+  (dolist
+      (d '(".ccls-cache"))
+    (add-to-list 'projectile-globally-ignored-directories d))
+  )
 
 
 ;; ddskk
@@ -467,45 +471,69 @@
 (leaf *helm
   :config
   (leaf helm
-  :straight t
-  :require helm-config
-  :bind (("M-x"      . helm-M-x)
-         ("M-y"      . helm-show-kill-ring)
-         ("C-x b"    . helm-mini)
-         ("C-x C-f"  . helm-find-files)
-         ("M-s o"    . helm-occur)
-         ("C-x j"    . helm-recentf)
-         ("C-x r l"  . helm-bookmarks)
-         (:helm-map
-          ("<tab>"  . helm-execute-persistent-action) ;rebind tab to do persistent action
-          ("C-i"    . helm-execute-persistent-action) ;make TAB works in terminal
-          ("C-z"    . helm-select-action)             ;list actions using C-z
-          )
-         (:isearch-mode-map
-          :package isearch
-          ("C-i" . helm-occur-from-isearch)))
-  :config
-  (helm-mode 1)
-  (helm-autoresize-mode 1)
-  (helm-migemo-mode 1))
+    :straight t
+    :require helm-config
+    :bind (("M-x"      . helm-M-x)
+           ("M-y"      . helm-show-kill-ring)
+           ("C-x b"    . helm-mini)
+           ("C-x C-f"  . helm-find-files)
+           ("M-s o"    . helm-occur)
+           ("C-x j"    . helm-recentf)
+           ("C-x r l"  . helm-bookmarks)
+           (:helm-map
+            ("<tab>"  . helm-execute-persistent-action) ;rebind tab to do persistent action
+            ("C-i"    . helm-execute-persistent-action) ;make TAB works in terminal
+            ("C-z"    . helm-select-action)             ;list actions using C-z
+            )
+           (:isearch-mode-map
+            :package isearch
+            ("C-i" . helm-occur-from-isearch)))
+    :config
+    (helm-mode 1)
+    (helm-autoresize-mode 1)
+    (helm-migemo-mode 1))
   (leaf helm-projectile
-  :after helm
-  :straight t
-  :require t
-  :config
-  (helm-projectile-on))
+    :after helm
+    :straight t
+    :require t
+    :config
+    (helm-projectile-on))
   (leaf helm-swoop
-  :straight t
-  :disabled t)
+    :straight t
+    :disabled t)
   (leaf helm-lsp
-  :straight t
-  :commands helm-lsp-workspace-symbol)
+    :straight t
+    :commands helm-lsp-workspace-symbol)
   (leaf helm-rg
-  :straight t
-;;  :ensure-system-package (rg . ripgrep)
-  )
+    :straight t
+    ;;  :ensure-system-package (rg . ripgrep)
+    )
   (leaf helm-make
-  :straight t))
+    :straight t))
+
+(leaf *counsel
+  :disabled t
+  :config
+  (leaf counsel
+    :straight t
+    :require ivy
+    :custom (((ivy-use-virtual-buffers . t)))
+    :bind (("M-x" . counsel-M-x)
+           ("C-x C-b" . counsel-ibuffer)
+           ("C-x b" . ivy-switch-buffer)
+           ("C-x C-f" . counsel-find-file)
+           ("M-y" . counsel-yank-pop)
+           ("C-x c i" . counsel-imenu)
+           ("C-x j" . counsel-recentf))
+    :config
+    (ivy-mode 1))
+  (leaf counsel-projectile
+    :straight t
+    :config
+    (counsel-projectile-mode))
+  (leaf lsp-ivy
+    :straight t))
+
 
 (leaf rg
   :bind (("C-c s" . rg-menu))
