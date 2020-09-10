@@ -317,17 +317,19 @@
 
 
 ;; ddskk
-(use-package skk
+(leaf ddskk
   :straight (ddskk :type git :host github :repo "skk-dev/ddskk")
   :commands skk-mode
   :bind (("C-x C-j" . skk-mode)
-         :map minibuffer-local-map
-         ("C-j" . skk-kakutei))
-  :hook (skk-load . (lambda () (require 'context-skk))) ;自動的に英字モードになる
-  :custom ((skk-share-private-jisyo t)
-           (skk-get-jisyo-directory
-            (format "%sskk-get-jisyo/" user-emacs-directory)))
+         (:minibuffer-local-map
+          ("C-j" . skk-kakutei)))
+  :hook (skk-load-hook . (lambda () (require 'context-skk))) ;自動的に英字モードになる
+  :custom
+  ((skk-share-private-jisyo . t)
+   (skk-isearch-start-mode . 'latin); isearch で skk の初期状態
+   )
   :init
+  (setq skk-get-jisyo-directory (format "%sskk-get-jisyo/" user-emacs-directory))
   (setq skk-large-jisyo (format "%sSKK-JISYO.L" skk-get-jisyo-directory))
   (setq skk-extra-jisyo-file-list
         (mapcar (lambda (x)
@@ -343,7 +345,6 @@
   (add-hook 'isearch-mode-hook 'skk-isearch-mode-setup) ; isearch で skk のセットアップ
   (add-hook 'isearch-mode-end-hook 'skk-isearch-mode-cleanup) ; isearch で skk のクリーンアップ
   (add-hook 'helm-exit-minibuffer-hook 'skk-isearch-mode-cleanup)
-  (setq skk-isearch-start-mode 'latin); isearch で skk の初期状態
 
   ;; サ行変格活用の動詞も送りあり変換出来るようにする
   (setq skk-search-sagyo-henkaku t)
@@ -379,7 +380,6 @@
   (add-to-list 'context-skk-programming-mode 'python-mode)
   (add-to-list 'context-skk-programming-mode 'rustic-mode)
   (setq context-skk-mode-off-message "[context-skk] 日本語入力 off")
-  (setq skk-auto-insert-paren t)
   (context-skk-mode))
 
 
@@ -469,6 +469,7 @@
 
 ;; helm
 (leaf *helm
+  :disabled t
   :config
   (leaf helm
     :straight t
@@ -512,7 +513,6 @@
     :straight t))
 
 (leaf *counsel
-  :disabled t
   :config
   (leaf counsel
     :straight t
