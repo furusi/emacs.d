@@ -501,7 +501,6 @@
     (helm-autoresize-mode 1)
     (helm-migemo-mode 1))
   (leaf helm-projectile
-    :after helm
     :straight t
     :require t
     :config
@@ -918,12 +917,36 @@
                '("lualatex-jlreq"
                  "\\documentclass[]{jlreq}
 \\usepackage{luatexja} % ltjclasses, ltjsclasses を使うときはこの行不要
-\\usepackage{luatexja-fontspec}"
+\\usepackage{luatexja-fontspec}
+\\newcommand{\\uline}[1]{\\underline{#1}}
+"
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                  ("\\paragraph{%s}" . "\\paragraph*{%s}")
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+  (add-to-list 'org-latex-classes
+               '("jlreq"
+                 "\\documentclass[11pt,paper=a4]{jlreq}
+[NO-DEFAULT-PACKAGES]
+\\usepackage{amsmath}
+\\usepackage{newtxtext,newtxmath}
+\\ifdefined\\kanjiskip
+  \\usepackage[dvipdfmx]{graphicx}
+  \\usepackage[dvipdfmx]{hyperref}
+  \\usepackage{pxjahyper}
+  \\hypersetup{colorlinks=true}
+\\else
+  \\usepackage{graphicx}
+  \\usepackage{hyperref}
+  \\hypersetup{pdfencoding=auto,colorlinks=true}
+\\fi"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
   (add-to-list 'org-latex-classes
                '("lualatex-yukyokasho"
                  "\\documentclass[]{jlreq}
