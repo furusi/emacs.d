@@ -323,7 +323,14 @@
   :bind (("C-x C-j" . skk-mode)
          (:minibuffer-local-map
           ("C-j" . skk-kakutei)))
-  :hook (skk-load-hook . (lambda () (require 'context-skk))) ;自動的に英字モードになる
+  :hook ((skk-load-hook . (lambda () (require 'context-skk))) ;自動的に英字モードになる
+           ;; isearch
+         (isearch-mode-hook . skk-isearch-mode-setup) ; isearch で skk のセットアップ
+         (isearch-mode-end-hook . skk-isearch-mode-cleanup) ; isearch で skk のクリーンアップ
+         (helm-exit-minibuffer-hook . skk-isearch-mode-cleanup)
+         (dired-load-hook . (lambda ()
+                              (load "dired-x")
+                              (global-set-key "\C-x\C-j" 'skk-mode))))
   :custom
   ((skk-share-private-jisyo . t)
    (skk-isearch-start-mode . 'latin); isearch で skk の初期状態
@@ -340,12 +347,6 @@
                      "SKK-JISYO.fullname" "SKK-JISYO.geo"
                      "SKK-JISYO.itaiji" "SKK-JISYO.zipcode"
                      "SKK-JISYO.okinawa" "SKK-JISYO.propernoun")))
-
-  ;; isearch
-  (add-hook 'isearch-mode-hook 'skk-isearch-mode-setup) ; isearch で skk のセットアップ
-  (add-hook 'isearch-mode-end-hook 'skk-isearch-mode-cleanup) ; isearch で skk のクリーンアップ
-  (add-hook 'helm-exit-minibuffer-hook 'skk-isearch-mode-cleanup)
-
   ;; サ行変格活用の動詞も送りあり変換出来るようにする
   (setq skk-search-sagyo-henkaku t)
   ;; 全角・半角カタカナを変換候補にする
@@ -358,16 +359,9 @@
   (setq skk-rom-kana-rule-list
         '(("tni" nil ("ティ" . "てぃ"))
           ("dni" nil ("ディ" . "でぃ"))))
-  (add-hook 'dired-load-hook
-            (load "dired-x")
-            (global-set-key "\C-x\C-j" 'skk-mode))
   (setq skk-egg-like-newline t);;non-nilにするとEnterでの確定時に改行しない
   ;; ▼モードで BS を押したときには確定しないで前候補を表示する
   (setq skk-delete-implies-kakutei nil)
-  (require 'skk-study)
-  ;; ▼モード中で=漢字の読み方を指定する
-  (setq skk-hint-start-char ?=)
-  (require 'skk-hint)
   ;; @@ skk-search-web.el
   ;; (setq skk-use-search-web t)
   ;; (when skk-use-search-web
@@ -377,10 +371,23 @@
   ;; 	       '(skk-search-web 'skk-google-cgi-api-for-japanese-input)
   ;; 	       t))
   (setq skk-auto-insert-paren t)
-  (add-to-list 'context-skk-programming-mode 'python-mode)
-  (add-to-list 'context-skk-programming-mode 'rustic-mode)
-  (setq context-skk-mode-off-message "[context-skk] 日本語入力 off")
-  (context-skk-mode))
+  (leaf skk-study
+    :require t)
+  (leaf skk-hint
+    :require t
+    :config
+    ;; ▼モード中で=漢字の読み方を指定する
+    (setq skk-hint-start-char ?=))
+  (leaf context-skk
+    :hook (
+           ;; 自動的に英字モードになる
+           (skk-load-hook . (lambda () (require 'context-skk))))
+    :config
+    (add-to-list 'context-skk-programming-mode 'python-mode)
+    (add-to-list 'context-skk-programming-mode 'rustic-mode)
+    (setq context-skk-mode-off-message "[context-skk] 日本語入力 off")
+    (context-skk-mode))
+  )
 
 
 (use-package eww
@@ -457,7 +464,8 @@
   (global-undo-tree-mode t))
 
 
-(use-package auto-save-buffers-enhanced
+(leaf auto-save-buffers-enhanced
+  :straight t
   :config
   ;; 1秒後に保存
   (setq auto-save-buffers-enhanced-interval 1)
