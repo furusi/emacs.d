@@ -469,7 +469,6 @@
 
 ;; helm
 (leaf *helm
-  :disabled t
   :config
   (leaf helm
     :straight t
@@ -513,6 +512,7 @@
     :straight t))
 
 (leaf *counsel
+  :disabled t
   :config
   (leaf counsel
     :straight t
@@ -601,12 +601,11 @@
   :mode (("\\.gradle$" . gradle-mode)))
 
 
-(use-package slime
+(leaf slime
   :straight slime-company
-  ;;  :ensure-system-package (sbcl clisp)
   :if (file-exists-p "~/.roswell/helper.el")
-  :hook ((lisp-mode . slime-mode)
-         (slime-repl-mode
+  :hook ((lisp-mode-hook . slime-mode)
+         (slime-repl-mode-hook
           . (lambda () (add-to-list
                         'company-backends
                         '(company-slime company-dabbrev-code)))))
