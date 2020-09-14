@@ -475,6 +475,12 @@
   ;; tramp mode時の自動保存を抑制
   (setq auto-save-buffers-enhanced-exclude-regexps '("^/ssh:" "^/scp:" "/sudo:" "/multi:")))
 
+(leaf real-auto-save
+  :straight t
+  :require t
+  :custom ((real-auto-save-interval . 0.5))
+  :hook ((org-mode-hook prog-mode-hook) . real-auto-save-mode))
+
 ;; helm
 (leaf *helm
   :config
@@ -1645,7 +1651,9 @@ See `org-capture-templates' for more information."
 (leaf flycheck :straight t)
 (leaf gnuplot :straight t)
 
-;;; GDB 関連
+(leaf *gdb
+  :config
+  ;;; GDB 関連
 ;;; 有用なバッファを開くモード
 (setq gdb-many-windows t)
 
@@ -1659,7 +1667,7 @@ See `org-capture-templates' for more information."
 (setq gud-tooltip-echo-area nil)
 
 ;;; バックアップファイルを作成しない
-(setq make-backup-files t)
+(setq make-backup-files t))
 
 ;; https://gist.github.com/tek-nishi/a7fc3933be5e62c7eeaa
 (defun my-insert-newline-and-indent(arg)
