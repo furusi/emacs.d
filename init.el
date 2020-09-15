@@ -666,7 +666,6 @@
   :commands (org-show-all)
   :mode (("\\.org$" . org-mode))
   :straight org-plus-contrib
-  :hook (org-mode . (lambda () (electric-indent-local-mode -1)))
   :bind (("\C-cc" . org-capture)
          ("\C-cl" . org-store-link)
          ("\C-ca" . org-agenda)
