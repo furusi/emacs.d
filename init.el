@@ -825,7 +825,8 @@
   (defun my-org-mode-hook ()
     (add-hook 'completion-at-point-functions
               'pcomplete-completions-at-point nil t)
-    (face-remap-add-relative 'default :height 173))
+    ;; (face-remap-add-relative 'default :height 173)
+    )
   (org-babel-do-load-languages
    'org-babel-load-languages org-babel-load-languages)
   (add-hook 'org-mode-hook #'my-org-mode-hook)
@@ -1160,6 +1161,51 @@
 \\setbeamertemplate{itemize items}[triangle]
 \\setsansfont[ BoldFont={Fira Sans SemiBold}, ItalicFont={Fira Sans Italic}, BoldItalicFont={Fira Sans SemiBold Italic} ]{Fira Sans}
 \\setCJKmainfont{BIZ-UDGothic}
+\\definecolor{myfg}{HTML}{EC9F4C}
+\\definecolor{mainbg}{HTML}{3F597C}
+\\definecolor{mynormalbg}{HTML}{F2F2F2}
+\\definecolor{mynormalfg}{HTML}{4D4D4D}
+\\definecolor{myexampletitlefg}{HTML}{6d86ab}
+\\setbeamercolor{alerted text}{fg=myfg}
+\\setbeamercolor{frameslide}{fg=mynormalbg,bg=mainbg}
+\\setbeamercolor{palette primary}{bg=mainbg}
+\\setbeamercolor{normal text}{fg=mynormalfg,bg=mynormalbg}
+\\setbeamercolor{block title example}{fg=myexampletitlefg}
+\\setbeamerfont{alerted text}{series=\\bfseries}
+
+\\setcounter{page}{1}
+               [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
+                 ("\\section\{%s\}"       . "\\section*\{%s\}")
+                 ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
+                 ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
+                 ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
+                 ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
+  (add-to-list 'org-latex-classes
+               '("lectureslide-lualatex"
+                 "\\documentclass[unicode,11pt]{beamer}
+\\usepackage{luatexja}
+\\usepackage{bm}
+\\usepackage{color}
+\\usepackage{listings}
+\\usepackage{siunitx} %si単位系
+\\usepackage{hyperref} %しおり
+\\usepackage{ascmac} %角丸の枠
+\\usepackage{ulem} %下線
+\\usepackage{amsmath,amssymb} %数式，記号
+\\usefonttheme[onlymath]{serif}
+\\usepackage{minted}
+\\usepackage{capt-of} %キャプション
+\\usepackage{fancyhdr} %ヘッダ，フッタ
+\\usepackage{fancybox} %枠
+\\usepackage{tikz} %描画
+\\usepackage{graphicx} %画像貼り付け
+\\usetheme[progressbar=frametitle]{metropolis}
+\\metroset{sectionpage=progressbar, block=fill}
+\\setbeamertemplate{navigation symbols}{}
+\\setbeamertemplate{footline}[frame number]
+\\setbeamertemplate{footline}[page number]
+\\setbeamertemplate{itemize items}[triangle]
+\\setsansfont[ BoldFont={Fira Sans SemiBold}, ItalicFont={Fira Sans Italic}, BoldItalicFont={Fira Sans SemiBold Italic} ]{Fira Sans}
 \\definecolor{myfg}{HTML}{EC9F4C}
 \\definecolor{mainbg}{HTML}{3F597C}
 \\definecolor{mynormalbg}{HTML}{F2F2F2}
