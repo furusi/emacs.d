@@ -201,7 +201,7 @@
  '(lsp-ui-sideline-code-action ((t (:foreground "yellow3"))))
  '(org-table ((t (:foreground "cornflower blue")))))
 
-(use-package initchart
+(leaf initchart
   :disabled t
   :straight (initchart :type git :host github :repo "yuttie/initchart")
   :config
@@ -224,7 +224,9 @@
       (setq-default indicate-empty-lines t)
       (setq-default indicate-buffer-boundaries 'left)))
 
-(use-package exec-path-from-shell
+(leaf exec-path-from-shell
+  :straight t
+  :require t
   :config
   (setq exec-path-from-shell-check-startup-files nil)
   (add-to-list 'exec-path-from-shell-variables "PYTHONPATH")
@@ -390,9 +392,8 @@
   )
 
 
-(use-package eww
+(leaf eww
   :commands (eww)
-  :straight nil
   :config
   (setq eww-search-prefix "https://www.google.co.jp/search?q=")
   (defun eww-disable-images ()
@@ -412,19 +413,22 @@
     (setq-local shr-put-image-function 'shr-put-image-alt))
   (add-hook 'eww-mode-hook 'eww-mode-hook--disable-image))
 
-(use-package magit
+(leaf magit
   :bind (("C-x g" . magit-status))
+  :require t
+  :straight t
   :config
   (setq magit-diff-refine-hunk 'all)
   ;; ediff時にorgファイルを全て表示する
   (with-eval-after-load 'outline
     (add-hook 'ediff-prepare-buffer-hook #'org-show-all)))
-(use-package grip-mode
-  :bind (:map markdown-mode-command-map
-         ("g" . grip-mode)))
+(leaf grip-mode
+  :straight t
+  :bind ((:markdown-mode-command-map
+          ("g" . grip-mode))))
 
-(use-package migemo
-  :ensure-system-package cmigemo
+(leaf migemo
+  :straight t
   :config
   (setq migemo-options '("-q" "--emacs"))
   (setq migemo-coding-system 'utf-8-unix)
@@ -559,21 +563,6 @@
   :straight t
   :require t
   :bind (("C-," . er/expand-region)))
-(use-package ace-jump-mode)
-(use-package ace-isearch
-  :disabled t
-  :after (ace-jump-mode helm-swoop)
-  :config
-  (global-ace-isearch-mode +1))
-
-(use-package easy-kill
-  :disabled t
-  :commands (easy-kill easy-mark)
-  :config
-  (global-set-key [remap kill-ring-save] #'easy-kill)
-  (global-set-key [remap mark-sexp] #'easy-mark))
-(use-package easy-kill-extras
-  :disabled t)
 
 
 (leaf all-the-icons :straight t)
@@ -600,17 +589,17 @@
   (keyfreq-autosave-mode 1))
 
 ;; Emacs起動時にrst.elを読み込み
-(use-package rst
-  :mode (("\\.rst$"  . rst-mode)
-         ("\\.rest$" . rst-mode))
-  :bind (:map rst-mode-map
-              ("M-RET" . rst-insert-list))
+(leaf rst
+  :straight t
+  :bind ((:rst-mode-map
+              ("M-RET" . rst-insert-list)))
   :config
   (when (eq system-type 'darwin)
     (setq rst-pdf-program "open -a Skim")
     (setq rst-slides-program "open -a Firefox")))
 
-(use-package gradle-mode
+(leaf gradle-mode
+  :straight t
   :mode (("\\.gradle$" . gradle-mode)))
 
 
@@ -648,7 +637,9 @@
   ;;         (concat common-lisp-hyperspec-root "Data/Map_IssX.txt"))))
   )
 
-(use-package web-mode
+(leaf web-mode
+  :straight t
+  :require t
   :mode (("\\.phtml\\'"     . web-mode)
          ("\\.tpl\\.php\\'" . web-mode)
          ("\\.[gj]sp\\'"    . web-mode)
@@ -662,205 +653,221 @@
         '(("php" . (("print" . "print(\"|\")"))))))
 
 ;; Org-mode
-(use-package org
-  :commands (org-show-all)
-  :mode (("\\.org$" . org-mode))
-  :straight org-plus-contrib
-  :bind (("\C-cc" . org-capture)
-         ("\C-cl" . org-store-link)
-         ("\C-ca" . org-agenda)
-         ("\C-cb" . org-iswitchb)
-         :map org-mode-map
-         ("C-c C-\'" . org-insert-structure-template))
-  :custom
-  ((org-preview-latex-default-process 'dvisvgm))
+(leaf org*
   :config
-  (setq org-format-latex-options
-        (plist-put org-format-latex-options :scale 2.0))
-  ;; org-modeの固定幅フォントを設定
-  (let ((fontset (cond
-                 ((eq window-system 'ns) "Noto Sans Mono CJK JP")
-                 ((eq window-system 'x) "Noto Sans Mono CJK JP"))))
-    (dolist (face '(org-table
-                    org-formula
-                    org-date))
-      (set-face-attribute face nil :family fontset)))
+  (leaf org
+    :commands (org-show-all)
+    :mode (("\\.org$" . org-mode))
+    :straight org-plus-contrib
+    :bind (("\C-cc" . org-capture)
+           ("\C-cl" . org-store-link)
+           ("\C-ca" . org-agenda)
+           ("\C-cb" . org-iswitchb)
+           (:org-mode-map
+            ("C-c C-\'" . org-insert-structure-template)))
+    :custom
+    ((org-preview-latex-default-process . 'dvisvgm))
+    :config
+    (setq org-format-latex-options
+          (plist-put org-format-latex-options :scale 2.0))
+    ;; org-modeの固定幅フォントを設定
+    (let ((fontset (cond
+                    ((eq window-system 'ns) "Noto Sans Mono CJK JP")
+                    ((eq window-system 'x) "Noto Sans Mono CJK JP"))))
+      (dolist (face '(org-table
+                      org-formula
+                      org-date))
+        (set-face-attribute face nil :family fontset)))
 
-  (add-to-list 'face-font-rescale-alist
-               '(".*IPAゴシック.*" . 0.85))
+    (add-to-list 'face-font-rescale-alist
+                 '(".*IPAゴシック.*" . 0.85))
 
-  (when (equal system-type 'darwin)
-    (setq org-plantuml-jar-path
-          "/usr/local/opt/plantuml/libexec/plantuml.jar"))
+    (when (equal system-type 'darwin)
+      (setq org-plantuml-jar-path
+            "/usr/local/opt/plantuml/libexec/plantuml.jar"))
 
 
-  (when (or (eq system-type 'gnu/linux)
-            (eq system-type 'darwin))
-    (setq org-directory (expand-file-name "~/Dropbox/org/")))
-  
-  (when (not (file-exists-p org-directory))
-    (setq org-directory (expand-file-name "~/org/")))
+    (when (or (eq system-type 'gnu/linux)
+              (eq system-type 'darwin))
+      (setq org-directory (expand-file-name "~/Dropbox/org/")))
+    (when (not (file-exists-p org-directory))
+      (setq org-directory (expand-file-name "~/org/")))
 
-  (setq org-agenda-files
-        (list
-         (concat org-directory "agenda/")
-         (concat org-directory "task.org")
-         (concat org-directory "habit.org")
-         (concat org-directory "event.org")
-         (concat org-directory "inbox.org")
-         (concat org-directory "productivity.org")
-         (concat org-directory "org-ical.org")
-         (concat org-directory "notes/")
-         (concat org-directory "googlecalendar/")))
-  (setq org-refile-targets
-        '((org-agenda-files :maxlevel . 2)))
-  (setq org-tag-alist
-        '(("ignore" . ?i) ("@OFFICE" . ?o) ("@HOME" . ?h) ("SHOPPING" . ?s)
-          ("MAIL" . ?m) ("PROJECT" . ?p) ("備忘録" . ?b)))
+    (setq org-agenda-files
+          (list
+           (concat org-directory "agenda/")
+           (concat org-directory "task.org")
+           (concat org-directory "habit.org")
+           (concat org-directory "event.org")
+           (concat org-directory "inbox.org")
+           (concat org-directory "productivity.org")
+           (concat org-directory "org-ical.org")
+           (concat org-directory "notes/")
+           (concat org-directory "googlecalendar/")))
+    (setq org-refile-targets
+          '((org-agenda-files :maxlevel . 2)))
+    (setq org-tag-alist
+          '(("ignore" . ?i) ("@OFFICE" . ?o) ("@HOME" . ?h) ("SHOPPING" . ?s)
+            ("MAIL" . ?m) ("PROJECT" . ?p) ("備忘録" . ?b)))
     (setq org-capture-templates
-        `(("i" "インボックス" entry
-           (file ,(concat org-directory "inbox.org"))
-           "* %? %i\n %U\n")
-          ;; ("h" "定期的にやること" entry
-          ;;  (file ,(concat org-directory "habit.org"))
-          ;;  "* %?\n %U\n")
-          ("t" "タスク" entry
-           (file ,(concat org-directory "task.org"))
-           "* TODO %? %i\n %U\n")
-          ("e" "イベント" entry
-           (file ,(concat org-directory "event.org"))
-           "* EVENT %? %i\n %a\n %U\n")
-          ("n"
-           "ノート(本文から書く)"
-           entry
-           (file+headline, (concat org-directory "notes.org") "MEMO")
-           "* %U \n%?")
-          ("N"
-           "ノート(見出しから書く)"
-           entry
-           (file+headline, (concat org-directory "notes.org") "MEMO")
-           "* %U %?\n\n\n")
-          ("r" "読みかけ(リンク付き)" entry
-           (file ,(concat org-directory "reading.org"))
-           "* %?\n %a\n %U\n")
-          ("m"
-           "みんなで会議"
-           entry
-           (file+olp+datetree (concat org-directory "minutes.org") "会議")
-           "* %T %?"
-           :empty-lines 1
-           :jump-to-captured 1)
-          ("p"
-           "ぱっと 読み返したいと思ったとき"
-           plain
-           (file+headline nil "PLAIN")
-           "%?"
-           :empty-lines 1
-           :jump-to-captured 1
-           :unnarrowed 1)
-          ("g"
-           "とりあえず 仕事を放り込む"
-           entry
-           (file+headline (concat org-directory "gtd.org") "GTD")
-           "** TODO %T %?\n   Entered on %U    %i\n"
-           :empty-lines 1)
-          ("i"
-           "itemのテスト"
-           item
-           (file+headline (concat org-directory "gtd.org") "GTD")
-           "** TODO %T %?\n   Entered on %U    %i\n"
-           :empty-lines 1)
-          ("z"
-           "'あれ'についてのメモ"
-           entry
-           (file+headline , (concat org-directory "notes.org") "MEMO")
-           "* %U %? %^g\n\n"
-           :empty-lines 1)))
-  ;; コードを評価するとき尋ねない
-  (setq org-confirm-babel-evaluate nil)
+          `(("i" "インボックス" entry
+             (file ,(concat org-directory "inbox.org"))
+             "* %? %i\n %U\n")
+            ;; ("h" "定期的にやること" entry
+            ;;  (file ,(concat org-directory "habit.org"))
+            ;;  "* %?\n %U\n")
+            ("t" "タスク" entry
+             (file ,(concat org-directory "task.org"))
+             "* TODO %? %i\n %U\n")
+            ("e" "イベント" entry
+             (file ,(concat org-directory "event.org"))
+             "* EVENT %? %i\n %a\n %U\n")
+            ("n"
+             "ノート(本文から書く)"
+             entry
+             (file+headline, (concat org-directory "notes.org") "MEMO")
+             "* %U \n%?")
+            ("N"
+             "ノート(見出しから書く)"
+             entry
+             (file+headline, (concat org-directory "notes.org") "MEMO")
+             "* %U %?\n\n\n")
+            ("r" "読みかけ(リンク付き)" entry
+             (file ,(concat org-directory "reading.org"))
+             "* %?\n %a\n %U\n")
+            ("m"
+             "みんなで会議"
+             entry
+             (file+olp+datetree (concat org-directory "minutes.org") "会議")
+             "* %T %?"
+             :empty-lines 1
+             :jump-to-captured 1)
+            ("p"
+             "ぱっと 読み返したいと思ったとき"
+             plain
+             (file+headline nil "PLAIN")
+             "%?"
+             :empty-lines 1
+             :jump-to-captured 1
+             :unnarrowed 1)
+            ("g"
+             "とりあえず 仕事を放り込む"
+             entry
+             (file+headline (concat org-directory "gtd.org") "GTD")
+             "** TODO %T %?\n   Entered on %U    %i\n"
+             :empty-lines 1)
+            ("i"
+             "itemのテスト"
+             item
+             (file+headline (concat org-directory "gtd.org") "GTD")
+             "** TODO %T %?\n   Entered on %U    %i\n"
+             :empty-lines 1)
+            ("z"
+             "'あれ'についてのメモ"
+             entry
+             (file+headline , (concat org-directory "notes.org") "MEMO")
+             "* %U %? %^g\n\n"
+             :empty-lines 1)))
+    ;; コードを評価するとき尋ねない
+    (setq org-confirm-babel-evaluate nil)
 
-  (add-to-list 'org-babel-tangle-lang-exts
-               '("C" . "c"))
-  ;; 有効にする言語 デフォルトでは elisp のみ
-  (org-babel-do-load-languages
-   'org-babel-load-languages '((C          . t)
-                               (org        . t)
-                               (python     . t)
-                               (lisp       . t)
-                               (emacs-lisp . t)
-                               (ruby       . t)
-                               (plantuml   . t)
-                               (java       . t)
-                               (gnuplot    . t)
-                               (perl       . t)
-                               (dot        . t)))
+    (add-to-list 'org-babel-tangle-lang-exts
+                 '("C" . "c"))
+    ;; 有効にする言語 デフォルトでは elisp のみ
+    (org-babel-do-load-languages
+     'org-babel-load-languages '((C          . t)
+                                 (org        . t)
+                                 (python     . t)
+                                 (lisp       . t)
+                                 (emacs-lisp . t)
+                                 (ruby       . t)
+                                 (plantuml   . t)
+                                 (java       . t)
+                                 (gnuplot    . t)
+                                 (perl       . t)
+                                 (dot        . t)))
 
-  (setq org-use-speed-commands t)
-  (setq org-icalendar-alarm-time 30)
-  (setq org-icalendar-timezone "Asia/Tokyo")
-  ;; カーソルが見出しにある場合latinモードになる
-  (custom-add-frequent-value 'context-skk-context-check-hook
-                             #'org-at-heading-p)
-  (custom-reevaluate-setting 'context-skk-context-check-hook)
+    (setq org-use-speed-commands t)
+    (setq org-icalendar-alarm-time 30)
+    (setq org-icalendar-timezone "Asia/Tokyo")
+    ;; カーソルが見出しにある場合latinモードになる
+    (custom-add-frequent-value 'context-skk-context-check-hook
+                               #'org-at-heading-p)
+    (custom-reevaluate-setting 'context-skk-context-check-hook)
 
-  ;; htmlで数式
-  (setf org-html-mathjax-options
-        '((path "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")
-          (scale "100")
-          (align "center")
-          (indent "2em")
-          (mathml nil)))
-  (setf org-html-mathjax-template
-        "<script type=\"text/javascript\" src=\"%PATH\"></script>")
-  
-  (defun org-todo-list-current-file (&optional arg)
-  "Like `org-todo-list', but using only the current buffer's file."
-  (interactive "P")
-  (let ((org-agenda-files (list (buffer-file-name (current-buffer)))))
-    (if (null (car org-agenda-files))
-        (error "%s is not visiting a file" (buffer-name (current-buffer)))
-      (org-todo-list arg))))
+    ;; htmlで数式
+    (setf org-html-mathjax-options
+          '((path "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")
+            (scale "100")
+            (align "center")
+            (indent "2em")
+            (mathml nil)))
+    (setf org-html-mathjax-template
+          "<script type=\"text/javascript\" src=\"%PATH\"></script>")
+    (defun org-todo-list-current-file (&optional arg)
+      "Like `org-todo-list', but using only the current buffer's file."
+      (interactive "P")
+      (let ((org-agenda-files (list (buffer-file-name (current-buffer)))))
+        (if (null (car org-agenda-files))
+            (error "%s is not visiting a file" (buffer-name (current-buffer)))
+          (org-todo-list arg))))
 
-  (defun my-org-mode-hook ()
-    (add-hook 'completion-at-point-functions
-              'pcomplete-completions-at-point nil t)
-    ;; (face-remap-add-relative 'default :height 173)
-    )
-  (org-babel-do-load-languages
-   'org-babel-load-languages org-babel-load-languages)
-  (add-hook 'org-mode-hook #'my-org-mode-hook)
-  ;;ob-plantuml
-  (add-to-list 'org-babel-default-header-args:plantuml
-               '(:cmdline . "-charset utf-8"))
-  (setq org-publish-project-alist
-      '(("aip3"
-         :base-directory "~/git/advancedinformationprocessing3/org"
-         :publishing-directory "~/git/advancedinformationprocessing3/pub"
-         :base-extension "org"
-         :publishing-function org-html-publish-to-html
-         :html-postamble "<a href=\"index.html\">サイトのトップへ戻る</a>"
-         :language "ja"
-         :with-tags nil
-         ;; :auto-sitemap t
-         :htmlized-source t
-         :with-tags nil
-         :makeindex t
-         :recursive t)
-        ("aip3-image"
-         :base-directory "~/git/advancedinformationprocessing3/image"
-         :publishing-directory "~/git/advancedinformationprocessing3/pub/image"
-         :base-extension "jpg\\|png\\|pdf"
-         :publishing-function org-publish-attachment
-         :recursive t))))
+    (defun my-org-mode-hook ()
+      (add-hook 'completion-at-point-functions
+                'pcomplete-completions-at-point nil t)
+      ;; (face-remap-add-relative 'default :height 173)
+      )
+    (org-babel-do-load-languages
+     'org-babel-load-languages org-babel-load-languages)
+    (add-hook 'org-mode-hook #'my-org-mode-hook)
+    ;;ob-plantuml
+    (add-to-list 'org-babel-default-header-args:plantuml
+                 '(:cmdline . "-charset utf-8"))
+    (setq org-publish-project-alist
+          '(("aip3"
+             :base-directory "~/git/advancedinformationprocessing3/org"
+             :publishing-directory "~/git/advancedinformationprocessing3/pub"
+             :base-extension "org"
+             :publishing-function org-html-publish-to-html
+             :html-postamble "<a href=\"index.html\">サイトのトップへ戻る</a>"
+             :language "ja"
+             :with-tags nil
+             ;; :auto-sitemap t
+             :htmlized-source t
+             :with-tags nil
+             :makeindex t
+             :recursive t)
+            ("aip3-image"
+             :base-directory "~/git/advancedinformationprocessing3/image"
+             :publishing-directory "~/git/advancedinformationprocessing3/pub/image"
+             :base-extension "jpg\\|png\\|pdf"
+             :publishing-function org-publish-attachment
+             :recursive t))))
+  (leaf org-mu4e
+    :disabled t
+    :straight t
+    :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e"
+    :after (org)
+    :config
+    ;;store link to message if in header view, not to header query
+    (setq org-mu4e-link-query-in-headers-mode nil))
+  (leaf ox-rst
+    :straight t
+    :after (org))
+  (leaf ox-hugo
+    :straight t
+    :after org)
+  (leaf ob-browser
+    :straight t
+    :after org)
+  (leaf ox-epub
+    :straight t
+    :after org)
+  )
 
 
-(use-package org-mu4e
-  :disabled t
-  :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e"
-  :after (org)
-  :config
-  ;;store link to message if in header view, not to header query
-  (setq org-mu4e-link-query-in-headers-mode nil))
+
+
 
 (use-package org-journal
   :after org
@@ -870,20 +877,10 @@
   (org-journal-date-format "%A, %d %B %Y")
   (org-journal-file-header "# -*- mode: org-journal; -*-"))
 
-(use-package ox-rst
-  :after (org))
-(use-package ox-hugo
-  :after org)
-(use-package ob-browser
-  :after org)
-(use-package ox-epub
-  :after org)
+
 
 ;; Org Mode LaTeX Export
 
-(use-package ox-bibtex
-  :straight nil
-  :defer t)
 (use-package ox-eldoc
   :straight nil
   :defer t
@@ -1135,7 +1132,6 @@
 \\usepackage{xeCJK}
 \\usepackage{zxjatype}
 \\usepackage{xltxtra} %便利なパッケージ群
-\\setCJKmainfont{HiraginoSans-W4}
 \\setCJKmonofont{IPAGothic}
 \\usepackage{bm}
 \\usepackage{color}
@@ -1159,7 +1155,6 @@
 \\setbeamertemplate{footline}[page number]
 \\setbeamertemplate{itemize items}[triangle]
 \\setsansfont[ BoldFont={Fira Sans SemiBold}, ItalicFont={Fira Sans Italic}, BoldItalicFont={Fira Sans SemiBold Italic} ]{Fira Sans}
-\\setCJKmainfont{BIZ-UDGothic}
 \\definecolor{myfg}{HTML}{EC9F4C}
 \\definecolor{mainbg}{HTML}{3F597C}
 \\definecolor{mynormalbg}{HTML}{F2F2F2}
@@ -1321,7 +1316,8 @@ See `org-capture-templates' for more information."
               (("C-c n i" . org-roam-insert))
               (("C-c n I" . org-roam-insert-immediate))))
 
-(use-package mu4e
+(leaf mu4e
+  :straight t
   :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e"
   :commands (mu4e)
   :config
@@ -1383,29 +1379,25 @@ See `org-capture-templates' for more information."
            ("/trash"   . ?t)
            ("/archive" . ?a))))
 
-
-
-
-
-(use-package company
-  :bind (
-         :map company-mode-map
-              ("C-M-i" . 'company-indent-or-complete-common)
-         :map company-active-map
-              ("C-n"   . 'company-select-next)
-              ("C-p"   . 'company-select-previous)
-              ("C-s"   . 'company-filter-candidates)
-              ("C-i"   . 'company-complete-selection)
-         :map company-search-map
-              ("C-n"   . 'company-select-next)
-              ("C-p"   . 'company-select-previous))
-  :hook ((emacs-lisp-mode   . company-mode)
-         (c-mode            . company-mode)
-         (shell-script-mode . company-mode)
-         (sh-mode           . company-mode)
-         (shell-mode        . company-mode)
-         (org-mode          . company-mode)
-         (lisp-mode         . company-mode))
+(leaf company
+  :straight t
+  :bind ((:company-mode-map
+          ("C-M-i" . company-indent-or-complete-common))
+         (:company-active-map
+          ("C-n"   . company-select-next)
+          ("C-p"   . company-select-previous)
+          ("C-s"   . company-filter-candidates)
+          ("C-i"   . company-complete-selection))
+         (:company-search-map
+          ("C-n"   . company-select-next)
+          ("C-p"   . company-select-previous)))
+  :hook ((emacs-lisp-mode-hook   . company-mode)
+         (c-mode-hook            . company-mode)
+         (shell-script-mode-hook . company-mode)
+         (sh-mode-hook           . company-mode)
+         (shell-mode-hook        . company-mode)
+         (org-mode-hook          . company-mode)
+         (lisp-mode-hook         . company-mode))
   :config
   (setq company-idle-delay 0) ; 遅延なしにすぐ表示
   (setq company-minimum-prefix-length 2)
@@ -1420,7 +1412,8 @@ See `org-capture-templates' for more information."
               '(:with company-yasnippet))))
   (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends)))
 
-(use-package yatex
+(leaf yatex
+  :straight t
   :mode
   (("\\.tex$" . yatex-mode)
    ("\\.ltx$" . yatex-mode)
@@ -1469,27 +1462,31 @@ See `org-capture-templates' for more information."
   (setenv "PATH" "/usr/local/bin:/Library/TeX/texbin/:/Applications/Skim.app/Contents/SharedSupport:$PATH" t)
   (setq exec-path (append '("/usr/local/bin" "/Library/TeX/texbin" "/Applications/Skim.app/Contents/SharedSupport") exec-path)))
 
-(use-package php-mode
+(leaf php-mode
+  :straight t
   :mode (("\\.php\\'" . php-mode)))
-(use-package ac-php
+(leaf ac-php
+  :straight t
   :after php-mode)
-(use-package flycheck-phpstan
-  :hook (php-mode . (lambda ()
-                      (require 'flycheck-phpstan)
-                      (flycheck-mode t))))
+(leaf flycheck-phpstan
+  :straight t
+  :hook (php-mode-hook . (lambda ()
+                           (require 'flycheck-phpstan)
+                           (flycheck-mode t))))
 (use-package company-php
-  :after (:all company php-mode ac-php)
-  :hook (php-mode . (lambda ()
-                      ;; Enable company-mode
-                      (company-mode t)
-                      ;; (require 'company-php)
+  :after (ac-php)
+  :straight t
+  :hook (php-mode-hook . (lambda ()
+                           ;; Enable company-mode
+                           (company-mode t)
+                           ;; (require 'company-php)
 
-                      ;; Enable ElDoc support (optional)
-                      (ac-php-core-eldoc-setup)
+                           ;; Enable ElDoc support (optional)
+                           (ac-php-core-eldoc-setup)
 
-                      (set (make-local-variable 'company-backends)
-                           '((company-ac-php-backend company-dabbrev-code)
-                             company-capf company-files)))))
+                           (set (make-local-variable 'company-backends)
+                                '((company-ac-php-backend company-dabbrev-code)
+                                  company-capf company-files)))))
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
@@ -1516,8 +1513,8 @@ See `org-capture-templates' for more information."
                                            t))))))
                            (message "lsp-python-ms-extra-paths `%s'" lsp-python-ms-extra-paths))
                          (lsp-deferred))))  ; or lsp
-(use-package pipenv
-  :hook (python-mode . pipenv-mode)
+(leaf pipenv
+  :hook (python-mode-hook . pipenv-mode)
   :init
   (setq
    pipenv-projectile-after-switch-function
@@ -1554,14 +1551,16 @@ See `org-capture-templates' for more information."
   :hook (java-mode-hook . lsp-deferred)
   :bind ((:lsp-mode-map
           ("M-." . lsp-find-definition))))
-(use-package dap-mode
+(leaf dap-mode
+  :straight t
   :after lsp-mode
   :config
   (dap-mode 1)
-  (dap-ui-mode 1))
-(use-package dap-java
-  :straight lsp-java
-  :after (lsp-java))
+  (dap-ui-mode 1)
+  (leaf dap-java
+    :require t
+    :after (lsp-java)))
+
 (leaf hydra :straight t)
 (leaf projectile-ripgrep :straight t)
 
@@ -1606,10 +1605,12 @@ See `org-capture-templates' for more information."
   :require t
   :hook (after-init-hook . smartparens-global-mode))
 
-(use-package kotlin-mode
+(leaf kotlin-mode
+  :straight t
   :mode (("\\.kt\\'" . kotlin-mode)))
 
-(use-package whitespace
+(leaf whitespace
+  :require t
   :config
   (set-face-foreground 'whitespace-space nil)
   (set-face-background 'whitespace-space "gray33")
@@ -1625,8 +1626,8 @@ See `org-capture-templates' for more information."
   (global-whitespace-mode 1))
 
 
-(use-package plantuml-mode
-;;  :ensure-system-package plantuml
+(leaf plantuml-mode
+  :straight t
   :config
   (when (eq system-type 'darwin)
     (setq plantuml-jar-path
@@ -1645,25 +1646,27 @@ See `org-capture-templates' for more information."
   :config
   (setq easy-hugo-org-header t)
   (setq easy-hugo-default-ext ".org"))
-(use-package npm-mode
+(leaf npm-mode
   :disabled t
+  :straight t
 ;;  :ensure-system-package npm
 )
-(use-package autodisass-java-bytecode
-  :defer t)
+(leaf autodisass-java-bytecode
+  :straight t)
 
-(use-package google-c-style
-  :defer t
+(leaf google-c-style
+  :straight t
   :commands
   (google-set-c-style))
 (leaf regex-tool :straight t)
 
-(use-package solarized-theme
+(leaf solarized-theme
   :disabled t
+  :straight t
   :config
   (load-theme 'solarized-dark t))
-(use-package markdown-mode
-  :straight nil
+(leaf markdown-mode
+  :straight t
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
@@ -1674,10 +1677,12 @@ See `org-capture-templates' for more information."
                             :family "IPAGothic")))
 (leaf docker :straight t)
 (leaf docker-compose-mode :straight t)
-(use-package review-mode
+(leaf review-mode
+  :straight t
   :mode (("\\.re\\'" . review-mode)))
 (leaf csv-mode :straight t)
-(use-package pdf-tools
+(leaf pdf-tools
+  :straight t
   ;; https://github.com/politza/pdf-tools#installation
   :mode (("\\.pdf\\'" . pdf-view-mode))
   :config
@@ -1685,7 +1690,8 @@ See `org-capture-templates' for more information."
   (display-line-numbers-mode -1)
   (setq pdf-annot-activate-created-annotations t)
   (setq pdf-view-resize-factor 1.1))
-(use-package org-re-reveal
+(leaf org-re-reveal
+  :straight t
   :after org)
 (leaf org-gcal
   :straight t
