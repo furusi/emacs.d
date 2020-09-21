@@ -93,7 +93,6 @@
      (caml "ocaml")
      (bash "bash")
      (conf "ini")))
- '(org-latex-minted-options '(("frame" "single") ("breaklines" "")))
  '(org-link-file-path-type 'relative)
  '(org-list-allow-alphabetical t)
  '(org-preview-latex-process-alist
@@ -168,7 +167,7 @@
    '(easy-hugo lsp-mode use-package-ensure-system-package spinner company yasnippet all-the-icons ob-kotlin ace-jump-mode ace-isearch helm-swoop helm-migemo migemo gnu-elpa-keyring-update rustic review-mode pandoc ox-epub ob-browser htmlize adoc-mode ox-asciidoc ox-hugo org company-arduino arduino-mode pandoc-mode lorem-ipsum undo-propose 0x0 all-the-icons-ivy groovy-mode ob-rust multi-term back-button jedi jedi-core lsp-java-treemacs dap-java flycheck-rust cargo racer howm counsel-tramp dropbox editorconfig editorconfig-generate ox-pandoc c-eldoc ggtags graphviz-dot-mode kotlin-mode php-mode visual-regexp-steroids omnisharp dap-mode treemacs lsp-java ccls zenburn-theme yatex yasnippet-snippets which-key web-mode use-package undohist undo-tree sudo-edit spacemacs-theme smartparens smart-mode-line slime rust-mode restart-emacs poet-theme plantuml-mode pipenv ox-rst ox-reveal org-plus-contrib org-mobile-sync org-journal org-ac nim-mode magit-popup magit lsp-ui keyfreq helm gradle-mode exec-path-from-shell elpy dimmer ddskk company-web company-shell company-php company-lsp company-jedi company-irony auto-save-buffers-enhanced))
  '(php-manual-url 'ja)
  '(picasm-db-file "~/.emacs.d/lisp/picasm/picasm-db.el")
- '(plantuml-jar-path "/usr/local/opt/plantuml/libexec/plantuml.jar")
+ '(plantuml-jar-path "/usr/local/opt/plantuml/libexec/plantuml.jar" t)
  '(python-shell-interpreter "python3")
  '(recentf-auto-cleanup 'never)
  '(recentf-exclude
@@ -897,9 +896,13 @@
    "org-table-next-" "org-table-previous" "org-cycle"))
 
 
-(use-package ox-latex
+(leaf ox-latex
+  :require t
   :straight nil
   :after (org)
+  :custom ((org-latex-minted-options . '(("frame" "single")
+                                         ("breaklines" "")
+                                         ("fontsize" "\\footnotesize"))))
   :config
   (setq org-latex-default-class "bxjsarticle")
   ;; (setq org-latex-pdf-process '("latexmk -gg -pdfdvi  %f"))
@@ -921,6 +924,8 @@
                  "\\documentclass[]{jlreq}
 \\usepackage{luatexja} % ltjclasses, ltjsclasses を使うときはこの行不要
 \\usepackage{luatexja-fontspec}
+\\usepackage{minted}
+\\renewcommand{\\listingscaption}{リスト}
 \\newcommand{\\uline}[1]{\\underline{#1}}
 "
                  ("\\section{%s}" . "\\section*{%s}")
