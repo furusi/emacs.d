@@ -1184,24 +1184,31 @@
                  ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
                  ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
   (add-to-list 'org-latex-classes
-               '("lectureslide-lualatex"
-                 "\\documentclass[unicode,11pt]{beamer}
+             '("lectureslide-lualatex"
+               "\\documentclass[presentation]{beamer}
+[NO-DEFAULT-PACKAGES]
 \\usepackage{luatexja}
-\\usepackage{bm}
-\\usepackage{color}
-\\usepackage{listings}
-\\usepackage{siunitx} %si単位系
-\\usepackage{hyperref} %しおり
-\\usepackage{ascmac} %角丸の枠
-\\usepackage{ulem} %下線
-\\usepackage{amsmath,amssymb} %数式，記号
-\\usefonttheme[onlymath]{serif}
-\\usepackage{minted}
-\\usepackage{capt-of} %キャプション
-\\usepackage{fancyhdr} %ヘッダ，フッタ
-\\usepackage{fancybox} %枠
-\\usepackage{tikz} %描画
-\\usepackage{graphicx} %画像貼り付け
+\\usepackage{textcomp}
+\\usepackage{graphicx}
+% \\usepackage{booktabs}
+\\usepackage{longtable}
+\\usepackage{wrapfig}
+\\usepackage{hyperref}
+\\hypersetup{pdfencoding=auto, linkbordercolor={0 1 0}}
+%% Fonts
+% mathematical font
+\\usepackage{fontspec}
+\\usepackage{amsmath, amssymb}
+\\usepackage{qtxmath}    % Times (Gyre Termes)
+% English
+\\setmainfont[BoldFont=TeXGyreHeros, Ligatures=TeX]{TeXGyreTermes}  %Times
+\\setsansfont[Ligatures=TeX]{TeXGyreHeros}                          % Helvetica
+% Japanese
+\\usepackage{luacode}
+\\usepackage{luatexja-otf}
+\\usepackage[ipaex]{luatexja-preset}
+\\renewcommand{\\kanjifamilydefault}{\\gtdefault}
+% theme
 \\usetheme[progressbar=frametitle]{metropolis}
 \\metroset{sectionpage=progressbar, block=fill}
 \\setbeamertemplate{navigation symbols}{}
@@ -1220,14 +1227,15 @@
 \\setbeamercolor{normal text}{fg=mynormalfg,bg=mynormalbg}
 \\setbeamercolor{block title example}{fg=myexampletitlefg}
 \\setbeamerfont{alerted text}{series=\\bfseries}
-
-\\setcounter{page}{1}
-               [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
-                 ("\\section\{%s\}"       . "\\section*\{%s\}")
-                 ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
-                 ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
-                 ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
-                 ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
+%%
+\\setbeamercovered{transparent}
+\\setbeamertemplate{navigation symbols}{}"
+  ("\\section{%s}" . "\\section*{%s}")
+  ("\\subsection{%s}" . "\\subsection*{%s}")
+  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+  ("\\paragraph{%s}" . "\\paragraph*{%s}")
+  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+  
   ;; org-export-latex-no-toc
   (defun org-export-latex-no-toc (depth)
     (when depth
