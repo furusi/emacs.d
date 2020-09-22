@@ -309,6 +309,9 @@
   :bind ((:projectile-mode-map
           ("C-c p" . projectile-command-map)))
   :straight t
+  :custom
+  ((projectile-indexing-method . 'hybrid)
+   (projectile-sort-order . 'recently-active))
   :config
   (projectile-mode +1)
   (dolist
