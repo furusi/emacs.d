@@ -468,6 +468,7 @@
 
 
 (leaf auto-save-buffers-enhanced
+  :disabled t
   :straight t
   :config
   ;; 1秒後に保存
