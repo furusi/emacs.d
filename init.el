@@ -331,10 +331,7 @@
            ;; isearch
          (isearch-mode-hook . skk-isearch-mode-setup) ; isearch で skk のセットアップ
          (isearch-mode-end-hook . skk-isearch-mode-cleanup) ; isearch で skk のクリーンアップ
-         (helm-exit-minibuffer-hook . skk-isearch-mode-cleanup)
-         (dired-load-hook . (lambda ()
-                              (load "dired-x")
-                              (global-set-key "\C-x\C-j" 'skk-mode))))
+         (helm-exit-minibuffer-hook . skk-isearch-mode-cleanup))
   :custom
   ((skk-share-private-jisyo . t)
    (skk-isearch-start-mode . 'latin); isearch で skk の初期状態
@@ -375,6 +372,9 @@
   ;; 	       '(skk-search-web 'skk-google-cgi-api-for-japanese-input)
   ;; 	       t))
   (setq skk-auto-insert-paren t)
+  (add-hook  'dired-load-hook
+             (load "dired-x")
+             (global-set-key "\C-x\C-j" 'skk-mode))
   (leaf skk-study
     :require t)
   (leaf skk-hint
