@@ -929,6 +929,8 @@
 \\usepackage{luatexja} % ltjclasses, ltjsclasses を使うときはこの行不要
 \\usepackage{luatexja-fontspec}
 \\usepackage{minted}
+\\usepackage[pdfencoding=auto]{hyperref}
+\\hypersetup{pdfborder = {0 0 0}}
 \\renewcommand{\\listingscaption}{リスト}
 \\newcommand{\\uline}[1]{\\underline{#1}}
 "
