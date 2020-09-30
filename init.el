@@ -771,6 +771,8 @@
              (file+headline , (concat org-directory "notes.org") "MEMO")
              "* %U %? %^g\n\n"
              :empty-lines 1)))
+    ;;
+    (setq org-agenda-default-appointment-duration 60)
     ;; コードを評価するとき尋ねない
     (setq org-confirm-babel-evaluate nil)
 
