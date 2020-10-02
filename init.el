@@ -383,9 +383,6 @@
     ;; ▼モード中で=漢字の読み方を指定する
     (setq skk-hint-start-char ?=))
   (leaf context-skk
-    :hook (
-           ;; 自動的に英字モードになる
-           (skk-load-hook . (lambda () (require 'context-skk))))
     :config
     (add-to-list 'context-skk-programming-mode 'python-mode)
     (add-to-list 'context-skk-programming-mode 'rustic-mode)
