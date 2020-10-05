@@ -1741,6 +1741,10 @@ See `org-capture-templates' for more information."
 ;;; バックアップファイルを作成しない
 (setq make-backup-files t))
 
+(leaf asm-mode
+  :hook ((asm-mode-set-comment-hook . (lambda ()
+                                        (setq asm-comment-char ?#)))))
+
 ;; https://gist.github.com/tek-nishi/a7fc3933be5e62c7eeaa
 (defun my-insert-newline-and-indent(arg)
   "カーソル行の上や下に一行挿入してインデント(前置引数が４だと上の行に挿入)"
