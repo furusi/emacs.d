@@ -1513,9 +1513,34 @@ See `org-capture-templates' for more information."
          ;; (python-mode . lsp-deferred)
          ))
 
+(leaf lsp-python-ms
+  :straight t
+  :require t
+  :hook (('python-mode-hook . (lambda ()
+                                (require 'lsp-python-ms)
+                                (when (file-exists-p
+                                       (concat (projectile-project-root buffer-file-name) ".venv/"))
+                                  (setq lsp-python-ms-extra-paths
+                                        (vector
+                                         (format
+                                          "%s/site-packages"
+                                          (car
+                                           (last (directory-files
+                                                  (concat
+                                                   (projectile-project-root buffer-file-name)
+                                                   ".venv/lib/")
+                                                  t))))))
+                                  (message "lsp-python-ms-extra-paths `%s'" lsp-python-ms-extra-paths))
+                                (lsp-deferred))))
+  :config
+  (setq lsp-python-ms-auto-install-server t)
+  (add-hook 'python-mode-hook #'lsp-deferred) ; or lsp
+  )
+
 (use-package lsp-python-ms
+  :disabled t
   :init (setq lsp-python-ms-auto-install-server t)
-  :hook (python-mode . (lambda ()
+  :hook  (python-mode . (lambda ()
                          (require 'lsp-python-ms)
                          (when (file-exists-p
                                 (concat (projectile-project-root buffer-file-name) ".venv/"))
@@ -1530,7 +1555,8 @@ See `org-capture-templates' for more information."
                                             ".venv/lib/")
                                            t))))))
                            (message "lsp-python-ms-extra-paths `%s'" lsp-python-ms-extra-paths))
-                         (lsp-deferred))))  ; or lsp
+                         (lsp-deferred)))
+  )  ; or lsp
 (leaf pipenv
   :hook (python-mode-hook . pipenv-mode)
   :init
