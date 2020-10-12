@@ -468,7 +468,6 @@
 
 
 (leaf auto-save-buffers-enhanced
-  :disabled t
   :straight t
   :config
   ;; 1秒後に保存
@@ -480,6 +479,7 @@
   (setq auto-save-buffers-enhanced-exclude-regexps '("^/ssh:" "^/scp:" "/sudo:" "/multi:")))
 
 (leaf real-auto-save
+  :disabled t
   :straight t
   :require t
   :custom ((real-auto-save-interval . 0.5))
