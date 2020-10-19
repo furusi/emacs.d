@@ -386,6 +386,7 @@
     :config
     (add-to-list 'context-skk-programming-mode 'python-mode)
     (add-to-list 'context-skk-programming-mode 'rustic-mode)
+    (add-to-list 'context-skk-programming-mode 'js-mode)
     (setq context-skk-mode-off-message "[context-skk] 日本語入力 off")
     (context-skk-mode))
   )
