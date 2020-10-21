@@ -1595,6 +1595,7 @@ See `org-capture-templates' for more information."
 ;; optionally if you want to use debugger
 (leaf lsp-java
   :straight t
+  :require t
   :hook (java-mode-hook . lsp-deferred)
   :bind ((:lsp-mode-map
           ("M-." . lsp-find-definition))))
