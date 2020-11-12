@@ -1771,6 +1771,8 @@ See `org-capture-templates' for more information."
 (leaf asm-mode
   :hook ((asm-mode-set-comment-hook . (lambda ()
                                         (setq asm-comment-char ?#)))))
+(leaf ssh-config-mode
+  :straight t)
 
 ;; https://gist.github.com/tek-nishi/a7fc3933be5e62c7eeaa
 (defun my-insert-newline-and-indent(arg)
