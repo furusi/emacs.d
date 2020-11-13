@@ -1773,6 +1773,11 @@ See `org-capture-templates' for more information."
                                         (setq asm-comment-char ?#)))))
 (leaf ssh-config-mode
   :straight t)
+(leaf dockerfile-mode
+  :straight t
+  :require t
+  :config
+  (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
 
 ;; https://gist.github.com/tek-nishi/a7fc3933be5e62c7eeaa
 (defun my-insert-newline-and-indent(arg)
