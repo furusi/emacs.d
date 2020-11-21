@@ -429,16 +429,20 @@
 
 (leaf migemo
   :straight t
+  :require t
   :config
   (setq migemo-options '("-q" "--emacs"))
   (setq migemo-coding-system 'utf-8-unix)
   ;; Set your installed path
   (setq migemo-command
         (cond ((eq system-type 'darwin)    "/usr/local/bin/cmigemo")
+              ((eq system-type 'windows-nt)    "cmigemo")
               ((eq system-type 'gnu/linux) "/usr/bin/cmigemo")))
   (setq migemo-dictionary
         (cond ((eq system-type 'darwin)
                "/usr/local/opt/cmigemo/share/migemo/utf-8/migemo-dict")
+              ((eq system-type 'windows-nt)
+               "~/opt/cmigemo-default-win64/dict/utf-8")
               ((string-match-p "arch" operating-system-release)
                "/usr/share/migemo/utf-8/migemo-dict")
               (t "/usr/share/cmigemo/utf-8/migemo-dict")))
