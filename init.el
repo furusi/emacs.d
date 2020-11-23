@@ -1782,6 +1782,9 @@ See `org-capture-templates' for more information."
   :require t
   :config
   (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
+(leaf git-modes
+  :straight t
+  :require t)
 
 ;; https://gist.github.com/tek-nishi/a7fc3933be5e62c7eeaa
 (defun my-insert-newline-and-indent(arg)
