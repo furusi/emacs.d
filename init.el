@@ -673,6 +673,8 @@
     :custom
     ((org-preview-latex-default-process . 'dvisvgm))
     :config
+    (when (file-exists-p "~/git/notes/")
+      (setq org-directory (expand-file-name "~/git/notes/")))
     (setq org-format-latex-options
           (plist-put org-format-latex-options :scale 2.0))
     ;; org-modeの固定幅フォントを設定
@@ -691,13 +693,7 @@
       (setq org-plantuml-jar-path
             "/usr/local/opt/plantuml/libexec/plantuml.jar"))
 
-
-    (when (or (eq system-type 'gnu/linux)
-              (eq system-type 'darwin))
-      (setq org-directory (expand-file-name "~/Dropbox/org/")))
-    (when (not (file-exists-p org-directory))
-      (setq org-directory (expand-file-name "~/org/")))
-
+    
     (setq org-agenda-files
           (list
            (concat org-directory "agenda/")
