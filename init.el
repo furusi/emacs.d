@@ -670,11 +670,12 @@
            ("\C-cb" . org-iswitchb)
            (:org-mode-map
             ("C-c C-\'" . org-insert-structure-template)))
+    :init
+    (when (file-exists-p "~/git/notes/")
+      (setq org-directory (expand-file-name "~/git/notes/")))
     :custom
     ((org-preview-latex-default-process . 'dvisvgm))
     :config
-    (when (file-exists-p "~/git/notes/")
-      (setq org-directory (expand-file-name "~/git/notes/")))
     (setq org-format-latex-options
           (plist-put org-format-latex-options :scale 2.0))
     ;; org-modeの固定幅フォントを設定
