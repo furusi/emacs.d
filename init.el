@@ -1743,6 +1743,7 @@ See `org-capture-templates' for more information."
   :straight t
   :after org)
 (leaf org-gcal
+  :disabled t
   :straight t
   :after org
   :require t
