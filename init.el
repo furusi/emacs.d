@@ -1306,7 +1306,11 @@ See `org-capture-templates' for more information."
 ;;  :ensure-system-package (rg . ripgrep)
   :config
   (setq org-seek-search-tool 'ripgrep))
-(use-package org-pdftools
+
+(leaf org-pdf*
+  :disabled t
+  :config
+  (use-package org-pdftools
   :after org
   :straight (org-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
   :config (setq org-pdftools-root-dir (concat (getenv "HOME") "/GoogleDrive/Books"))
@@ -1317,12 +1321,22 @@ See `org-capture-templates' for more information."
                              :store #'org-pdftools-store-link
                              :export #'org-pdftools-export)
     (add-hook 'org-store-link-functions 'org-pdftools-store-link)))
-
-(use-package org-noter
+  (use-package org-noter
   :after (org))
-(use-package org-noter-pdftools
+  (use-package org-noter-pdftools
   :straight (org-noter-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
   :after (org-noter))
+  (leaf pdf-tools
+  :disabled t
+  :straight t
+  ;; https://github.com/politza/pdf-tools#installation
+  :mode (("\\.pdf\\'" . pdf-view-mode))
+  :config
+  (pdf-tools-install)
+  (display-line-numbers-mode -1)
+  (setq pdf-annot-activate-created-annotations t)
+  (setq pdf-view-resize-factor 1.1)))
+
 
 (use-package org-roam
   :straight (org-roam :type git :host github :repo "org-roam/org-roam")
@@ -1730,15 +1744,7 @@ See `org-capture-templates' for more information."
   :straight t
   :mode (("\\.re\\'" . review-mode)))
 (leaf csv-mode :straight t)
-(leaf pdf-tools
-  :straight t
-  ;; https://github.com/politza/pdf-tools#installation
-  :mode (("\\.pdf\\'" . pdf-view-mode))
-  :config
-  (pdf-tools-install)
-  (display-line-numbers-mode -1)
-  (setq pdf-annot-activate-created-annotations t)
-  (setq pdf-view-resize-factor 1.1))
+
 (leaf org-re-reveal
   :straight t
   :after org)
