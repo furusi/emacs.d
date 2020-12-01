@@ -1295,8 +1295,10 @@ See `org-capture-templates' for more information."
                (file+olp "all-posts.org" "Blog Ideas")
                (function org-hugo-new-subtree-post-capture-template))))
 
-(use-package ox-pandoc
-;;  :ensure-system-package pandoc
+(leaf ox-pandoc
+  ;;  :ensure-system-package pandoc
+  :if (or (file-exists-p "/usr/local/bin/pandoc")
+          (file-exists-p "/opt/local/bin/pandoc"))
   :after ox)
 (use-package org-download
   :after org
@@ -1749,7 +1751,7 @@ See `org-capture-templates' for more information."
   :straight t
   :after org)
 (leaf org-gcal
-  :disabled t
+  :if (file-exists-p "~/Dropbox/org/googlecalendar/org-gcal-config.el")
   :straight t
   :after org
   :require t
