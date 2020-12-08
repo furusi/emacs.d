@@ -883,8 +883,9 @@
   :after org
   :commands org-journal-new-entry
   :custom
-  (org-journal-dir (concat org-directory "journal"))
-  (org-journal-date-format "%A, %d %B %Y")
+  (org-journal-file-type 'monthly)
+  (org-journal-dir (concat org-directory "/journal"))
+  (org-journal-date-format "%A, %F")
   (org-journal-file-header "# -*- mode: org-journal; -*-"))
 
 
