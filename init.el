@@ -202,8 +202,9 @@
  '(org-table ((t (:foreground "cornflower blue")))))
 
 (leaf initchart
-  :disabled t
+  ;; :disabled t
   :straight (initchart :type git :host github :repo "yuttie/initchart")
+  :require t
   :config
   (initchart-record-execution-time-of load file)
   (initchart-record-execution-time-of require feature))
@@ -1243,7 +1244,7 @@
   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
   ("\\paragraph{%s}" . "\\paragraph*{%s}")
   ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-  
+
   ;; org-export-latex-no-toc
   (defun org-export-latex-no-toc (depth)
     (when depth
@@ -1600,14 +1601,14 @@ See `org-capture-templates' for more information."
   (lsp-ui-doc-max-height 20)
   (lsp-ui-doc-use-childframe t)
   (lsp-ui-doc-use-webkit nil)
-  
+
   (lsp-ui-sideline-enable t)
   (lsp-ui-sideline-ignore-duplicate t)
   (lsp-ui-sideline-show-symbol t)
   (lsp-ui-sideline-show-hover t)
   (lsp-ui-sideline-show-diagnostics t)
   (lsp-ui-sideline-show-code-actions t)
-  
+
   :hook (lsp-mode . lsp-ui-mode)
   :commands lsp-ui-mode
   :after lsp-mode)
