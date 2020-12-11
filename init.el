@@ -284,7 +284,8 @@
 (when (equal system-type 'darwin)
   (setq ns-command-modifier (quote meta))
   (add-to-list 'load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e/")
-  (when (eq window-system 'ns)
+  (when (or (eq window-system 'ns)
+            (eq window-system 'mac))
         ;; 游教科書体
         ;; (set-face-attribute 'default nil
         ;;                     :family "YuKyokasho Yoko")
@@ -305,6 +306,11 @@
 
 
 (leaf restart-emacs :straight t)
+
+(leaf dired*
+  :config
+  (when (eq system-type 'darwin)
+    (setq dired-use-ls-dired nil)))
 
 (leaf sudo-edit :straight t)
 (leaf projectile
@@ -520,6 +526,8 @@
   (leaf helm-projectile
     :straight t
     :require t
+    :custom
+    (projectile-switch-project-action . #'projectile-dired)
     :config
     (helm-projectile-on))
   (leaf helm-swoop
