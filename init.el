@@ -1670,15 +1670,18 @@ See `org-capture-templates' for more information."
   (when (eq system-type 'darwin)
     (when (executable-find "/usr/local/opt/ccls/bin/ccls")
       (setq ccls-executable "/usr/local/opt/ccls/bin/ccls"))
-    (setq ccls-initialization-options
-          '(:clang (:extraArgs ["-isystem/Library/Developer/CommandLineTools/usr/include/c++/v1"
-                                "-isystem/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include"
-                                "-isystem/usr/local/include"
-                                "-isystem/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"
-                                "-isystem/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"
-                                "-isystem/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include"
-                                "-isystem/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks"]
-                               :resourceDir "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0")))))
+    (when (executable-find "/opt/local/bin/ccls-clang-11")
+        (setq ccls-executable "/opt/local/bin/ccls-clang-11"))
+    ;; (setq ccls-initialization-options
+    ;;       '(:clang (:extraArgs ["-isystem/Library/Developer/CommandLineTools/usr/include/c++/v1"
+    ;;                             "-isystem/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include"
+    ;;                             "-isystem/usr/local/include"
+    ;;                             "-isystem/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include"
+    ;;                             "-isystem/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"
+    ;;                             "-isystem/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include"
+    ;;                             "-isystem/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks"]
+    ;;                            :resourceDir "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0")))
+    ))
 
 
 
