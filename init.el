@@ -183,6 +183,9 @@
      (xml "rst2xml.py" ".xml" nil)
      (pdf "rst2pdf" ".pdf" "-s ja")
      (s5 "rst2s5.py" ".html" nil)))
+ '(safe-local-variable-values
+   '((org-export-directory . "~/Dropbox/org")
+     (org-export-allow-bind-keywords . t)))
  '(slime-auto-start 'ask)
  '(slime-company-completion 'fuzzy)
  '(slime-complete-symbol*-fancy t)
@@ -883,6 +886,16 @@
   (leaf ox-epub
     :straight t
     :after org)
+  (leaf ox*
+    :after org
+    :custom (org-export-allow-bind-keywords . t)
+    :config
+    (defvar org-export-directory nil
+      "org-exportの出力先を指定する変数。buffer-local変数として指定する。")
+    (defun org-export-output-file-name--set-directory (orig-fn extension &optional subtreep pub-dir)
+      (setq pub-dir (or pub-dir org-export-directory))
+      (funcall orig-fn extension subtreep pub-dir))
+    (advice-add 'org-export-output-file-name :around 'org-export-output-file-name--set-directory))
   )
 
 
