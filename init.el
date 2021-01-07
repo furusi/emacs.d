@@ -895,11 +895,13 @@
     (defun org-export-output-file-name--set-directory (orig-fn extension &optional subtreep pub-dir)
       (setq pub-dir (or pub-dir org-export-directory))
       (funcall orig-fn extension subtreep pub-dir))
-    (advice-add 'org-export-output-file-name :around 'org-export-output-file-name--set-directory))
-  )
-
-
-
+    (advice-add 'org-export-output-file-name :around 'org-export-output-file-name--set-directory)
+    (leaf ox-pandoc
+    :straight t
+    :require t
+    :if (or (file-exists-p "/usr/local/bin/pandoc")
+            (file-exists-p "/opt/local/bin/pandoc")
+            (file-exists-p "/opt/homebrew/bin/pandoc")))))
 
 
 (use-package org-journal
@@ -1325,11 +1327,7 @@ See `org-capture-templates' for more information."
                (file+olp "all-posts.org" "Blog Ideas")
                (function org-hugo-new-subtree-post-capture-template))))
 
-(leaf ox-pandoc
-  ;;  :ensure-system-package pandoc
-  :if (or (file-exists-p "/usr/local/bin/pandoc")
-          (file-exists-p "/opt/local/bin/pandoc"))
-  :after ox)
+
 (use-package org-download
   :after org
   :hook ((org-mode . org-download-enable)))
