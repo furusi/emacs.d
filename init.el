@@ -1582,6 +1582,9 @@ See `org-capture-templates' for more information."
   (setq lsp-python-ms-auto-install-server t)
   (add-hook 'python-mode-hook #'lsp-deferred) ; or lsp
   )
+(leaf poetry
+  :straight t
+  :require t)
 
 (use-package lsp-python-ms
   :disabled t
