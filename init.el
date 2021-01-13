@@ -1609,6 +1609,10 @@ See `org-capture-templates' for more information."
                          ;; or lsp
                          (lsp-deferred)))
   )
+(leaf poetry
+  :straight t
+  :require t)
+
 (leaf pipenv
   :disabled t
   :hook (python-mode-hook . pipenv-mode)
