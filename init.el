@@ -1827,6 +1827,9 @@ See `org-capture-templates' for more information."
 (leaf git-modes
   :straight t
   :require t)
+(leaf go-mode
+  :straight t
+  :hook ((go-mode-hook . lsp-deferred)))
 
 ;; https://gist.github.com/tek-nishi/a7fc3933be5e62c7eeaa
 (defun my-insert-newline-and-indent(arg)
