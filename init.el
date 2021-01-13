@@ -1562,9 +1562,10 @@ See `org-capture-templates' for more information."
          ))
 
 (leaf lsp-python-ms
+  :disabled t
   :straight t
   :require t
-  :hook (('python-mode-hook . (lambda ()
+  :hook ((python-mode-hook . (lambda ()
                                 (require 'lsp-python-ms)
                                 (when (file-exists-p
                                        (concat (projectile-project-root buffer-file-name) ".venv/"))
@@ -1584,18 +1585,13 @@ See `org-capture-templates' for more information."
   (setq lsp-python-ms-auto-install-server t)
   (add-hook 'python-mode-hook #'lsp-deferred) ; or lsp
   )
-(leaf poetry
+(leaf lsp-pyright
   :straight t
-  :require t)
-
-(use-package lsp-python-ms
-  :disabled t
-  :init (setq lsp-python-ms-auto-install-server t)
-  :hook  (python-mode . (lambda ()
-                         (require 'lsp-python-ms)
+  :hook ((python-mode-hook . (lambda ()
+                         (require 'lsp-pyright)
                          (when (file-exists-p
                                 (concat (projectile-project-root buffer-file-name) ".venv/"))
-                           (setq lsp-python-ms-extra-paths
+                           (setq lsp-pyright-extra-paths
                                  (vector
                                   (format
                                    "%s/site-packages"
@@ -1605,9 +1601,16 @@ See `org-capture-templates' for more information."
                                             (projectile-project-root buffer-file-name)
                                             ".venv/lib/")
                                            t))))))
-                           (message "lsp-python-ms-extra-paths `%s'" lsp-python-ms-extra-paths))
-                         ;; or lsp
-                         (lsp-deferred)))
+                           (message "lsp-pyright-extra-paths `%s'" lsp-pyright-extra-paths))
+                         (lsp-deferred))))
+  
+  :config
+  (dolist (dir '(
+                 "[/\\\\]\\.venv$"
+                 "[/\\\\]\\.mypy_cache$"
+                 "[/\\\\]__pycache__$"
+                 ))
+    (push dir lsp-file-watch-ignored))
   )
 (leaf poetry
   :straight t
