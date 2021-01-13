@@ -487,6 +487,7 @@
 
 
 (leaf auto-save-buffers-enhanced
+  :disabled t
   :straight t
   :config
   ;; 1秒後に保存
@@ -495,7 +496,7 @@
   ;; Wroteのメッセージを抑制
   (setq auto-save-buffers-enhanced-quiet-save-p t)
   ;; tramp mode時の自動保存を抑制
-  (setq auto-save-buffers-enhanced-exclude-regexps '("^/ssh:" "^/scp:" "/sudo:" "/multi:" ".*.gpg$")))
+  (setq auto-save-buffers-enhanced-exclude-regexps '("^/rsync:" "^/ssh:" "^/scp:" "/sudo:" "/multi:" ".*.gpg$")))
 
 (leaf real-auto-save
   :disabled t
