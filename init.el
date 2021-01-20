@@ -490,11 +490,10 @@
 
 
 (leaf auto-save-buffers-enhanced
-  :disabled t
   :straight t
   :config
   ;; 1秒後に保存
-  (setq auto-save-buffers-enhanced-interval 1)
+  (setq auto-save-buffers-enhanced-interval 5)
   (auto-save-buffers-enhanced t)
   ;; Wroteのメッセージを抑制
   (setq auto-save-buffers-enhanced-quiet-save-p t)
@@ -634,6 +633,7 @@
     (setq rst-slides-program "open -a Firefox")))
 
 (leaf gradle-mode
+  :require t
   :straight t
   :mode (("\\.gradle$" . gradle-mode)))
 
