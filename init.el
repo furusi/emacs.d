@@ -956,7 +956,7 @@
                                          ("breaklines" "")
                                          ("fontsize" "\\footnotesize"))))
   :config
-  (setq org-latex-default-class "bxjsarticle")
+  (setq org-latex-default-class "lualatex-jlreq")
   ;; (setq org-latex-pdf-process '("latexmk -gg -pdfdvi  %f"))
   ;; (setq org-latex-pdf-process '("latexmk %f"))
   (setq org-latex-pdf-process '("latexmk -gg -pdflua  %f"))
