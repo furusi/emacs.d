@@ -175,6 +175,8 @@
    '("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|MERGEREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" "/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/" "/\\.emacs\\.d/elpa/"))
  '(recentf-max-menu-items 30)
  '(recentf-max-saved-items 2000)
+ '(rm-blacklist
+   '(" hl-p" " EditorConfig" " Undo-Tree" " Projectile" " ;▽" " Hmio" " Helm" " feather" " yas" " WK" " ElDoc"))
  '(rst-compile-toolsets
    '((html "rst2html.py" ".html" nil)
      (latex "rst2latex.py" ".tex" nil)
@@ -505,6 +507,16 @@
   :require t
   :custom ((real-auto-save-interval . 0.5))
   :hook ((org-mode-hook prog-mode-hook) . real-auto-save-mode))
+
+(leaf smart-mode-line
+  :straight t
+  :config
+  (column-number-mode t) ;; 列番号の表示
+  (line-number-mode t) ;; 行番号の表示
+  (defvar sml/no-confirm-load-theme t)
+  ;; (defvar sml/theme 'dark) ;; お好みで
+  ;; (defvar sml/shorten-directory -1) ;; directory pathはフルで表示されたいので
+  (sml/setup))
 
 ;; helm
 (leaf *helm
