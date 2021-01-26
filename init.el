@@ -619,6 +619,28 @@
 
 (leaf keyfreq :straight t
   :config
+  (setq keyfreq-excluded-commands
+        '(
+          backward-char
+          dired-next-line
+          forward-char
+          helm-next-line
+          helm-previous-line
+          ignore
+          keyboard-quit
+          lsp-ui-doc--handle-mouse-movement
+          magit-next-line
+          magit-previous-line
+          move-end-of-line
+          next-line
+          org-self-insert-command
+          previous-line
+          scroll-up-command
+          self-insert-command
+          skk-delete-backward-char
+          skk-insert
+          skk-previous-candidate
+          ))
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1))
 
