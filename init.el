@@ -1589,12 +1589,22 @@ See `org-capture-templates' for more information."
                                 '((company-ac-php-backend company-dabbrev-code)
                                   company-capf company-files)))))
 
-(use-package lsp-mode
-  :commands (lsp lsp-deferred)
-  :custom ((lsp-prefer-capf t))
-  :hook ((cc-mode     . lsp-deferred)
-         ;; (python-mode . lsp-deferred)
-         ))
+(leaf lsp-mode
+  :commands lsp-deferred lsp
+  :hook ((cc-mode-hook . lsp-deferred))
+  :config
+  (use-package-statistics-gather :use-package 'lsp-mode nil)
+  (straight-use-package 'lsp-mode)
+  (let ((custom--inhibit-theme-enable nil))
+    (custom-theme-set-variables 'use-package
+                                '(lsp-prefer-capf t nil nil "Customized with use-package lsp-mode")))
+  (use-package-statistics-gather :init 'lsp-mode nil)
+  (with-eval-after-load 'lsp-mode
+    (use-package-statistics-gather :config 'lsp-mode nil)
+    (use-package-statistics-gather :config 'lsp-mode t))
+
+  (use-package-statistics-gather :init 'lsp-mode t)
+  (use-package-statistics-gather :use-package 'lsp-mode t))
 
 (leaf lsp-python-ms
   :disabled t
