@@ -47,7 +47,9 @@
 
     :config
     ;; initialize leaf-keywords.el
-    (leaf-keywords-init)))
+    (leaf-keywords-init))
+  (leaf leaf-convert
+    :straight t))
 
 (leaf feather
   :ensure t
