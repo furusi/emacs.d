@@ -74,7 +74,6 @@
  '(org-babel-java-compiler "javac -encoding UTF-8")
  '(org-babel-load-languages '((emacs-lisp . t) (C . t) (dot . t) (java . t)))
  '(org-export-backends '(ascii html icalendar latex md odt taskjuggler))
- '(org-journal-date-format "%A, %d %B %Y")
  '(org-latex-compiler "lualatex")
  '(org-latex-default-class "bxjsarticle")
  '(org-latex-listings 'minted)
