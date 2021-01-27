@@ -49,7 +49,7 @@
     ;; initialize leaf-keywords.el
     (leaf-keywords-init))
   (leaf leaf-convert
-    :straight t))
+    :ensure t))
 
 (leaf feather
   :ensure t

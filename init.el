@@ -602,6 +602,8 @@
 (leaf all-the-icons :straight t)
 
 (leaf which-key :straight t
+  :custom
+  (which-key-idle-secondary-delay . 0.0)
   :config
   ;; 3つの表示方法どれか1つ選ぶ
   (which-key-setup-side-window-bottom)    ;ミニバッファ
