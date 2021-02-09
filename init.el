@@ -733,7 +733,8 @@
                  "~/org"))))
 
     :custom
-    ((org-preview-latex-default-process . 'dvisvgm))
+    ((org-preview-latex-default-process . 'dvisvgm)
+     (org-startup-folded . t))
     :config
     (setq org-format-latex-options
           (plist-put org-format-latex-options :scale 2.0))
