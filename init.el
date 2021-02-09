@@ -1963,3 +1963,4 @@ See `org-capture-templates' for more information."
 
 (provide 'init)
 ;;; init.el ends here
+(put 'upcase-region 'disabled nil)
