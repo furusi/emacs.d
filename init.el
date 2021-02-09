@@ -1328,6 +1328,10 @@
   ;;   (define-key org-mode-map (kbd "C-c [") 'reftex-citation))
 
   )
+(leaf ox-gfm
+  :straight (ox-gfm :type git :host github :repo "conao3/ox-gfm")
+  :require t
+  :after org)
 (setq org-ditaa-jar-path
       "/usr/local/opt/ditaa/libexec/ditaa-0.11.0-standalone.jar")
 
