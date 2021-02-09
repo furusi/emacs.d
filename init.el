@@ -727,7 +727,10 @@
           (expand-file-name
            (if (file-exists-p "~/git/notes")
                "~/git/notes"
-             "~/org")))
+             (progn
+               (when(not (file-exists-p "~/org"))
+                 (mkdir "~/org"))
+                 "~/org"))))
 
     :custom
     ((org-preview-latex-default-process . 'dvisvgm))
