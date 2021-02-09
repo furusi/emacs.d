@@ -206,7 +206,7 @@
  '(org-table ((t (:foreground "cornflower blue")))))
 
 (leaf initchart
-  ;; :disabled t
+  :disabled t
   :straight (initchart :type git :host github :repo "yuttie/initchart")
   :require t
   :config
@@ -435,7 +435,7 @@
   (setq magit-diff-refine-hunk 'all)
   ;; ediff時にorgファイルを全て表示する
   (with-eval-after-load 'outline
-    (add-hook 'ediff-prepare-buffer-hook #'org-show-all)))
+    (add-hook 'ediff-prepare-buffer-hook #'show-all)))
 (leaf magit-svn
   :straight t)
 (leaf grip-mode
@@ -714,7 +714,6 @@
 (leaf org*
   :config
   (leaf org
-    :commands (org-show-all)
     :mode (("\\.org$" . org-mode))
     :straight org-plus-contrib
     :bind (("\C-cc" . org-capture)
