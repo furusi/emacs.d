@@ -721,9 +721,17 @@
            ("\C-cl" . org-store-link)
            ("\C-ca" . org-agenda)
            ("\C-cb" . org-iswitchb)
+           ("<f2>" . insert-zero-width-space-twice)
            (:org-mode-map
             ("C-c C-\'" . org-insert-structure-template)))
     :init
+    (defun insert-zero-width-space()
+      (interactive)
+      (insert-char #x200b))
+    (defun insert-zero-width-space-twice()
+      (interactive)
+      (insert-zero-width-space)
+      (insert-zero-width-space))
     (setq org-directory
           (expand-file-name
            (if (file-exists-p "~/git/notes")
@@ -737,9 +745,10 @@
     ((org-preview-latex-default-process . 'dvisvgm)
      (org-startup-folded . t))
     :config
+    
     ;; 強調の規則を変更(別の環境で開いた場合は認識されなくなる...)
-    (setcar org-emphasis-regexp-components " \t('\"{[:print:]")
-    (setcar (nthcdr 1 org-emphasis-regexp-components) "[:print:]- \t.,:!?;'\")}\\")
+    (setcar org-emphasis-regexp-components "-[:space:]\x200B('\"{")
+    (setcar (nthcdr 1 org-emphasis-regexp-components) "-[:space:]\x200B.,:!?;'\")}\\[")
     (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
     
     (setq org-format-latex-options
