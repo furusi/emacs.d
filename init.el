@@ -603,6 +603,7 @@
 (leaf which-key :straight t
   :custom
   (which-key-idle-secondary-delay . 0.0)
+  (which-key-max-description-length . 35)
   :config
   ;; 3つの表示方法どれか1つ選ぶ
   (which-key-setup-side-window-bottom)    ;ミニバッファ
