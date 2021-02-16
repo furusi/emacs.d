@@ -1383,7 +1383,7 @@ See `org-capture-templates' for more information."
   (setq org-seek-search-tool 'ripgrep))
 
 (leaf org-pdf*
-  :disabled t
+  ;; :disabled t
   :config
   (use-package org-pdftools
   :after org
@@ -1402,7 +1402,6 @@ See `org-capture-templates' for more information."
   :straight (org-noter-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
   :after (org-noter))
   (leaf pdf-tools
-  :disabled t
   :straight t
   ;; https://github.com/politza/pdf-tools#installation
   :mode (("\\.pdf\\'" . pdf-view-mode))
