@@ -732,11 +732,16 @@
                (when(not (file-exists-p "~/org"))
                  (mkdir "~/org"))
                  "~/org"))))
-
+    
     :custom
     ((org-preview-latex-default-process . 'dvisvgm)
      (org-startup-folded . t))
     :config
+    ;; 強調の規則を変更(別の環境で開いた場合は認識されなくなる...)
+    (setcar org-emphasis-regexp-components " \t('\"{[:print:]")
+    (setcar (nthcdr 1 org-emphasis-regexp-components) "[:print:]- \t.,:!?;'\")}\\")
+    (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
+    
     (setq org-format-latex-options
           (plist-put org-format-latex-options :scale 2.0))
     ;; org-modeの固定幅フォントを設定
