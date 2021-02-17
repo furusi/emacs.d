@@ -1420,6 +1420,8 @@ See `org-capture-templates' for more information."
   :straight t
   ;; https://github.com/politza/pdf-tools#installation
   :mode (("\\.pdf\\'" . pdf-view-mode))
+  :hook ('pdf-view-mode-hook . (lambda ()
+                                 (display-line-numbers-mode 0)))
   :config
   (pdf-tools-install)
   (display-line-numbers-mode -1)
