@@ -1752,14 +1752,16 @@ See `org-capture-templates' for more information."
   :disabled t)
 
 (leaf ccls :straight t
-  :commands ccls
+  :after lsp-mode
 ;;  :ensure-system-package ccls
-  :hook ((c-mode c++-mode objc-mode) .
-         (lambda () (require 'ccls) (lsp)))
+  :hook ((c-mode-hook c++-mode-hook objc-mode-hook) .
+         (lambda () (require 'ccls) (lsp-deferred)))
   :config
   (when (eq system-type 'darwin)
     (when (executable-find "/usr/local/opt/ccls/bin/ccls")
       (setq ccls-executable "/usr/local/opt/ccls/bin/ccls"))
+    (when (executable-find "/opt/homebrew/opt/ccls/bin/ccls")
+      (setq ccls-executable "/opt/homebrew/opt/ccls/bin/ccls"))
     (when (executable-find "/opt/local/bin/ccls-clang-11")
         (setq ccls-executable "/opt/local/bin/ccls-clang-11"))
     ;; (setq ccls-initialization-options
