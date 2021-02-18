@@ -1749,6 +1749,11 @@ See `org-capture-templates' for more information."
   :init
   (setq rustic-lsp-server 'rust-analyzer))
 
+(leaf go-mode
+  :straight t
+  :after lsp-mode
+   :hook (go-mode-hook . lsp-defferd))
+
 (leaf android-mode
   :straight t
   :disabled t)
