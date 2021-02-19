@@ -408,7 +408,14 @@
     (add-to-list 'context-skk-programming-mode 'js-mode)
     (setq context-skk-mode-off-message "[context-skk] 日本語入力 off")
     (context-skk-mode))
-  )
+  (defun skk-set-display-table ()
+    (walk-windows (lambda (w)
+                    (let ((disptab (make-display-table)))
+                      (aset disptab ?\▼ (vector (make-glyph-code ?# 'escape-glyph)))
+                      (aset disptab ?\▽ (vector (make-glyph-code ?@ 'escape-glyph)))
+                      (set-window-display-table w disptab)))))
+  (add-hook 'window-configuration-change-hook #'skk-set-display-table)
+  (add-hook 'after-init-hook #'skk-set-display-table))
 
 
 (leaf eww
