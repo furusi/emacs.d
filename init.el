@@ -317,6 +317,11 @@
   (when (eq system-type 'darwin)
     (setq dired-use-ls-dired nil)))
 
+(leaf xwidget-webkit
+  :hook
+  (('xwidget-webkit-mode-hook . (lambda ()
+                                (display-line-numbers-mode 0)))))
+
 (leaf sudo-edit :straight t)
 (leaf projectile
   :bind ((:projectile-mode-map
