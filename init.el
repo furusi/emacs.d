@@ -1624,9 +1624,8 @@ See `org-capture-templates' for more information."
   :custom ((lsp-prefer-capf . t)
            (lsp-keymap-prefix . "C-c C-l"))
   :hook ((cc-mode     . lsp-deferred)
-         (lsp-mode-hook . lsp-enable-which-key-integration)
-         ;; (python-mode . lsp-deferred)
-         ))
+         (lsp-mode-hook . lsp-enable-which-key-integration))
+  :bind (("C-c C-l t" . lsp-ui-doc-focus-frame)))
 
 (leaf lsp-python-ms
   :disabled t
