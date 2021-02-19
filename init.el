@@ -1712,11 +1712,15 @@ See `org-capture-templates' for more information."
   (lsp-ui-sideline-show-hover         . t)
   (lsp-ui-sideline-show-diagnostics   . t)
   (lsp-ui-sideline-show-code-actions  . t)
-
+  :bind ((:lsp-ui-mode-map
+          ("M-." . lsp-ui-peek-find-definitions)
+          ("M-?" . lsp-ui-peek-find-references)))
 )
 
-(use-package lsp-treemacs
-  :commands lsp-treemacs-errors-list)
+(leaf lsp-treemacs
+  :commands lsp-treemacs-errors-list
+  :config
+  (lsp-treemacs-sync-mode 1))
 ;; optionally if you want to use debugger
 (leaf lsp-java
   :straight t
