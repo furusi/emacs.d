@@ -346,7 +346,7 @@
          (:minibuffer-local-map
           ("C-j" . skk-kakutei)))
   :hook ((skk-load-hook . (lambda () (require 'context-skk))) ;自動的に英字モードになる
-           ;; isearch
+         ;; isearch
          (isearch-mode-hook . skk-isearch-mode-setup) ; isearch で skk のセットアップ
          (isearch-mode-end-hook . skk-isearch-mode-cleanup) ; isearch で skk のクリーンアップ
          (helm-exit-minibuffer-hook . skk-isearch-mode-cleanup))
@@ -362,11 +362,11 @@
         (mapcar (lambda (x)
                   (format "%s%s" skk-get-jisyo-directory x))
                 '("SKK-JISYO.lisp" "SKK-JISYO.station"
-                     "SKK-JISYO.assoc" "SKK-JISYO.edict"
-                     "SKK-JISYO.law" "SKK-JISYO.jinmei"
-                     "SKK-JISYO.fullname" "SKK-JISYO.geo"
-                     "SKK-JISYO.itaiji" "SKK-JISYO.zipcode"
-                     "SKK-JISYO.okinawa" "SKK-JISYO.propernoun")))
+                  "SKK-JISYO.assoc" "SKK-JISYO.edict"
+                  "SKK-JISYO.law" "SKK-JISYO.jinmei"
+                  "SKK-JISYO.fullname" "SKK-JISYO.geo"
+                  "SKK-JISYO.itaiji" "SKK-JISYO.zipcode"
+                  "SKK-JISYO.okinawa" "SKK-JISYO.propernoun")))
   ;; サ行変格活用の動詞も送りあり変換出来るようにする
   (setq skk-search-sagyo-henkaku t)
   ;; 全角・半角カタカナを変換候補にする
