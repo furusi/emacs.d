@@ -978,7 +978,7 @@
   :custom
   (org-journal-file-type 'monthly)
   (org-journal-dir (concat org-directory "/journal"))
-  (org-journal-date-format "%A, %F")
+  (org-journal-date-format "%a, %F")
   (org-journal-file-header "# -*- mode: org-journal; -*-"))
 
 
