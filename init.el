@@ -733,7 +733,7 @@
            ("\C-cl" . org-store-link)
            ("\C-ca" . org-agenda)
            ("\C-cb" . org-iswitchb)
-           ("<f2>" . insert-zero-width-space-twice)
+           ("<f2>" . insert-zero-width-space)
            (:org-mode-map
             ("C-c C-\'" . org-insert-structure-template)))
     :init
