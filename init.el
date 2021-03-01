@@ -319,8 +319,8 @@
 
 (leaf xwidget-webkit
   :hook
-  (('xwidget-webkit-mode-hook . (lambda ()
-                                (display-line-numbers-mode 0)))))
+  ((xwidget-webkit-mode-hook . (lambda ()
+                                (display-line-numbers-mode -1)))))
 
 (leaf sudo-edit :straight t)
 (leaf projectile
