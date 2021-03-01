@@ -1007,6 +1007,7 @@
   :after (org)
   :custom ((org-latex-minted-options . '(("frame" "single")
                                          ("breaklines" "")
+                                         ("style" "xcode")
                                          ("fontsize" "\\footnotesize"))))
   :config
   (setq org-latex-default-class "lualatex-jlreq")
