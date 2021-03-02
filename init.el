@@ -286,6 +286,9 @@
 (setq-default indent-tabs-mode nil)
 (setq-default truncate-lines t)         ;文字列を折り返さない
 
+;; テーマのディレクトリを設定
+(setq custom-theme-directory (concat user-emacs-directory "themes/"))
+
 (when (equal system-type 'darwin)
   (setq ns-command-modifier (quote meta))
   (add-to-list 'load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e/")
