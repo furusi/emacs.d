@@ -541,15 +541,25 @@
   :custom ((real-auto-save-interval . 0.5))
   :hook ((org-mode-hook prog-mode-hook) . real-auto-save-mode))
 
-(leaf smart-mode-line
-  :straight t
+
+(leaf spaceline-config
+  :straight spaceline
+  :require t
   :config
-  (column-number-mode t) ;; 列番号の表示
-  (line-number-mode t) ;; 行番号の表示
-  (defvar sml/no-confirm-load-theme t)
-  ;; (defvar sml/theme 'dark) ;; お好みで
-  ;; (defvar sml/shorten-directory -1) ;; directory pathはフルで表示されたいので
-  (sml/setup))
+  (spaceline-spacemacs-theme)
+  (spaceline-helm-mode))
+(leaf diminish
+  :straight t
+  :require t
+  :config
+  (diminish 'helm-migemo-mode)
+  (diminish 'feather-mode)
+  (diminish 'editorconfig-mode)
+  (diminish 'which-key-mode)
+  (diminish 'show-paren-mode)
+  (diminish 'global-whitespace-mode)
+  (diminish 'smartparens-mode)
+  (diminish 'global-undo-tree-mode))
 
 ;; helm
 (leaf *helm
