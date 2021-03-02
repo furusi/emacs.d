@@ -33,7 +33,7 @@
  ("emacsql" . "6d8cd9366284b5a27268ff4b783e2c34573d5b60")
  ("emacsql-sqlite3" . "50aa9bdd76b0d18bf80526cff13a69fe306ee29c")
  ("epl" . "78ab7a85c08222cd15582a298a364774e3282ce6")
- ("exec-path-from-shell" . "4ea306a76f0f8371053dd12d77a3b5b4438974d3")
+ ("exec-path-from-shell" . "d14d6d2966efe5a1409f84a6b9d998268f74761d")
  ("expand-region.el" . "ea6b4cbb9985ddae532bd2faf9bb00570c9f2781")
  ("f.el" . "c4dbf8c8e83df834f5d6f72cd5649b9d8a8812ec")
  ("flycheck" . "79c9245ee0bd1722d41c865fef69aa2b1ac08fde")

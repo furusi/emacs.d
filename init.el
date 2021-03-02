@@ -231,7 +231,6 @@
   :straight t
   :require t
   :config
-  (setq exec-path-from-shell-check-startup-files nil)
   (add-to-list 'exec-path-from-shell-variables "PYTHONPATH")
   (add-to-list 'exec-path-from-shell-variables "JAVA_HOME")
   (exec-path-from-shell-initialize))
