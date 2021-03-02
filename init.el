@@ -14,12 +14,25 @@
   (set-fontset-font t 'symbol "Segoe UI Emoji" nil 'append)
   (set-fontset-font t 'symbol "Symbola" nil 'append))
 
-
-
 (leaf cus-edit
   :doc "tools for customizing Emacs and Lisp packages"
   :tag "builtin" "faces" "help"
   :custom `((custom-file . ,(locate-user-emacs-file "custom.el"))))
+
+(leaf custom-variables
+  :doc "set custom variables"
+  :custom
+  ((backup-directory-alist . '((".*" . "~/.ehist")))
+   (comment-style . 'multi-line)
+   (dired-dwim-target . t)
+   (ediff-window-setup-function . 'ediff-setup-windows-plain)
+   (indent-tabs-mode . nil)
+   (inhibit-startup-screen . t)
+   (recentf-max-menu-items . 30)
+   (recentf-max-saved-items . 2000)
+   (recentf-auto-cleanup . 'never)
+   (vc-follow-symlinks . t)))
+
 
 (leaf initchart
   :disabled t
@@ -169,7 +182,8 @@
   :straight t
   :custom
   ((projectile-indexing-method . 'hybrid)
-   (projectile-sort-order . 'recently-active))
+   (projectile-sort-order . 'recently-active)
+   (projectile-switch-project-action . 'projectile-dired))
   :config
   (projectile-mode +1)
   (dolist
@@ -196,6 +210,16 @@
    (skk-isearch-start-mode . 'latin); isearch で skk の初期状態
    )
   :init
+  (push (lambda ()
+          (if (eq (current-column) 0)
+              (org-at-heading-p)
+            nil))
+        context-skk-context-check-hook)
+  (push (lambda ()
+          (if (eq (current-column) 0)
+              (org-at-block-p)
+            nil))
+        context-skk-context-check-hook)
   (setq skk-get-jisyo-directory (format "%sskk-get-jisyo/" user-emacs-directory))
   (setq skk-large-jisyo (format "%sSKK-JISYO.L" skk-get-jisyo-directory))
   (setq skk-extra-jisyo-file-list
@@ -283,8 +307,10 @@
   :bind (("C-x g" . magit-status))
   :require t
   :straight t
+  :custom
+  ((magit-display-buffer-function . 'magit-display-buffer-fullframe-status-v1)
+   (magit-diff-refine-hunk . 'all))
   :config
-  (setq magit-diff-refine-hunk 'all)
   ;; ediff時にorgファイルを全て表示する
   (with-eval-after-load 'outline
     (add-hook 'ediff-prepare-buffer-hook #'show-all)))
@@ -384,6 +410,8 @@
   (leaf helm
     :straight t
     :require helm-config
+    :custom
+    ((helm-candidate-number-limit . 300))
     :bind (("M-x"      . helm-M-x)
            ("M-y"      . helm-show-kill-ring)
            ("C-x b"    . helm-mini)
@@ -527,6 +555,10 @@
 (leaf slime
   :straight slime-company
   :if (file-exists-p "~/.roswell/helper.el")
+  :custom
+  ((slime-auto-start . 'ask)
+   (slime-company-completion . 'fuzzy)
+   (slime-complete-symbol*-fancy . t))
   :hook ((lisp-mode-hook . slime-mode)
          (slime-repl-mode-hook
           . (lambda () (add-to-list
@@ -579,6 +611,36 @@
   (leaf org
     :mode (("\\.org$" . org-mode))
     :straight org-plus-contrib
+    :custom
+    ((org-export-allow-bind-keywords . t)
+     (org-export-backends . '(ascii html icalendar latex md odt taskjuggler))
+     (org-link-file-path-type . 'relative)
+     (org-list-allow-alphabetical . t)
+     (org-return-follows-link . t)
+     (org-src-lang-modes . '(("arduino" . arduino)
+                             ("browser" . html)
+                             ("redis" . redis)
+                             ("html" . web)
+                             ("php" . php)
+                             ("browser" . web)
+                             ("ocaml" . tuareg)
+                             ("elisp" . emacs-lisp)
+                             ("ditaa" . artist)
+                             ("asymptote" . asy)
+                             ("sqlite" . sql)
+                             ("calc" . fundamental)
+                             ("C" . c)
+                             ("cpp" . c++)
+                             ("C++" . c++)
+                             ("screen" . shell-script)
+                             ("shell" . sh)
+                             ("bash" . sh)
+                             ("dot" . graphviz-dot)
+                             ("asm" . asm)
+                             ("python" . python)))
+     (org-src-preserve-indentation . t)
+     (org-startup-folded . t)
+)
     :bind (("\C-cc" . org-capture)
            ("\C-cl" . org-store-link)
            ("\C-ca" . org-agenda)
@@ -731,10 +793,6 @@
     (setq org-use-speed-commands t)
     (setq org-icalendar-alarm-time 30)
     (setq org-icalendar-timezone "Asia/Tokyo")
-    ;; カーソルが見出しにある場合latinモードになる
-    (custom-add-frequent-value 'context-skk-context-check-hook
-                               #'org-at-heading-p)
-    (custom-reevaluate-setting 'context-skk-context-check-hook)
 
     ;; htmlで数式
     (setf org-html-mathjax-options
@@ -794,13 +852,18 @@
     (setq org-mu4e-link-query-in-headers-mode nil))
   (leaf ox-rst
     :straight t
-    :after (org))
+    :after (org)
+    :custom
+    ((org-rst-headline-underline-characters . '(45 126 94 58 39 32 95))))
   (leaf ox-hugo
     :straight t
     :after org)
   (leaf ob-browser
     :straight t
     :after org)
+  (leaf ob-java
+    :custom
+    ((org-babel-java-compiler . "javac -encoding UTF-8")))
   (leaf ox-epub
     :straight t
     :after org)
@@ -858,9 +921,50 @@
   :custom ((org-latex-minted-options . '(("frame" "single")
                                          ("breaklines" "")
                                          ("style" "xcode")
-                                         ("fontsize" "\\footnotesize"))))
+                                         ("fontsize" "\\footnotesize")))
+           (org-latex-compiler . "lualatex")
+           (org-latex-default-class . "lualatex-jlreq")
+           (org-latex-listings . 'minted)
+           (org-latex-listings-options . '(("frame" "single")
+                                           ("basicstyle" "{\\ttfamily\\scriptsize}")
+                                           ("numbers" "left")
+                                           ("commentstyle" "{\\ttfamily\\scriptsize}")
+                                           ("breaklines" "true")
+                                           ("showstringspaces" "false")))
+           (org-latex-minted-langs . '((rust "rust")
+                                       (emacs-lisp "common-lisp")
+                                       (cc "c++")
+                                       (cperl "perl")
+                                       (shell-script "bash")
+                                       (caml "ocaml")
+                                       (bash "bash")
+                                       (conf "ini")))
+           (org-preview-latex-default-process . 'dvisvgm)
+           (org-preview-latex-process-alist . '((dvipng :programs
+                                                        ("latex" "dvipng")
+                                                        :description "dvi > png" :message "you need to install the programs: latex and dvipng." :image-input-type "dvi" :image-output-type "png" :image-size-adjust
+                                                        (1.0 . 1.0)
+                                                        :latex-compiler
+                                                        ("latex -interaction nonstopmode -output-directory %o %f")
+                                                        :image-converter
+                                                        ("dvipng -D %D -T tight -o %O %f"))
+                                                (dvisvgm :programs
+                                                         ("latex" "dvisvgm")
+                                                         :description "dvi > svg" :message "you need to install the programs: latex and dvisvgm." :use-xcolor t :image-input-type "xdv" :image-output-type "svg" :image-size-adjust
+                                                         (1.7 . 1.5)
+                                                         :latex-compiler
+                                                         ("xelatex -no-pdf -interaction nonstopmode -output-directory %o %f")
+                                                         :image-converter
+                                                         ("dvisvgm %f -n -b min -c %S -o %O"))
+                                                (imagemagick :programs
+                                                             ("latex" "convert")
+                                                             :description "pdf > png" :message "you need to install the programs: latex and imagemagick." :image-input-type "pdf" :image-output-type "png" :image-size-adjust
+                                                             (1.0 . 1.0)
+                                                             :latex-compiler
+                                                             ("pdflatex -interaction nonstopmode -output-directory %o %f")
+                                                             :image-converter
+                                                             ("convert -density %D -trim -antialias %f -quality 100 %O")))))
   :config
-  (setq org-latex-default-class "lualatex-jlreq")
   ;; (setq org-latex-pdf-process '("latexmk -gg -pdfdvi  %f"))
   ;; (setq org-latex-pdf-process '("latexmk %f"))
   (setq org-latex-pdf-process '("latexmk -gg -pdflua  %f"))
@@ -1207,6 +1311,9 @@
   ;;   (define-key org-mode-map (kbd "C-c [") 'reftex-citation))
 
   )
+(leaf ox-taskjuggler
+  :custom
+  ((org-taskjuggler-process-command . "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")))
 (leaf ox-gfm
   :straight (ox-gfm :type git :host github :repo "conao3/ox-gfm")
   :require t
@@ -1387,10 +1494,15 @@ See `org-capture-templates' for more information."
          (shell-mode-hook        . company-mode)
          (org-mode-hook          . company-mode)
          (lisp-mode-hook         . company-mode))
+  :custom
+  ((company-idle-delay . 0.2)
+   (company-minimum-prefix-length . 2)
+   (company-selection-wrap-around . t)
+   (company-lsp-async . t)
+   (company-lsp-cache-candidates . nil)
+   (company-lsp-enable-recompletion . t)
+   (company-lsp-enable-snippet . t))
   :config
-  (setq company-idle-delay 0) ; 遅延なしにすぐ表示
-  (setq company-minimum-prefix-length 2)
-  (setq company-selection-wrap-around t)
   (defvar company-mode/enable-yas t
     "Enable yasnippet for all backends.")
 
@@ -1453,7 +1565,9 @@ See `org-capture-templates' for more information."
 
 (leaf php-mode
   :straight t
-  :mode (("\\.php\\'" . php-mode)))
+  :mode (("\\.php\\'" . php-mode))
+  :custom
+  ((php-manual-url . 'ja)))
 (leaf ac-php
   :straight t
   :after php-mode)
@@ -1489,6 +1603,8 @@ See `org-capture-templates' for more information."
   :disabled t
   :straight t
   :require t
+  :custom
+  ((lsp-python-ms-python-executable-cmd . "python3"))
   :hook ((python-mode-hook . (lambda ()
                                 (require 'lsp-python-ms)
                                 (when (file-exists-p
