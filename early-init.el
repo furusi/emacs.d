@@ -51,8 +51,14 @@
   (leaf leaf-convert
     :ensure t))
 
+(leaf diminish
+  :straight t
+  :require t
+  :diminish (show-paren-mode))
+
 (leaf feather
   :ensure t
+  :diminish feather-mode
   :config (feather-mode))
 
 ;; </leaf-install-code>

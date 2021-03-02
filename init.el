@@ -361,8 +361,11 @@
   (setq undohist-ignored-files
         '("/tmp/" "COMMIT_EDITMSG")))
 
-(leaf undo-tree :straight t
-  :init
+(leaf undo-tree
+  :straight t
+  :diminish (global-undo-tree-mode undo-tree-mode)
+  :require t
+  :config
   (global-undo-tree-mode t))
 
 
@@ -391,18 +394,7 @@
   :config
   (spaceline-spacemacs-theme)
   (spaceline-helm-mode))
-(leaf diminish
-  :straight t
-  :require t
-  :config
-  (diminish 'helm-migemo-mode)
-  (diminish 'feather-mode)
-  (diminish 'editorconfig-mode)
-  (diminish 'which-key-mode)
-  (diminish 'show-paren-mode)
-  (diminish 'global-whitespace-mode)
-  (diminish 'smartparens-mode)
-  (diminish 'global-undo-tree-mode))
+
 
 ;; helm
 (leaf *helm
@@ -410,6 +402,7 @@
   (leaf helm
     :straight t
     :require helm-config
+    :diminish helm-migemo-mode
     :custom
     ((helm-candidate-number-limit . 300))
     :bind (("M-x"      . helm-M-x)
@@ -491,6 +484,7 @@
 (leaf all-the-icons :straight t)
 
 (leaf which-key :straight t
+  :diminish t
   :custom
   (which-key-idle-secondary-delay . 0.0)
   (which-key-max-description-length . 35)
@@ -1761,9 +1755,10 @@ See `org-capture-templates' for more information."
 
 
 
-(leaf smartparens-config
-  :straight smartparens
-  :require t
+(leaf smartparens
+  :straight t
+  :diminish t
+  :require smartparens-config
   :hook (after-init-hook . smartparens-global-mode))
 
 (leaf kotlin-mode
@@ -1772,6 +1767,7 @@ See `org-capture-templates' for more information."
 
 (leaf whitespace
   :require t
+  :diminish global-whitespace-mode
   :config
   (set-face-foreground 'whitespace-space nil)
   (set-face-background 'whitespace-space "gray33")
@@ -1800,6 +1796,7 @@ See `org-capture-templates' for more information."
 (leaf graphviz-dot-mode :straight t)
 (leaf editorconfig
   :straight t
+  :diminish editorconfig-mode
   :config
   (editorconfig-mode 1))
 (use-package easy-hugo
