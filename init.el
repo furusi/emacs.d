@@ -201,8 +201,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(lsp-lsp-flycheck-warning-unnecessary-face ((t (:background "gray68"))) t)
- '(lsp-ui-sideline-code-action ((t (:foreground "yellow3"))))
  '(org-table ((t (:foreground "cornflower blue")))))
 
 (leaf initchart
@@ -294,12 +292,34 @@
   (add-to-list 'load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e/")
   (when (or (eq window-system 'ns)
             (eq window-system 'mac))
-        ;; 游教科書体
-        ;; (set-face-attribute 'default nil
-        ;;                     :family "YuKyokasho Yoko")
-        ;; 源ノ角ゴシック
-        (set-face-attribute 'default nil
-                            :family "Noto Sans Mono CJK JP")))
+    ;; 游教科書体
+    ;; (set-face-attribute 'default nil
+    ;;                     :family "YuKyokasho Yoko")
+    ;; 源ノ角ゴシック
+    (set-face-attribute 'default nil
+                        :family "Noto Sans Mono CJK JP")
+    (let* ((variable-tuple
+            (cond ((x-list-fonts "Noto Sans Mono CJK JP") '(:font "Noto Sans Mono CJK JP"))
+                  ((x-list-fonts "Source Sans Pro")       '(:font "Source Sans Pro"))
+                  ((x-list-fonts "Lucida Grande")         '(:font "Lucida Grande"))
+                  ((x-list-fonts "Verdana")               '(:font "Verdana"))
+                  ((x-family-fonts "Sans Serif")          '(:family "Sans Serif"))
+                  (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+           (headline           `(:inherit default :weight bold)))
+
+      (custom-theme-set-faces
+       'user
+       `(org-level-8 ((t (,@headline ,@variable-tuple))))
+       `(org-level-7 ((t (,@headline ,@variable-tuple))))
+       `(org-level-6 ((t (,@headline ,@variable-tuple))))
+       `(org-level-5 ((t (,@headline ,@variable-tuple))))
+       `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
+       `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
+       `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
+       `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
+       `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil))))))
+    )
+  )
 (when (equal system-type 'gnu/linux)
   (add-to-list 'load-path "~/opt/mu-1.0/mu4e/")
   ;;曖昧な文字幅を指定する
@@ -1859,10 +1879,10 @@ See `org-capture-templates' for more information."
 (leaf regex-tool :straight t)
 
 (leaf solarized-theme
-  :disabled t
   :straight t
   :config
-  (load-theme 'solarized-dark t))
+  ;; (load-theme 'solarized-dark t)
+  (load-theme 'solarized-iceberg-dark t))
 (leaf markdown-mode
   :straight t
   :mode (("README\\.md\\'" . gfm-mode)
