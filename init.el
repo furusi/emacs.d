@@ -1591,7 +1591,10 @@ See `org-capture-templates' for more information."
            (lsp-keymap-prefix . "C-c C-l"))
   :hook ((cc-mode     . lsp-deferred)
          (lsp-mode-hook . lsp-enable-which-key-integration))
-  :bind (("C-c C-l t" . lsp-ui-doc-focus-frame)))
+  :bind (("C-c C-l t" . lsp-ui-doc-focus-frame))
+  :require t
+  :init (setq read-process-output-max (* 1024 1024))
+  (setq garbage-collection-messages t))
 
 (leaf lsp-python-ms
   :disabled t
