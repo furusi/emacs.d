@@ -389,9 +389,9 @@
   :hook ((org-mode-hook prog-mode-hook) . real-auto-save-mode))
 
 
-(leaf spaceline-config
-  :straight spaceline
-  :require t
+(leaf spaceline
+  :straight t
+  :require spaceline-config
   :config
   (spaceline-spacemacs-theme)
   (spaceline-helm-mode))
