@@ -392,8 +392,9 @@
 (leaf spaceline
   :straight t
   :require spaceline-config
+  :diminish (auto-revert-mode abbrev-mode)
   :config
-  (spaceline-spacemacs-theme)
+  (spaceline-emacs-theme)
   (spaceline-helm-mode))
 
 
@@ -451,6 +452,7 @@
   (leaf counsel
     :straight t
     :require ivy
+    :diminish counsel-mode
     :custom (((ivy-use-virtual-buffers . t)))
     :bind (("M-x" . counsel-M-x)
            ("C-x C-b" . counsel-ibuffer)
@@ -499,6 +501,8 @@
 ;;;yasnippet
 (leaf yasnippet
   :straight t
+  :require t
+  :diminish yas-minor-mode
   :config
   (yas-global-mode 1))
 (leaf yasnippet-snippets :straight t)
@@ -1470,6 +1474,7 @@ See `org-capture-templates' for more information."
 
 (leaf company
   :straight t
+  :diminish company-mode
   :bind ((:company-mode-map
           ("C-M-i" . company-indent-or-complete-common))
          (:company-active-map
