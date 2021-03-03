@@ -453,23 +453,47 @@
     :straight t
     :require ivy
     :diminish counsel-mode
-    :custom (((ivy-use-virtual-buffers . t)))
+    :custom ((ivy-count-format . "(%d/%d) ")
+             (ivy-use-virtual-buffers . t)
+             (counsel-find-file-at-point . t)
+             (counsel-switch-buffer-preview-virtual-buffers . nil))
     :bind (("M-x" . counsel-M-x)
            ("C-x C-b" . counsel-ibuffer)
-           ("C-x b" . ivy-switch-buffer)
+           ("C-x b" . counsel-switch-buffer)
            ("C-x C-f" . counsel-find-file)
            ("M-y" . counsel-yank-pop)
            ("C-x c i" . counsel-imenu)
-           ("C-x j" . counsel-recentf))
+           ("C-x j" . counsel-recentf)
+           ("C-z" . ivy-dispatching-done))
     :config
     (ivy-mode t)
     (counsel-mode t))
+  (leaf all-the-icons-ivy-rich
+    :straight t
+    :require t
+    :config
+    (all-the-icons-ivy-rich-mode t))
+  (leaf ivy-rich
+    :straight t
+    :require t
+    :custom
+    ((ivy-rich-path-style . 'absolute))
+    :config
+    (ivy-rich-mode t)
+    (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line))
   (leaf counsel-projectile
     :straight t
     :config
     (counsel-projectile-mode))
   (leaf lsp-ivy
-    :straight t))
+    :after lsp
+    :straight t)
+  (leaf ivy-migemo
+    :straight t
+    :bind
+    ((:ivy-minibuffer-map
+      ("M-f" . ivy-migemo-toggle-fuzzy)
+      ("M-m" . ivy-migemo-toggle-migemo)))))
 
 
 (leaf rg
