@@ -334,7 +334,7 @@
               ((eq system-type 'gnu/linux) "/usr/bin/cmigemo")))
   (setq migemo-dictionary
         (cond ((eq system-type 'darwin)
-               "/usr/local/opt/cmigemo/share/migemo/utf-8/migemo-dict")
+               "/opt/homebrew/opt/cmigemo/share/migemo/utf-8/migemo-dict")
               ((eq system-type 'windows-nt)
                "~/opt/cmigemo-default-win64/dict/utf-8")
               ((string-match-p "arch" operating-system-release)
