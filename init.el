@@ -746,7 +746,7 @@
              "* TODO %? %i\n %U\n")
             ("e" "イベント" entry
              (file ,(concat org-directory "/event.org"))
-             "* EVENT %? %i\n %a\n %U\n")
+             "* EVENT %?\n %a\n %U\n")
             ("n"
              "ノート(本文から書く)"
              entry
