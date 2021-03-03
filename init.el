@@ -400,6 +400,7 @@
 
 ;; helm
 (leaf *helm
+  :disabled t
   :config
   (leaf helm
     :straight t
@@ -447,7 +448,6 @@
     :straight t))
 
 (leaf *counsel
-  :disabled t
   :config
   (leaf counsel
     :straight t
@@ -462,7 +462,8 @@
            ("C-x c i" . counsel-imenu)
            ("C-x j" . counsel-recentf))
     :config
-    (ivy-mode 1))
+    (ivy-mode t)
+    (counsel-mode t))
   (leaf counsel-projectile
     :straight t
     :config
