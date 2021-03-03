@@ -1620,7 +1620,6 @@ See `org-capture-templates' for more information."
            (lsp-keymap-prefix . "C-c C-l"))
   :hook ((cc-mode     . lsp-deferred)
          (lsp-mode-hook . lsp-enable-which-key-integration))
-  :bind (("C-c C-l t" . lsp-ui-doc-focus-frame))
   :require t
   :init (setq read-process-output-max (* 1024 1024))
   (setq garbage-collection-messages t))
@@ -1712,9 +1711,10 @@ See `org-capture-templates' for more information."
   (lsp-ui-sideline-show-hover         . t)
   (lsp-ui-sideline-show-diagnostics   . t)
   (lsp-ui-sideline-show-code-actions  . t)
-  :bind ((:lsp-ui-mode-map
+  :bind `((:lsp-ui-mode-map
           ("M-." . lsp-ui-peek-find-definitions)
-          ("M-?" . lsp-ui-peek-find-references)))
+          ("M-?" . lsp-ui-peek-find-references)
+          (,(concat lsp-keymap-prefix " t") . lsp-ui-doc-focus-frame)))
 )
 
 (leaf lsp-treemacs
