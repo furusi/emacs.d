@@ -909,14 +909,16 @@
             (file-exists-p "/opt/homebrew/bin/pandoc")))))
 
 
-(use-package org-journal
+(leaf org-journal
+  :straight t
+  :require t
   :after org
   :commands org-journal-new-entry
   :custom
-  (org-journal-file-type 'monthly)
-  (org-journal-dir (concat org-directory "/journal"))
-  (org-journal-date-format "%a, %F")
-  (org-journal-file-header "# -*- mode: org-journal; -*-"))
+  `((org-journal-file-type . 'monthly)
+    (org-journal-dir . ,(concat org-directory "/journal"))
+    (org-journal-date-format . "%a, %F")
+    (org-journal-file-header . "# -*- mode: org-journal; -*-")))
 
 
 
