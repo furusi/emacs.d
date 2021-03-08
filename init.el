@@ -358,8 +358,7 @@
   :straight t
   :diminish (global-undo-tree-mode undo-tree-mode)
   :require t
-  :config
-  (global-undo-tree-mode t))
+  :global-minor-mode global-undo-tree-mode)
 
 
 (leaf auto-save-buffers-enhanced
@@ -862,8 +861,7 @@
   (leaf org-mu4e
     :disabled t
     :straight t
-    :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e"
-    :after (org)
+    :after (org mu4e)
     :config
     ;;store link to message if in header view, not to header query
     (setq org-mu4e-link-query-in-headers-mode nil))
@@ -895,11 +893,12 @@
       (funcall orig-fn extension subtreep pub-dir))
     (advice-add 'org-export-output-file-name :around 'org-export-output-file-name--set-directory)
     (leaf ox-pandoc
-    :straight t
-    :require t
-    :if (or (file-exists-p "/usr/local/bin/pandoc")
-            (file-exists-p "/opt/local/bin/pandoc")
-            (file-exists-p "/opt/homebrew/bin/pandoc")))))
+      :after org
+      :straight t
+      :require t
+      :if (or (file-exists-p "/usr/local/bin/pandoc")
+              (file-exists-p "/opt/local/bin/pandoc")
+              (file-exists-p "/opt/homebrew/bin/pandoc")))))
 
 
 (leaf org-journal
@@ -1347,7 +1346,9 @@
   (ox-extras-activate '(latex-header-blocks ignore-headlines)))
 (use-package ob-kotlin
   :after (org))
-(use-package ox-asciidoc
+(leaf ox-asciidoc
+  :straight t
+  :require t
   :after (org))
 (use-package ox-hugo
   :after ox
