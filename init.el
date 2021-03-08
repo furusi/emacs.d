@@ -24,6 +24,8 @@
   :custom
   ((backup-directory-alist . '((".*" . "~/.ehist")))
    (comment-style . 'multi-line)
+   (default-frame-alist .'((width . 100)
+                           (height . 40)))
    (dired-dwim-target . t)
    (ediff-window-setup-function . 'ediff-setup-windows-plain)
    (indent-tabs-mode . nil)
