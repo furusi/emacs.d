@@ -119,7 +119,6 @@
 
 (when (equal system-type 'darwin)
   (setq ns-command-modifier (quote meta))
-  (add-to-list 'load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e/")
   (when (or (eq window-system 'ns)
             (eq window-system 'mac))
     ;; 游教科書体
@@ -439,6 +438,7 @@
     :straight t))
 
 (leaf *counsel
+  ;; :disabled t
   :config
   (leaf counsel
     :straight t
