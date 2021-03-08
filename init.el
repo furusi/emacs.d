@@ -353,15 +353,6 @@
 ;; SLIMEのロード
 
 
-(leaf undohist :straight t
-  :require t
-  :custom
-  ((undohist-ignored-files . '("/tmp/" "COMMIT_EDITMSG")))
-  :config
-  (undohist-initialize)
-  ;;; 永続化を無視するファイル名の正規表現
-  )
-
 (leaf undo-tree
   :straight t
   :diminish (global-undo-tree-mode undo-tree-mode)
