@@ -918,6 +918,7 @@
   `((org-journal-file-type . 'monthly)
     (org-journal-dir . ,(concat org-directory "/journal"))
     (org-journal-date-format . "%a, %F")
+    (org-journal-file-format . "%Y%m.org")
     (org-journal-file-header . "# -*- mode: org-journal; -*-")))
 
 
