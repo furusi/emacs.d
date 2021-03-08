@@ -629,7 +629,8 @@
     :straight org-plus-contrib
     :custom
     ((org-export-allow-bind-keywords . t)
-     (org-export-backends . '(ascii html icalendar latex md odt taskjuggler))
+     (org-export-backends . '(ascii html icalendar latex md odt taskjuggler asciidoc))
+     (org-id-link-to-org-use-id . 'create-if-interactive-and-no-custom-id)
      (org-link-file-path-type . 'relative)
      (org-list-allow-alphabetical . t)
      (org-return-follows-link . t)
