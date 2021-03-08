@@ -33,6 +33,7 @@
    (recentf-max-menu-items . 30)
    (recentf-max-saved-items . 2000)
    (recentf-auto-cleanup . 'never)
+   (safe-local-variable-values . '((org-export-directory . "~/Dropbox/org")))
    (vc-follow-symlinks . t)))
 
 
@@ -456,7 +457,11 @@
            ("M-y" . counsel-yank-pop)
            ("C-x c i" . counsel-imenu)
            ("C-x j" . counsel-recentf)
-           ("C-z" . ivy-dispatching-done))
+           ("C-z" . ivy-dispatching-done)
+           (:isearch-mode-map
+            ("C-i" . swiper-from-isearch))
+           (:ivy-minibuffer-map
+            ("C-l" . ivy-backward-delete-char)))
     :config
     (ivy-mode t)
     (counsel-mode t))
@@ -1611,6 +1616,9 @@ See `org-capture-templates' for more information."
                            (set (make-local-variable 'company-backends)
                                 '((company-ac-php-backend company-dabbrev-code)
                                   company-capf company-files)))))
+
+(leaf rainbow-mode
+  :straight t)
 
 (leaf lsp-mode
   :commands (lsp lsp-deferred)
