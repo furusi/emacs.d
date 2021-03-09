@@ -892,7 +892,8 @@
     :after org)
   (leaf ox*
     :after org
-    :custom (org-export-allow-bind-keywords . t)
+    :custom
+    (org-export-allow-bind-keywords . t)
     :config
     (defvar org-export-directory nil
       "org-exportの出力先を指定する変数。buffer-local変数として指定する。")
@@ -917,7 +918,8 @@
   :custom
   `((org-journal-file-type . 'monthly)
     (org-journal-dir . ,(concat org-directory "/journal"))
-    (org-journal-date-format . "%a, %F")
+    (org-journal-date-format . " %F (%a)")
+    (org-journal-time-format . "<%Y-%m-%d %R> ")
     (org-journal-file-format . "%Y%m.org")
     (org-journal-file-header . "# -*- mode: org-journal; -*-")))
 
