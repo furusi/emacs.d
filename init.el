@@ -919,6 +919,7 @@
   :custom
   `((org-journal-file-type . 'monthly)
     (org-journal-dir . ,(concat org-directory "/journal"))
+    (org-journal-enable-agenda-integration . t)
     (org-journal-date-format . " %F (%a)")
     (org-journal-time-format . "<%Y-%m-%d %R> ")
     (org-journal-file-format . "%Y%m.org")
@@ -1891,6 +1892,9 @@ See `org-capture-templates' for more information."
   :straight t
   :after org
   :require t
+  :custom
+  ((org-gcal-down-days . 180)
+   (org-gcal-up-days . 180))
   :config
   (load "~/Dropbox/org/googlecalendar/org-gcal-config.el"))
 (leaf flycheck :straight t)
