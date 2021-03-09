@@ -641,6 +641,8 @@
      (org-link-file-path-type . 'relative)
      (org-list-allow-alphabetical . t)
      (org-return-follows-link . t)
+     (org-agenda-start-on-weekday . 0)
+     (org-todo-keywords . '((sequence "TODO(t)" "WAIT(w)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELLED(c)")))
      (org-src-lang-modes . '(("arduino" . arduino)
                              ("browser" . html)
                              ("redis" . redis)
