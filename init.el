@@ -481,7 +481,8 @@
   (leaf counsel-projectile
     :straight t
     :config
-    (counsel-projectile-mode))
+    (counsel-projectile-mode)
+    (setcar counsel-projectile-switch-project-action 4))
   (leaf lsp-ivy
     :after lsp
     :straight t)
