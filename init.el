@@ -448,6 +448,7 @@
     :diminish counsel-mode
     :custom ((ivy-count-format . "(%d/%d) ")
              (ivy-use-virtual-buffers . t)
+             (ivy-initial-inputs-alist . nil)
              (counsel-find-file-at-point . t)
              (counsel-switch-buffer-preview-virtual-buffers . nil))
     :bind (("M-x" . counsel-M-x)
