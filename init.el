@@ -439,7 +439,7 @@
   (leaf helm-make
     :straight t))
 
-(leaf *counsel
+(leaf *ivy
   ;; :disabled t
   :config
   (leaf counsel
@@ -461,7 +461,7 @@
            (:isearch-mode-map
             ("C-i" . swiper-from-isearch))
            (:ivy-minibuffer-map
-            ("C-l" . ivy-backward-delete-char)))
+            ("C-l" . counsel-up-directory)))
     :config
     (ivy-mode t)
     (counsel-mode t))
