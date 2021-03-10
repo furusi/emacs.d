@@ -446,12 +446,12 @@
     :straight t
     :require ivy
     :diminish counsel-mode
-    :custom ((ivy-count-format . "(%d/%d) ")
-             (ivy-use-virtual-buffers . t)
-             (ivy-initial-inputs-alist . nil)
-             (counsel-find-file-at-point . t)
-             (counsel-switch-buffer-preview-virtual-buffers . nil)
-             (ivy-re-builders-alist . '((t . ivy--regex-ignore-order))))
+    :custom
+    ((counsel-switch-buffer-preview-virtual-buffers . nil)
+     (ivy-count-format . "(%d/%d) ")
+     (ivy-initial-inputs-alist . nil)
+     (ivy-re-builders-alist . '((t . ivy--regex-ignore-order)))
+     (ivy-use-virtual-buffers . t))
     :bind (("M-x" . counsel-M-x)
            ("C-x C-b" . counsel-ibuffer)
            ("C-x b" . counsel-switch-buffer)
