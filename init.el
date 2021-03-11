@@ -647,6 +647,12 @@
      (org-list-allow-alphabetical . t)
      (org-return-follows-link . t)
      (org-agenda-start-on-weekday . 0)
+     (org-link-frame-setup .
+                           '((vm . vm-visit-folder-other-frame)
+                             (vm-imap . vm-visit-imap-folder-other-frame)
+                             (gnus . org-gnus-no-new-news)
+                             (file . find-file)
+                             (wl . wl-other-frame)))
      (org-todo-keywords . '((sequence "TODO(t)" "WAIT(w)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELLED(c)")))
      (org-src-lang-modes . '(("arduino" . arduino)
                              ("browser" . html)
