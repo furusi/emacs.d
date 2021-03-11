@@ -952,7 +952,7 @@
     :hook
     ((org-mode-hook . org-roam-mode))
     :custom
-    `((org-roam-directory . ,org-directory))
+    `((org-roam-directory . ,(concat org-directory "roam/")))
     :bind
     ((:org-roam-mode-map
       ("C-c n l" . org-roam)
@@ -962,8 +962,24 @@
       ("C-c n i" . org-roam-insert)
       ("C-c n I" . org-roam-insert-immediate)))
     :config
+    (when (eq system-type 'darwin)
+          (setq org-roam-graph-viewer "open"))
     (leaf org-roam-protocol
-      :require t)))
+      :require t
+      )
+    (leaf org-roam-server
+      :straight t
+      :require t)
+    )
+  (leaf org-brain
+    :straight t
+    :after org
+    :require t
+    :bind
+    ((:org-mode-map
+      ("C-c b" . org-brain-prefix-map)))
+    )
+  )
 
 
 (leaf org-journal
@@ -1982,6 +1998,14 @@ See `org-capture-templates' for more information."
   :hook ((go-mode-hook . lsp-deferred)))
 (leaf groovy-mode
   :straight t)
+
+(leaf server
+  :commands (server-running-p)
+  :hook
+  (emacs-startup-hook . (lambda ()
+                          (unless (server-running-p)
+                            (server-start))))
+  )
 
 ;; https://gist.github.com/tek-nishi/a7fc3933be5e62c7eeaa
 (defun my-insert-newline-and-indent(arg)
