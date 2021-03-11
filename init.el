@@ -946,7 +946,7 @@
   `((org-journal-file-type . 'monthly)
     (org-journal-dir . ,(concat org-directory "journal/"))
     (org-journal-enable-agenda-integration . t)
-    (org-journal-date-format . " %F (%a)")
+    (org-journal-date-format . "%F (%a)")
     (org-journal-time-format . "<%Y-%m-%d %R> ")
     (org-journal-file-format . "%Y%m.org")
     (org-journal-file-header . "# -*- mode: org-journal; -*-")))
