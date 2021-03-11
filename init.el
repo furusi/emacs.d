@@ -4,7 +4,7 @@
 
 ;;; Code:
 
-(tool-bar-mode -1)
+
 (show-paren-mode t)
 
 ;; 絵文字のフォント設定
@@ -33,6 +33,10 @@
    (recentf-max-menu-items . 30)
    (recentf-max-saved-items . 2000)
    (recentf-auto-cleanup . 'never)
+   (use-dialog-box . nil)
+   (use-file-dialog . nil)
+   (tool-bar-mode . nil)
+   (menu-bar-mode . t)
    (safe-local-variable-values . '((org-export-directory . "~/Dropbox/org")))
    (vc-follow-symlinks . t)))
 
