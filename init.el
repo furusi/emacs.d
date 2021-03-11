@@ -499,7 +499,6 @@
       ("M-f" . ivy-migemo-toggle-fuzzy)
       ("M-m" . ivy-migemo-toggle-migemo)))))
 
-
 (leaf rg
   :bind (("C-c s" . rg-menu))
   :straight t
@@ -916,7 +915,26 @@
       :require t
       :if (or (file-exists-p "/usr/local/bin/pandoc")
               (file-exists-p "/opt/local/bin/pandoc")
-              (file-exists-p "/opt/homebrew/bin/pandoc")))))
+              (file-exists-p "/opt/homebrew/bin/pandoc"))))
+  
+  (leaf org-roam
+    :after org
+    :straight t
+    :hook
+    ((org-mode-hook . org-roam-mode))
+    :custom
+    `((org-roam-directory . ,org-directory))
+    :bind
+    ((:org-roam-mode-map
+      ("C-c n l" . org-roam)
+      ("C-c n f" . org-roam-find-file)
+      ("C-c n g" . org-roam-graph))
+     (:org-mode-map
+      ("C-c n i" . org-roam-insert)
+      ("C-c n I" . org-roam-insert-immediate)))
+    :config
+    (leaf org-roam-protocol
+      :require t)))
 
 
 (leaf org-journal
@@ -1439,17 +1457,7 @@ See `org-capture-templates' for more information."
   (setq pdf-view-resize-factor 1.1)))
 
 
-(use-package org-roam
-  :straight (org-roam :type git :host github :repo "org-roam/org-roam")
-  :custom
-  (org-roam-directory "~/Dropbox/org/")
-  :bind (:map org-roam-mode-map
-              (("C-c n l" . org-roam)
-               ("C-c n f" . org-roam-find-file)
-               ("C-c n g" . org-roam-graph-show))
-              :map org-mode-map
-              (("C-c n i" . org-roam-insert))
-              (("C-c n I" . org-roam-insert-immediate))))
+
 
 (leaf mu4e
   :straight t
