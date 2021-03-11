@@ -699,10 +699,9 @@
      (org-src-preserve-indentation . t)
      (org-startup-folded . t)
 )
-    :bind (("\C-cc" . org-capture)
-           ("\C-cl" . org-store-link)
-           ("\C-ca" . org-agenda)
-           ("\C-cb" . org-iswitchb)
+    :bind (("C-c c" . org-capture)
+           ("C-c l" . org-store-link)
+           ("C-c a" . org-agenda)
            ("<f2>" . insert-zero-width-space)
            (:org-mode-map
             ("C-c C-\'" . org-insert-structure-template)))
