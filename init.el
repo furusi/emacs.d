@@ -40,6 +40,25 @@
    (safe-local-variable-values . '((org-export-directory . "~/Dropbox/org")))
    (vc-follow-symlinks . t)))
 
+(leaf completion
+  :emacs>= 27
+  :config
+  (push 'flex completion-styles)
+  )
+
+(leaf server
+  :commands (server-running-p)
+  :hook
+  (emacs-startup-hook . (lambda ()
+                          (unless (server-running-p)
+                            (server-start))))
+  )
+
+(leaf autorevert
+  :custom
+  ((auto-revert-interval . 0.1))
+  :hook
+  (emacs-startup-hook . global-auto-revert-mode))
 
 (leaf initchart
   :disabled t
