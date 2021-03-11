@@ -33,12 +33,14 @@
    (recentf-max-menu-items . 30)
    (recentf-max-saved-items . 2000)
    (recentf-auto-cleanup . 'never)
+   (auto-save-interval . 10)
    (use-dialog-box . nil)
    (use-file-dialog . nil)
    (tool-bar-mode . nil)
    (menu-bar-mode . t)
    (safe-local-variable-values . '((org-export-directory . "~/Dropbox/org")))
-   (vc-follow-symlinks . t)))
+   (vc-follow-symlinks . t))
+  )
 
 (leaf completion
   :emacs>= 27
@@ -46,19 +48,14 @@
   (push 'flex completion-styles)
   )
 
-(leaf server
-  :commands (server-running-p)
-  :hook
-  (emacs-startup-hook . (lambda ()
-                          (unless (server-running-p)
-                            (server-start))))
-  )
+
 
 (leaf autorevert
   :custom
   ((auto-revert-interval . 0.1))
   :hook
-  (emacs-startup-hook . global-auto-revert-mode))
+  (emacs-startup-hook . global-auto-revert-mode)
+  )
 
 (leaf initchart
   :disabled t
@@ -484,6 +481,7 @@
            ("C-x c i" . counsel-imenu)
            ("C-x j" . counsel-recentf)
            ("C-z" . ivy-dispatching-done)
+           ("C-c i r" . ivy-resume)
            (:isearch-mode-map
             ("C-i" . swiper-from-isearch))
            (:ivy-minibuffer-map
@@ -761,7 +759,8 @@
            (concat org-directory "productivity.org")
            (concat org-directory "org-ical.org")
            (concat org-directory "notes/")
-           (concat org-directory "googlecalendar/")))
+           (concat org-directory "calendar/")))
+    
     (setq org-refile-targets
           '((org-agenda-files :maxlevel . 2)))
     (setq org-tag-alist
@@ -1950,6 +1949,7 @@ See `org-capture-templates' for more information."
   :straight t
   :after org)
 (leaf org-gcal
+  :disabled t
   :if (file-exists-p "~/Dropbox/org/googlecalendar/org-gcal-config.el")
   :straight t
   :after org
@@ -1959,6 +1959,7 @@ See `org-capture-templates' for more information."
    (org-gcal-up-days . 180))
   :config
   (load "~/Dropbox/org/googlecalendar/org-gcal-config.el"))
+
 (leaf flycheck :straight t)
 (leaf gnuplot :straight t)
 
