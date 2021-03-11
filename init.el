@@ -1880,6 +1880,7 @@ See `org-capture-templates' for more information."
 
 (leaf solarized-theme
   :straight t
+  :when (window-system)
   :config
   ;; (load-theme 'solarized-dark t)
   (load-theme 'solarized-iceberg-dark t))
