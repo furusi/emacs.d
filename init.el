@@ -963,13 +963,33 @@
       ("C-c n I" . org-roam-insert-immediate)))
     :config
     (when (eq system-type 'darwin)
-          (setq org-roam-graph-viewer "open"))
+      (setq org-roam-graph-viewer "open"))
+    (add-to-list 'org-roam-capture-templates
+                 '("n" "note(default + headline)"
+                   plain #'org-roam-capture--get-point
+                   "%?"
+                   :file-name "%<%Y%m%d%H%M%S>-${slug}"
+                   :head "#+title: ${title}
+* Overview
+  "
+                   :unnarrowed t))
     (leaf org-roam-protocol
       :require t
       )
     (leaf org-roam-server
       :straight t
-      :require t)
+      :require t
+      :config
+      (defun my-org-roam-browse ()
+        "open org-roam-server page"
+        (interactive)
+        (if (not org-roam-server-mode)
+            (org-roam-server-mode))
+        (browse-url-firefox
+         (format "http://%s:%d/"
+                 org-roam-server-host
+                 org-roam-server-port)))
+      )
     )
   (leaf org-brain
     :straight t
