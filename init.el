@@ -988,7 +988,7 @@
   :commands org-journal-new-entry
   :custom
   `((org-journal-file-type . 'monthly)
-    (org-journal-dir . ,(concat org-directory "journal/"))
+    (org-journal-dir . ,(concat org-directory "roam/journal/"))
     (org-journal-enable-agenda-integration . t)
     (org-journal-date-format . "%F (%a)")
     (org-journal-time-format . "<%Y-%m-%d %R> ")
