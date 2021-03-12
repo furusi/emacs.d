@@ -42,6 +42,12 @@
    (vc-follow-symlinks . t))
   )
 
+(leaf custom-darwin
+  :if (eq system-type 'darwin)
+  :custom
+  ((browse-url-firefox-program . "/Applications/Firefox.app/Contents/MacOS/firefox"))
+  )
+
 (leaf completion
   :emacs>= 27
   :config
