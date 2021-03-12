@@ -693,7 +693,6 @@
                              ("dot" . graphviz-dot)
                              ("asm" . asm)
                              ("python" . python)))
-     (org-modules . '(ol-bbdb ol-bibtex ol-docview ol-eww ol-gnus org-habit ol-info ol-irc ol-mhe ol-rmail ol-w3m))
      (org-src-preserve-indentation . t)
      (org-startup-folded . t)
 )
@@ -724,7 +723,9 @@
     ((org-preview-latex-default-process . 'dvisvgm)
      (org-startup-folded . t))
     :config
-    
+    ;; org-habitモジュールを有効化
+    (add-to-list 'org-modules 'org-habit)
+
     ;; 強調の規則を変更(別の環境で開いた場合は認識されなくなる...)
     (setcar org-emphasis-regexp-components "-[:space:]\x200B('\"{")
     (setcar (nthcdr 1 org-emphasis-regexp-components) "-[:space:]\x200B.,:!?;'\")}\\[")
