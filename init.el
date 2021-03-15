@@ -45,7 +45,8 @@
 (leaf custom-darwin
   :if (eq system-type 'darwin)
   :custom
-  ((browse-url-firefox-program . "/Applications/Firefox.app/Contents/MacOS/firefox"))
+  ((browse-url-firefox-program . "/Applications/Firefox.app/Contents/MacOS/firefox")
+   (browse-url-firefox-new-window-is-tab . t))
   )
 
 (leaf completion
