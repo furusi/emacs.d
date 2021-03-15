@@ -233,9 +233,10 @@
          (isearch-mode-end-hook . skk-isearch-mode-cleanup) ; isearch で skk のクリーンアップ
          (helm-exit-minibuffer-hook . skk-isearch-mode-cleanup))
   :custom
-  ((skk-japanese-message-and-error . t)
+  `((skk-japanese-message-and-error . t)
    (skk-share-private-jisyo . t)
    (skk-isearch-start-mode . 'latin); isearch で skk の初期状態
+   (skk-user-directory . ,(format "%sddskk/" user-emacs-directory))
    )
   :init
   (push (lambda ()
