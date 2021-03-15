@@ -518,6 +518,7 @@
     :after lsp
     :straight t)
   (leaf ivy-migemo
+    :after migemo
     :straight t
     :bind
     ((:ivy-minibuffer-map
