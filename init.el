@@ -536,7 +536,7 @@
 (leaf expand-region
   :straight t
   :require t
-  :bind (("C-," . er/expand-region)))
+  :bind (("C-=" . er/expand-region)))
 
 
 (leaf all-the-icons :straight t)
