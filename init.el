@@ -1450,73 +1450,70 @@
 (setq org-ditaa-jar-path
       "/usr/local/opt/ditaa/libexec/ditaa-0.11.0-standalone.jar")
 
-(use-package ox-extra
-  :straight nil
-  :after (org)
+(leaf ox-extra
+  :after org
+  :require t
   :config
   ;; ignoreタグで見出しを非表示にしつつ内容を表示する
   (ox-extras-activate '(latex-header-blocks ignore-headlines)))
-(use-package ob-kotlin
+(leaf ob-kotlin
   :after (org))
 (leaf ox-asciidoc
   :straight t
   :require t
   :after (org))
-(use-package ox-hugo
-  :after ox
+(leaf ox-hugo
+  :after org
   :config
   (defun org-hugo-new-subtree-post-capture-template ()
-  "Returns `org-capture' template string for new Hugo post.
+    "Returns `org-capture' template string for new Hugo post.
 See `org-capture-templates' for more information."
-  (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
-         (fname (org-hugo-slug title)))
-    (mapconcat #'identity
-               `(
-                 ,(concat "* TODO " title)
-                 ":PROPERTIES:"
-                 ,(concat ":EXPORT_FILE_NAME: " fname)
-                 ":END:"
-                 "%?\n")          ;Place the cursor here finally
-               "\n")))
+    (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
+           (fname (org-hugo-slug title)))
+      (mapconcat #'identity
+                 `(
+                   ,(concat "* TODO " title)
+                   ":PROPERTIES:"
+                   ,(concat ":EXPORT_FILE_NAME: " fname)
+                   ":END:"
+                   "%?\n")          ;Place the cursor here finally
+                 "\n")))
   (add-to-list 'org-capture-templates
-             '("h"                ;`org-capture' binding + h
-               "Hugo post"
-               entry
-               ;; It is assumed that below file is present in `org-directory'
-               ;; and that it has a "Blog Ideas" heading. It can even be a
-               ;; symlink pointing to the actual location of all-posts.org!
-               (file+olp "all-posts.org" "Blog Ideas")
-               (function org-hugo-new-subtree-post-capture-template))))
+               '("h"                ;`org-capture' binding + h
+                 "Hugo post"
+                 entry
+                 ;; It is assumed that below file is present in `org-directory'
+                 ;; and that it has a "Blog Ideas" heading. It can even be a
+                 ;; symlink pointing to the actual location of all-posts.org!
+                 (file+olp "all-posts.org" "Blog Ideas")
+                 (function org-hugo-new-subtree-post-capture-template))))
 
 
-(use-package org-download
+(leaf org-download
   :after org
-  :hook ((org-mode . org-download-enable)))
-(use-package org-seek
+  :hook ((org-mode-hook . org-download-enable)))
+(leaf org-seek
   :commands (org-seek-string org-seek-regexp org-seek-headlines)
-;;  :ensure-system-package (rg . ripgrep)
-  :config
-  (setq org-seek-search-tool 'ripgrep))
+  ;;  :ensure-system-package (rg . ripgrep)
+  :custom
+  ((org-seek-search-tool . 'ripgrep)))
 
 (leaf org-pdf*
   ;; :disabled t
   :config
-  (use-package org-pdftools
+  (leaf org-pdftools
   :after org
   :straight (org-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
-  :config (setq org-pdftools-root-dir (concat (getenv "HOME") "/GoogleDrive/Books"))
-  (with-eval-after-load 'org
-    (org-link-set-parameters "pdftools"
-                             :follow #'org-pdftools-open
-                             :complete #'org-pdftools-complete-link
-                             :store #'org-pdftools-store-link
-                             :export #'org-pdftools-export)
-    (add-hook 'org-store-link-functions 'org-pdftools-store-link)))
-  (use-package org-noter
+  :custom
+  `((org-pdftools-root-dir . ,(concat (getenv "HOME") "/GoogleDrive/Books")))
+  :hook (org-mode-hook . org-pdftools-setup-link)
+  )
+  (leaf org-noter
   :after (org))
-  (use-package org-noter-pdftools
+  (leaf org-noter-pdftools
   :straight (org-noter-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
-  :after (org-noter))
+  :after (org-noter)
+  :require t)
   (leaf pdf-tools
   :straight t
   ;; https://github.com/politza/pdf-tools#installation
@@ -1698,7 +1695,7 @@ See `org-capture-templates' for more information."
   :hook (php-mode-hook . (lambda ()
                            (require 'flycheck-phpstan)
                            (flycheck-mode t))))
-(use-package company-php
+(leaf company-php
   :after (ac-php)
   :straight t
   :hook (php-mode-hook . (lambda ()
@@ -1933,11 +1930,11 @@ See `org-capture-templates' for more information."
   :diminish editorconfig-mode
   :config
   (editorconfig-mode 1))
-(use-package easy-hugo
+(leaf easy-hugo
   :disabled t
-  :config
-  (setq easy-hugo-org-header t)
-  (setq easy-hugo-default-ext ".org"))
+  :custom
+  ((easy-hugo-org-header . t)
+   (easy-hugo-default-ext . ".org")))
 (leaf npm-mode
   :disabled t
   :straight t
