@@ -2079,8 +2079,12 @@ See `org-capture-templates' for more information."
                (my:make-scratch 1)))))
 
 (put 'narrow-to-region 'disabled nil)
-(setq ispell-program-name "hunspell")
-(setq ispell-really-hunspell t)
+(leaf ispell
+  :require t
+  :config
+  ;; (setq ispell-program-name "hunspell")
+  (setq ispell-really-hunspell t)
+  )
 
 
 
