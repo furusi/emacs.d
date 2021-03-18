@@ -22,24 +22,34 @@
 (leaf custom-variables
   :doc "set custom variables"
   :custom
-  ((backup-directory-alist . '((".*" . "~/.ehist")))
-   (comment-style . 'multi-line)
-   (default-frame-alist .'((width . 100)
-                           (height . 40)))
-   (dired-dwim-target . t)
-   (ediff-window-setup-function . 'ediff-setup-windows-plain)
-   (indent-tabs-mode . nil)
-   (inhibit-startup-screen . t)
-   (recentf-max-menu-items . 30)
-   (recentf-max-saved-items . 2000)
-   (recentf-auto-cleanup . 'never)
-   (auto-save-interval . 10)
-   (use-dialog-box . nil)
-   (use-file-dialog . nil)
-   (tool-bar-mode . nil)
-   (menu-bar-mode . t)
-   (safe-local-variable-values . '((org-export-directory . "~/Dropbox/org")))
-   (vc-follow-symlinks . t))
+  `((backup-directory-alist . '((".*" . "~/.ehist")))
+    (comment-style . 'multi-line)
+    (default-frame-alist .'((width . 100)
+                            (height . 40)))
+    (dired-dwim-target . t)
+    (ediff-window-setup-function . 'ediff-setup-windows-plain)
+    (indent-tabs-mode . nil)
+
+    (set-mark-command-repeat-pop . t)    ;; C-u C-SPCの後C-SPCだけでマークを遡れる
+    
+    (mark-ring-max . 32);; マークの数を32に増やす
+    (indent-tabs-mode . nil)
+    (truncate-lines . t)         ;文字列を折り返さない
+
+    ;; テーマのディレクトリを設定
+    (custom-theme-directory . ,(concat user-emacs-directory "themes/"))
+
+    (inhibit-startup-screen . t)
+    (recentf-max-menu-items . 30)
+    (recentf-max-saved-items . 2000)
+    (recentf-auto-cleanup . 'never)
+    (auto-save-interval . 10)
+    (use-dialog-box . nil)
+    (use-file-dialog . nil)
+    (tool-bar-mode . nil)
+    (menu-bar-mode . t)
+    (safe-local-variable-values . '((org-export-directory . "~/Dropbox/org")))
+    (vc-follow-symlinks . t))
   )
 
 (leaf custom-darwin
@@ -137,15 +147,6 @@
            :map isearch-mode-map
            ("C-o" . isearch-exit))
 
-;; C-u C-SPCの後C-SPCだけでマークを遡れる
-(setq set-mark-command-repeat-pop t)
-;; マークの数を32に増やす
-(setq mark-ring-max 32)
-(setq-default indent-tabs-mode nil)
-(setq-default truncate-lines t)         ;文字列を折り返さない
-
-;; テーマのディレクトリを設定
-(setq custom-theme-directory (concat user-emacs-directory "themes/"))
 
 (when (equal system-type 'darwin)
   (setq ns-command-modifier (quote meta))
