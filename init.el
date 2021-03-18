@@ -967,7 +967,9 @@
     ((:org-roam-mode-map
       ("C-c n l" . org-roam)
       ("C-c n f" . org-roam-find-file)
-      ("C-c n g" . org-roam-graph))
+      ("C-c n g" . org-roam-graph)
+      ("C-c n t a" . org-roam-tag-add)
+      ("C-c n t d" . org-roam-tag-delete))
      (:org-mode-map
       ("C-c n i" . org-roam-insert)
       ("C-c n I" . org-roam-insert-immediate)))
@@ -1019,7 +1021,7 @@
   :commands org-journal-new-entry
   :custom
   `((org-journal-file-type . 'daily)
-    (org-journal-dir . ,(concat org-directory "roam/journal/"))
+    (org-journal-dir . ,(concat org-directory "journal/"))
     (org-journal-enable-agenda-integration . t)
     (org-journal-date-format . "%F (%a)")
     (org-journal-time-format . "<%Y-%m-%d %R> ")
@@ -1491,7 +1493,9 @@ See `org-capture-templates' for more information."
 
 
 (leaf org-download
+  :straight t
   :after org
+  :require t
   :hook ((org-mode-hook . org-download-enable)))
 (leaf org-seek
   :commands (org-seek-string org-seek-regexp org-seek-headlines)
