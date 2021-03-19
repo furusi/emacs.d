@@ -962,7 +962,9 @@
     :hook
     ((org-mode-hook . org-roam-mode))
     :custom
-    `((org-roam-directory . ,(concat org-directory "roam/")))
+    `((org-roam-directory . ,(concat org-directory "roam/"))
+      (org-roam-completion-system . 'ivy)
+      (org-roam-title-to-slug-function . (lambda (text) text)))
     :bind
     ((:org-roam-mode-map
       ("C-c n l" . org-roam)
