@@ -1723,8 +1723,11 @@ See `org-capture-templates' for more information."
 
 (leaf lsp-mode
   :commands (lsp lsp-deferred)
-  :custom ((lsp-prefer-capf . t)
-           (lsp-keymap-prefix . "C-c C-l"))
+  :custom (
+           (lsp-auto-execute-action . nil)
+           (lsp-keymap-prefix . "C-c C-l")
+           (lsp-prefer-capf . t)
+           )
   :hook ((cc-mode     . lsp-deferred)
          (lsp-mode-hook . lsp-enable-which-key-integration))
   :require t
