@@ -489,12 +489,13 @@
            ("M-y" . counsel-yank-pop)
            ("C-x c i" . counsel-imenu)
            ("C-x j" . counsel-recentf)
-           ("C-z" . ivy-dispatching-done)
            ("C-c i r" . ivy-resume)
            (:isearch-mode-map
             ("C-i" . swiper-from-isearch))
            (:ivy-minibuffer-map
-            ("C-l" . counsel-up-directory)))
+            ("C-z" . ivy-dispatching-done)
+            ("C-l" . counsel-up-directory)
+            ))
     :config
     (ivy-mode t)
     (counsel-mode t))
