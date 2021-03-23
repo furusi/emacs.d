@@ -669,7 +669,7 @@
     :custom
     ((org-export-allow-bind-keywords . t)
      (org-export-backends . '(ascii html icalendar latex md odt taskjuggler asciidoc))
-     (org-id-link-to-org-use-id . 'create-if-interactive-and-no-custom-id)
+     (org-id-link-to-org-use-id . t)
      (org-icalendar-use-scheduled . '(event-if-todo todo-start))
      (org-link-file-path-type . 'relative)
      (org-list-allow-alphabetical . t)
@@ -735,6 +735,7 @@
     :config
     ;; org-habitモジュールを有効化
     (add-to-list 'org-modules 'org-habit)
+    (add-to-list 'org-modules 'org-id)
 
     ;; 強調の規則を変更(別の環境で開いた場合は認識されなくなる...)
     (setcar org-emphasis-regexp-components "-[:space:]\x200B('\"{")
