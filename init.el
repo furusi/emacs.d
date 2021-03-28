@@ -966,9 +966,7 @@
     :custom
     `((org-roam-directory . ,(concat org-directory "roam/"))
       (org-roam-completion-system . 'ivy)
-      (org-roam-title-to-slug-function .
-                                       (lambda (text)
-                                         (replace-regexp-in-string " " "_" text))))
+      (org-roam-title-to-slug-function . (lambda (text) text)))
     :bind
     ((:org-roam-mode-map
       ("C-c n l" . org-roam)
