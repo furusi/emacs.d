@@ -669,7 +669,7 @@
     :straight org-plus-contrib
     :custom
     ((org-export-allow-bind-keywords . t)
-     (org-export-backends . '(ascii html icalendar latex md odt taskjuggler asciidoc))
+     (org-export-backends . '(ascii html icalendar latex md odt taskjuggler asciidoc pandoc gfm))
      (org-id-link-to-org-use-id . t)
      (org-icalendar-use-scheduled . '(event-if-todo todo-start))
      (org-link-file-path-type . 'relative)
