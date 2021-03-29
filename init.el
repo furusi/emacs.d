@@ -239,6 +239,7 @@
    (skk-share-private-jisyo . t)
    (skk-isearch-start-mode . 'latin); isearch で skk の初期状態
    (skk-user-directory . ,(format "%sddskk/" user-emacs-directory))
+   (skk-henkan-strict-okuri-precedence . t)
    )
   :init
   (push (lambda ()
