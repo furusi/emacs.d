@@ -17,7 +17,10 @@
 (setenv "LANG" "en_US.UTF-8")
 (setenv "LC_ALL" "en_US.UTF-8")
 (defvar bootstrap-version)
-(setq straight-base-dir (concat user-emacs-directory "packages/" emacs-version "/"))
+(setq straight-base-dir (format "%spackages/%s/"
+                                user-emacs-directory
+                                emacs-version
+                                ))
 (setq straight-profiles (list (cons nil (concat user-emacs-directory "straight/versions/default.el"))))
 
 (let ((bootstrap-file
