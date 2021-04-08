@@ -510,7 +510,8 @@
     :straight t
     :require t
     :custom
-    ((ivy-rich-path-style . 'absolute))
+    ((ivy-rich-path-style . 'absolute)
+     (ivy-rich-parse-remote-buffer . nil))
     :config
     (ivy-rich-mode t)
     (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line))
@@ -2098,6 +2099,9 @@ See `org-capture-templates' for more information."
   ;; (setq ispell-program-name "hunspell")
   (setq ispell-really-hunspell t)
   )
+(leaf epg-config
+  :custom
+  (epg-pinentry-mode . 'loopback))
 
 
 
