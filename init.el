@@ -187,7 +187,7 @@
 
   (when (eq window-system 'x)
     (set-face-attribute 'default nil
-                            :family "Noto Sans Mono CJK JP")))
+                        :family "Noto Sans Mono CJK JP")))
 
 ;; 記号をデフォルトのフォントにしない。(for Emacs 25.2)
 (setq use-default-font-for-symbols nil)
@@ -203,7 +203,7 @@
 (leaf xwidget-webkit
   :hook
   ((xwidget-webkit-mode-hook . (lambda ()
-                                (display-line-numbers-mode -1)))))
+                                 (display-line-numbers-mode -1)))))
 
 (leaf sudo-edit :straight t)
 (leaf projectile
@@ -236,12 +236,12 @@
          (helm-exit-minibuffer-hook . skk-isearch-mode-cleanup))
   :custom
   `((skk-japanese-message-and-error . t)
-   (skk-share-private-jisyo . t)
-   (skk-isearch-start-mode . 'latin); isearch で skk の初期状態
-   (skk-user-directory . ,(format "%sddskk/" user-emacs-directory))
-   (skk-henkan-strict-okuri-precedence . t)
-   (skk-sticky-key . '(117 101))
-   )
+    (skk-share-private-jisyo . t)
+    (skk-isearch-start-mode . 'latin); isearch で skk の初期状態
+    (skk-user-directory . ,(format "%sddskk/" user-emacs-directory))
+    (skk-henkan-strict-okuri-precedence . t)
+    (skk-sticky-key . '(117 101))
+    )
   :init
   (push (lambda ()
           (if (eq (current-column) 0)
@@ -599,7 +599,7 @@
 (leaf rst
   :straight t
   :bind ((:rst-mode-map
-              ("M-RET" . rst-insert-list)))
+          ("M-RET" . rst-insert-list)))
   :config
   (when (eq system-type 'darwin)
     (setq rst-pdf-program "open -a Skim")
@@ -709,7 +709,7 @@
                              ("python" . python)))
      (org-src-preserve-indentation . t)
      (org-startup-folded . t)
-)
+     )
     :bind (("C-c c" . org-capture)
            ("C-c l" . org-store-link)
            ("C-c a" . org-agenda)
@@ -731,7 +731,7 @@
              (progn
                (when(not (file-exists-p "~/org/"))
                  (mkdir "~/org/"))
-                 "~/org/"))))
+               "~/org/"))))
     
     :custom
     ((org-preview-latex-default-process . 'dvisvgm)
@@ -1232,17 +1232,17 @@
                  ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")))
   (add-to-list 'org-latex-classes
                '("jsarticle"
-           "\\documentclass[11pt,a4paper]{jsarticle}
+                 "\\documentclass[11pt,a4paper]{jsarticle}
 \\usepackage{amsmath}
 \\usepackage{amsthm}
 \\usepackage{bm}
 \\usepackage[dvipdfmx,hiresbb]{graphicx}
 \\usepackage[dvipdfmx]{color}"
-           ("\\section{%s}" . "\\section*{%s}")
-           ("\\subsection{%s}" . "\\subsection*{%s}")
-           ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-           ("\\paragraph{%s}" . "\\paragraph*{%s}")
-           ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
   (add-to-list 'org-latex-classes
                '("ieicej"
@@ -1381,8 +1381,8 @@
                  ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
                  ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
   (add-to-list 'org-latex-classes
-             '("lectureslide-lualatex"
-               "\\documentclass[presentation]{beamer}
+               '("lectureslide-lualatex"
+                 "\\documentclass[presentation]{beamer}
 [NO-DEFAULT-PACKAGES]
 \\usepackage{luatexja}
 \\usepackage{textcomp}
@@ -1427,11 +1427,11 @@
 %%
 \\setbeamercovered{transparent}
 \\setbeamertemplate{navigation symbols}{}"
-  ("\\section{%s}" . "\\section*{%s}")
-  ("\\subsection{%s}" . "\\subsection*{%s}")
-  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-  ("\\paragraph{%s}" . "\\paragraph*{%s}")
-  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
   ;; org-export-latex-no-toc
   (defun org-export-latex-no-toc (depth)
@@ -1514,30 +1514,30 @@ See `org-capture-templates' for more information."
   ;; :disabled t
   :config
   (leaf org-pdftools
-  :after org
-  :straight (org-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
-  :custom
-  `((org-pdftools-root-dir . ,(concat (getenv "HOME") "/GoogleDrive/Books")))
-  :hook (org-mode-hook . org-pdftools-setup-link)
-  )
+    :after org
+    :straight (org-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
+    :custom
+    `((org-pdftools-root-dir . ,(concat (getenv "HOME") "/GoogleDrive/Books")))
+    :hook (org-mode-hook . org-pdftools-setup-link)
+    )
   (leaf org-noter
-  :after (org))
+    :after (org))
   (leaf org-noter-pdftools
-  :straight (org-noter-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
-  :after (org-noter)
-  :require t)
+    :straight (org-noter-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
+    :after (org-noter)
+    :require t)
   (leaf pdf-tools
-  :straight t
-  ;; https://github.com/politza/pdf-tools#installation
-  :mode (("\\.pdf\\'" . pdf-view-mode))
-  :hook (pdf-view-mode-hook . (lambda ()
-                                (display-line-numbers-mode 0)))
-  :custom ((pdf-view-use-scaling . t))
-  :config
-  (pdf-tools-install)
-  (display-line-numbers-mode -1)
-  (setq pdf-annot-activate-created-annotations t)
-  (setq pdf-view-resize-factor 1.1)))
+    :straight t
+    ;; https://github.com/politza/pdf-tools#installation
+    :mode (("\\.pdf\\'" . pdf-view-mode))
+    :hook (pdf-view-mode-hook . (lambda ()
+                                  (display-line-numbers-mode 0)))
+    :custom ((pdf-view-use-scaling . t))
+    :config
+    (pdf-tools-install)
+    (display-line-numbers-mode -1)
+    (setq pdf-annot-activate-created-annotations t)
+    (setq pdf-view-resize-factor 1.1)))
 
 
 
@@ -1746,21 +1746,21 @@ See `org-capture-templates' for more information."
   :custom
   ((lsp-python-ms-python-executable-cmd . "python3"))
   :hook ((python-mode-hook . (lambda ()
-                                (require 'lsp-python-ms)
-                                (when (file-exists-p
-                                       (concat (projectile-project-root buffer-file-name) ".venv/"))
-                                  (setq lsp-python-ms-extra-paths
-                                        (vector
-                                         (format
-                                          "%s/site-packages"
-                                          (car
-                                           (last (directory-files
-                                                  (concat
-                                                   (projectile-project-root buffer-file-name)
-                                                   ".venv/lib/")
-                                                  t))))))
-                                  (message "lsp-python-ms-extra-paths `%s'" lsp-python-ms-extra-paths))
-                                (lsp-deferred))))
+                               (require 'lsp-python-ms)
+                               (when (file-exists-p
+                                      (concat (projectile-project-root buffer-file-name) ".venv/"))
+                                 (setq lsp-python-ms-extra-paths
+                                       (vector
+                                        (format
+                                         "%s/site-packages"
+                                         (car
+                                          (last (directory-files
+                                                 (concat
+                                                  (projectile-project-root buffer-file-name)
+                                                  ".venv/lib/")
+                                                 t))))))
+                                 (message "lsp-python-ms-extra-paths `%s'" lsp-python-ms-extra-paths))
+                               (lsp-deferred))))
   :config
   (setq lsp-python-ms-auto-install-server t)
   (add-hook 'python-mode-hook #'lsp-deferred) ; or lsp
@@ -1768,21 +1768,21 @@ See `org-capture-templates' for more information."
 (leaf lsp-pyright
   :straight t
   :hook ((python-mode-hook . (lambda ()
-                         (require 'lsp-pyright)
-                         (when (file-exists-p
-                                (concat (projectile-project-root buffer-file-name) ".venv/"))
-                           (setq lsp-pyright-extra-paths
-                                 (vector
-                                  (format
-                                   "%s/site-packages"
-                                   (car
-                                    (last (directory-files
-                                           (concat
-                                            (projectile-project-root buffer-file-name)
-                                            ".venv/lib/")
-                                           t))))))
-                           (message "lsp-pyright-extra-paths `%s'" lsp-pyright-extra-paths))
-                         (lsp-deferred))))
+                               (require 'lsp-pyright)
+                               (when (file-exists-p
+                                      (concat (projectile-project-root buffer-file-name) ".venv/"))
+                                 (setq lsp-pyright-extra-paths
+                                       (vector
+                                        (format
+                                         "%s/site-packages"
+                                         (car
+                                          (last (directory-files
+                                                 (concat
+                                                  (projectile-project-root buffer-file-name)
+                                                  ".venv/lib/")
+                                                 t))))))
+                                 (message "lsp-pyright-extra-paths `%s'" lsp-pyright-extra-paths))
+                               (lsp-deferred))))
   
   :config
   (dolist (dir '(
@@ -1827,10 +1827,10 @@ See `org-capture-templates' for more information."
   (lsp-ui-sideline-show-diagnostics   . t)
   (lsp-ui-sideline-show-code-actions  . t)
   :bind `((:lsp-ui-mode-map
-          ("M-." . lsp-ui-peek-find-definitions)
-          ("M-?" . lsp-ui-peek-find-references)
-          (,(concat lsp-keymap-prefix " t") . lsp-ui-doc-focus-frame)))
-)
+           ("M-." . lsp-ui-peek-find-definitions)
+           ("M-?" . lsp-ui-peek-find-references)
+           (,(concat lsp-keymap-prefix " t") . lsp-ui-doc-focus-frame)))
+  )
 
 (leaf lsp-treemacs
   :commands lsp-treemacs-errors-list
@@ -1870,7 +1870,7 @@ See `org-capture-templates' for more information."
 (leaf go-mode
   :straight t
   :after lsp-mode
-   :hook (go-mode-hook . lsp-defferd))
+  :hook (go-mode-hook . lsp-defferd))
 
 (leaf android-mode
   :straight t
@@ -1878,7 +1878,7 @@ See `org-capture-templates' for more information."
 
 (leaf ccls :straight t
   :after lsp-mode
-;;  :ensure-system-package ccls
+  ;; :ensure-system-package ccls
   :hook ((c-mode-hook c++-mode-hook objc-mode-hook) .
          (lambda () (require 'ccls) (lsp-deferred)))
   :config
@@ -1888,7 +1888,7 @@ See `org-capture-templates' for more information."
     (when (executable-find "/opt/homebrew/opt/ccls/bin/ccls")
       (setq ccls-executable "/opt/homebrew/opt/ccls/bin/ccls"))
     (when (executable-find "/opt/local/bin/ccls-clang-11")
-        (setq ccls-executable "/opt/local/bin/ccls-clang-11"))
+      (setq ccls-executable "/opt/local/bin/ccls-clang-11"))
     ;; (setq ccls-initialization-options
     ;;       '(:clang (:extraArgs ["-isystem/Library/Developer/CommandLineTools/usr/include/c++/v1"
     ;;                             "-isystem/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include"
@@ -1954,8 +1954,8 @@ See `org-capture-templates' for more information."
 (leaf npm-mode
   :disabled t
   :straight t
-;;  :ensure-system-package npm
-)
+  ;; :ensure-system-package npm
+  )
 (leaf autodisass-java-bytecode
   :straight t)
 
@@ -1979,8 +1979,8 @@ See `org-capture-templates' for more information."
   :init (setq markdown-command "multimarkdown")
   :config
   (when (eq window-system 'ns)
-        (set-face-attribute 'markdown-table-face nil
-                            :family "IPAGothic")))
+    (set-face-attribute 'markdown-table-face nil
+                        :family "IPAGothic")))
 (leaf docker :straight t)
 (leaf docker-compose-mode :straight t)
 (leaf review-mode
@@ -2019,7 +2019,7 @@ See `org-capture-templates' for more information."
     (gud-tooltip-echo-area . nil)
     ;;; バックアップファイルを作成しない
     (make-backup-files .t))
-    )
+  )
 
 
 (leaf asm-mode
