@@ -1543,8 +1543,9 @@ See `org-capture-templates' for more information."
 
 
 (leaf mu4e
+  :disabled t
   :straight t
-  :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e"
+  :load-path "/opt/homebrew/opt/mu/share/emacs/site-lisp/mu/mu4e"
   :commands (mu4e)
   :config
   ;;location of my maildir
