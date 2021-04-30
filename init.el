@@ -236,14 +236,12 @@
          (helm-exit-minibuffer-hook . skk-isearch-mode-cleanup))
   :custom
   `((skk-japanese-message-and-error . t)
-   (skk-share-private-jisyo . t)
-   (skk-isearch-start-mode . 'latin); isearch で skk の初期状態
-   (skk-user-directory . ,(format "%sddskk/" user-emacs-directory))
-   (skk-jisyo . "~/Dropbox/.config/ddskk/jisyo")
-   (skk-henkan-strict-okuri-precedence . t)
-   (skk-sticky-key . '(117 101))
-   (skk-jisyo-code . 'utf-8)
-   )
+    (skk-share-private-jisyo . t)
+    (skk-isearch-start-mode . 'latin); isearch で skk の初期状態
+    (skk-user-directory . ,(format "%sddskk/" user-emacs-directory))
+    (skk-henkan-strict-okuri-precedence . t)
+    (skk-sticky-key . '(117 101))
+    )
   :init
   (push (lambda ()
           (if (eq (current-column) 0)
@@ -255,7 +253,7 @@
               (org-at-block-p)
             nil))
         context-skk-context-check-hook)
-  (setq skk-get-jisyo-directory (format "%sskk-get-jisyo/utf-8/" user-emacs-directory))
+  (setq skk-get-jisyo-directory (format "%sskk-get-jisyo/" user-emacs-directory))
   (setq skk-large-jisyo (format "%sSKK-JISYO.L" skk-get-jisyo-directory))
   (setq skk-extra-jisyo-file-list
         (mapcar (lambda (x)
