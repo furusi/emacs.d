@@ -2103,6 +2103,11 @@ See `org-capture-templates' for more information."
 (leaf epg-config
   :custom
   (epg-pinentry-mode . 'loopback))
+(leaf vimrc-mode
+  :straight t
+  :require t
+  :mode
+  ("\\.vim\\(rc\\)?\\'" . vimrc-mode))
 
 
 
