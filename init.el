@@ -2113,8 +2113,6 @@ See `org-capture-templates' for more information."
   :mode
   ("\\.vim\\(rc\\)?\\'" . vimrc-mode))
 
-
-
 (dolist (file (cddr (directory-files (concat
                                       user-emacs-directory
                                       "lisp/"))))
