@@ -480,6 +480,10 @@
     :diminish counsel-mode
     :custom
     ((counsel-switch-buffer-preview-virtual-buffers . nil)
+     (counsel-rg-base-command  . '("rg"
+                                   "--hidden" "--max-columns" "240"
+                                   "--with-filename" "--no-heading"
+                                   "--line-number" "--color" "never" "%s"))
      (ivy-count-format . "(%d/%d) ")
      (ivy-initial-inputs-alist . nil)
      (ivy-re-builders-alist . '((t . ivy--regex-ignore-order)))
