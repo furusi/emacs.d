@@ -239,12 +239,15 @@
    (skk-share-private-jisyo . t)
    (skk-isearch-start-mode . 'latin); isearch で skk の初期状態
    (skk-user-directory . ,(format "%sddskk/" user-emacs-directory))
-   (skk-jisyo . "~/Dropbox/.config/ddskk/jisyo")
    (skk-henkan-strict-okuri-precedence . t)
    (skk-sticky-key . '(117 101))
    (skk-jisyo-code . 'utf-8)
    )
   :init
+  (leaf org-dropbox
+    if (file-exists-p "~/Dropbox/.config/ddskk/")
+    :custom
+    ((skk-jisyo . "~/Dropbox/.config/ddskk/jisyo")))
   (push (lambda ()
           (if (eq (current-column) 0)
               (org-at-heading-p)
