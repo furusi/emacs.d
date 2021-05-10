@@ -259,16 +259,20 @@
             nil))
         context-skk-context-check-hook)
   (setq skk-get-jisyo-directory (format "%sskk-get-jisyo/utf-8/" user-emacs-directory))
-  (setq skk-large-jisyo (format "%sSKK-JISYO.L" skk-get-jisyo-directory))
-  (setq skk-extra-jisyo-file-list
-        (mapcar (lambda (x)
-                  (format "%s%s" skk-get-jisyo-directory x))
-                '("SKK-JISYO.lisp" "SKK-JISYO.station"
-                  "SKK-JISYO.assoc" "SKK-JISYO.edict"
-                  "SKK-JISYO.law" "SKK-JISYO.jinmei"
-                  "SKK-JISYO.fullname" "SKK-JISYO.geo"
-                  "SKK-JISYO.itaiji" "SKK-JISYO.zipcode"
-                  "SKK-JISYO.okinawa" "SKK-JISYO.propernoun")))
+  (let ((skk-jisyo-directory (if (file-exists-p "~/Dropbox/.config/ddskk/skkdic-utf8/")
+                                 "~/Dropbox/.config/ddskk/skkdic-utf8/"
+                               skk-get-jisyo-directory)))
+    (setq skk-large-jisyo (format "%sSKK-JISYO.L" skk-jisyo-directory))
+    (setq skk-extra-jisyo-file-list
+          (mapcar (lambda (x)
+                    (format "%s%s" skk-jisyo-directory x))
+                  '("SKK-JISYO.lisp" "SKK-JISYO.station"
+                    "SKK-JISYO.assoc" "SKK-JISYO.edict"
+                    "SKK-JISYO.law" "SKK-JISYO.jinmei"
+                    "SKK-JISYO.fullname" "SKK-JISYO.geo"
+                    "SKK-JISYO.itaiji" "SKK-JISYO.zipcode"
+                    "SKK-JISYO.okinawa" "SKK-JISYO.propernoun")))
+    )
   ;; サ行変格活用の動詞も送りあり変換出来るようにする
   (setq skk-search-sagyo-henkaku t)
   ;; 全角・半角カタカナを変換候補にする
