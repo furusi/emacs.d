@@ -241,13 +241,13 @@
    (skk-user-directory . ,(format "%sddskk/" user-emacs-directory))
    (skk-henkan-strict-okuri-precedence . t)
    (skk-sticky-key . '(117 101))
-   (skk-jisyo-code . 'utf-8)
    )
   :init
-  (leaf org-dropbox
-    if (file-exists-p "~/Dropbox/.config/ddskk/")
+  (leaf skk-dropbox
+    :if (file-exists-p "~/Dropbox/.config/ddskk/")
     :custom
-    ((skk-jisyo . "~/Dropbox/.config/ddskk/jisyo")))
+    ((skk-jisyo . "~/Dropbox/.config/ddskk/jisyo")
+     (skk-jisyo-code . 'utf-8)))
   (push (lambda ()
           (if (eq (current-column) 0)
               (org-at-heading-p)
