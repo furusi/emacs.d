@@ -1,5 +1,6 @@
 ;; 分割方法を切り替える(水平，垂直) (quoted from https://github.com/magnars/.emacs.d/blob/master/defuns/buffer-defuns.el)
 (defun toggle-window-split ()
+  "バッファの分割方法を切り替える(水平→垂直，垂直→水平)"
   (interactive)
   (if (= (count-windows) 2)
       (let* ((this-win-buffer (window-buffer))
