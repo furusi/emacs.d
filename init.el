@@ -258,7 +258,7 @@
               (org-at-block-p)
             nil))
         context-skk-context-check-hook)
-  (setq skk-get-jisyo-directory (format "%sskk-get-jisyo/utf-8/" user-emacs-directory))
+  (setq skk-get-jisyo-directory (expand-file-name (format "%sskk-get-jisyo/" user-emacs-directory)))
   (let ((skk-jisyo-directory (if (file-exists-p "~/Dropbox/.config/ddskk/skkdic-utf8/")
                                  "~/Dropbox/.config/ddskk/skkdic-utf8/"
                                skk-get-jisyo-directory)))
