@@ -874,6 +874,7 @@
                                  (java       . t)
                                  (gnuplot    . t)
                                  (perl       . t)
+                                 (php        . t)
                                  (dot        . t)))
 
     (setq org-use-speed-commands t)
