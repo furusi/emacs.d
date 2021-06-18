@@ -683,7 +683,7 @@
   :config
   (leaf org
     :mode (("\\.org$" . org-mode))
-    :straight org-plus-contrib
+    :straight org
     :custom
     ((org-export-allow-bind-keywords . t)
      (org-export-backends . '(ascii html icalendar latex md odt taskjuggler asciidoc pandoc gfm))
@@ -751,6 +751,8 @@
     ((org-preview-latex-default-process . 'dvisvgm)
      (org-startup-folded . t))
     :config
+    (leaf org-contrib
+      :straight t)
     ;; org-habitモジュールを有効化
     (add-to-list 'org-modules 'org-habit)
     (add-to-list 'org-modules 'org-id)
