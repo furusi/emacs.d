@@ -1131,7 +1131,8 @@
   ;;(setq org-export-in-background t)
   (when (equal system-type 'darwin)
     (setq org-file-apps
-          '(("pdf" . "open -a Skim %s"))))
+          '(("pdf" . "open -a Skim %s")
+            ("php". emacs))))
   (when (equal system-type 'gnu/linux)
     (setq org-file-apps
           '(("pdf" . "evince %s"))))
