@@ -68,7 +68,7 @@
  ("melpa" . "452c6f2768921d73609bb3dd4c70df538c501f54")
  ("migemo" . "f756cba3d5268968da361463c2e29b3a659a3de7")
  ("ob-browser" . "a347d9df1c87b7eb660be8723982c7ad2563631a")
- ("org" . "5a03ad86cd86e1fae823cb3bcb40e2c4bc451b14")
+ ("org" . "7666d6bb99d92fbc5170f65bf5fbbe593c6cd868")
  ("org-asciidoc" . "e931362e641f97d17dc738d22bb461e54045786d")
  ("org-brain" . "e9b9b3e5bb3c63cecb1367df49205c346d9c050a")
  ("org-contrib" . "fc81309cf6756607a836f93049a9393c2967c4e0")
