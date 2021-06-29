@@ -482,7 +482,7 @@
     :straight t))
 
 (leaf *ivy
-  ;; :disabled t
+  :disabled t
   :config
   (leaf counsel
     :straight t
@@ -544,6 +544,92 @@
     ((:ivy-minibuffer-map
       ("M-f" . ivy-migemo-toggle-fuzzy)
       ("M-m" . ivy-migemo-toggle-migemo)))))
+
+(leaf *vertico
+  :config
+  (leaf vertico
+    :straight t
+    :custom
+    ((vertico-count . 20))
+    :init
+    (vertico-mode))
+  
+  ;; Use the `orderless' completion style.
+  ;; Enable `partial-completion' for files to allow path expansion.
+  ;; You may prefer to use `initials' instead of `partial-completion'.
+  (leaf orderless
+    :straight t
+    :init
+    (setq completion-styles '(orderless)
+          completion-category-defaults nil
+          completion-category-overrides '((file (styles . (partial-completion))))))
+
+  ;; Persist history over Emacs restarts. Vertico sorts by history position.
+  (leaf savehist
+    :straight t
+    :init
+    (savehist-mode))
+
+  (leaf consult
+    :straight t
+    :bind(
+          ("C-x b" . consult-buffer)
+          ("C-x c i" . consult-imenu)
+          (:isearch-mode-map
+           ("M-e" . consult-isearch)))
+    :config
+    (consult-customize
+     consult-theme
+     :preview-key '(:debounce 0.2 any)
+     consult-ripgrep consult-git-grep consult-grep
+     consult-bookmark consult-recent-file consult-xref
+     consult--source-file consult--source-project-file consult--source-bookmark
+     :preview-key (kbd "M-."))
+    (setq consult-project-root-function
+          (lambda ()
+            (when-let (project (project-current))
+              (car (project-roots project))))))
+  (leaf marginalia
+    :straight t
+    :bind (
+           ("M-A" . marginalia-cycle)
+           (:minibuffer-local-map
+            ("M-A" . marginalia-cycle))
+           )
+    :init
+    (marginalia-mode))
+
+  (leaf embark
+    :straight t
+    
+    :bind
+    (("C-." . embark-act)         ;; pick some comfortable binding
+     ("C-;" . embark-dwim)        ;; good alternative: M-.
+     ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+
+    :init
+
+    ;; Optionally replace the key help with a completing-read interface
+    (setq prefix-help-command #'embark-prefix-help-command)
+
+    :config
+
+    ;; Hide the mode line of the Embark live/completions buffers
+    (add-to-list 'display-buffer-alist
+                 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                   nil
+                   (window-parameters (mode-line-format . none)))))
+
+  ;; Consult users will also want the embark-consult package.
+  (leaf embark-consult
+    :straight t
+    :after (embark consult)
+    ;; :demand t ; only necessary if you have the hook below
+    ;; if you want to have consult previews as you move around an
+    ;; auto-updating embark collect buffer
+    :hook
+    (embark-collect-mode . consult-preview-at-point-mode))
+  )
 
 (leaf rg
   :bind (("C-c s" . rg-menu))
@@ -1744,18 +1830,7 @@ See `org-capture-templates' for more information."
 (leaf rainbow-mode
   :straight t)
 
-(leaf lsp-mode
-  :commands (lsp lsp-deferred)
-  :custom (
-           (lsp-auto-execute-action . nil)
-           (lsp-keymap-prefix . "C-c C-l")
-           (lsp-prefer-capf . t)
-           )
-  :hook ((cc-mode     . lsp-deferred)
-         (lsp-mode-hook . lsp-enable-which-key-integration))
-  :require t
-  :init (setq read-process-output-max (* 1024 1024))
-  (setq garbage-collection-messages t))
+
 
 (leaf lsp-python-ms
   :disabled t
@@ -1823,32 +1898,7 @@ See `org-capture-templates' for more information."
    #'pipenv-projectile-after-switch-extended))
 
 ;; optionally
-(leaf lsp-ui
-  :straight t
-  :hook (lsp-mode-hook . lsp-ui-mode)
-  :commands lsp-ui-mode
-  :after lsp-mode
-  :custom
-  (lsp-ui-doc-enable                  . t)
-  (lsp-ui-doc-header                  . t)
-  (lsp-ui-doc-include-signature       . t)
-  (lsp-ui-doc-position                . 'bottom) ;; top, bottom, or at-point
-  (lsp-ui-doc-max-width               . 60)
-  (lsp-ui-doc-max-height              . 20)
-  (lsp-ui-doc-use-childframe          . t)
-  (lsp-ui-doc-use-webkit              . nil)
 
-  (lsp-ui-sideline-enable             . t)
-  (lsp-ui-sideline-ignore-duplicate   . t)
-  (lsp-ui-sideline-show-symbol        . t)
-  (lsp-ui-sideline-show-hover         . t)
-  (lsp-ui-sideline-show-diagnostics   . t)
-  (lsp-ui-sideline-show-code-actions  . t)
-  :bind `((:lsp-ui-mode-map
-           ("M-." . lsp-ui-peek-find-definitions)
-           ("M-?" . lsp-ui-peek-find-references)
-           (,(concat lsp-keymap-prefix " t") . lsp-ui-doc-focus-frame)))
-  )
 
 (leaf lsp-treemacs
   :commands lsp-treemacs-errors-list
