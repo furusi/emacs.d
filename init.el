@@ -572,6 +572,9 @@
 
   (leaf consult
     :straight t
+    :custom
+    ((consult-preview-key . nil)
+     (consult-narrow-key . "<"))
     :bind(
           ("C-x b" . consult-buffer)
           ("C-x c i" . consult-imenu)
