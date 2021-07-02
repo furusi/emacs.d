@@ -1830,7 +1830,19 @@ See `org-capture-templates' for more information."
 (leaf rainbow-mode
   :straight t)
 
-
+(leaf lsp-mode
+  :straight t
+  :commands (lsp lsp-deferred)
+  :custom (
+           (lsp-auto-execute-action . nil)
+           (lsp-keymap-prefix . "C-c C-l")
+           (lsp-prefer-capf . t)
+           )
+  :hook ((cc-mode     . lsp-deferred)
+         (lsp-mode-hook . lsp-enable-which-key-integration))
+  :require t
+  :init (setq read-process-output-max (* 1024 1024))
+  (setq garbage-collection-messages t))
 
 (leaf lsp-python-ms
   :disabled t
@@ -1898,7 +1910,32 @@ See `org-capture-templates' for more information."
    #'pipenv-projectile-after-switch-extended))
 
 ;; optionally
+(leaf lsp-ui
+  :straight t
+  :hook (lsp-mode-hook . lsp-ui-mode)
+  :commands lsp-ui-mode
+  :after lsp-mode
+  :custom
+  (lsp-ui-doc-enable                  . t)
+  (lsp-ui-doc-header                  . t)
+  (lsp-ui-doc-include-signature       . t)
+  (lsp-ui-doc-position                . 'bottom) ;; top, bottom, or at-point
+  (lsp-ui-doc-max-width               . 60)
+  (lsp-ui-doc-max-height              . 20)
+  (lsp-ui-doc-use-childframe          . t)
+  (lsp-ui-doc-use-webkit              . nil)
 
+  (lsp-ui-sideline-enable             . t)
+  (lsp-ui-sideline-ignore-duplicate   . t)
+  (lsp-ui-sideline-show-symbol        . t)
+  (lsp-ui-sideline-show-hover         . t)
+  (lsp-ui-sideline-show-diagnostics   . t)
+  (lsp-ui-sideline-show-code-actions  . t)
+  :bind `((:lsp-ui-mode-map
+           ("M-." . lsp-ui-peek-find-definitions)
+           ("M-?" . lsp-ui-peek-find-references)
+           (,(concat lsp-keymap-prefix " t") . lsp-ui-doc-focus-frame)))
+  )
 
 (leaf lsp-treemacs
   :commands lsp-treemacs-errors-list
