@@ -549,8 +549,13 @@
   :config
   (leaf vertico
     :straight t
+    :bind ((:vertico-map
+            ("M-RET" . minibuffer-force-complete-and-exit)
+            ("M-TAB" . minibuffer-complete)))
     :custom
-    ((vertico-count . 20))
+    ((vertico-count . 20)
+     (enable-recursive-minibuffers . t)
+     )
     :init
     (vertico-mode))
   
