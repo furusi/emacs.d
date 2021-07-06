@@ -821,6 +821,7 @@
                              ("python" . python)))
      (org-src-preserve-indentation . t)
      (org-startup-folded . t)
+     (org-preview-latex-default-process . 'dvisvgm)
      )
     :bind (("C-c c" . org-capture)
            ("C-c l" . org-store-link)
@@ -844,10 +845,6 @@
                (when(not (file-exists-p "~/org/"))
                  (mkdir "~/org/"))
                "~/org/"))))
-    
-    :custom
-    ((org-preview-latex-default-process . 'dvisvgm)
-     (org-startup-folded . t))
     :config
     (leaf org-contrib
       :straight t)

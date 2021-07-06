@@ -100,7 +100,7 @@
  ("review-el" . "e6a2a10d4544cd2d5893e44dc534681af8db4fea")
  ("rg.el" . "10e64887c224002572e1f1e19c74453cba606c3f")
  ("ripgrep.el" . "40e871dcc4519a70981e9f28acea304692a60978")
- ("rustic" . "d97ec8623c4c7e7ad3bb32e3d3773ba29a34bb0d")
+ ("rustic" . "270bc5afda080ed656ad53aa132e8b1fb05083e6")
  ("s.el" . "43ba8b563bee3426cead0e6d4ddc09398e1a349d")
  ("slime" . "68c58c0194ff03cd147fcec99f0ee90ba9178875")
  ("slime-company" . "f20ecc4104d4c35052696e7e760109fb02060e72")
