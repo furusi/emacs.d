@@ -579,14 +579,18 @@
     :straight t
     :custom
     ((consult-preview-key . nil)
-     (consult-narrow-key . "<"))
+     (consult-narrow-key . "<")
+     (consult-find-command . "fd --color=never --full-path ARG OPTS"))
     :bind(
           ("C-x b" . consult-buffer)
           ("C-x c i" . consult-imenu)
           ("C-x j" . consult-recent-file)
           ("M-y" . consult-yank-pop)
+          ([remap goto-line] . consult-goto-line)
           (:isearch-mode-map
            ("M-e" . consult-isearch)))
+    :hook
+    (completion-list-mode . consult-preview-at-point-mode)
     :config
     (consult-customize
      consult-theme
@@ -594,7 +598,9 @@
      consult-ripgrep consult-git-grep consult-grep
      consult-bookmark consult-recent-file consult-xref
      consult--source-file consult--source-project-file consult--source-bookmark
-     :preview-key (kbd "M-."))
+     :preview-key (kbd "M-.")
+     consult-goto-line consult-line
+     :preview-key 'any)
     (setq consult-project-root-function
           (lambda ()
             (when-let (project (project-current))
