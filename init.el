@@ -606,6 +606,23 @@
           (lambda ()
             (when-let (project (project-current))
               (car (project-roots project))))))
+  (leaf affe
+    :straight t
+    :after consult orderless
+    :custom
+    ((affe-find-command . "fd -H -E .git --color=never --full-path")
+     (affe-grep-command . "rg --hidden --null --color=never --max-columns=1000 --no-heading --line-number -v ^$ .")
+     )
+    
+    
+    :config
+    ;; Configure Orderless
+    (setq affe-regexp-function #'orderless-pattern-compiler
+          affe-highlight-function #'orderless--highlight)
+
+    ;; Manual preview key for `affe-grep'
+    (consult-customize affe-grep :preview-key (kbd "M-.")))
+  
   (leaf marginalia
     :straight t
     :bind (
