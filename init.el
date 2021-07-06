@@ -580,7 +580,7 @@
     :custom
     ((consult-preview-key . nil)
      (consult-narrow-key . "<")
-     (consult-find-command . "fd --color=never --full-path ARG OPTS"))
+     (consult-find-command . "fd -H -E .git --color=never --full-path ARG OPTS")
     :bind(
           ("C-x b" . consult-buffer)
           ("C-x c i" . consult-imenu)
