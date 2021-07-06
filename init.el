@@ -581,6 +581,7 @@
     ((consult-preview-key . nil)
      (consult-narrow-key . "<")
      (consult-find-command . "fd -H -E .git --color=never --full-path ARG OPTS")
+     (consult-ripgrep-command . "rg --hidden --null --line-buffered --color=ansi --max-columns=1000   --no-heading --line-number . -e ARG OPTS"))
     :bind(
           ("C-x b" . consult-buffer)
           ("C-x c i" . consult-imenu)
