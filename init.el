@@ -242,6 +242,7 @@
    (skk-henkan-strict-okuri-precedence . t)
    (skk-save-jisyo-instantly . t)
    (skk-sticky-key . '(117 101))
+   (skk-egg-like-newline . t)           ;non-nilにするとEnterでの確定時に改行しない
    )
   :init
   (leaf skk-dropbox
@@ -286,7 +287,6 @@
   (setq skk-rom-kana-rule-list
         '(("tni" nil ("ティ" . "てぃ"))
           ("dni" nil ("ディ" . "でぃ"))))
-  (setq skk-egg-like-newline t);;non-nilにするとEnterでの確定時に改行しない
   ;; ▼モードで BS を押したときには確定しないで前候補を表示する
   (setq skk-delete-implies-kakutei nil)
   ;; @@ skk-search-web.el
