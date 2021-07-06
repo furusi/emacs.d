@@ -548,7 +548,7 @@
 (leaf *vertico
   :config
   (leaf vertico
-    :straight t
+    :straight (vertico :type git :host github :repo "minad/vertico")
     :bind ((:vertico-map
             ("M-RET" . minibuffer-force-complete-and-exit)
             ("M-TAB" . minibuffer-complete)))

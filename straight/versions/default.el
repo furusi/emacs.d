@@ -118,7 +118,7 @@
  ("treemacs" . "f13249866b300ec3a4908bf132d984c6354e3fcf")
  ("undo-tree" . "e326c6135e62f5fe8536528d3acd5e798f847407")
  ("use-package" . "a7422fb8ab1baee19adb2717b5b47b9c3812a84c")
- ("vertico" . "1bff5752ad65a8b3b7f2e256aefa139a2884cf2f")
+ ("vertico" . "e30997d1c9f663824c02e5c3434dadce32a21a31")
  ("vimrc-mode" . "13bc150a870d5d4a95f1111e4740e2b22813c30e")
  ("web-mode" . "8ef47935d638902ba35a557cae5edd6ab6ab1346")
  ("with-editor" . "36e163ca80f74905ba3c1cf7b596a0ccc8bc5cac")
