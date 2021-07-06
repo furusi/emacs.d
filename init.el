@@ -584,6 +584,7 @@
           ("C-x b" . consult-buffer)
           ("C-x c i" . consult-imenu)
           ("C-x j" . consult-recent-file)
+          ("M-y" . consult-yank-pop)
           (:isearch-mode-map
            ("M-e" . consult-isearch)))
     :config
