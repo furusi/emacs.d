@@ -9,7 +9,7 @@
  ("avy" . "e92cb37457b43336b765630dbfbea8ba4be601fa")
  ("bui.el" . "f3a137628e112a91910fd33c0cff0948fa58d470")
  ("cfrs" . "7c42f2c82c7ae689f3ef291b066688c58ab96298")
- ("company-mode" . "88001d794d963049339883216b6606de0a1209ea")
+ ("company-mode" . "d77184094b9a45b204813d824918e1ec2aac8504")
  ("consult" . "6ce9aa58e74da92e391cfe938bc3da4f47ab591e")
  ("csv-mode" . "8da54e8b4ef9e5fe8a0afa147c625ced603dc0aa")
  ("dap-mode" . "7b67475361f7a89a1c3d5f6979d12209ad036f54")
