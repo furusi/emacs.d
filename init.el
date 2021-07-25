@@ -423,13 +423,14 @@
   :hook ((org-mode-hook prog-mode-hook) . real-auto-save-mode))
 
 
-(leaf spaceline
+(leaf smart-mode-line
   :straight t
-  :require spaceline-config
-  :diminish (auto-revert-mode abbrev-mode)
+  :custom ((sml/theme . 'respectful)
+           (sml/no-confirm-load-theme . t)
+           )
   :config
-  (spaceline-emacs-theme)
-  (spaceline-helm-mode))
+  (sml/setup)
+  )
 
 
 ;; helm
