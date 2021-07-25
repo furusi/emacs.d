@@ -425,9 +425,7 @@
 
 (leaf smart-mode-line
   :straight t
-  :custom ((sml/theme . 'respectful)
-           (sml/no-confirm-load-theme . t)
-           )
+  :custom ((sml/no-confirm-load-theme . t))
   :config
   (sml/setup)
   )
@@ -2122,12 +2120,12 @@ See `org-capture-templates' for more information."
 (leaf regex-tool :straight t)
 
 (leaf solarized-theme
-  :disabled t
   :straight t
   :when (window-system)
   :config
   ;; (load-theme 'solarized-dark t)
-  (load-theme 'solarized-iceberg-dark t))
+  ;; (load-theme 'solarized-iceberg-dark t)
+  )
 (leaf modus-themes
   :straight t
   :when (window-system)
