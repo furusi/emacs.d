@@ -402,6 +402,19 @@
   :require t
   :global-minor-mode global-undo-tree-mode)
 
+(leaf eglot
+  :straight t
+  :config
+  ;; (add-to-list 'eglot-server-programs '(rustic-mode . ("rust-analyzer")))
+  ;; (add-hook 'rustic-mode-hook 'eglot-ensure)
+  )
+
+(leaf rustic :straight t
+  ;; :hook (rust-mode-hook . rustic-mode)
+  :custom (
+           (rustic-lsp-server . 'rust-analyzer)
+           (rustic-lsp-client . 'eglot))
+  )
 
 (leaf auto-save-buffers-enhanced
   :disabled t
@@ -1990,12 +2003,7 @@ See `org-capture-templates' for more information."
       :after (lsp-java)))
   )
 
-(leaf eglot
-  :straight t
-  :config
-  ;; (add-to-list 'eglot-server-programs '(rustic-mode . ("rust-analyzer")))
-  ;; (add-hook 'rustic-mode-hook 'eglot-ensure)
-  )
+
 
 
 (leaf poetry
@@ -2021,12 +2029,7 @@ See `org-capture-templates' for more information."
 ;; (use-package picasm
 ;;   :load-path "~/.emacs.d/lisp/picasm/")
 
-(leaf rustic :straight t
-  ;; :hook (rust-mode-hook . rustic-mode)
-  :custom (
-           (rustic-lsp-server . 'rust-analyzer)
-           (rustic-lsp-client . 'eglot))
-  )
+
 
 (leaf go-mode
   :straight t
