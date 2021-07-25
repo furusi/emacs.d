@@ -1873,73 +1873,127 @@ See `org-capture-templates' for more information."
 (leaf rainbow-mode
   :straight t)
 
-(leaf lsp-mode
-  :straight t
-  :commands (lsp lsp-deferred)
-  :custom (
-           (lsp-auto-execute-action . nil)
-           (lsp-keymap-prefix . "C-c C-l")
-           (lsp-prefer-capf . t)
-           )
-  :hook ((cc-mode     . lsp-deferred)
-         (lsp-mode-hook . lsp-enable-which-key-integration))
-  :require t
-  :init (setq read-process-output-max (* 1024 1024))
-  (setq garbage-collection-messages t))
-
-(leaf lsp-python-ms
+(leaf *lsp
   :disabled t
-  :straight t
-  :require t
-  :custom
-  ((lsp-python-ms-python-executable-cmd . "python3"))
-  :hook ((python-mode-hook . (lambda ()
-                               (require 'lsp-python-ms)
-                               (when (file-exists-p
-                                      (concat (projectile-project-root buffer-file-name) ".venv/"))
-                                 (setq lsp-python-ms-extra-paths
-                                       (vector
-                                        (format
-                                         "%s/site-packages"
-                                         (car
-                                          (last (directory-files
-                                                 (concat
-                                                  (projectile-project-root buffer-file-name)
-                                                  ".venv/lib/")
-                                                 t))))))
-                                 (message "lsp-python-ms-extra-paths `%s'" lsp-python-ms-extra-paths))
-                               (lsp-deferred))))
   :config
-  (setq lsp-python-ms-auto-install-server t)
-  (add-hook 'python-mode-hook #'lsp-deferred) ; or lsp
+  (leaf lsp-mode
+    :straight t
+    :commands (lsp lsp-deferred)
+    :custom (
+             (lsp-auto-execute-action . nil)
+             (lsp-keymap-prefix . "C-c C-l")
+             (lsp-prefer-capf . t)
+             )
+    :hook ((cc-mode     . lsp-deferred)
+           (lsp-mode-hook . lsp-enable-which-key-integration))
+    :require t
+    :init (setq read-process-output-max (* 1024 1024))
+    (setq garbage-collection-messages t))
+  (leaf lsp-python-ms
+    :disabled t
+    :straight t
+    :require t
+    :custom
+    ((lsp-python-ms-python-executable-cmd . "python3"))
+    :hook ((python-mode-hook . (lambda ()
+                                 (require 'lsp-python-ms)
+                                 (when (file-exists-p
+                                        (concat (projectile-project-root buffer-file-name) ".venv/"))
+                                   (setq lsp-python-ms-extra-paths
+                                         (vector
+                                          (format
+                                           "%s/site-packages"
+                                           (car
+                                            (last (directory-files
+                                                   (concat
+                                                    (projectile-project-root buffer-file-name)
+                                                    ".venv/lib/")
+                                                   t))))))
+                                   (message "lsp-python-ms-extra-paths `%s'" lsp-python-ms-extra-paths))
+                                 (lsp-deferred))))
+    :config
+    (setq lsp-python-ms-auto-install-server t)
+    (add-hook 'python-mode-hook #'lsp-deferred) ; or lsp
+    )
+  (leaf lsp-pyright
+    :straight t
+    :hook ((python-mode-hook . (lambda ()
+                                 (require 'lsp-pyright)
+                                 (when (file-exists-p
+                                        (concat (projectile-project-root buffer-file-name) ".venv/"))
+                                   (setq lsp-pyright-extra-paths
+                                         (vector
+                                          (format
+                                           "%s/site-packages"
+                                           (car
+                                            (last (directory-files
+                                                   (concat
+                                                    (projectile-project-root buffer-file-name)
+                                                    ".venv/lib/")
+                                                   t))))))
+                                   (message "lsp-pyright-extra-paths `%s'" lsp-pyright-extra-paths))
+                                 (lsp-deferred))))
+    
+    :config
+    (dolist (dir '(
+                   "[/\\\\]\\.venv$"
+                   "[/\\\\]\\.mypy_cache$"
+                   "[/\\\\]__pycache__$"
+                   ))
+      (push dir lsp-file-watch-ignored))
+    )
+  ;; optionally
+  (leaf lsp-ui
+    :straight t
+    :hook (lsp-mode-hook . lsp-ui-mode)
+    :commands lsp-ui-mode
+    :after lsp-mode
+    :custom
+    (lsp-ui-doc-enable                  . t)
+    (lsp-ui-doc-header                  . t)
+    (lsp-ui-doc-include-signature       . t)
+    (lsp-ui-doc-position                . 'bottom) ;; top, bottom, or at-point
+    (lsp-ui-doc-max-width               . 60)
+    (lsp-ui-doc-max-height              . 20)
+    (lsp-ui-doc-use-childframe          . t)
+    (lsp-ui-doc-use-webkit              . nil)
+
+    (lsp-ui-sideline-enable             . t)
+    (lsp-ui-sideline-ignore-duplicate   . t)
+    (lsp-ui-sideline-show-symbol        . t)
+    (lsp-ui-sideline-show-hover         . t)
+    (lsp-ui-sideline-show-diagnostics   . t)
+    (lsp-ui-sideline-show-code-actions  . t)
+    :bind `((:lsp-ui-mode-map
+             ("M-." . lsp-ui-peek-find-definitions)
+             ("M-?" . lsp-ui-peek-find-references)
+             (,(concat lsp-keymap-prefix " t") . lsp-ui-doc-focus-frame)))
+    )
+  (leaf lsp-treemacs
+    :commands lsp-treemacs-errors-list
+    :config
+    (lsp-treemacs-sync-mode 1))
+  ;; optionally if you want to use debugger
+  (leaf lsp-java
+    :straight t
+    :require t
+    :hook (java-mode-hook . lsp-deferred)
+    :bind ((:lsp-mode-map
+            ("M-." . lsp-find-definition))))
+  (leaf dap-mode
+    :straight t
+    :after lsp-mode
+    :config
+    (dap-mode 1)
+    (dap-ui-mode 1)
+    (leaf dap-java
+      :require t
+      :after (lsp-java)))
   )
-(leaf lsp-pyright
-  :straight t
-  :hook ((python-mode-hook . (lambda ()
-                               (require 'lsp-pyright)
-                               (when (file-exists-p
-                                      (concat (projectile-project-root buffer-file-name) ".venv/"))
-                                 (setq lsp-pyright-extra-paths
-                                       (vector
-                                        (format
-                                         "%s/site-packages"
-                                         (car
-                                          (last (directory-files
-                                                 (concat
-                                                  (projectile-project-root buffer-file-name)
-                                                  ".venv/lib/")
-                                                 t))))))
-                                 (message "lsp-pyright-extra-paths `%s'" lsp-pyright-extra-paths))
-                               (lsp-deferred))))
-  
-  :config
-  (dolist (dir '(
-                 "[/\\\\]\\.venv$"
-                 "[/\\\\]\\.mypy_cache$"
-                 "[/\\\\]__pycache__$"
-                 ))
-    (push dir lsp-file-watch-ignored))
-  )
+
+
+
+
 (leaf poetry
   :straight t
   :require t)
@@ -1952,54 +2006,8 @@ See `org-capture-templates' for more information."
    pipenv-projectile-after-switch-function
    #'pipenv-projectile-after-switch-extended))
 
-;; optionally
-(leaf lsp-ui
-  :straight t
-  :hook (lsp-mode-hook . lsp-ui-mode)
-  :commands lsp-ui-mode
-  :after lsp-mode
-  :custom
-  (lsp-ui-doc-enable                  . t)
-  (lsp-ui-doc-header                  . t)
-  (lsp-ui-doc-include-signature       . t)
-  (lsp-ui-doc-position                . 'bottom) ;; top, bottom, or at-point
-  (lsp-ui-doc-max-width               . 60)
-  (lsp-ui-doc-max-height              . 20)
-  (lsp-ui-doc-use-childframe          . t)
-  (lsp-ui-doc-use-webkit              . nil)
 
-  (lsp-ui-sideline-enable             . t)
-  (lsp-ui-sideline-ignore-duplicate   . t)
-  (lsp-ui-sideline-show-symbol        . t)
-  (lsp-ui-sideline-show-hover         . t)
-  (lsp-ui-sideline-show-diagnostics   . t)
-  (lsp-ui-sideline-show-code-actions  . t)
-  :bind `((:lsp-ui-mode-map
-           ("M-." . lsp-ui-peek-find-definitions)
-           ("M-?" . lsp-ui-peek-find-references)
-           (,(concat lsp-keymap-prefix " t") . lsp-ui-doc-focus-frame)))
-  )
 
-(leaf lsp-treemacs
-  :commands lsp-treemacs-errors-list
-  :config
-  (lsp-treemacs-sync-mode 1))
-;; optionally if you want to use debugger
-(leaf lsp-java
-  :straight t
-  :require t
-  :hook (java-mode-hook . lsp-deferred)
-  :bind ((:lsp-mode-map
-          ("M-." . lsp-find-definition))))
-(leaf dap-mode
-  :straight t
-  :after lsp-mode
-  :config
-  (dap-mode 1)
-  (dap-ui-mode 1)
-  (leaf dap-java
-    :require t
-    :after (lsp-java)))
 
 (leaf hydra :straight t)
 (leaf projectile-ripgrep :straight t)
