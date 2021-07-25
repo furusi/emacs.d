@@ -2020,7 +2020,6 @@ See `org-capture-templates' for more information."
 
 (leaf rustic :straight t
   :hook (rust-mode-hook . rustic-mode)
-  :require t
   :init
   (setq rustic-lsp-server 'rust-analyzer))
 
