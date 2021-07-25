@@ -558,6 +558,15 @@
      )
     :init
     (vertico-mode))
+  (leaf vertico-directory
+    :bind ((:vertico-map
+            ("RET" . vertico-directory-enter)
+            ("DEL" . vertico-directory-delete-char)
+            ("M-DEL" . vertico-directory-delete-word))
+           )
+    ;; Tidy shadowed file names
+    :hook
+    (rfn-eshadow-update-overlay . vertico-directory-tidy))
   
   ;; Use the `orderless' completion style.
   ;; Enable `partial-completion' for files to allow path expansion.
