@@ -2123,11 +2123,19 @@ See `org-capture-templates' for more information."
 (leaf regex-tool :straight t)
 
 (leaf solarized-theme
+  :disabled t
   :straight t
   :when (window-system)
   :config
   ;; (load-theme 'solarized-dark t)
   (load-theme 'solarized-iceberg-dark t))
+(leaf modus-themes
+  :straight t
+  :when (window-system)
+  :require t
+  :config
+  (modus-themes-load-themes)
+  (modus-themes-load-operandi))
 (leaf markdown-mode
   :straight t
   :mode (("README\\.md\\'" . gfm-mode)
