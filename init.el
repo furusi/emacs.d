@@ -68,8 +68,6 @@
 
 
 (leaf autorevert
-  :custom
-  ((auto-revert-interval . 0.1))
   :hook
   (emacs-startup-hook . global-auto-revert-mode)
   )
