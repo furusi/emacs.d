@@ -1125,55 +1125,7 @@
               (file-exists-p "/opt/local/bin/pandoc")
               (file-exists-p "/opt/homebrew/bin/pandoc"))))
   
-  (leaf org-roam
-    :after org
-    :straight t
-    :hook
-    ((org-mode-hook . org-roam-mode))
-    :custom
-    `((org-roam-directory . ,(concat org-directory "roam/"))
-      (org-roam-completion-system . 'ivy)
-      (org-roam-title-to-slug-function . (lambda (text) text)))
-    :bind
-    ((:org-roam-mode-map
-      ("C-c n l" . org-roam)
-      ("C-c n f" . org-roam-find-file)
-      ("C-c n g" . org-roam-graph)
-      ("C-c n t a" . org-roam-tag-add)
-      ("C-c n t d" . org-roam-tag-delete))
-     (:org-mode-map
-      ("C-c n i" . org-roam-insert)
-      ("C-c n I" . org-roam-insert-immediate)))
-    :config
-    (when (eq system-type 'darwin)
-      (setq org-roam-graph-viewer "open"))
-    (add-to-list 'org-roam-capture-templates
-                 '("n" "note(default + headline)"
-                   plain #'org-roam-capture--get-point
-                   "%?"
-                   :file-name "%<%Y%m%d%H%M%S>-${slug}"
-                   :head "#+title: ${title}
-* Overview
-  "
-                   :unnarrowed t))
-    (leaf org-roam-protocol
-      :require t
-      )
-    (leaf org-roam-server
-      :straight t
-      :require t
-      :config
-      (defun my-org-roam-browse ()
-        "open org-roam-server page"
-        (interactive)
-        (if (not org-roam-server-mode)
-            (org-roam-server-mode))
-        (browse-url-firefox
-         (format "http://%s:%d/"
-                 org-roam-server-host
-                 org-roam-server-port)))
-      )
-    )
+  
   (leaf org-brain
     :straight t
     :after org
@@ -1183,6 +1135,57 @@
       ("C-c b" . org-brain-prefix-map)))
     )
   )
+
+(leaf org-roam
+    :after org
+    :straight t
+    :custom
+    `((org-roam-directory . ,(concat org-directory "roam/"))
+      (org-roam-completion-system . 'ivy)
+      (org-roam-title-to-slug-function . (lambda (text) text)))
+    :bind
+    (("C-c n l" . org-roam-buffer-toggle)
+     ("C-c n f" . org-roam-node-find)
+     ("C-c n g" . org-roam-graph)
+     ("C-c n i" . org-roam-node-insert)
+     ("C-c n c" . org-roam-capture)
+     ;; Dailies
+     ("C-c n j" . org-roam-dailies-capture-today)
+     ;; (:org-roam-mode-map
+     ;;  ("C-c n l" . org-roam)
+     ;;  ("C-c n f" . org-roam-find-file)
+     ;;  ("C-c n g" . org-roam-graph)
+     ;;  ("C-c n t a" . org-roam-tag-add)
+     ;;  ("C-c n t d" . org-roam-tag-delete))
+     ;; (:org-mode-map
+     ;;  ("C-c n i" . org-roam-insert)
+     ;;  ("C-c n I" . org-roam-insert-immediate))
+     )
+    :config
+    (org-roam-setup)
+    (when (eq system-type 'darwin)
+      (setq org-roam-graph-viewer "open"))
+    (add-to-list 'org-roam-capture-templates
+                 '("n" "note(default + headline)"
+                   plain #'org-roam-capture--get-point
+                   "%?"
+                   :file-name "%<%Y%m%d%H%M%S>-${slug}.org"
+                   :head "#+title: ${title}\n* Overview\n"
+                   :unnarrowed t)
+                 )
+    (leaf org-roam-protocol
+      :require t
+      )
+    ;; (leaf org-roam-ui
+    ;;   :straight (org-roam-ui :type git :host github :repo "org-roam/org-roam-ui")
+    ;;   )
+    (leaf org-roam-ui
+  :straight
+    (org-roam-ui :host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
+    :after org-roam
+    :hook (org-roam . org-roam-ui-mode))
+
+    )
 
 
 (leaf org-journal
