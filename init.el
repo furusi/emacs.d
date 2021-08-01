@@ -557,13 +557,16 @@
     :straight (vertico :type git :host github :repo "minad/vertico")
     :bind ((:vertico-map
             ("M-RET" . minibuffer-force-complete-and-exit)
-            ("M-TAB" . minibuffer-complete)))
+            ("M-TAB" . minibuffer-complete)
+            ("C-r" . vertico-previous)
+            ("C-s" . vertico-next)))
     :custom
     ((vertico-count . 20)
      (enable-recursive-minibuffers . t)
      )
     :init
-    (vertico-mode))
+    (vertico-mode)
+    )
   (leaf vertico-directory
     :bind ((:vertico-map
             ("RET" . vertico-directory-enter)
@@ -594,8 +597,7 @@
   (leaf consult
     :straight t
     :custom
-    ((consult-preview-key . nil)
-     (consult-narrow-key . "<")
+    ((consult-narrow-key . "<")
      (consult-find-command . "fd -H -E .git --color=never --full-path ARG OPTS")
      (consult-ripgrep-command . "rg --hidden --null --line-buffered --color=ansi --max-columns=1000   --no-heading --line-number . -e ARG OPTS"))
     :bind(
@@ -604,6 +606,9 @@
           ("C-x j" . consult-recent-file)
           ("M-y" . consult-yank-pop)
           ([remap goto-line] . consult-goto-line)
+          (:isearch-mode-map
+            ("C-i" . my-consult-line)
+            )
           (:isearch-mode-map
            ("M-e" . consult-isearch)))
     :hook
@@ -615,13 +620,19 @@
      consult-ripgrep consult-git-grep consult-grep
      consult-bookmark consult-recent-file consult-xref
      consult--source-file consult--source-project-file consult--source-bookmark
-     :preview-key (kbd "M-.")
+     :preview-key (kbd "C-,")
      consult-goto-line consult-line
-     :preview-key 'any)
+     :preview-key '(:debounce 0.2 any))
     (setq consult-project-root-function
           (lambda ()
             (when-let (project (project-current))
-              (car (project-roots project))))))
+              (car (project-roots project)))))
+    (defun my-consult-line (&optional at-point)
+      (interactive "P")
+      (if at-point
+          (consult-line (thing-at-point 'symbol))
+        (consult-line)))
+    )
   (leaf affe
     :straight t
     :after consult orderless
