@@ -84,7 +84,7 @@
  ("ox-pandoc" . "aa37dc7e94213d4ebedb85c384c1ba35007da18e")
  ("ox-rst" . "99fa790da55b57a3f2e9aa187493ba434a64250e")
  ("pandoc.el" . "198d262d09e30448f1672338b0b5a81cf75e1eaa")
- ("pdf-tools" . "c510442ab89c8a9e9881230eeb364f4663f59e76")
+ ("pdf-tools" . "5f77dae43eb8f71e52e10ba8cf994883f74c3fb7")
  ("pfuture" . "d7926de3ba0105a36cfd00811fd6278aea903eef")
  ("php-mode" . "9561a6c0a92a3d7c00e7e57972f42cb5be775898")
  ("phpstan.el" . "6863a5278fc656cddb604b0c6e165f05d0171d0a")
