@@ -1229,7 +1229,8 @@
       :after org
       :straight t
       :require t
-      :if (or (file-exists-p "/usr/local/bin/pandoc")
+      :if (or (file-exists-p "/usr/bin/pandoc")
+              (file-exists-p "/usr/local/bin/pandoc")
               (file-exists-p "/opt/local/bin/pandoc")
               (file-exists-p "/opt/homebrew/bin/pandoc"))))
   
