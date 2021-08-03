@@ -600,17 +600,17 @@
     ((consult-narrow-key . "<")
      (consult-find-command . "fd -H -E .git --color=never --full-path ARG OPTS")
      (consult-ripgrep-command . "rg --hidden --null --line-buffered --color=ansi --max-columns=1000   --no-heading --line-number . -e ARG OPTS"))
-    :bind(
-          ("C-x b" . consult-buffer)
-          ("C-x c i" . consult-imenu)
-          ("C-x j" . consult-recent-file)
-          ("M-y" . consult-yank-pop)
-          ([remap goto-line] . consult-goto-line)
-          (:isearch-mode-map
+    :bind (
+           ("C-x b" . consult-buffer)
+           ("C-x c i" . consult-imenu)
+           ("C-x j" . consult-recent-file)
+           ("M-y" . consult-yank-pop)
+           ([remap goto-line] . consult-goto-line)
+           (:isearch-mode-map
             ("C-i" . my-consult-line)
-            )
-          (:isearch-mode-map
-           ("M-e" . consult-isearch)))
+            ("M-e" . consult-isearch))
+
+           )
     :hook
     (completion-list-mode . consult-preview-at-point-mode)
     :config
