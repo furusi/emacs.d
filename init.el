@@ -775,21 +775,24 @@
 
 
 (leaf slime
-  :straight slime-company
   :if (file-exists-p "~/.roswell/helper.el")
   :custom
   ((slime-auto-start . 'ask)
-   (slime-company-completion . 'fuzzy)
-   (slime-complete-symbol*-fancy . t))
+   )
   :hook ((lisp-mode-hook . slime-mode)
-         (slime-repl-mode-hook
-          . (lambda () (add-to-list
-                        'company-backends
-                        '(company-slime company-dabbrev-code)))))
+         )
   :init
   (load (expand-file-name "~/.roswell/helper.el"))
   :config
   ;; (slime-setup '(slime-fancy slime-company))
+  (leaf slime-company
+    :straight t
+    :custom ((slime-company-completion . 'fuzzy)
+             (slime-complete-symbol*-fancy . t))
+    :hook ((slime-repl-mode-hook
+            . (lambda () (add-to-list
+                          'company-backends
+                          '(company-slime company-dabbrev-code))))))
   (setq slime-net-coding-system 'utf-8-unix)
   (slime-setup '(slime-fancy slime-company slime-indentation))
   (defun slime-space\\skk-insert (origfun &rest arglist)
