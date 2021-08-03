@@ -2031,7 +2031,6 @@ See `org-capture-templates' for more information."
   )
 (leaf modus-themes
   :straight t
-  :when (window-system)
   :require t
   :config
   (modus-themes-load-themes)
