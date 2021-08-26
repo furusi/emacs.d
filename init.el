@@ -1145,7 +1145,8 @@
     :custom
     `((org-roam-directory . ,(concat org-directory "roam/"))
       (org-roam-completion-system . 'ivy)
-      (org-roam-title-to-slug-function . (lambda (text) text)))
+      (org-roam-title-to-slug-function . (lambda (text) text))
+      (org-roam-v2-ack . t))
     :bind
     (("C-c n l" . org-roam-buffer-toggle)
      ("C-c n f" . org-roam-node-find)
