@@ -638,7 +638,7 @@
     :after consult orderless
     :custom
     ((affe-find-command . "fd -H -E .git --color=never --full-path")
-     (affe-grep-command . "rg --hidden --null --color=never --max-columns=1000 --no-heading --line-number -v ^$ .")
+     (affe-grep-command . "rg --hidden --color=never --max-columns=1000 --no-heading --line-number -v ^$ .")
      )
     
     
