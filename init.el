@@ -691,6 +691,7 @@
     :hook
     (embark-collect-mode . consult-preview-at-point-mode))
   (leaf consult-lsp
+    :straight t
     :after (consult lsp-mode))
   )
 
