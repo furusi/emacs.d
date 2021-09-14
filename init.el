@@ -6,6 +6,7 @@
 
 
 (show-paren-mode t)
+(column-number-mode)
 
 ;; 絵文字のフォント設定
 (when window-system
@@ -430,12 +431,13 @@
   :hook ((org-mode-hook prog-mode-hook) . real-auto-save-mode))
 
 
-(leaf smart-mode-line
+(leaf moody
   :straight t
-  :custom ((sml/no-confirm-load-theme . t))
+  :custom
+  ((x-underline-at-descent-line . t))
   :config
-  (sml/setup)
-  )
+  (moody-replace-mode-line-buffer-identification)
+  (moody-replace-vc-mode))
 
 
 ;; helm
@@ -2038,9 +2040,16 @@ See `org-capture-templates' for more information."
 (leaf modus-themes
   :straight t
   :require t
+  :custom
+  ((modus-themes-italic-constructs . t)
+   (modus-themes-region . '(bg-only no-extend))
+   (modus-themes-paren-match . '(bold intense))
+   (modus-themes-org-blocks . 'gray-background)
+   )
   :config
   (modus-themes-load-themes)
   (modus-themes-load-operandi))
+
 (leaf markdown-mode
   :straight t
   :mode (("README\\.md\\'" . gfm-mode)
