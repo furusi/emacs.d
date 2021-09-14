@@ -408,6 +408,7 @@
   ;; :hook (rust-mode-hook . rustic-mode)
   :custom (
            (rustic-lsp-server . 'rust-analyzer)
+           ;; (rustic-lsp-client . 'eglot)
            )
   )
 
@@ -692,9 +693,7 @@
     ;; auto-updating embark collect buffer
     :hook
     (embark-collect-mode . consult-preview-at-point-mode))
-  (leaf consult-lsp
-    :straight t
-    :after (consult lsp-mode))
+  
   )
 
 (leaf rg
@@ -2256,6 +2255,7 @@ See `org-capture-templates' for more information."
                    ))
       (push dir lsp-file-watch-ignored))
     )
+  
   ;; optionally
   (leaf lsp-ui
     :straight t
@@ -2303,10 +2303,16 @@ See `org-capture-templates' for more information."
     (leaf dap-java
       :require t
       :after (lsp-java)))
+
+  (leaf consult-lsp
+    :straight t
+    :after (consult lsp-mode))
   )
 
 (leaf eglot
   :straight t
+  :hook
+  ((rustic-mode-hook . company-mode))
   :config
   ;; (add-to-list 'eglot-server-programs '(rustic-mode . ("rust-analyzer")))
   ;; (add-hook 'rustic-mode-hook 'eglot-ensure)
