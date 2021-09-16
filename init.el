@@ -608,6 +608,7 @@
            ("C-x c i" . consult-imenu)
            ("C-x j" . consult-recent-file)
            ("M-y" . consult-yank-pop)
+           ("C-x r l"  . consult-bookmark)
            ([remap goto-line] . consult-goto-line)
            (:isearch-mode-map
             ("C-i" . my-consult-line)
