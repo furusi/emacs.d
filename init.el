@@ -1940,7 +1940,6 @@ See `org-capture-templates' for more information."
   :disabled t)
 
 (leaf ccls :straight t
-  :disabled t
   :after lsp-mode
   ;; :ensure-system-package ccls
   :hook ((c-mode-hook c++-mode-hook objc-mode-hook) .
