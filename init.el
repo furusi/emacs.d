@@ -2110,6 +2110,9 @@ See `org-capture-templates' for more information."
   :require t
   :config
   (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
+(leaf meson-mode
+  :straight t
+  )
 (leaf git-modes
   :straight t
   :require t)
