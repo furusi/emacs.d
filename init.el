@@ -2111,6 +2111,8 @@ See `org-capture-templates' for more information."
                                         (setq asm-comment-char ?#)))))
 (leaf ssh-config-mode
   :straight t)
+(leaf fish-mode
+  :straight t)
 (leaf dockerfile-mode
   :straight t
   :require t
