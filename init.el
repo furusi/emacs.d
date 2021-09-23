@@ -602,7 +602,9 @@
     :custom
     ((consult-narrow-key . "<")
      (consult-find-command . "fd -H -E .git --color=never --full-path ARG OPTS")
-     (consult-ripgrep-command . "rg --hidden --null --line-buffered --color=ansi --max-columns=1000   --no-heading --line-number . -e ARG OPTS"))
+     (consult-ripgrep-command . "rg --hidden --null --line-buffered --color=ansi --max-columns=1000   --no-heading --line-number . -e ARG OPTS")
+     (xref-show-xrefs-function . #'consult-xref)
+     (xref-show-definitions-function . #'consult-xref))
     :bind (
            ("C-x b" . consult-buffer)
            ("C-x c i" . consult-imenu)
@@ -616,7 +618,7 @@
 
            )
     :hook
-    (completion-list-mode . consult-preview-at-point-mode)
+    (completion-list-mode-hook . consult-preview-at-point-mode)
     :config
     (consult-customize
      consult-theme
@@ -694,7 +696,11 @@
     ;; auto-updating embark collect buffer
     :hook
     (embark-collect-mode . consult-preview-at-point-mode))
-  
+  (leaf vertico-org-refile
+    :after (org)
+    :custom
+    ((org-refile-use-outline-path . 'file)
+     (org-outline-path-complete-in-steps . nil)))
   )
 
 (leaf rg
