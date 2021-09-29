@@ -2321,7 +2321,7 @@ See `org-capture-templates' for more information."
     (lsp-ui-doc-header                  . t)
     (lsp-ui-doc-include-signature       . t)
     (lsp-ui-doc-position                . 'bottom) ;; top, bottom, or at-point
-    (lsp-ui-doc-max-width               . 60)
+    (lsp-ui-doc-max-width               . 80)
     (lsp-ui-doc-max-height              . 20)
     (lsp-ui-doc-use-childframe          . t)
     (lsp-ui-doc-use-webkit              . nil)
