@@ -978,11 +978,13 @@
            (concat org-directory "inbox.org")
            (concat org-directory "productivity.org")
            (concat org-directory "org-ical.org")
-           (concat org-directory "notes/")
            (concat org-directory "calendar/")))
     
     (setq org-refile-targets
-          '((org-agenda-files :maxlevel . 2)))
+          `((nil . (:level . 1))
+            (org-agenda-files . (:maxlevel . 2))
+            (,(concat org-directory "calendar/") . (:maxlevel . 2))
+            ))
     (setq org-tag-alist
           '(("ignore" . ?i) ("@OFFICE" . ?o) ("@HOME" . ?h) ("SHOPPING" . ?s)
             ("MAIL" . ?m) ("PROJECT" . ?p) ("備忘録" . ?b)))
