@@ -1225,11 +1225,15 @@
     ;;   :straight (org-roam-ui :type git :host github :repo "org-roam/org-roam-ui")
     ;;   )
     (leaf org-roam-ui
-  :straight
-    (org-roam-ui :host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
-    :after org-roam
-    :hook (org-roam . org-roam-ui-mode))
-
+      :straight
+      (org-roam-ui :host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
+      :after org-roam
+      :hook (after-init-hook . org-roam-ui-mode)
+      :custom ((org-roam-ui-sync-theme . t)
+               (org-roam-ui-follow . t)
+               (org-roam-ui-update-on-save . t)
+               ;; (org-roam-ui-open-on-start . t)
+               ))
     )
 
 
@@ -2108,7 +2112,6 @@ See `org-capture-templates' for more information."
   :straight t
   :after org)
 (leaf org-gcal
-  :disabled t
   :if (file-exists-p "~/Dropbox/org/googlecalendar/org-gcal-config.el")
   :straight t
   :after org
