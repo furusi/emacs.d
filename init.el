@@ -399,7 +399,8 @@
   :straight (undo-tree :type git :host gitlab :repo "tsc25/undo-tree")
   :diminish (global-undo-tree-mode undo-tree-mode)
   :require t
-  :global-minor-mode global-undo-tree-mode)
+  :global-minor-mode global-undo-tree-mode
+  :custom (undo-tree-history-directory-alist . '(("." . "~/.emacs.d/undo-tree/"))))
 
 
 
