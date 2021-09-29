@@ -566,6 +566,7 @@
     :custom
     ((vertico-count . 20)
      (enable-recursive-minibuffers . t)
+     (vertico-cycle . t)
      )
     :init
     (vertico-mode)
