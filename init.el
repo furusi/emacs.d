@@ -2064,7 +2064,7 @@ See `org-capture-templates' for more information."
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
-  :init (setq markdown-command "multimarkdown")
+  :custom ((markdown-command . "multimarkdown"))
   :config
   (when (eq window-system 'ns)
     (set-face-attribute 'markdown-table-face nil
