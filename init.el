@@ -844,7 +844,8 @@
   :config
   (leaf org
     :mode (("\\.org$" . org-mode))
-    :straight (org :type git :repo "https://git.savannah.gnu.org/git/emacs/org-mode.git")
+    :straight (org :type git :repo "https://git.savannah.gnu.org/git/emacs/org-mode.git"
+                   :branch "main")
     :custom
     ((org-export-allow-bind-keywords . t)
      (org-export-backends . '(ascii html icalendar latex md odt taskjuggler asciidoc pandoc gfm))
