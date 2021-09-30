@@ -716,13 +716,14 @@
 
   ;; Consult users will also want the embark-consult package.
   (leaf embark-consult
-    :straight t
     :after (embark consult)
+    :leaf-defer nil ;; :demand t
     ;; :demand t ; only necessary if you have the hook below
     ;; if you want to have consult previews as you move around an
     ;; auto-updating embark collect buffer
     :hook
-    (embark-collect-mode . consult-preview-at-point-mode))
+    (embark-collect-mode-hook . consult-preview-at-point-mode)
+    )
   (leaf vertico-org-refile
     :after (org)
     :custom
