@@ -1227,7 +1227,6 @@
     (leaf org-roam-ui
       :straight
       (org-roam-ui :host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
-      :after org-roam
       :hook (after-init-hook . org-roam-ui-mode)
       :custom ((org-roam-ui-sync-theme . t)
                (org-roam-ui-follow . t)
