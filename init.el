@@ -730,6 +730,14 @@
      (org-outline-path-complete-in-steps . nil)))
   )
 
+(leaf wgrep
+  :require t
+  :straight t
+  :custom
+  ((wgrep-enable-key . "e")
+   (wgrep-auto-save-buffer . t))
+  )
+
 (leaf rg
   :bind (("C-c s" . rg-menu))
   :straight t
