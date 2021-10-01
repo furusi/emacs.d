@@ -176,6 +176,7 @@
        `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.1))))
        `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.25))))
        `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.5))))
+       `(org-table ((t (,@headline ,@variable-tuple))))
        `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil))))))
     )
   )
@@ -877,7 +878,7 @@
            (concat org-directory "calendar/")))
     
     (setq org-refile-targets
-          `((nil . (:level . 1))
+          `((nil . (:maxlevel . 2))
             (org-agenda-files . (:maxlevel . 2))
             (,(concat org-directory "calendar/") . (:maxlevel . 2))
             ))
