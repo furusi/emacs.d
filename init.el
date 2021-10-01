@@ -1838,10 +1838,6 @@ See `org-capture-templates' for more information."
   :straight t)
 
 
-
-
-
-
 (leaf poetry
   :straight t
   :require t)
@@ -1859,12 +1855,6 @@ See `org-capture-templates' for more information."
 
 (leaf hydra :straight t)
 (leaf projectile-ripgrep :straight t)
-
-
-;; ;;git clone git@github.com:rswarbrick/picasm.git ~/.emacs.d/lisp/picasm
-;; (use-package picasm
-;;   :load-path "~/.emacs.d/lisp/picasm/")
-
 
 
 (leaf go-mode
