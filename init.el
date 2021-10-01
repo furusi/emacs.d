@@ -1741,10 +1741,7 @@ See `org-capture-templates' for more information."
   ((company-idle-delay . 0.2)
    (company-minimum-prefix-length . 2)
    (company-selection-wrap-around . t)
-   (company-lsp-async . t)
-   (company-lsp-cache-candidates . nil)
-   (company-lsp-enable-recompletion . t)
-   (company-lsp-enable-snippet . t))
+   )
   :config
   (defvar company-mode/enable-yas t
     "Enable yasnippet for all backends.")
