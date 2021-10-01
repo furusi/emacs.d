@@ -232,7 +232,7 @@
          ;; isearch
          (isearch-mode-hook . skk-isearch-mode-setup) ; isearch で skk のセットアップ
          (isearch-mode-end-hook . skk-isearch-mode-cleanup) ; isearch で skk のクリーンアップ
-         (helm-exit-minibuffer-hook . skk-isearch-mode-cleanup))
+         )
   :custom
   `((skk-japanese-message-and-error . t)
    (skk-share-private-jisyo . t)
@@ -441,55 +441,6 @@
   (moody-replace-mode-line-buffer-identification)
   (moody-replace-vc-mode))
 
-
-;; helm
-(leaf *helm
-  :disabled t
-  :config
-  (leaf helm
-    :straight t
-    :require helm-config
-    :diminish helm-migemo-mode
-    :custom
-    ((helm-candidate-number-limit . 300))
-    :bind (("M-x"      . helm-M-x)
-           ("M-y"      . helm-show-kill-ring)
-           ("C-x b"    . helm-mini)
-           ("C-x C-f"  . helm-find-files)
-           ("M-s o"    . helm-occur)
-           ("C-x j"    . helm-recentf)
-           ("C-x r l"  . helm-bookmarks)
-           (:helm-map
-            ("<tab>"  . helm-execute-persistent-action) ;rebind tab to do persistent action
-            ("C-i"    . helm-execute-persistent-action) ;make TAB works in terminal
-            ("C-z"    . helm-select-action)             ;list actions using C-z
-            )
-           (:isearch-mode-map
-            :package isearch
-            ("C-i" . helm-occur-from-isearch)))
-    :config
-    (helm-mode 1)
-    (helm-autoresize-mode 1)
-    (helm-migemo-mode 1))
-  (leaf helm-projectile
-    :straight t
-    :require t
-    :custom
-    (projectile-switch-project-action . #'projectile-dired)
-    :config
-    (helm-projectile-on))
-  (leaf helm-swoop
-    :straight t
-    :disabled t)
-  (leaf helm-lsp
-    :straight t
-    :commands helm-lsp-workspace-symbol)
-  (leaf helm-rg
-    :straight t
-    ;;  :ensure-system-package (rg . ripgrep)
-    )
-  (leaf helm-make
-    :straight t))
 
 (leaf *vertico
   :config
@@ -721,8 +672,6 @@
           backward-char
           dired-next-line
           forward-char
-          helm-next-line
-          helm-previous-line
           ignore
           keyboard-quit
           lsp-ui-doc--handle-mouse-movement
