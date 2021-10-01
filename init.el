@@ -491,70 +491,6 @@
   (leaf helm-make
     :straight t))
 
-(leaf *ivy
-  :disabled t
-  :config
-  (leaf counsel
-    :straight t
-    :require ivy
-    :diminish counsel-mode
-    :custom
-    ((counsel-switch-buffer-preview-virtual-buffers . nil)
-     (counsel-rg-base-command  . '("rg"
-                                   "--hidden" "--max-columns" "240"
-                                   "--with-filename" "--no-heading"
-                                   "--line-number" "--color" "never" "%s"))
-     (ivy-count-format . "(%d/%d) ")
-     (ivy-initial-inputs-alist . nil)
-     (ivy-re-builders-alist . '((t . ivy--regex-ignore-order)))
-     (ivy-use-virtual-buffers . t))
-    :bind (("M-x" . counsel-M-x)
-           ("C-x C-b" . counsel-ibuffer)
-           ("C-x b" . counsel-switch-buffer)
-           ("C-x C-f" . counsel-find-file)
-           ("M-y" . counsel-yank-pop)
-           ("C-x c i" . counsel-imenu)
-           ("C-x j" . counsel-recentf)
-           ("C-c i r" . ivy-resume)
-           (:isearch-mode-map
-            ("C-i" . swiper-from-isearch))
-           (:ivy-minibuffer-map
-            ("C-z" . ivy-dispatching-done)
-            ("C-l" . counsel-up-directory)
-            ))
-    :config
-    (ivy-mode t)
-    (counsel-mode t))
-  (leaf all-the-icons-ivy-rich
-    :straight t
-    :require t
-    :config
-    (all-the-icons-ivy-rich-mode t))
-  (leaf ivy-rich
-    :straight t
-    :require t
-    :custom
-    ((ivy-rich-path-style . 'absolute)
-     (ivy-rich-parse-remote-buffer . nil))
-    :config
-    (ivy-rich-mode t)
-    (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line))
-  (leaf counsel-projectile
-    :straight t
-    :config
-    (counsel-projectile-mode)
-    (setcar counsel-projectile-switch-project-action 4))
-  (leaf lsp-ivy
-    :after lsp
-    :straight t)
-  (leaf ivy-migemo
-    :after migemo
-    :straight t
-    :bind
-    ((:ivy-minibuffer-map
-      ("M-f" . ivy-migemo-toggle-fuzzy)
-      ("M-m" . ivy-migemo-toggle-migemo)))))
-
 (leaf *vertico
   :config
   (leaf vertico
@@ -611,8 +547,8 @@
            ("C-x b" . consult-buffer)
            ("C-x c i" . consult-imenu)
            ("C-x j" . consult-recent-file)
-           ("M-y" . consult-yank-pop)
            ("C-x r l"  . consult-bookmark)
+           ("M-y" . consult-yank-pop)
            ([remap goto-line] . consult-goto-line)
            (:isearch-mode-map
             ("C-i" . my-consult-line)
@@ -723,6 +659,8 @@
     ;; auto-updating embark collect buffer
     :hook
     (embark-collect-mode-hook . consult-preview-at-point-mode)
+    ;; :init (with-eval-after-load 'embark
+    ;;         (require 'embark-consult))
     )
   (leaf vertico-org-refile
     :after (org)
@@ -1194,7 +1132,6 @@
     :straight t
     :custom
     `((org-roam-directory . ,(concat org-directory "roam/"))
-      (org-roam-completion-system . 'ivy)
       (org-roam-title-to-slug-function . (lambda (text) text))
       (org-roam-v2-ack . t))
     :bind
