@@ -50,7 +50,9 @@
     (tool-bar-mode . nil)
     (menu-bar-mode . t)
     (safe-local-variable-values . '((org-export-directory . "~/Dropbox/org")))
-    (vc-follow-symlinks . t))
+    (vc-follow-symlinks . t)
+    (ediff-split-window-function . 'split-window-horizontally)
+    )
   )
 
 (leaf custom-darwin
