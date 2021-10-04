@@ -839,7 +839,7 @@
                "~/org/"))))
     :config
     (leaf org-contrib
-      :straight t)
+      :straight (org-contrib :type git :repo "https://git.sr.ht/~bzg/org-contrib"))
     ;; org-habitモジュールを有効化
     (add-to-list 'org-modules 'org-habit)
     (add-to-list 'org-modules 'org-id)
