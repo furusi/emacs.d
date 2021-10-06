@@ -485,7 +485,6 @@
 
   ;; Persist history over Emacs restarts. Vertico sorts by history position.
   (leaf savehist
-    :straight t
     :init
     (savehist-mode))
 
@@ -498,6 +497,7 @@
      (xref-show-xrefs-function . #'consult-xref)
      (xref-show-definitions-function . #'consult-xref))
     :bind (
+           ("C-x C-SPC" . consult-global-mark)
            ("C-x b" . consult-buffer)
            ("C-x c i" . consult-imenu)
            ("C-x j" . consult-recent-file)
@@ -1625,7 +1625,7 @@ See `org-capture-templates' for more information."
   ((org-seek-search-tool . 'ripgrep)))
 
 (leaf org-pdf*
-  ;; :disabled t
+  :disabled t
   :config
   (leaf org-pdftools
     :after org
