@@ -1854,8 +1854,6 @@ See `org-capture-templates' for more information."
 
 
 (leaf hydra :straight t)
-(leaf projectile-ripgrep :straight t)
-
 
 (leaf go-mode
   :straight t
