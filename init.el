@@ -631,10 +631,6 @@
    (wgrep-auto-save-buffer . t))
   )
 
-(leaf rg
-  :bind (("C-c s" . rg-menu))
-  :straight t
-  :require t)
 (leaf highlight-symbol
   :straight t
   :require t)
