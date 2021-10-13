@@ -546,10 +546,8 @@
      :preview-key (kbd "C-,")
      consult-goto-line consult-line
      :preview-key '(:debounce 0.2 any))
-    (setq consult-project-root-function
-          (lambda ()
-            (when-let (project (project-current))
-              (car (project-roots project)))))
+    (autoload 'projectile-project-root "projectile")
+    (setq consult-project-root-function #'projectile-project-root)
     (defun my-consult-line (&optional at-point)
       (interactive "P")
       (if at-point
