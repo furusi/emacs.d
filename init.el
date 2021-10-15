@@ -2189,7 +2189,7 @@ See `org-capture-templates' for more information."
     (lsp-ui-doc-header                  . t)
     (lsp-ui-doc-include-signature       . t)
     (lsp-ui-doc-position                . 'bottom) ;; top, bottom, or at-point
-    (lsp-ui-doc-max-width               . 80)
+    (lsp-ui-doc-max-width               . 85)
     (lsp-ui-doc-max-height              . 20)
     (lsp-ui-doc-use-childframe          . t)
     (lsp-ui-doc-use-webkit              . nil)
@@ -2239,6 +2239,8 @@ See `org-capture-templates' for more information."
   ;; (add-to-list 'eglot-server-programs '(rustic-mode . ("rust-analyzer")))
   ;; (add-hook 'rustic-mode-hook 'eglot-ensure)
   )
+(leaf vterm
+  :straight t)
 
 (dolist (file (cddr (directory-files (concat
                                       user-emacs-directory
