@@ -545,6 +545,7 @@
      consult-ripgrep consult-git-grep consult-grep
      consult-bookmark consult-recent-file consult-xref
      consult--source-file consult--source-project-file consult--source-bookmark
+     consult-find
      :preview-key (kbd "C-,")
      consult-goto-line consult-line
      :preview-key '(:debounce 0.2 any))
@@ -2230,7 +2231,12 @@ See `org-capture-templates' for more information."
 
   (leaf consult-lsp
     :straight t
-    :after (consult lsp-mode))
+    :after (consult lsp-mode)
+    :config
+    (consult-customize
+     consult-lsp-symbols
+     :preview-key (kbd "C-,"))
+    )
   )
 
 (leaf eglot
