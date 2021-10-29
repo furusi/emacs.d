@@ -585,7 +585,7 @@
     (marginalia-mode))
 
   (leaf embark
-    :straight t
+    :straight (embark :host github :repo "oantolin/embark" :branch "master" :files (:defaults))
     
     :bind
     (("C-." . embark-act)         ;; pick some comfortable binding
@@ -608,6 +608,7 @@
   ;; Consult users will also want the embark-consult package.
   (leaf embark-consult
     :after (embark consult)
+    :require t
     :leaf-defer nil ;; :demand t
     ;; :demand t ; only necessary if you have the hook below
     ;; if you want to have consult previews as you move around an
