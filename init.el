@@ -2120,7 +2120,6 @@ See `org-capture-templates' for more information."
     :custom (
              (lsp-auto-execute-action . nil)
              (lsp-keymap-prefix . "C-c C-l")
-             (lsp-prefer-capf . t)
              )
     :hook ((cc-mode     . lsp-deferred)
            (lsp-mode-hook . lsp-enable-which-key-integration))
