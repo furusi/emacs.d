@@ -635,20 +635,7 @@
     :custom
     ((org-refile-use-outline-path . 'file)
      (org-outline-path-complete-in-steps . nil)))
-  (leaf corfu
-    :straight (corfu :type git :host github :repo "minad/corfu" :branch "main")
-    :custom
-    (corfu-auto . t)
-    (corfu-auto-prefix . 2)
-    (completion-cycle-threshold . 3)
-    (tab-always-indent . 'complete)
-    :init
-    (corfu-global-mode)
-    )
   )
-(leaf dabbrev
-  :bind (("M-/" . dabbrev-completion)
-         ("C-M-/" . dabbrev-expand)))
 
 (leaf wgrep
   :require t
@@ -1743,41 +1730,41 @@ See `org-capture-templates' for more information."
            ("/trash"   . ?t)
            ("/archive" . ?a))))
 
-;; (leaf company
-;;   :straight t
-;;   :diminish company-mode
-;;   :bind ((:company-mode-map
-;;           ("C-M-i" . company-indent-or-complete-common))
-;;          (:company-active-map
-;;           ("C-n"   . company-select-next)
-;;           ("C-p"   . company-select-previous)
-;;           ("C-s"   . company-filter-candidates)
-;;           ("C-i"   . company-complete-selection))
-;;          (:company-search-map
-;;           ("C-n"   . company-select-next)
-;;           ("C-p"   . company-select-previous)))
-;;   :hook ((emacs-lisp-mode-hook   . company-mode)
-;;          (c-mode-hook            . company-mode)
-;;          (shell-script-mode-hook . company-mode)
-;;          (sh-mode-hook           . company-mode)
-;;          (shell-mode-hook        . company-mode)
-;;          (org-mode-hook          . company-mode)
-;;          (lisp-mode-hook         . company-mode))
-;;   :custom
-;;   ((company-idle-delay . 0.2)
-;;    (company-minimum-prefix-length . 2)
-;;    (company-selection-wrap-around . t)
-;;    )
-;;   :config
-;;   (defvar company-mode/enable-yas t
-;;     "Enable yasnippet for all backends.")
+(leaf company
+  :straight t
+  :diminish company-mode
+  :bind ((:company-mode-map
+          ("C-M-i" . company-indent-or-complete-common))
+         (:company-active-map
+          ("C-n"   . company-select-next)
+          ("C-p"   . company-select-previous)
+          ("C-s"   . company-filter-candidates)
+          ("C-i"   . company-complete-selection))
+         (:company-search-map
+          ("C-n"   . company-select-next)
+          ("C-p"   . company-select-previous)))
+  :hook ((emacs-lisp-mode-hook   . company-mode)
+         (c-mode-hook            . company-mode)
+         (shell-script-mode-hook . company-mode)
+         (sh-mode-hook           . company-mode)
+         (shell-mode-hook        . company-mode)
+         (org-mode-hook          . company-mode)
+         (lisp-mode-hook         . company-mode))
+  :custom
+  ((company-idle-delay . 0.2)
+   (company-minimum-prefix-length . 2)
+   (company-selection-wrap-around . t)
+   )
+  :config
+  (defvar company-mode/enable-yas t
+    "Enable yasnippet for all backends.")
 
-;;   (defun company-mode/backend-with-yas (backend)
-;;     (if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
-;;         backend
-;;       (append (if (consp backend) backend (list backend))
-;;               '(:with company-yasnippet))))
-;;   (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends)))
+  (defun company-mode/backend-with-yas (backend)
+    (if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
+        backend
+      (append (if (consp backend) backend (list backend))
+              '(:with company-yasnippet))))
+  (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends)))
 
 (leaf yatex
   :straight t
@@ -2137,7 +2124,6 @@ See `org-capture-templates' for more information."
     :custom (
              (lsp-auto-execute-action . nil)
              (lsp-keymap-prefix . "C-c C-l")
-             (lsp-completion-provider . :none)
              )
     :hook ((cc-mode     . lsp-deferred)
            (lsp-mode-hook . lsp-enable-which-key-integration))
@@ -2258,8 +2244,8 @@ See `org-capture-templates' for more information."
 
 (leaf eglot
   :straight t
-  ;; :hook
-  ;; ((rustic-mode-hook . company-mode))
+  :hook
+  ((rustic-mode-hook . company-mode))
   :config
   ;; (add-to-list 'eglot-server-programs '(rustic-mode . ("rust-analyzer")))
   ;; (add-hook 'rustic-mode-hook 'eglot-ensure)
