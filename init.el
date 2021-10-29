@@ -481,8 +481,8 @@
     :straight t
     :init
     (setq completion-styles '(orderless)
-        completion-category-defaults nil
-        completion-category-overrides '((file (styles basic partial-completion))))
+          completion-category-defaults nil
+          completion-category-overrides '((file (styles partial-completion))))
     )
 
   ;; Persist history over Emacs restarts. Vertico sorts by history position.
@@ -551,11 +551,23 @@
      :preview-key '(:debounce 0.2 any))
     (autoload 'projectile-project-root "projectile")
     (setq consult-project-root-function #'projectile-project-root)
+    (setq completion-in-region-function
+          (lambda (&rest args)
+            (apply (if vertico-mode
+                       #'consult-completion-in-region
+                     #'completion--in-region)
+                   args)))
     (defun my-consult-line (&optional at-point)
       (interactive "P")
       (if at-point
           (consult-line (thing-at-point 'symbol))
         (consult-line)))
+    )
+  (leaf consult-projectile
+    :after consult projectile
+    :straight (consult-projectile
+               :type git :host gitlab
+               :repo "OlMon/consult-projectile" :branch "master")
     )
   (leaf affe
     :straight t
