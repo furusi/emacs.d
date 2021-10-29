@@ -1734,7 +1734,7 @@ See `org-capture-templates' for more information."
   :straight t
   :diminish company-mode
   :bind ((:company-mode-map
-          ("C-M-i" . company-indent-or-complete-common))
+          ("C-M-i" . company-complete-common-or-cycle))
          (:company-active-map
           ("C-n"   . company-select-next)
           ("C-p"   . company-select-previous)
