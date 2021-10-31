@@ -481,8 +481,8 @@
     :straight t
     :init
     (setq completion-styles '(orderless)
-          completion-category-defaults nil
-          completion-category-overrides '((file (styles partial-completion))))
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles basic partial-completion))))
     )
 
   ;; Persist history over Emacs restarts. Vertico sorts by history position.
@@ -635,7 +635,26 @@
     :custom
     ((org-refile-use-outline-path . 'file)
      (org-outline-path-complete-in-steps . nil)))
+  (leaf corfu
+    :straight (corfu :type git :host github :repo "minad/corfu" :branch "main")
+    :custom
+    (corfu-auto . t)
+    (corfu-auto-prefix . 3)
+    (completion-cycle-threshold . 3)
+    (tab-always-indent . 'complete)
+    :hook
+    ((org-mode-hook        . corfu-mode)
+     (lisp-mode-hook       . corfu-mode)
+     (emacs-lisp-mode-hook . corfu-mode)
+    )
+    
+    ;; :init
+    ;; (corfu-global-mode)
+    )
   )
+(leaf dabbrev
+  :bind (("M-/" . dabbrev-completion)
+         ("C-M-/" . dabbrev-expand)))
 
 (leaf wgrep
   :require t
@@ -1563,16 +1582,6 @@
       (format "%% Org-mode is exporting headings to %s levels.\n"
               depth)))
   (setq org-export-latex-format-toc-function 'org-export-latex-no-toc)
-
-  ;; reftex with org mode
-  ;; (add-hook 'org-mode-hook 'turn-on-reftex)
-  ;; (defun org-mode-reftex-setup ()
-  ;;   (load-library "reftex")
-  ;;   (and (buffer-file-name)
-  ;;        (file-exists-p (buffer-file-name))
-  ;;        (reftex-parse-all))
-  ;;   (define-key org-mode-map (kbd "C-c [") 'reftex-citation))
-
   )
 (leaf ox-taskjuggler
   :custom
@@ -1743,13 +1752,12 @@ See `org-capture-templates' for more information."
          (:company-search-map
           ("C-n"   . company-select-next)
           ("C-p"   . company-select-previous)))
-  :hook ((emacs-lisp-mode-hook   . company-mode)
+  :hook (
          (c-mode-hook            . company-mode)
          (shell-script-mode-hook . company-mode)
          (sh-mode-hook           . company-mode)
          (shell-mode-hook        . company-mode)
-         (org-mode-hook          . company-mode)
-         (lisp-mode-hook         . company-mode))
+         )
   :custom
   ((company-idle-delay . 0.2)
    (company-minimum-prefix-length . 2)
@@ -2264,16 +2272,13 @@ See `org-capture-templates' for more information."
  'read-only
  '((nil .((buffer-read-only . t)))))
 ;; クラスをディレクトリに関連づける
-(dolist (dir(mapcar (lambda (str)
-                      (format
-                       "%spackages/%s/straight/repos/"
-                       user-emacs-directory
-                       str))
-                    (cddr
-                     (directory-files
-                      (concat
-                       user-emacs-directory
-                       "packages/")))))
+(dolist (dir
+         (mapcar (lambda (str)
+                   (format "%spackages/%s/straight/repos/"
+                           user-emacs-directory str))
+                 (cddr (directory-files
+                        (concat user-emacs-directory "packages/")))
+                 ))
   (dir-locals-set-directory-class (file-truename dir) 'read-only))
 
 (provide 'init)
