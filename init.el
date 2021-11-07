@@ -463,12 +463,16 @@
     :init
     (vertico-mode)
     )
+  (leaf vertico-repeat
+    :bind ("M-r" . vertico-repeat)
+    :hook
+    (minibuffer-setup-hook . vertico-repeat-save))
   (leaf vertico-directory
     :bind ((:vertico-map
-            ("RET" . vertico-directory-enter)
-            ("DEL" . vertico-directory-delete-char)
-            ("M-DEL" . vertico-directory-delete-word)
-            ("C-l" . vertico-directory-up))
+            ("RET"    . vertico-directory-enter)
+            ("DEL"    . vertico-directory-delete-char)
+            ("M-DEL"  . vertico-directory-delete-word)
+            ("C-l"    . vertico-directory-up))
            )
     ;; Tidy shadowed file names
     :hook
