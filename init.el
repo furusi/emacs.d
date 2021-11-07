@@ -782,14 +782,15 @@
 (leaf web-mode
   :straight t
   :require t
-  :mode (("\\.phtml\\'"     . web-mode)
-         ("\\.tpl\\.php\\'" . web-mode)
-         ("\\.[gj]sp\\'"    . web-mode)
-         ("\\.as[cp]x\\'"   . web-mode)
-         ("\\.erb\\'"       . web-mode)
-         ("\\.mustache\\'"  . web-mode)
-         ("\\.djhtml\\'"    . web-mode)
-         ("\\.html?\\'"     . web-mode))
+  :mode (("\\.as[cp]x\\'"    . web-mode)
+         ("\\.djhtml\\'"     . web-mode)
+         ("\\.erb\\'"        . web-mode)
+         ("\\.html?\\'"      . web-mode)
+         ("\\.mustache\\'"   . web-mode)
+         ("\\.php\\'"        . web-mode)
+         ("\\.phtml\\'"      . web-mode)
+         ("\\.tpl\\.php\\'"  . web-mode)
+         ("\\.[gj]sp\\'"     . web-mode))
   :config
   (setq web-mode-extra-snippets
         '(("php" . (("print" . "print(\"|\")"))))))
@@ -1826,7 +1827,6 @@ See `org-capture-templates' for more information."
 
 (leaf php-mode
   :straight t
-  :mode (("\\.php\\'" . php-mode))
   :custom
   ((php-manual-url . 'ja)))
 (leaf ac-php
