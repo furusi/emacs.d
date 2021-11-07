@@ -2240,6 +2240,15 @@ See `org-capture-templates' for more information."
     :config
     (dap-mode 1)
     (dap-ui-mode 1)
+    (require 'dap-cpptools)
+    (require 'dap-gdb-lldb)
+    (dap-register-debug-template "Rust::GDB Run Configuration"
+                             (list :type "gdb"
+                                   :request "launch"
+                                   :name "GDB::Run"
+                		   :gdbpath "rust-gdb"
+                                   :target nil
+                                   :cwd nil))
     (leaf dap-java
       :require t
       :after (lsp-java)))
