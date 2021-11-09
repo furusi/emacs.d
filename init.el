@@ -254,13 +254,19 @@
     ((skk-jisyo . "~/Dropbox/.config/ddskk/jisyo")
      (skk-jisyo-code . 'utf-8)))
   (push (lambda ()
-          (if (eq (current-column) 0)
+          (if (bolp)
               (org-at-heading-p)
             nil))
         context-skk-context-check-hook)
   (push (lambda ()
-          (if (eq (current-column) 0)
-              (org-at-block-p)
+          (if (bolp)
+               (org-at-block-p)
+            nil))
+        context-skk-context-check-hook)
+  (push (lambda ()
+          (if (bolp)
+              (or (org-at-item-bullet-p)
+                  (org-at-item-checkbox-p))
             nil))
         context-skk-context-check-hook)
   (setq skk-get-jisyo-directory (expand-file-name (format "%sskk-get-jisyo/" user-emacs-directory)))
@@ -857,6 +863,32 @@
            (:org-mode-map
             ("C-c C-\'" . org-insert-structure-template)))
     :init
+    (defvar my:org-item-key-bindings
+      '(("p" . org-previous-item)
+        ("n" . org-next-item)
+        ("U" . org-metaup)
+        ("D" . org-metadown)
+        ("r" .   org-metaright)
+        ("l" .   org-metaleft)
+        ("R" .   org-shiftmetaright)
+        ("L" .   org-shiftmetaleft)
+        ("t" . org-toggle-checkbox)
+        ("i" . (lambda () (org-insert-item) (org-move-item-down) (org-beginning-of-line)))
+        ("I" . (lambda ()  (org-insert-item t) (org-move-item-down) (org-beginning-of-line)))
+        ("?" . (progn
+                 (with-output-to-temp-buffer "*Help*"
+                   (princ "Speed commands\n==============\n")
+                   (mapc #'org-print-speed-command
+                         ;; FIXME: don't check `org-speed-commands-user' past 9.6
+                         my:org-item-key-bindings))
+                 (with-current-buffer "*Help*"
+                   (setq truncate-lines t)))
+         )))
+    (defun my:org-item-speed-command-activate (keys)
+      (when (and (bolp)
+                 (org-at-item-p))
+        (cdr (assoc keys my:org-item-key-bindings))))
+    
     (defun insert-zero-width-space()
       (interactive)
       (insert-char #x200b))
@@ -873,12 +905,15 @@
                  (mkdir "~/org/"))
                "~/org/"))))
     :config
+    
     (leaf org-contrib
       :straight (org-contrib :type git :repo "https://git.sr.ht/~bzg/org-contrib"))
     ;; org-habitモジュールを有効化
     (add-to-list 'org-modules 'org-habit)
     (add-to-list 'org-modules 'org-id)
 
+    (push 'my:org-item-speed-command-activate
+          org-speed-command-hook)
     ;; 強調の規則を変更(別の環境で開いた場合は認識されなくなる...)
     (setcar org-emphasis-regexp-components "-[:space:]\x200B('\"{")
     (setcar (nthcdr 1 org-emphasis-regexp-components) "-[:space:]\x200B.,:!?;'\")}\\[")
