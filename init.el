@@ -252,7 +252,16 @@
     :custom
     ((skk-jisyo . "~/Dropbox/.config/ddskk/jisyo")
      (skk-jisyo-code . 'utf-8)))
-  
+  (push (lambda ()
+          (if (eq (current-column) 0)
+              (org-at-heading-p)
+            nil))
+        context-skk-context-check-hook)
+  (push (lambda ()
+          (if (eq (current-column) 0)
+              (org-at-block-p)
+            nil))
+        context-skk-context-check-hook)
   (setq skk-get-jisyo-directory (expand-file-name (format "%sskk-get-jisyo/" user-emacs-directory)))
   (let ((skk-jisyo-directory (if (file-exists-p "~/Dropbox/.config/ddskk/skkdic-utf8/")
                                  "~/Dropbox/.config/ddskk/skkdic-utf8/"
@@ -302,13 +311,6 @@
     ;; ▼モード中で=漢字の読み方を指定する
     (setq skk-hint-start-char ?=))
   (leaf context-skk
-    :custom
-    (context-skk-context-check-hook .
-                                    '(org-at-block-p
-                                      org-at-heading-p
-                                      context-skk-out-of-string-or-comment-in-programming-mode-p
-                                      context-skk-on-keymap-defined-area-p
-                                      context-skk-in-read-only-p))
     :config
     (add-to-list 'context-skk-programming-mode 'python-mode)
     (add-to-list 'context-skk-programming-mode 'rustic-mode)
