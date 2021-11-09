@@ -213,8 +213,7 @@
           ("C-c p" . projectile-command-map)))
   :straight t
   :custom
-  ((projectile-indexing-method . 'hybrid)
-   (projectile-sort-order . 'recently-active)
+  ((projectile-sort-order . 'recently-active)
    (projectile-switch-project-action . 'projectile-dired))
   :config
   (projectile-mode +1)
