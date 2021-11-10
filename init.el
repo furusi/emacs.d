@@ -1687,7 +1687,6 @@ See `org-capture-templates' for more information."
   ((org-seek-search-tool . 'ripgrep)))
 
 (leaf org-pdf*
-  :disabled t
   :config
   (leaf org-pdftools
     :after org
