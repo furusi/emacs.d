@@ -855,6 +855,7 @@
      (org-src-preserve-indentation . t)
      (org-startup-folded . t)
      (org-preview-latex-default-process . 'dvisvgm)
+     (org-clock-persist . 'history)
      )
     :bind (("C-c c" . org-capture)
            ("C-c l" . org-store-link)
@@ -914,6 +915,7 @@
 
     (push 'my:org-item-speed-command-activate
           org-speed-command-hook)
+    (org-clock-persistence-insinuate)
     ;; 強調の規則を変更(別の環境で開いた場合は認識されなくなる...)
     (setcar org-emphasis-regexp-components "-[:space:]\x200B('\"{")
     (setcar (nthcdr 1 org-emphasis-regexp-components) "-[:space:]\x200B.,:!?;'\")}\\[")
