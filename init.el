@@ -875,7 +875,10 @@
         ("L" .   org-shiftmetaleft)
         ("t" . org-toggle-checkbox)
         ("i" . (lambda () (org-insert-item) (org-move-item-down) (org-beginning-of-line)))
-        ("I" . (lambda ()  (org-insert-item t) (org-move-item-down) (org-beginning-of-line)))
+        ("c" . (lambda ()  (org-insert-item t) (org-move-item-down) (org-beginning-of-line)))
+        ("Clock Commands")
+        ("I" . org-clock-in)
+        ("O" . org-clock-out)
         ("?" . (progn
                  (with-output-to-temp-buffer "*Help*"
                    (princ "Speed commands\n==============\n")
