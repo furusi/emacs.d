@@ -2271,7 +2271,9 @@ See `org-capture-templates' for more information."
   (leaf lsp-java
     :straight t
     :require t
-    :hook (java-mode-hook . lsp-deferred)
+    :hook (java-mode-hook . (lambda ()
+                              (lsp-deferred)
+                              (setq lsp-managed-mode t)))
     :bind ((:lsp-mode-map
             ("M-." . lsp-find-definition))))
   (leaf dap-mode
