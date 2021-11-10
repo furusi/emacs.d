@@ -158,7 +158,7 @@
     ;;                     :family "YuKyokasho Yoko")
     ;; 源ノ角ゴシック
     (set-face-attribute 'default nil
-                        :family "Noto Sans Mono CJK JP")
+                        :family "Noto Sans Mono CJK JP" :height 140)
     (let* ((variable-tuple
             (cond ((x-list-fonts "Noto Sans Mono CJK JP") '(:font "Noto Sans Mono CJK JP"))
                   ((x-list-fonts "Source Sans Pro")       '(:font "Source Sans Pro"))
