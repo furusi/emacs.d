@@ -855,7 +855,7 @@
      (org-src-preserve-indentation . t)
      (org-startup-folded . t)
      (org-preview-latex-default-process . 'dvisvgm)
-     (org-clock-persist . 'history)
+     (org-clock-persist . t)
      )
     :bind (("C-c c" . org-capture)
            ("C-c l" . org-store-link)
