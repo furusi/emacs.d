@@ -68,6 +68,16 @@
   (push 'flex completion-styles)
   )
 
+(leaf help-mode
+  :bind
+  (:help-mode-map
+   ("n" . next-line)
+   ("j" . next-line)
+   ("p" . previous-line)
+   ("k" . previous-line)
+   ("v" . scroll-up-command)
+   ("V" . scroll-down-command)))
+
 
 
 (leaf autorevert
