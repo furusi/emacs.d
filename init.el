@@ -574,6 +574,16 @@
     ;; :init
     ;; (corfu-global-mode)
     )
+  (leaf kind-icon
+    :straight (kind-icon :type git :host github :repo "jdtsmith/kind-icon"
+                         :branch "main")
+    :require t
+    :after (corfu)
+    :custom
+    (kind-icon-default-face . 'corfu-background)
+    :config
+    (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)
+    )
   )
 
 
