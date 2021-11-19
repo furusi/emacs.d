@@ -620,10 +620,6 @@
   (migemo-init))
 
 
-
-(setq recentf-auto-save-timer (run-with-idle-timer 30 t 'recentf-save-list))
-
-
 ;; SLIMEのロード
 
 
