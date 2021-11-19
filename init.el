@@ -1885,7 +1885,7 @@ See `org-capture-templates' for more information."
   ((php-manual-url . 'ja)))
 (leaf ac-php
   :straight t
-  :after php-mode)
+  )
 (leaf flycheck-phpstan
   :straight t
   :hook (php-mode-hook . (lambda ()
