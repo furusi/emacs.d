@@ -1140,9 +1140,8 @@
     ((:org-mode-map
       ("C-c b" . org-brain-prefix-map)))
     )
-  )
 
-(leaf org-roam
+  (leaf org-roam
     :after org
     :straight t
     :custom
@@ -1196,108 +1195,104 @@
                ))
     )
 
+  (leaf org-journal
+    :straight t
+    :require t
+    :after org
+    :commands org-journal-new-entry
+    :custom
+    `((org-journal-file-type . 'daily)
+      (org-journal-dir . ,(concat org-directory "journal/"))
+      (org-journal-enable-agenda-integration . t)
+      (org-journal-date-format . "%F (%a)")
+      (org-journal-time-format . "<%Y-%m-%d %R> ")
+      (org-journal-file-format . "%Y%m%d.org")
+      (org-journal-file-header . "# -*- mode: org-journal; -*-")))
 
-(leaf org-journal
-  :straight t
-  :require t
-  :after org
-  :commands org-journal-new-entry
-  :custom
-  `((org-journal-file-type . 'daily)
-    (org-journal-dir . ,(concat org-directory "journal/"))
-    (org-journal-enable-agenda-integration . t)
-    (org-journal-date-format . "%F (%a)")
-    (org-journal-time-format . "<%Y-%m-%d %R> ")
-    (org-journal-file-format . "%Y%m%d.org")
-    (org-journal-file-header . "# -*- mode: org-journal; -*-")))
+  ;; Org Mode LaTeX Export
 
+  (leaf org-eldoc
+    :after org
+    :require t
+    :hook (org-mode-hook . eldoc-mode)
+    :config
+    (defadvice org-eldoc-documentation-function (around add-field-info activate)
+      (or
+       (ignore-errors (and (not (org-at-table-hline-p))
+                           (org-table-field-info nil)))
+       ad-do-it))
+    (eldoc-add-command-completions
+     "org-table-next-" "org-table-previous" "org-cycle"))
 
-
-;; Org Mode LaTeX Export
-
-(leaf org-eldoc
-  :after org
-  :require t
-  :hook (org-mode-hook . eldoc-mode)
-  :config
-  (defadvice org-eldoc-documentation-function (around add-field-info activate)
-    (or
-     (ignore-errors (and (not (org-at-table-hline-p))
-                         (org-table-field-info nil)))
-     ad-do-it))
-  (eldoc-add-command-completions
-   "org-table-next-" "org-table-previous" "org-cycle"))
-
-
-(leaf ox-latex
-  :require t
-  :straight nil
-  :after (org)
-  :custom ((org-latex-minted-options . '(("frame" "single")
-                                         ("breaklines" "")
-                                         ("style" "xcode")
-                                         ("fontsize" "\\footnotesize")))
-           (org-latex-compiler . "lualatex")
-           (org-latex-default-class . "lualatex-jlreq")
-           (org-latex-listings . 'minted)
-           (org-latex-listings-options . '(("frame" "single")
-                                           ("basicstyle" "{\\ttfamily\\scriptsize}")
-                                           ("numbers" "left")
-                                           ("commentstyle" "{\\ttfamily\\scriptsize}")
-                                           ("breaklines" "true")
-                                           ("showstringspaces" "false")))
-           (org-latex-minted-langs . '((rust "rust")
-                                       (emacs-lisp "common-lisp")
-                                       (cc "c++")
-                                       (cperl "perl")
-                                       (shell-script "bash")
-                                       (caml "ocaml")
-                                       (bash "bash")
-                                       (conf "ini")))
-           (org-preview-latex-default-process . 'dvisvgm)
-           (org-preview-latex-process-alist . '((dvipng :programs
-                                                        ("latex" "dvipng")
-                                                        :description "dvi > png" :message "you need to install the programs: latex and dvipng." :image-input-type "dvi" :image-output-type "png" :image-size-adjust
-                                                        (1.0 . 1.0)
-                                                        :latex-compiler
-                                                        ("latex -interaction nonstopmode -output-directory %o %f")
-                                                        :image-converter
-                                                        ("dvipng -D %D -T tight -o %O %f"))
-                                                (dvisvgm :programs
-                                                         ("latex" "dvisvgm")
-                                                         :description "dvi > svg" :message "you need to install the programs: latex and dvisvgm." :use-xcolor t :image-input-type "xdv" :image-output-type "svg" :image-size-adjust
-                                                         (1.7 . 1.5)
-                                                         :latex-compiler
-                                                         ("xelatex -no-pdf -interaction nonstopmode -output-directory %o %f")
-                                                         :image-converter
-                                                         ("dvisvgm %f -n -b min -c %S -o %O"))
-                                                (imagemagick :programs
-                                                             ("latex" "convert")
-                                                             :description "pdf > png" :message "you need to install the programs: latex and imagemagick." :image-input-type "pdf" :image-output-type "png" :image-size-adjust
-                                                             (1.0 . 1.0)
-                                                             :latex-compiler
-                                                             ("pdflatex -interaction nonstopmode -output-directory %o %f")
-                                                             :image-converter
-                                                             ("convert -density %D -trim -antialias %f -quality 100 %O")))))
-  :config
-  ;; (setq org-latex-pdf-process '("latexmk -gg -pdfdvi  %f"))
-  ;; (setq org-latex-pdf-process '("latexmk %f"))
-  (setq org-latex-pdf-process '("latexmk -gg -pdflua  %f"))
-  (add-to-list 'org-latex-packages-alist '("" "minted"))
-  (setq org-highlight-latex-and-related
-        '(latex script entities))
-  ;;(setq org-latex-pdf-process '("latexmk -e '$lualatex=q/lualatex %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex -o %D %S/' -norc -gg -pdflua %f"))
-  ;;(setq org-export-in-background t)
-  (when (equal system-type 'darwin)
-    (setq org-file-apps
-          '(("pdf" . "open -a Skim %s")
-            ("php". emacs))))
-  (when (equal system-type 'gnu/linux)
-    (setq org-file-apps
-          '(("pdf" . "evince %s"))))
-  (add-to-list 'org-latex-classes
-               '("lualatex-jlreq"
-                 "\\documentclass[]{jlreq}
+  (leaf ox-latex
+    :require t
+    :straight nil
+    :after (org)
+    :custom ((org-latex-minted-options . '(("frame" "single")
+                                           ("breaklines" "")
+                                           ("style" "xcode")
+                                           ("fontsize" "\\footnotesize")))
+             (org-latex-compiler . "lualatex")
+             (org-latex-default-class . "lualatex-jlreq")
+             (org-latex-listings . 'minted)
+             (org-latex-listings-options . '(("frame" "single")
+                                             ("basicstyle" "{\\ttfamily\\scriptsize}")
+                                             ("numbers" "left")
+                                             ("commentstyle" "{\\ttfamily\\scriptsize}")
+                                             ("breaklines" "true")
+                                             ("showstringspaces" "false")))
+             (org-latex-minted-langs . '((rust "rust")
+                                         (emacs-lisp "common-lisp")
+                                         (cc "c++")
+                                         (cperl "perl")
+                                         (shell-script "bash")
+                                         (caml "ocaml")
+                                         (bash "bash")
+                                         (conf "ini")))
+             (org-preview-latex-default-process . 'dvisvgm)
+             (org-preview-latex-process-alist . '((dvipng :programs
+                                                          ("latex" "dvipng")
+                                                          :description "dvi > png" :message "you need to install the programs: latex and dvipng." :image-input-type "dvi" :image-output-type "png" :image-size-adjust
+                                                          (1.0 . 1.0)
+                                                          :latex-compiler
+                                                          ("latex -interaction nonstopmode -output-directory %o %f")
+                                                          :image-converter
+                                                          ("dvipng -D %D -T tight -o %O %f"))
+                                                  (dvisvgm :programs
+                                                           ("latex" "dvisvgm")
+                                                           :description "dvi > svg" :message "you need to install the programs: latex and dvisvgm." :use-xcolor t :image-input-type "xdv" :image-output-type "svg" :image-size-adjust
+                                                           (1.7 . 1.5)
+                                                           :latex-compiler
+                                                           ("xelatex -no-pdf -interaction nonstopmode -output-directory %o %f")
+                                                           :image-converter
+                                                           ("dvisvgm %f -n -b min -c %S -o %O"))
+                                                  (imagemagick :programs
+                                                               ("latex" "convert")
+                                                               :description "pdf > png" :message "you need to install the programs: latex and imagemagick." :image-input-type "pdf" :image-output-type "png" :image-size-adjust
+                                                               (1.0 . 1.0)
+                                                               :latex-compiler
+                                                               ("pdflatex -interaction nonstopmode -output-directory %o %f")
+                                                               :image-converter
+                                                               ("convert -density %D -trim -antialias %f -quality 100 %O")))))
+    :config
+    ;; (setq org-latex-pdf-process '("latexmk -gg -pdfdvi  %f"))
+    ;; (setq org-latex-pdf-process '("latexmk %f"))
+    (setq org-latex-pdf-process '("latexmk -gg -pdflua  %f"))
+    (add-to-list 'org-latex-packages-alist '("" "minted"))
+    (setq org-highlight-latex-and-related
+          '(latex script entities))
+    ;;(setq org-latex-pdf-process '("latexmk -e '$lualatex=q/lualatex %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex -o %D %S/' -norc -gg -pdflua %f"))
+    ;;(setq org-export-in-background t)
+    (when (equal system-type 'darwin)
+      (setq org-file-apps
+            '(("pdf" . "open -a Skim %s")
+              ("php". emacs))))
+    (when (equal system-type 'gnu/linux)
+      (setq org-file-apps
+            '(("pdf" . "evince %s"))))
+    (add-to-list 'org-latex-classes
+                 '("lualatex-jlreq"
+                   "\\documentclass[]{jlreq}
 \\usepackage{luatexja} % ltjclasses, ltjsclasses を使うときはこの行不要
 \\usepackage{luatexja-fontspec}
 \\usepackage{minted}
@@ -1306,14 +1301,14 @@
 \\renewcommand{\\listingscaption}{リスト}
 \\newcommand{\\uline}[1]{\\underline{#1}}
 "
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-  (add-to-list 'org-latex-classes
-               '("jlreq"
-                 "\\documentclass[11pt,paper=a4]{jlreq}
+                   ("\\section{%s}" . "\\section*{%s}")
+                   ("\\subsection{%s}" . "\\subsection*{%s}")
+                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                   ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+    (add-to-list 'org-latex-classes
+                 '("jlreq"
+                   "\\documentclass[11pt,paper=a4]{jlreq}
 [NO-DEFAULT-PACKAGES]
 \\usepackage{amsmath}
 \\usepackage{newtxtext,newtxmath}
@@ -1327,27 +1322,27 @@
   \\usepackage{hyperref}
   \\hypersetup{pdfencoding=auto,colorlinks=true}
 \\fi"
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+                   ("\\section{%s}" . "\\section*{%s}")
+                   ("\\subsection{%s}" . "\\subsection*{%s}")
+                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                   ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
-  (add-to-list 'org-latex-classes
-               '("lualatex-yukyokasho"
-                 "\\documentclass[]{jlreq}
+    (add-to-list 'org-latex-classes
+                 '("lualatex-yukyokasho"
+                   "\\documentclass[]{jlreq}
 \\usepackage{luatexja} % ltjclasses, ltjsclasses を使うときはこの行不要
 \\usepackage{luatexja-fontspec}
 \\setmainjfont{YuKyokasho Yoko Medium}"
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-  (add-to-list 'org-latex-classes
-               '("bxjsarticle"
-                 ;; "\\documentclass[twocolumn,autodetect-engine,dvi=dvipdfmx,10pt,a4paper,ja=standard]{bxjsarticle}
-                 "\\documentclass[autodetect-engine,dvi=dvipdfmx,10pt,a4paper,ja=standard]{bxjsarticle}
+                   ("\\section{%s}" . "\\section*{%s}")
+                   ("\\subsection{%s}" . "\\subsection*{%s}")
+                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                   ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+    (add-to-list 'org-latex-classes
+                 '("bxjsarticle"
+                   ;; "\\documentclass[twocolumn,autodetect-engine,dvi=dvipdfmx,10pt,a4paper,ja=standard]{bxjsarticle}
+                   "\\documentclass[autodetect-engine,dvi=dvipdfmx,10pt,a4paper,ja=standard]{bxjsarticle}
 [NO-DEFAULT-PACKAGES]
 \\usepackage{amsmath}
 \\usepackage{siunitx}
@@ -1372,15 +1367,15 @@
     \\fi
   \\fi
 \\fi"
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+                   ("\\section{%s}" . "\\section*{%s}")
+                   ("\\subsection{%s}" . "\\subsection*{%s}")
+                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                   ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
-  (add-to-list 'org-latex-classes
-               '("beamer"
-                 "\\documentclass[unicode,dvipdfmx,cjk]{beamer}
+    (add-to-list 'org-latex-classes
+                 '("beamer"
+                   "\\documentclass[unicode,dvipdfmx,cjk]{beamer}
 \\usepackage{bxdpx-beamer}
 \\usepackage{siunitx}
 \\usepackage{pxjahyper}
@@ -1388,12 +1383,12 @@
 \\renewcommand{\\kanjifamilydefault}{\\gtdefault}
 \\newcommand{\\uline}[1]{\\underline{#1}}
                [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
-                 ("\\section\{%s\}"       . "\\section*\{%s\}")
-                 ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
-                 ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")))
-  (add-to-list 'org-latex-classes
-               '("beamer-lualatex"
-                 "\\documentclass[unicode,12pt]{beamer}
+                   ("\\section\{%s\}"       . "\\section*\{%s\}")
+                   ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
+                   ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")))
+    (add-to-list 'org-latex-classes
+                 '("beamer-lualatex"
+                   "\\documentclass[unicode,12pt]{beamer}
 \\usepackage{luatexja}
 \\usepackage[ipaex]{luatexja-preset}
 \\renewcommand{\kanjifamilydefault}{\gtdefault}
@@ -1404,27 +1399,27 @@
 \\renewcommand{\\kanjifamilydefault}{\\gtdefault}
 \\newcommand{\\uline}[1]{\\underline{#1}}
                [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
-                 ("\\section\{%s\}"       . "\\section*\{%s\}")
-                 ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
-                 ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")))
-  (add-to-list 'org-latex-classes
-               '("jsarticle"
-                 "\\documentclass[11pt,a4paper]{jsarticle}
+                   ("\\section\{%s\}"       . "\\section*\{%s\}")
+                   ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
+                   ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")))
+    (add-to-list 'org-latex-classes
+                 '("jsarticle"
+                   "\\documentclass[11pt,a4paper]{jsarticle}
 \\usepackage{amsmath}
 \\usepackage{amsthm}
 \\usepackage{bm}
 \\usepackage[dvipdfmx,hiresbb]{graphicx}
 \\usepackage[dvipdfmx]{color}"
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+                   ("\\section{%s}" . "\\section*{%s}")
+                   ("\\subsection{%s}" . "\\subsection*{%s}")
+                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                   ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
-  (add-to-list 'org-latex-classes
-               '("ieicej"
+    (add-to-list 'org-latex-classes
+                 '("ieicej"
 
-                 "\\documentclass[paper]{ieicej}
+                   "\\documentclass[paper]{ieicej}
 \\usepackage[dvipdfmx]{graphicx}
 \\usepackage[T1]{fontenc}
 \\usepackage{lmodern}
@@ -1435,16 +1430,16 @@
 
 \\setcounter{page}{1}
                [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
-                 ("\\section\{%s\}"       . "\\section*\{%s\}")
-                 ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
-                 ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
-                 ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
-                 ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
-  (setq org-latex-with-hyperref nil) ;ieicej出力時エラー対策
-  (add-to-list 'org-latex-classes
-               '("tategaki"
+                   ("\\section\{%s\}"       . "\\section*\{%s\}")
+                   ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
+                   ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
+                   ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
+                   ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
+    (setq org-latex-with-hyperref nil) ;ieicej出力時エラー対策
+    (add-to-list 'org-latex-classes
+                 '("tategaki"
 
-                 "\\documentclass[tate,book,jafontscale=1.3]{jlreq}
+                   "\\documentclass[tate,book,jafontscale=1.3]{jlreq}
 \\usepackage[dvipdfmx]{graphicx}
 \\usepackage[T1]{fontenc}
 \\usepackage{lmodern}
@@ -1455,15 +1450,15 @@
 
 \\setcounter{page}{1}
                [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
-                 ("\\section\{%s\}"       . "\\section*\{%s\}")
-                 ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
-                 ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
-                 ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
-                 ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
-  (add-to-list 'org-latex-classes
-               '("jlreq-yoko"
+                   ("\\section\{%s\}"       . "\\section*\{%s\}")
+                   ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
+                   ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
+                   ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
+                   ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
+    (add-to-list 'org-latex-classes
+                 '("jlreq-yoko"
 
-                 "\\documentclass[book,jafontscale=1.3]{jlreq}
+                   "\\documentclass[book,jafontscale=1.3]{jlreq}
 \\usepackage[dvipdfmx]{graphicx}
 \\usepackage[T1]{fontenc}
 \\usepackage{lmodern}
@@ -1474,14 +1469,14 @@
 
 \\setcounter{page}{1}
                [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
-                 ("\\section\{%s\}"       . "\\section*\{%s\}")
-                 ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
-                 ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
-                 ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
-                 ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
-  (add-to-list 'org-latex-classes
-               '("luatex-jlreq-tate"
-                 "\\documentclass[tate,book,jafontscale=1.3]{jlreq}
+                   ("\\section\{%s\}"       . "\\section*\{%s\}")
+                   ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
+                   ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
+                   ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
+                   ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
+    (add-to-list 'org-latex-classes
+                 '("luatex-jlreq-tate"
+                   "\\documentclass[tate,book,jafontscale=1.3]{jlreq}
 
 \\usepackage[T1]{fontenc}
 \\usepackage{lmodern}
@@ -1502,14 +1497,14 @@
 
 \\setcounter{page}{1}
                [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
-                 ("\\section\{%s\}"       . "\\section*\{%s\}")
-                 ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
-                 ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
-                 ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
-                 ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
-  (add-to-list 'org-latex-classes
-               '("lectureslide"
-                 "\\documentclass[unicode,11pt]{beamer}
+                   ("\\section\{%s\}"       . "\\section*\{%s\}")
+                   ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
+                   ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
+                   ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
+                   ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
+    (add-to-list 'org-latex-classes
+                 '("lectureslide"
+                   "\\documentclass[unicode,11pt]{beamer}
 \\usepackage{bxdpx-beamer}
 
 \\usepackage{xeCJK}
@@ -1552,14 +1547,14 @@
 
 \\setcounter{page}{1}
                [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
-                 ("\\section\{%s\}"       . "\\section*\{%s\}")
-                 ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
-                 ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
-                 ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
-                 ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
-  (add-to-list 'org-latex-classes
-               '("lectureslide-lualatex"
-                 "\\documentclass[presentation]{beamer}
+                   ("\\section\{%s\}"       . "\\section*\{%s\}")
+                   ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
+                   ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
+                   ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
+                   ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
+    (add-to-list 'org-latex-classes
+                 '("lectureslide-lualatex"
+                   "\\documentclass[presentation]{beamer}
 [NO-DEFAULT-PACKAGES]
 \\usepackage{luatexja}
 \\usepackage{textcomp}
@@ -1604,106 +1599,123 @@
 %%
 \\setbeamercovered{transparent}
 \\setbeamertemplate{navigation symbols}{}"
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+                   ("\\section{%s}" . "\\section*{%s}")
+                   ("\\subsection{%s}" . "\\subsection*{%s}")
+                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                   ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
-  ;; org-export-latex-no-toc
-  (defun org-export-latex-no-toc (depth)
-    (when depth
-      (format "%% Org-mode is exporting headings to %s levels.\n"
-              depth)))
-  (setq org-export-latex-format-toc-function 'org-export-latex-no-toc)
-  )
-(leaf ox-taskjuggler
-  :custom
-  ((org-taskjuggler-process-command . "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")))
-(leaf ox-gfm
-  :straight (ox-gfm :type git :host github :repo "conao3/ox-gfm")
-  :require t
-  :after org)
-(setq org-ditaa-jar-path
-      "/usr/local/opt/ditaa/libexec/ditaa-0.11.0-standalone.jar")
-
-(leaf ox-extra
-  :after org
-  :require t
-  :config
-  ;; ignoreタグで見出しを非表示にしつつ内容を表示する
-  (ox-extras-activate '(latex-header-blocks ignore-headlines)))
-(leaf ob-kotlin
-  :after (org))
-(leaf ox-asciidoc
-  :straight t
-  :require t
-  :after (org))
-(leaf ox-hugo
-  :after org
-  :config
-  (defun org-hugo-new-subtree-post-capture-template ()
-    "Returns `org-capture' template string for new Hugo post.
-See `org-capture-templates' for more information."
-    (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
-           (fname (org-hugo-slug title)))
-      (mapconcat #'identity
-                 `(
-                   ,(concat "* TODO " title)
-                   ":PROPERTIES:"
-                   ,(concat ":EXPORT_FILE_NAME: " fname)
-                   ":END:"
-                   "%?\n")          ;Place the cursor here finally
-                 "\n")))
-  (add-to-list 'org-capture-templates
-               '("h"                ;`org-capture' binding + h
-                 "Hugo post"
-                 entry
-                 ;; It is assumed that below file is present in `org-directory'
-                 ;; and that it has a "Blog Ideas" heading. It can even be a
-                 ;; symlink pointing to the actual location of all-posts.org!
-                 (file+olp "all-posts.org" "Blog Ideas")
-                 (function org-hugo-new-subtree-post-capture-template))))
-
-
-(leaf org-download
-  :straight t
-  :after org
-  :require t
-  :hook ((org-mode-hook . org-download-enable)))
-(leaf org-seek
-  :commands (org-seek-string org-seek-regexp org-seek-headlines)
-  ;;  :ensure-system-package (rg . ripgrep)
-  :custom
-  ((org-seek-search-tool . 'ripgrep)))
-
-(leaf org-pdf*
-  :config
-  (leaf org-pdftools
-    :after org
-    :straight (org-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
-    :custom
-    `((org-pdftools-root-dir . ,(concat (getenv "HOME") "/GoogleDrive/Books")))
-    :hook (org-mode-hook . org-pdftools-setup-link)
+    ;; org-export-latex-no-toc
+    (defun org-export-latex-no-toc (depth)
+      (when depth
+        (format "%% Org-mode is exporting headings to %s levels.\n"
+                depth)))
+    (setq org-export-latex-format-toc-function 'org-export-latex-no-toc)
     )
-  (leaf org-noter
-    :after (org))
-  (leaf org-noter-pdftools
-    :straight (org-noter-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
-    :after (org-noter)
-    :require t)
-  (leaf pdf-tools
-    :straight t
-    ;; https://github.com/politza/pdf-tools#installation
-    :mode (("\\.pdf\\'" . pdf-view-mode))
-    :hook (pdf-view-mode-hook . (lambda ()
-                                  (display-line-numbers-mode 0)))
-    :custom ((pdf-view-use-scaling . t))
+
+  (leaf ox-taskjuggler
+    :custom
+    ((org-taskjuggler-process-command . "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")))
+  (leaf ox-gfm
+    :straight (ox-gfm :type git :host github :repo "conao3/ox-gfm")
+    :require t
+    :after org)
+  (setq org-ditaa-jar-path
+        "/usr/local/opt/ditaa/libexec/ditaa-0.11.0-standalone.jar")
+
+  (leaf ox-extra
+    :after org
+    :require t
     :config
-    (pdf-tools-install)
-    (display-line-numbers-mode -1)
-    (setq pdf-annot-activate-created-annotations t)
-    (setq pdf-view-resize-factor 1.1)))
+    ;; ignoreタグで見出しを非表示にしつつ内容を表示する
+    (ox-extras-activate '(latex-header-blocks ignore-headlines)))
+  (leaf ob-kotlin
+    :after (org))
+  (leaf ox-asciidoc
+    :straight t
+    :require t
+    :after (org))
+  (leaf ox-hugo
+    :after org
+    :config
+    (defun org-hugo-new-subtree-post-capture-template ()
+      "Returns `org-capture' template string for new Hugo post.
+See `org-capture-templates' for more information."
+      (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
+             (fname (org-hugo-slug title)))
+        (mapconcat #'identity
+                   `(
+                     ,(concat "* TODO " title)
+                     ":PROPERTIES:"
+                     ,(concat ":EXPORT_FILE_NAME: " fname)
+                     ":END:"
+                     "%?\n")          ;Place the cursor here finally
+                   "\n")))
+    (add-to-list 'org-capture-templates
+                 '("h"                ;`org-capture' binding + h
+                   "Hugo post"
+                   entry
+                   ;; It is assumed that below file is present in `org-directory'
+                   ;; and that it has a "Blog Ideas" heading. It can even be a
+                   ;; symlink pointing to the actual location of all-posts.org!
+                   (file+olp "all-posts.org" "Blog Ideas")
+                   (function org-hugo-new-subtree-post-capture-template))))
+
+
+  (leaf org-download
+    :straight t
+    :after org
+    :require t
+    :hook ((org-mode-hook . org-download-enable)))
+  (leaf org-seek
+    :commands (org-seek-string org-seek-regexp org-seek-headlines)
+    ;;  :ensure-system-package (rg . ripgrep)
+    :custom
+    ((org-seek-search-tool . 'ripgrep)))
+
+  (leaf org-pdf*
+    :config
+    (leaf org-pdftools
+      :after org
+      :straight (org-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
+      :custom
+      `((org-pdftools-root-dir . ,(concat (getenv "HOME") "/GoogleDrive/Books")))
+      :hook (org-mode-hook . org-pdftools-setup-link)
+      )
+    (leaf org-noter
+      :after (org))
+    (leaf org-noter-pdftools
+      :straight (org-noter-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
+      :after (org-noter)
+      :require t)
+    (leaf pdf-tools
+      :straight t
+      ;; https://github.com/politza/pdf-tools#installation
+      :mode (("\\.pdf\\'" . pdf-view-mode))
+      :hook (pdf-view-mode-hook . (lambda ()
+                                    (display-line-numbers-mode 0)))
+      :custom ((pdf-view-use-scaling . t))
+      :config
+      (pdf-tools-install)
+      (display-line-numbers-mode -1)
+      (setq pdf-annot-activate-created-annotations t)
+      (setq pdf-view-resize-factor 1.1)))
+  (leaf org-re-reveal
+    :straight t
+    :after org)
+  (leaf org-gcal
+    :if (file-exists-p "~/Dropbox/org/googlecalendar/org-gcal-config.el")
+    :straight t
+    :after org
+    :require t
+    :custom
+    ((org-gcal-down-days . 180)
+     (org-gcal-up-days . 180))
+    :config
+    (load "~/Dropbox/org/googlecalendar/org-gcal-config.el"))
+  )
+
+
 
 
 
@@ -2031,19 +2043,7 @@ See `org-capture-templates' for more information."
   :mode (("\\.re\\'" . review-mode)))
 (leaf csv-mode :straight t)
 
-(leaf org-re-reveal
-  :straight t
-  :after org)
-(leaf org-gcal
-  :if (file-exists-p "~/Dropbox/org/googlecalendar/org-gcal-config.el")
-  :straight t
-  :after org
-  :require t
-  :custom
-  ((org-gcal-down-days . 180)
-   (org-gcal-up-days . 180))
-  :config
-  (load "~/Dropbox/org/googlecalendar/org-gcal-config.el"))
+
 
 (leaf flycheck :straight t)
 (leaf gnuplot :straight t)
