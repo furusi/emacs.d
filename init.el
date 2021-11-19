@@ -641,25 +641,6 @@
            )
   )
 
-(leaf auto-save-buffers-enhanced
-  :disabled t
-  :straight t
-  :config
-  ;; 1秒後に保存
-  (setq auto-save-buffers-enhanced-interval 5)
-  (auto-save-buffers-enhanced t)
-  ;; Wroteのメッセージを抑制
-  (setq auto-save-buffers-enhanced-quiet-save-p t)
-  ;; tramp mode時の自動保存を抑制
-  (setq auto-save-buffers-enhanced-exclude-regexps '("^/rsync:" "^/ssh:" "^/scp:" "/sudo:" "/multi:" ".*.gpg$")))
-
-(leaf real-auto-save
-  :disabled t
-  :straight t
-  :require t
-  :custom ((real-auto-save-interval . 0.5))
-  :hook ((org-mode-hook prog-mode-hook) . real-auto-save-mode))
-
 
 (leaf moody
   :straight t
