@@ -365,103 +365,6 @@
     (setq-local shr-put-image-function 'shr-put-image-alt))
   (add-hook 'eww-mode-hook 'eww-mode-hook--disable-image))
 
-(leaf magit
-  :bind (("C-x g" . magit-status))
-  :require t
-  :straight t
-  :custom
-  ((magit-display-buffer-function . 'magit-display-buffer-fullframe-status-v1)
-   (magit-diff-refine-hunk . 'all))
-  :config
-  ;; ediff時にorgファイルを全て表示する
-  (with-eval-after-load 'outline
-    (add-hook 'ediff-prepare-buffer-hook #'show-all)))
-(leaf magit-svn
-  :straight t)
-(leaf grip-mode
-  :straight t
-  :bind ((:markdown-mode-command-map
-          ("g" . grip-mode))))
-
-(leaf migemo
-  :straight t
-  :require t
-  :config
-  (setq migemo-options '("-q" "--emacs"))
-  (setq migemo-coding-system 'utf-8-unix)
-  ;; Set your installed path
-  (setq migemo-command
-        (cond ((eq system-type 'darwin)    "cmigemo")
-              ((eq system-type 'windows-nt)    "cmigemo")
-              ((eq system-type 'gnu/linux) "/usr/bin/cmigemo")))
-  (setq migemo-dictionary
-        (cond ((eq system-type 'darwin)
-               "/opt/homebrew/opt/cmigemo/share/migemo/utf-8/migemo-dict")
-              ((eq system-type 'windows-nt)
-               "~/opt/cmigemo-default-win64/dict/utf-8")
-              ((string-match-p "arch" operating-system-release)
-               "/usr/share/migemo/utf-8/migemo-dict")
-              (t "/usr/share/cmigemo/utf-8/migemo-dict")))
-  (setq migemo-user-dictionary nil)
-  (setq migemo-regex-dictionary nil)
-  (load-library "migemo")
-  (migemo-init))
-
-
-
-(setq recentf-auto-save-timer (run-with-idle-timer 30 t 'recentf-save-list))
-
-
-;; SLIMEのロード
-
-
-(leaf undo-tree
-  :straight (undo-tree :type git :host gitlab :repo "tsc25/undo-tree")
-  :diminish (global-undo-tree-mode undo-tree-mode)
-  :require t
-  :global-minor-mode global-undo-tree-mode
-  :custom (undo-tree-history-directory-alist . '(("." . "~/.emacs.d/undo-tree/"))))
-
-
-
-
-(leaf rustic :straight t
-  ;; :hook (rust-mode-hook . rustic-mode)
-  :custom (
-           (rustic-lsp-server . 'rust-analyzer)
-           ;; (rustic-lsp-client . 'eglot)
-           )
-  )
-
-(leaf auto-save-buffers-enhanced
-  :disabled t
-  :straight t
-  :config
-  ;; 1秒後に保存
-  (setq auto-save-buffers-enhanced-interval 5)
-  (auto-save-buffers-enhanced t)
-  ;; Wroteのメッセージを抑制
-  (setq auto-save-buffers-enhanced-quiet-save-p t)
-  ;; tramp mode時の自動保存を抑制
-  (setq auto-save-buffers-enhanced-exclude-regexps '("^/rsync:" "^/ssh:" "^/scp:" "/sudo:" "/multi:" ".*.gpg$")))
-
-(leaf real-auto-save
-  :disabled t
-  :straight t
-  :require t
-  :custom ((real-auto-save-interval . 0.5))
-  :hook ((org-mode-hook prog-mode-hook) . real-auto-save-mode))
-
-
-(leaf moody
-  :straight t
-  :custom
-  ((x-underline-at-descent-line . t))
-  :config
-  (moody-replace-mode-line-buffer-identification)
-  (moody-replace-vc-mode))
-
-
 (leaf *vertico
   :config
   (leaf vertico
@@ -668,11 +571,109 @@
      (lisp-mode-hook       . corfu-mode)
      (emacs-lisp-mode-hook . corfu-mode)
     )
-    
     ;; :init
     ;; (corfu-global-mode)
     )
   )
+
+
+(leaf magit
+  :bind (("C-x g" . magit-status))
+  :require t
+  :straight t
+  :custom
+  ((magit-display-buffer-function . 'magit-display-buffer-fullframe-status-v1)
+   (magit-diff-refine-hunk . 'all))
+  :config
+  ;; ediff時にorgファイルを全て表示する
+  (with-eval-after-load 'outline
+    (add-hook 'ediff-prepare-buffer-hook #'show-all)))
+(leaf magit-svn
+  :straight t)
+(leaf grip-mode
+  :straight t
+  :bind ((:markdown-mode-command-map
+          ("g" . grip-mode))))
+
+(leaf migemo
+  :straight t
+  :require t
+  :config
+  (setq migemo-options '("-q" "--emacs"))
+  (setq migemo-coding-system 'utf-8-unix)
+  ;; Set your installed path
+  (setq migemo-command
+        (cond ((eq system-type 'darwin)    "cmigemo")
+              ((eq system-type 'windows-nt)    "cmigemo")
+              ((eq system-type 'gnu/linux) "/usr/bin/cmigemo")))
+  (setq migemo-dictionary
+        (cond ((eq system-type 'darwin)
+               "/opt/homebrew/opt/cmigemo/share/migemo/utf-8/migemo-dict")
+              ((eq system-type 'windows-nt)
+               "~/opt/cmigemo-default-win64/dict/utf-8")
+              ((string-match-p "arch" operating-system-release)
+               "/usr/share/migemo/utf-8/migemo-dict")
+              (t "/usr/share/cmigemo/utf-8/migemo-dict")))
+  (setq migemo-user-dictionary nil)
+  (setq migemo-regex-dictionary nil)
+  (load-library "migemo")
+  (migemo-init))
+
+
+
+(setq recentf-auto-save-timer (run-with-idle-timer 30 t 'recentf-save-list))
+
+
+;; SLIMEのロード
+
+
+(leaf undo-tree
+  :straight (undo-tree :type git :host gitlab :repo "tsc25/undo-tree")
+  :diminish (global-undo-tree-mode undo-tree-mode)
+  :require t
+  :global-minor-mode global-undo-tree-mode
+  :custom (undo-tree-history-directory-alist . '(("." . "~/.emacs.d/undo-tree/"))))
+
+
+
+
+(leaf rustic :straight t
+  ;; :hook (rust-mode-hook . rustic-mode)
+  :custom (
+           (rustic-lsp-server . 'rust-analyzer)
+           ;; (rustic-lsp-client . 'eglot)
+           )
+  )
+
+(leaf auto-save-buffers-enhanced
+  :disabled t
+  :straight t
+  :config
+  ;; 1秒後に保存
+  (setq auto-save-buffers-enhanced-interval 5)
+  (auto-save-buffers-enhanced t)
+  ;; Wroteのメッセージを抑制
+  (setq auto-save-buffers-enhanced-quiet-save-p t)
+  ;; tramp mode時の自動保存を抑制
+  (setq auto-save-buffers-enhanced-exclude-regexps '("^/rsync:" "^/ssh:" "^/scp:" "/sudo:" "/multi:" ".*.gpg$")))
+
+(leaf real-auto-save
+  :disabled t
+  :straight t
+  :require t
+  :custom ((real-auto-save-interval . 0.5))
+  :hook ((org-mode-hook prog-mode-hook) . real-auto-save-mode))
+
+
+(leaf moody
+  :straight t
+  :custom
+  ((x-underline-at-descent-line . t))
+  :config
+  (moody-replace-mode-line-buffer-identification)
+  (moody-replace-vc-mode))
+
+
 (leaf dabbrev
   :bind (("M-/" . dabbrev-completion)
          ("C-M-/" . dabbrev-expand)))
