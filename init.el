@@ -1083,10 +1083,6 @@
              :base-extension "jpg\\|png\\|pdf"
              :publishing-function org-publish-attachment
              :recursive t))))
-  (leaf org-protocol
-    :require t
-    :config
-    (add-to-list 'org-modules 'org-protocol))
   (leaf org-mu4e
     :disabled t
     :straight t
