@@ -2241,6 +2241,35 @@ See `org-capture-templates' for more information."
     :custom
     ((lsp-metals-server-args . '("-J-Dmetals.allow-multiline-string-formatting=off")))
     :hook (scala-mode-hook . lsp-deferred)
+    :config
+    (lsp-register-client
+     (make-lsp-client :new-connection (lsp-tramp-connection 'lsp-metals--server-command)
+		      :major-modes '(scala-mode)
+		      :priority -1
+		      :initialization-options '((decorationProvider . t)
+					        (didFocusProvider . t)
+					        (executeClientCommandProvider . t)
+					        (doctorProvider . "html")
+					        (statusBarProvider . "on")
+					        (debuggingProvider . t)
+					        (treeViewProvider . t))
+		      :notification-handlers (ht ("metals/executeClientCommand" #'lsp-metals--execute-client-command)
+					         ("metals/publishDecorations" #'lsp-metals--publish-decorations)
+					         ("metals/treeViewDidChange" #'lsp-metals-treeview--did-change)
+					         ("metals-model-refresh" #'lsp-metals--model-refresh)
+					         ("metals/status" #'lsp-metals--status-string))
+		      :action-handlers (ht ("metals-debug-session-start" (-partial #'lsp-metals--debug-start :json-false))
+					   ("metals-run-session-start" (-partial #'lsp-metals--debug-start t)))
+		      :server-id 'metals
+		      :remote? t
+		      :initialized-fn (lambda (workspace)
+				        (lsp-metals--add-focus-hooks)
+				        (with-lsp-workspace workspace
+					  (lsp--set-configuration
+					   (lsp-configuration-section "metals"))))
+		      :after-open-fn (lambda ()
+				       (add-hook 'lsp-on-idle-hook #'lsp-metals--did-focus nil t))
+		      :completion-in-comments? t))
     )
   (leaf dap-mode
     :straight t
