@@ -751,6 +751,7 @@
 
 
 (leaf slime
+  :emacs< "28"
   :if (file-exists-p "~/.roswell/helper.el")
   :custom
   ((slime-auto-start . 'ask)
