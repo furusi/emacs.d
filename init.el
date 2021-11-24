@@ -706,33 +706,8 @@
   :diminish yas-minor-mode
   :config
   (yas-global-mode 1))
+
 (leaf yasnippet-snippets :straight t)
-
-
-(leaf keyfreq :straight t
-  :config
-  (setq keyfreq-excluded-commands
-        '(
-          backward-char
-          dired-next-line
-          forward-char
-          ignore
-          keyboard-quit
-          lsp-ui-doc--handle-mouse-movement
-          magit-next-line
-          magit-previous-line
-          move-end-of-line
-          next-line
-          org-self-insert-command
-          previous-line
-          scroll-up-command
-          self-insert-command
-          skk-delete-backward-char
-          skk-insert
-          skk-previous-candidate
-          ))
-  (keyfreq-mode 1)
-  (keyfreq-autosave-mode 1))
 
 ;; Emacs起動時にrst.elを読み込み
 (leaf rst
