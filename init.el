@@ -1930,7 +1930,7 @@ See `org-capture-templates' for more information."
 (leaf go-mode
   :straight t
   :after lsp-mode
-  :hook (go-mode-hook . lsp-defferd))
+  :hook (go-mode-hook . lsp-deferred))
 
 (leaf android-mode
   :straight t
@@ -2274,6 +2274,12 @@ See `org-capture-templates' for more information."
                               (setq lsp-managed-mode t)))
     :bind ((:lsp-mode-map
             ("M-." . lsp-find-definition))))
+  (leaf lsp-metals
+    :straight t
+    :custom
+    ((lsp-metals-server-args . '("-J-Dmetals.allow-multiline-string-formatting=off")))
+    :hook (scala-mode-hook . lsp-deferred)
+    )
   (leaf dap-mode
     :straight t
     :after lsp-mode
