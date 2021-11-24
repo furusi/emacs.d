@@ -643,9 +643,6 @@
   :global-minor-mode global-undo-tree-mode
   :custom (undo-tree-history-directory-alist . '(("." . "~/.emacs.d/undo-tree/"))))
 
-
-
-
 (leaf rustic :straight t
   ;; :hook (rust-mode-hook . rustic-mode)
   :custom (
@@ -663,7 +660,6 @@
   (moody-replace-mode-line-buffer-identification)
   (moody-replace-vc-mode))
 
-
 (leaf dabbrev
   :bind (("M-/" . dabbrev-completion)
          ("C-M-/" . dabbrev-expand)))
@@ -679,11 +675,11 @@
 (leaf highlight-symbol
   :straight t
   :require t)
+
 (leaf expand-region
   :straight t
   :require t
   :bind (("C-=" . er/expand-region)))
-
 
 (leaf all-the-icons :straight t)
 
@@ -1700,11 +1696,6 @@ See `org-capture-templates' for more information."
     :config
     (load "~/Dropbox/org/googlecalendar/org-gcal-config.el"))
   )
-
-
-
-
-
 
 (leaf mu4e
   :disabled t
