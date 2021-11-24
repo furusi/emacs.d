@@ -468,7 +468,7 @@
      consult-ripgrep consult-git-grep consult-grep
      consult-bookmark consult-recent-file consult-xref
      consult--source-file consult--source-project-file consult--source-bookmark
-     consult-find
+     consult-find consult-org-agenda
      :preview-key (kbd "C-,")
      consult-goto-line consult-line
      :preview-key '(:debounce 0.2 any))
