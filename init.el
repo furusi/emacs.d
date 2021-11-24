@@ -221,7 +221,8 @@
 
 (leaf sudo-edit :straight t)
 (leaf projectile
-  :bind-keymap ("C-c p" . projectile-command-map)
+  :bind ((:projectile-mode-map
+          ("C-c p" . projectile-command-map)))
   :straight t
   :custom
   ((projectile-sort-order . 'recently-active)
