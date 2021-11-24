@@ -25,6 +25,7 @@
   :custom
   `((auto-save-interval . 10)
     (backup-directory-alist . '((".*" . "~/.ehist")))
+    (byte-compile-warnings . '(cl-functions))
     (comment-style . 'multi-line)
     (custom-theme-directory . ,(concat user-emacs-directory "themes/")) ;; テーマのディレクトリを設定
     (default-frame-alist .'((width . 100) (height . 40)))
