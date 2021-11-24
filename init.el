@@ -23,35 +23,28 @@
 (leaf custom-variables
   :doc "set custom variables"
   :custom
-  `((backup-directory-alist . '((".*" . "~/.ehist")))
+  `((auto-save-interval . 10)
+    (backup-directory-alist . '((".*" . "~/.ehist")))
     (comment-style . 'multi-line)
-    (default-frame-alist .'((width . 100)
-                            (height . 40)))
+    (custom-theme-directory . ,(concat user-emacs-directory "themes/")) ;; テーマのディレクトリを設定
+    (default-frame-alist .'((width . 100) (height . 40)))
     (dired-dwim-target . t)
+    (ediff-split-window-function . 'split-window-horizontally)
     (ediff-window-setup-function . 'ediff-setup-windows-plain)
     (indent-tabs-mode . nil)
-
-    (set-mark-command-repeat-pop . t)    ;; C-u C-SPCの後C-SPCだけでマークを遡れる
-    
-    (mark-ring-max . 32);; マークの数を32に増やす
-    (indent-tabs-mode . nil)
-    (truncate-lines . t)         ;文字列を折り返さない
-
-    ;; テーマのディレクトリを設定
-    (custom-theme-directory . ,(concat user-emacs-directory "themes/"))
-
     (inhibit-startup-screen . t)
+    (mark-ring-max . 32);; マークの数を32に増やす
+    (menu-bar-mode . t)
+    (recentf-auto-cleanup . 'never)
     (recentf-max-menu-items . 30)
     (recentf-max-saved-items . 2000)
-    (recentf-auto-cleanup . 'never)
-    (auto-save-interval . 10)
+    (safe-local-variable-values . '((org-export-directory . "~/Dropbox/org")))
+    (set-mark-command-repeat-pop . t)    ;; C-u C-SPCの後C-SPCだけでマークを遡れる
+    (tool-bar-mode . nil)
+    (truncate-lines . t)         ;文字列を折り返さない
     (use-dialog-box . nil)
     (use-file-dialog . nil)
-    (tool-bar-mode . nil)
-    (menu-bar-mode . t)
-    (safe-local-variable-values . '((org-export-directory . "~/Dropbox/org")))
     (vc-follow-symlinks . t)
-    (ediff-split-window-function . 'split-window-horizontally)
     )
   )
 
