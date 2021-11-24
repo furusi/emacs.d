@@ -397,6 +397,10 @@
     ;; Tidy shadowed file names
     :hook
     (rfn-eshadow-update-overlay-hook . vertico-directory-tidy))
+  (leaf vertico-quick
+    :custom
+    ((vertico-quick1 . "aoeu")
+     (vertico-quick2 . "htns")))
   
   ;; Use the `orderless' completion style.
   ;; Enable `partial-completion' for files to allow path expansion.
@@ -563,7 +567,6 @@
     :straight (corfu :type git :host github :repo "minad/corfu" :branch "main")
     :custom
     (corfu-auto . t)
-    (corfu-auto-prefix . 3)
     (completion-cycle-threshold . 3)
     (tab-always-indent . 'complete)
     :hook
