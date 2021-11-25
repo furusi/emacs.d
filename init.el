@@ -56,6 +56,10 @@
    (browse-url-firefox-new-window-is-tab . t))
   )
 
+(leaf image-mode
+  :bind (:image-mode-map
+         ("=" . image-increase-size)))
+
 (leaf completion
   :emacs>= 27
   :config
