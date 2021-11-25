@@ -1123,8 +1123,8 @@
     )
 
   (leaf org-roam
-    :after org
     :straight t
+    :commands (org-roam-node-find)
     :custom
     `((org-roam-directory . ,(concat org-directory "roam/"))
       (org-roam-title-to-slug-function . (lambda (text) text))
@@ -1148,7 +1148,7 @@
      ;;  ("C-c n I" . org-roam-insert-immediate))
      )
     :config
-    (org-roam-setup)
+    (org-roam-db-autosync-mode)
     (when (eq system-type 'darwin)
       (setq org-roam-graph-viewer "open"))
     (add-to-list 'org-roam-capture-templates
