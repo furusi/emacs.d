@@ -468,14 +468,13 @@
 
     (consult-customize
      consult-theme
-     :preview-key '(:debounce 0.2 any)
+     consult-goto-line consult-line
+     :preview-key (list :debounce 0.2 'any)
      consult-ripgrep consult-git-grep consult-grep
      consult-bookmark consult-recent-file consult-xref
-     consult--source-file consult--source-project-file consult--source-bookmark
+     consult--source-recent-file consult--source-project-recent-file consult--source-bookmark
      consult-find consult-org-agenda
-     :preview-key (kbd "C-,")
-     consult-goto-line consult-line
-     :preview-key '(:debounce 0.2 any))
+     :preview-key (kbd "C-,"))
     (autoload 'projectile-project-root "projectile")
     (setq consult-project-root-function #'projectile-project-root)
     (setq completion-in-region-function
