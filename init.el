@@ -1694,6 +1694,10 @@ See `org-capture-templates' for more information."
      (org-gcal-up-days . 180))
     :config
     (load "~/Dropbox/org/googlecalendar/org-gcal-config.el"))
+  (leaf ox-slimhtml
+    :after org
+    :straight t
+    :require t)
   )
 
 (leaf mu4e
