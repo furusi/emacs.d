@@ -23,7 +23,8 @@
 (leaf custom-variables
   :doc "set custom variables"
   :custom
-  `((auto-save-interval . 10)
+  `((auth-sources . '(,(expand-file-name "authinfo.gpg" user-emacs-directory)))
+    (auto-save-interval . 10)
     (backup-directory-alist . '((".*" . "~/.ehist")))
     (byte-compile-warnings . '(cl-functions))
     (comment-style . 'multi-line)
@@ -56,6 +57,9 @@
   ((browse-url-firefox-program . "/Applications/Firefox.app/Contents/MacOS/firefox")
    (browse-url-firefox-new-window-is-tab . t))
   )
+
+(leaf authinfo
+  :mode ("authinfo.gpg" . authinfo-mode))
 
 (leaf image-mode
   :bind (:image-mode-map
