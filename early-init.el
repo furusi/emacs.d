@@ -17,6 +17,7 @@
 (setenv "LANG" "en_US.UTF-8")
 (setenv "LC_ALL" "en_US.UTF-8")
 (defvar bootstrap-version)
+(custom-set-variables `(package-user-dir ,(locate-user-emacs-file (format "elpa/%s/" emacs-version))))
 (setq straight-base-dir (format "%spackages/%s/"
                                 user-emacs-directory
                                 emacs-version
