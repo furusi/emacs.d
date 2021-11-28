@@ -593,8 +593,6 @@
                          :branch "main")
     :require t
     :after (corfu)
-    :custom
-    (kind-icon-default-face . 'corfu-background)
     :config
     (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)
     )
