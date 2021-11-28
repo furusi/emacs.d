@@ -589,6 +589,7 @@
     ;; (corfu-global-mode)
     )
   (leaf kind-icon
+    :emacs>= 27.1
     :straight (kind-icon :type git :host github :repo "jdtsmith/kind-icon"
                          :branch "main")
     :require t

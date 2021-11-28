@@ -63,7 +63,7 @@
  ("json-mode" . "eedb4560034f795a7950fa07016bd4347c368873")
  ("json-snatcher" . "b28d1c0670636da6db508d03872d96ffddbc10f2")
  ("jsonrpc" . "c0e2ba7dfc06fbdaee5d9162e367d89d8c8b6f1a")
- ("kind-icon" . "cea1a4c527379329787607e0ada8f54673c328b9")
+ ("kind-icon" . "03053f9d3cc7b85b433b4c4b2da5653f91c174ef")
  ("kotlin-mode" . "3e0c34087ba4965a8bf08d3f27325f0a1e631bfb")
  ("let-alist" . "d2d0cac92851d4480328bc3f41d30c518beb1f99")
  ("log4e" . "737d275eac28dbdfb0b26d28e99da148bfce9d16")
