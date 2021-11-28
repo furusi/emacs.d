@@ -569,9 +569,10 @@
   (leaf corfu
     :straight (corfu :type git :host github :repo "minad/corfu" :branch "main")
     :custom
-    (corfu-auto . t)
-    (completion-cycle-threshold . 3)
-    (tab-always-indent . 'complete)
+    ((completion-cycle-threshold . 3)
+     (corfu-auto . t)
+     (corfu-cycle . t)
+     (tab-always-indent . 'complete))
     :hook
     ((org-mode-hook        . corfu-mode)
      (lisp-mode-hook       . corfu-mode)
