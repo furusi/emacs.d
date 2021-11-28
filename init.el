@@ -228,8 +228,15 @@
           ("C-c p" . projectile-command-map)))
   :straight t
   :custom
-  ((projectile-sort-order . 'recently-active)
-   (projectile-switch-project-action . 'projectile-dired))
+  `((projectile-cache-file . ,(format "%sprojectile/%s/%s" user-emacs-directory emacs-version "projectile.cache"))
+    (projectile-known-projects-file . ,(format "%sprojectile/%s/%s" user-emacs-directory emacs-version "projectile-bookmarks.eld"))
+    (projectile-sort-order . 'recently-active)
+    (projectile-switch-project-action . 'projectile-dired))
+  :init
+  (let ((dir (format "%sprojectile/%s/" user-emacs-directory emacs-version)))
+    (unless (file-directory-p dir)
+      (make-directory dir t))
+    )
   :config
   (projectile-mode +1)
   (dolist
