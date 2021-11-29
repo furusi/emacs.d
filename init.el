@@ -969,16 +969,16 @@
     (setq org-capture-templates
           `(("i" "インボックス" entry
              (file ,(concat org-directory "inbox.org"))
-             "* %? %i\n %U\n")
+             "* %? %i\n%U\n")
             ;; ("h" "定期的にやること" entry
             ;;  (file ,(concat org-directory "habit.org"))
             ;;  "* %?\n %U\n")
             ("t" "タスク" entry
              (file ,(concat org-directory "task.org"))
-             "* TODO %? %i\n %U\n")
+             "* TODO %? %i\n%U\n")
             ("e" "イベント" entry
              (file ,(concat org-directory "event.org"))
-             "* EVENT %?\n %a\n %U\n")
+             "* EVENT %?\n %a\n%U\n")
             ("n"
              "ノート(本文から書く)"
              entry
