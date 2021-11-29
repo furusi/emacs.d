@@ -107,6 +107,8 @@
  ("pandoc.el" . "198d262d09e30448f1672338b0b5a81cf75e1eaa")
  ("pdf-tools" . "a8847b75d3487d60e27762816bdbdd23b6dc1c11")
  ("persist" . "b45d5335f3a6850f86c58c8764d3998f39d6fe65")
+ ("persp-projectile" . "4e374d7650c7e041df5af5ac280a44d4a4ec705a")
+ ("perspective-el" . "b84b4e2e3efd3455bcdebb9efb4b07a4cec94ebb")
  ("pfuture" . "d7926de3ba0105a36cfd00811fd6278aea903eef")
  ("php-mode" . "535aec81739e8e766e0420fda616efc8846f2911")
  ("phpstan.el" . "0869b152f82a76138daa53e953285936b9d558bd")

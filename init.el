@@ -230,8 +230,7 @@
   :custom
   `((projectile-cache-file . ,(format "%sprojectile/%s/%s" user-emacs-directory emacs-version "projectile.cache"))
     (projectile-known-projects-file . ,(format "%sprojectile/%s/%s" user-emacs-directory emacs-version "projectile-bookmarks.eld"))
-    (projectile-sort-order . 'recently-active)
-    (projectile-switch-project-action . 'projectile-dired))
+    (projectile-sort-order . 'recently-active))
   :init
   (let ((dir (format "%sprojectile/%s/" user-emacs-directory emacs-version)))
     (unless (file-directory-p dir)
@@ -243,6 +242,27 @@
       (d '(".ccls-cache"))
     (add-to-list 'projectile-globally-ignored-directories d))
   )
+
+(leaf perspective
+  :doc "switch between named \"perspectives\" of the editor"
+  :req "emacs-24.4" "cl-lib-0.5"
+  :tag "frames" "convenience" "workspace" "emacs>=24.4"
+  :url "http://github.com/nex3/perspective-el"
+  :added "2021-11-29"
+  :emacs>= 24.4
+  :straight t
+  :config
+  (persp-mode))
+
+(leaf persp-projectile
+  :doc "Perspective integration with Projectile"
+  :req "perspective-1.9" "projectile-2.4" "cl-lib-0.3"
+  :tag "convenience" "project"
+  :added "2021-11-29"
+  :straight t
+  :after perspective projectile
+  :require t)
+
 
 
 ;; ddskk
