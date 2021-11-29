@@ -462,13 +462,13 @@
            ("C-x b" . consult-buffer)
            ("C-x c i" . consult-imenu)
            ("C-x j" . consult-recent-file)
+           ("C-x r j" . consult-register)
            ("C-x r l"  . consult-bookmark)
            ("M-y" . consult-yank-pop)
            ([remap goto-line] . consult-goto-line)
            (:isearch-mode-map
             ("C-i" . my-consult-line)
             ("M-e" . consult-isearch))
-
            )
     :hook
     (completion-list-mode-hook . consult-preview-at-point-mode)
