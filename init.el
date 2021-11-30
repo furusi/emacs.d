@@ -608,6 +608,32 @@
     ;; :init
     ;; (corfu-global-mode)
     )
+  (leaf cape
+    :doc "Completion At Point Extensions"
+    :req "emacs-27.1"
+    :tag "emacs>=27.1"
+    :url "https://github.com/minad/cape"
+    :added "2021-11-30"
+    :emacs>= 27.1
+    :straight t
+    :bind
+    (("C-c f p" . completion-at-point) ;; capf
+     ("C-c f t" . complete-tag)        ;; etags
+     ("C-c f d" . cape-dabbrev)        ;; or dabbrev-completion
+     ("C-c f f" . cape-file)
+     ("C-c f k" . cape-keyword)
+     ("C-c f s" . cape-symbol)
+     ("C-c f a" . cape-abbrev)
+     ("C-c f i" . cape-ispell)
+     ("C-c f l" . cape-line)
+     ("C-c f w" . cape-dict))
+    :init
+    (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+    (add-to-list 'completion-at-point-functions #'cape-keyword)
+    (add-to-list 'completion-at-point-functions #'cape-file)
+    :config
+    (if (eq system-type 'darwin)
+        (customize-set-variable 'cape-dict-file "/usr/share/dict/words")))
   (leaf kind-icon
     :emacs>= 27.1
     :straight (kind-icon :type git :host github :repo "jdtsmith/kind-icon"

@@ -9,6 +9,7 @@
  ("autodisass-java-bytecode" . "9eaddd63645e64825b2d07805999c5a645248c53")
  ("avy" . "e92cb37457b43336b765630dbfbea8ba4be601fa")
  ("bui.el" . "f3a137628e112a91910fd33c0cff0948fa58d470")
+ ("cape" . "b895c8cf280f80a0cf724f137de06217679cb846")
  ("cfrs" . "c1f639d7bfd3e728cf85dbe224b06a4be76158f4")
  ("company-mode" . "91624227a6b70621c50eec0c37682442b64c0a97")
  ("consult" . "37096d4bc4031a6a3d020ae225b6c675fa5ec0b7")
