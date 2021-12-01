@@ -223,6 +223,7 @@
                                  (display-line-numbers-mode -1)))))
 
 (leaf sudo-edit :straight t)
+
 (leaf projectile
   :bind ((:projectile-mode-map
           ("C-c p" . projectile-command-map)))
@@ -398,7 +399,9 @@
 
 (leaf *vertico
   :config
+  
   (leaf vertico
+    :emacs>= 27.1
     :straight (vertico :type git :host github :repo "minad/vertico"
                        :files (:defaults "extensions/*.el"))
     :bind ((:vertico-map
@@ -556,7 +559,7 @@
 
   (leaf embark
     :straight (embark :host github :repo "oantolin/embark" :branch "master" :files (:defaults))
-    
+    :emacs>= 26.1
     :bind
     (("C-." . embark-act)         ;; pick some comfortable binding
      ("C-;" . embark-dwim)        ;; good alternative: M-.
