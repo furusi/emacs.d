@@ -457,7 +457,7 @@
     :custom
     ((consult-narrow-key . "<")
      (consult-find-command . "fd -H -E .git --color=never --full-path ARG OPTS")
-     (consult-ripgrep-command . "rg --hidden --null --line-buffered --color=ansi --max-columns=1000   --no-heading --line-number . -e ARG OPTS")
+     (consult-ripgrep-args . "rg --hidden --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number .")
      (xref-show-xrefs-function . #'consult-xref)
      (xref-show-definitions-function . #'consult-xref))
     :bind (
