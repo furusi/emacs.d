@@ -1184,6 +1184,8 @@
     )
 
   (leaf org-roam
+    :req "emacs-26.1" "dash-2.13" "f-0.17.2" "org-9.4" "emacsql-3.0.0" "emacsql-sqlite-1.0.0" "magit-section-3.0.0"
+    :emacs>= 26.1
     :straight t
     :commands (org-roam-node-find)
     :custom
@@ -1227,6 +1229,8 @@
     ;;   :straight (org-roam-ui :type git :host github :repo "org-roam/org-roam-ui")
     ;;   )
     (leaf org-roam-ui
+      :req "emacs-27.1" "org-roam-2.0.0" "simple-httpd-20191103.1446" "websocket-1.13"
+      :emacs>= 27.1
       :straight
       (org-roam-ui :host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
       :hook (after-init-hook . org-roam-ui-mode)
