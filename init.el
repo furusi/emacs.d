@@ -1189,9 +1189,8 @@
     :straight t
     :commands (org-roam-node-find)
     :custom
-    `((org-roam-directory . ,(concat org-directory "roam/"))
-      (org-roam-title-to-slug-function . (lambda (text) text))
-      (org-roam-v2-ack . t))
+    ((org-roam-title-to-slug-function . (lambda (text) text))
+     (org-roam-v2-ack . t))
     :bind
     (("C-c n l" . org-roam-buffer-toggle)
      ("C-c n f" . org-roam-node-find)
@@ -1211,6 +1210,7 @@
      ;;  ("C-c n I" . org-roam-insert-immediate))
      )
     :config
+    (setq org-roam-directory (format "%sroam/" org-directory))
     (org-roam-db-autosync-mode)
     (when (eq system-type 'darwin)
       (setq org-roam-graph-viewer "open"))
@@ -1224,6 +1224,7 @@
                  )
     (leaf org-roam-protocol
       :require t
+      :after org
       )
     ;; (leaf org-roam-ui
     ;;   :straight (org-roam-ui :type git :host github :repo "org-roam/org-roam-ui")
@@ -1231,6 +1232,7 @@
     (leaf org-roam-ui
       :req "emacs-27.1" "org-roam-2.0.0" "simple-httpd-20191103.1446" "websocket-1.13"
       :emacs>= 27.1
+      :after org
       :straight
       (org-roam-ui :host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
       :hook (after-init-hook . org-roam-ui-mode)
@@ -1248,12 +1250,14 @@
     :commands org-journal-new-entry
     :custom
     `((org-journal-file-type . 'daily)
-      (org-journal-dir . ,(concat org-directory "journal/"))
+      
       (org-journal-enable-agenda-integration . t)
       (org-journal-date-format . "%F (%a)")
       (org-journal-time-format . "<%Y-%m-%d %R> ")
       (org-journal-file-format . "%Y%m%d.org")
-      (org-journal-file-header . "# -*- mode: org-journal; -*-")))
+      (org-journal-file-header . "# -*- mode: org-journal; -*-"))
+    :config
+    (setq org-journal-dir (concat org-directory "journal/")))
 
   ;; Org Mode LaTeX Export
 
@@ -2270,10 +2274,11 @@ See `org-capture-templates' for more information."
     (lsp-ui-sideline-show-hover         . t)
     (lsp-ui-sideline-show-diagnostics   . t)
     (lsp-ui-sideline-show-code-actions  . t)
-    :bind `((:lsp-ui-mode-map
-             ("M-." . lsp-ui-peek-find-definitions)
-             ("M-?" . lsp-ui-peek-find-references)
-             (,(concat lsp-keymap-prefix " t") . lsp-ui-doc-focus-frame)))
+    :bind ((:lsp-ui-mode-map
+            ("M-." . lsp-ui-peek-find-definitions)
+            ("M-?" . lsp-ui-peek-find-references))
+           (:lsp-mode-map
+            ("t" . lsp-ui-doc-focus-frame)))
     )
   (leaf lsp-treemacs
     :commands lsp-treemacs-errors-list
