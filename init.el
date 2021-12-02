@@ -823,6 +823,7 @@
   )
 
 (leaf web-mode
+  :disabled t
   :straight t
   :require t
   :mode (("\\.as[cp]x\\'"    . web-mode)
@@ -2182,8 +2183,10 @@ See `org-capture-templates' for more information."
              (lsp-auto-execute-action . nil)
              (lsp-keymap-prefix . "C-c C-l")
              )
-    :hook ((cc-mode     . lsp-deferred)
-           (lsp-mode-hook . lsp-enable-which-key-integration))
+    :hook ((c-mode-hook     . lsp-deferred)
+           (lsp-mode-hook . lsp-enable-which-key-integration)
+           (css-mode-hook . lsp-deferred)
+           (html-mode-hook . lsp-deferred))
     :require t
     :init (setq read-process-output-max (* 1024 1024))
     (setq garbage-collection-messages t))
