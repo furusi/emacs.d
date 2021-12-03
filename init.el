@@ -2345,6 +2345,10 @@ See `org-capture-templates' for more information."
                  ))
   (dir-locals-set-directory-class (file-truename dir) 'read-only))
 
+(let ((f "~/Dropbox/.config/emacs/config.el"))
+  (when (file-exists-p f)
+    (load-file f)))
+
 (provide 'init)
 ;;; init.el ends here
 (put 'upcase-region 'disabled nil)
