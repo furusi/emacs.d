@@ -2316,6 +2316,14 @@ See `org-capture-templates' for more information."
   )
 (leaf vterm
   :straight t)
+(leaf elfeed
+  :doc "an Emacs Atom/RSS feed reader"
+  :req "emacs-24.3"
+  :tag "emacs>=24.3"
+  :url "https://github.com/skeeto/elfeed"
+  :added "2021-12-03"
+  :emacs>= 24.3
+  :straight t)
 
 (dolist (file (cddr (directory-files (concat
                                       user-emacs-directory
