@@ -2277,7 +2277,7 @@ See `org-capture-templates' for more information."
     :bind ((:lsp-ui-mode-map
             ("M-." . lsp-ui-peek-find-definitions)
             ("M-?" . lsp-ui-peek-find-references))
-           (:lsp-mode-map
+           (:lsp-command-map
             ("t" . lsp-ui-doc-focus-frame)))
     )
   (leaf lsp-treemacs
