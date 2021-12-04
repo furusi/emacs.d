@@ -81,8 +81,6 @@
    ("v" . scroll-up-command)
    ("V" . scroll-down-command)))
 
-
-
 (leaf autorevert
   :hook
   (emacs-startup-hook . global-auto-revert-mode)
@@ -1951,7 +1949,10 @@ See `org-capture-templates' for more information."
   :straight t
   :diminish t
   :require smartparens-config
-  :hook (after-init-hook . smartparens-global-mode))
+  :hook (after-init-hook . smartparens-global-mode)
+  :bind
+  (:emacs-lisp-mode-map
+    ("C-c C-u" . sp-backward-up-sexp)))
 
 (leaf kotlin-mode
   :straight t
