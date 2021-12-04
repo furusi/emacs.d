@@ -2327,6 +2327,14 @@ See `org-capture-templates' for more information."
   :bind (:elfeed-search-mode-map
          ("j" . next-line)
          ("k" . previous-line)))
+(leaf powershell
+  :doc "Mode for editing PowerShell scripts"
+  :req "emacs-24"
+  :tag "languages" "powershell" "emacs>=24"
+  :url "http://github.com/jschaf/powershell.el"
+  :added "2021-12-04"
+  :emacs>= 24
+  :straight t)
 
 (dolist (file (cddr (directory-files (concat
                                       user-emacs-directory
