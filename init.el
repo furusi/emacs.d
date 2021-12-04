@@ -2323,7 +2323,10 @@ See `org-capture-templates' for more information."
   :url "https://github.com/skeeto/elfeed"
   :added "2021-12-03"
   :emacs>= 24.3
-  :straight t)
+  :straight t
+  :bind (:elfeed-search-mode-map
+         ("j" . next-line)
+         ("k" . previous-line)))
 
 (dolist (file (cddr (directory-files (concat
                                       user-emacs-directory
