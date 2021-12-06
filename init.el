@@ -106,7 +106,7 @@
 ;;行番号を表示
 (if (version<= "26.0.50" emacs-version)
     (progn
-      (global-display-line-numbers-mode)
+      ;; (global-display-line-numbers-mode)
       (setq-default indicate-empty-lines t)
       (setq-default indicate-buffer-boundaries 'left)))
 
