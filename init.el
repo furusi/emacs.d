@@ -799,18 +799,17 @@
   )
 
 (leaf web-mode
-  :disabled t
   :straight t
   :require t
-  :mode (("\\.as[cp]x\\'"    . web-mode)
-         ("\\.djhtml\\'"     . web-mode)
-         ("\\.erb\\'"        . web-mode)
-         ("\\.html?\\'"      . web-mode)
-         ("\\.mustache\\'"   . web-mode)
-         ("\\.php\\'"        . web-mode)
-         ("\\.phtml\\'"      . web-mode)
-         ("\\.tpl\\.php\\'"  . web-mode)
-         ("\\.[gj]sp\\'"     . web-mode))
+  ;; :mode (("\\.as[cp]x\\'"    . web-mode)
+  ;;        ("\\.djhtml\\'"     . web-mode)
+  ;;        ("\\.erb\\'"        . web-mode)
+  ;;        ("\\.html?\\'"      . web-mode)
+  ;;        ("\\.mustache\\'"   . web-mode)
+  ;;        ("\\.php\\'"        . web-mode)
+  ;;        ("\\.phtml\\'"      . web-mode)
+  ;;        ("\\.tpl\\.php\\'"  . web-mode)
+  ;;        ("\\.[gj]sp\\'"     . web-mode))
   :config
   (setq web-mode-extra-snippets
         '(("php" . (("print" . "print(\"|\")"))))))
