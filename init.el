@@ -394,10 +394,12 @@
     (vertico-mode)
     )
   (leaf vertico-repeat
+    :after vertico
     :bind ("M-r" . vertico-repeat)
     :hook
     (minibuffer-setup-hook . vertico-repeat-save))
   (leaf vertico-directory
+    :after vertico
     :bind ((:vertico-map
             ("RET"    . vertico-directory-enter)
             ("DEL"    . vertico-directory-delete-char)
