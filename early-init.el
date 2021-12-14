@@ -35,10 +35,7 @@
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
-(setq use-package-enable-imenu-support t)
-(straight-use-package 'use-package)
 
-(setq straight-use-package-by-default t)
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
 ;; Language and Character Code

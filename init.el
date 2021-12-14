@@ -119,9 +119,8 @@
   (add-to-list 'exec-path-from-shell-variables "JAVA_HOME")
   (exec-path-from-shell-initialize))
 
-(use-package use-package-ensure-system-package)
-
-(use-package system-packages
+(leaf system-packages
+  :straight t
   :config
   (when (eq system-type 'darwin)
     (setq system-packages-use-sudo nil
@@ -151,12 +150,15 @@
           system-packages-package-manager 'yay)))
 
 
-(bind-keys ("C-c t l" . toggle-truncate-lines)
-           ("C-t" . other-window)
-           ("M-<f1>" . other-frame)  ;Macのショートカットに合わせる
-           ("C-o" . my-insert-newline-and-indent)
-           :map isearch-mode-map
-           ("C-o" . isearch-exit))
+(leaf bind-key
+  :bind
+  (("C-c t l" . toggle-truncate-lines)
+   ("C-t" . other-window)
+   ("M-<f1>" . other-frame)  ;Macのショートカットに合わせる
+   ("C-o" . my-insert-newline-and-indent)
+   (:isearch-mode-map
+    ("C-o" . isearch-exit))))
+
 
 
 (when (equal system-type 'darwin)
