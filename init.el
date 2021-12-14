@@ -126,9 +126,6 @@
   (when (eq system-type 'darwin)
     (setq system-packages-use-sudo nil
           system-packages-package-manager 'brew))
-  (when (string= (car (split-string (which-linux-distribution))) "Ubuntu")
-    (setq system-packages-use-sudo nil
-          system-packages-package-manager 'brew))
   (when (or (string-match-p "arch" operating-system-release)
             (string-match-p "manjaro" operating-system-release))
     (add-to-list 'system-packages-supported-package-managers
