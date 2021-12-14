@@ -822,12 +822,8 @@
   (leaf org
     :commands ((org-at-item-bullet-p))
     :mode (("\\.org$" . org-mode))
-    :straight
-    (org :type git :repo "https://git.savannah.gnu.org/git/emacs/org-mode.git"
-                    :local-repo "org" :depth 300 :branch "main"
-                    :pre-build
-                    (straight-recipes-org-elpa--build) :build (:not autoloads)
-                    :files (:defaults "lisp/*.el" ("etc/styles/" "etc/styles/*")))
+    :straight (org :type git :repo "https://git.savannah.gnu.org/git/emacs/org-mode.git"
+                   :branch "main")
     :custom
     ((org-export-allow-bind-keywords . t)
      (org-export-backends . '(ascii html icalendar latex md odt taskjuggler asciidoc pandoc gfm))
