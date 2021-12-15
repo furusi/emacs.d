@@ -223,6 +223,12 @@
 
 (leaf sudo-edit :straight t)
 
+(leaf so-long
+  :doc "Say farewell to performance problems with minified code."
+  :straight t
+  :require t
+)
+
 (leaf projectile
   :bind ((:projectile-mode-map
           ("C-c p" . projectile-command-map)))
