@@ -32,6 +32,7 @@
     (custom-theme-directory . ,(concat user-emacs-directory "themes/")) ;; テーマのディレクトリを設定
     (default-frame-alist .'((width . 200) (height . 50)))
     (dired-dwim-target . t)
+    (ediff-diff-options . "-w")
     (ediff-split-window-function . 'split-window-horizontally)
     (ediff-window-setup-function . 'ediff-setup-windows-plain)
     (indent-tabs-mode . nil)
