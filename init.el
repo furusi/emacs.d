@@ -618,9 +618,12 @@
   (leaf kind-icon
     :emacs>= 27.1
     :straight (kind-icon :type git :host github :repo "jdtsmith/kind-icon"
+                         :files ("*" (:exclude ".git"))
                          :branch "main")
     :require t
-    :after (corfu)
+    :after (corfu svg-lib)
+    :custom
+    (kind-icon-default-face . 'corfu-default)
     :config
     (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)
     )
