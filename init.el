@@ -43,7 +43,7 @@
     (recentf-max-saved-items . 2000)
     (safe-local-variable-values . '((org-export-directory . "~/Dropbox/org")))
     (set-mark-command-repeat-pop . t)    ;; C-u C-SPCの後C-SPCだけでマークを遡れる
-    (straight-vc-git-default-clone-depth . 300)
+    (straight-vc-git-default-clone-depth . 150)
     (tool-bar-mode . nil)
     (truncate-lines . t)         ;文字列を折り返さない
     (use-dialog-box . nil)
@@ -575,7 +575,7 @@
     ((org-refile-use-outline-path . 'file)
      (org-outline-path-complete-in-steps . nil)))
   (leaf corfu
-    :straight (corfu :type git :host github :repo "minad/corfu" :branch "main")
+    :straight (corfu :type git :host github :repo "minad/corfu" :branch "main" :files ("*" (:exclude ".git")))
     :custom
     ((completion-cycle-threshold . 3)
      (corfu-auto . t)
