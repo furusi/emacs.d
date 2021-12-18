@@ -752,6 +752,15 @@
 
 (leaf yasnippet-snippets :straight t)
 
+(leaf gitignore-templates
+  :doc "Create .gitignore using GitHub or gitignore.io API"
+  :req "emacs-24.3"
+  :tag "tools" "emacs>=24.3"
+  :url "https://github.com/xuchunyang/gitignore-templates.el"
+  :added "2021-12-17"
+  :emacs>= 24.3
+  :straight t)
+
 ;; Emacs起動時にrst.elを読み込み
 (leaf rst
   :straight t
