@@ -203,7 +203,7 @@
   (when (eq window-system 'x)
     (set-face-attribute 'default nil
                         :family "Noto Sans Mono CJK JP"
-                        :height 150)))
+                        :height 200)))
 
 ;; 記号をデフォルトのフォントにしない。(for Emacs 25.2)
 (setq use-default-font-for-symbols nil)
