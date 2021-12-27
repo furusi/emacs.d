@@ -709,8 +709,24 @@
   :global-minor-mode global-undo-tree-mode
   :custom (undo-tree-history-directory-alist . '(("." . "~/.emacs.d/undo-tree/"))))
 
-(leaf rustic :straight t
-  ;; :hook (rust-mode-hook . rustic-mode)
+(leaf rust-mode
+  :doc "A major-mode for editing Rust source code"
+  :req "emacs-25.1"
+  :tag "languages" "emacs>=25.1"
+  :url "https://github.com/rust-lang/rust-mode"
+  :emacs>= 25.1
+  :straight t
+  :hook (rust-mode-hook . (lambda () (prettify-symbols-mode)))
+  :config
+  (push '(".add" . ?∔) rust-prettify-symbols-alist)
+  )
+
+(leaf rustic   :straight t
+  :doc "Rust development environment"
+  :req "emacs-26.1" "rust-mode-1.0.3" "dash-2.13.0" "f-0.18.2" "let-alist-1.0.4" "markdown-mode-2.3" "project-0.3.0" "s-1.10.0" "seq-2.3" "spinner-1.7.3" "xterm-color-1.6"
+  :tag "languages" "emacs>=26.1"
+  :emacs>= 26.1
+  :after rust-mode markdown-mode project spinner xterm-color
   :custom (
            (rustic-lsp-server . 'rust-analyzer)
            ;; (rustic-lsp-client . 'eglot)
