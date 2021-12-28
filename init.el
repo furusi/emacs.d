@@ -717,6 +717,16 @@
            )
   )
 
+(leaf ron-mode
+  :doc "Rusty Object Notation mode"
+  :req "emacs-24.5.1"
+  :tag "languages" "emacs>=24.5.1"
+  :url "https://chiselapp.com/user/Hutzdog/repository/ron-mode/home"
+  :added "2021-12-26"
+  :emacs>= 24.5
+  :straight t
+  :mode (("\\.ron$" . ron-mode)))
+
 
 (leaf moody
   :straight t
