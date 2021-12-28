@@ -2380,7 +2380,10 @@ See `org-capture-templates' for more information."
   :straight t
   :bind (:elfeed-search-mode-map
          ("j" . next-line)
-         ("k" . previous-line)))
+         ("k" . previous-line))
+  :custom
+  (elfeed-search-date-format . '("%Y-%m-%d %H:%M" 16 :left))
+  )
 (leaf powershell
   :doc "Mode for editing PowerShell scripts"
   :req "emacs-24"
