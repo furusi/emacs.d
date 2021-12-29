@@ -121,6 +121,7 @@
 
 (leaf system-packages
   :straight t
+  :require t
   :config
   (when (eq system-type 'darwin)
     (setq system-packages-use-sudo nil
@@ -147,7 +148,9 @@
                            (list-dependencies-of . "yay -Qi")
                            (noconfirm . "--noconfirm"))))
     (setq system-packages-use-sudo nil
-          system-packages-package-manager 'yay)))
+          system-packages-package-manager 'yay)
+    )
+  )
 
 
 (leaf bind-key
@@ -415,7 +418,8 @@
     ((vertico-count . 20)
      (enable-recursive-minibuffers . t)
      (vertico-cycle . t)
-     (minibuffer-prompt-properties . '(read-only t cursor-intangible t face minibuffer-prompt))
+     (minibuffer-prompt-properties
+      . '(read-only t cursor-intangible t face minibuffer-prompt))
      )
     :init
     (defun crm-indicator (args)
@@ -442,6 +446,7 @@
     :hook
     (rfn-eshadow-update-overlay-hook . vertico-directory-tidy))
   (leaf vertico-quick
+    :after vertico
     :custom
     ((vertico-quick1 . "aoeu")
      (vertico-quick2 . "htns")))
@@ -466,8 +471,10 @@
     :straight t
     :custom
     ((consult-narrow-key . "<")
-     (consult-find-command . "fd -H -E .git --color=never --full-path ARG OPTS")
-     (consult-ripgrep-args . "rg --hidden --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number .")
+     (consult-find-command
+      . "fd -H -E .git --color=never --full-path ARG OPTS")
+     (consult-ripgrep-args
+      . "rg --hidden --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number .")
      (xref-show-xrefs-function . #'consult-xref)
      (xref-show-definitions-function . #'consult-xref))
     :bind (
