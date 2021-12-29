@@ -415,10 +415,16 @@
     ((vertico-count . 20)
      (enable-recursive-minibuffers . t)
      (vertico-cycle . t)
+     (minibuffer-prompt-properties . '(read-only t cursor-intangible t face minibuffer-prompt))
      )
     :init
+    (defun crm-indicator (args)
+      (cons (concat "[CRM] " (car args)) (cdr args)))
+    (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+    (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
     (vertico-mode)
     )
+
   (leaf vertico-repeat
     :after vertico
     :bind ("M-r" . vertico-repeat)
