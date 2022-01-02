@@ -144,7 +144,7 @@
  ("transient" . "129c2b1685368757ffe2b6fb2d57da4b06330968")
  ("treemacs" . "200861dedd5e6270903a8c3ff5e7abf91e452a3e")
  ("undo-tree" . "2bf5e230f1d11df7bbd9d8c722749e34482bc458")
- ("vertico" . "ed75d3105bd63990d0122ed21f54ed9f6f8e46c3")
+ ("vertico" . "d79c864c2c0af0659296829cd6121910dc61725d")
  ("vimrc-mode" . "13bc150a870d5d4a95f1111e4740e2b22813c30e")
  ("web-mode" . "61f057a6baeba6b3595e412ba79b3080dca17dcc")
  ("with-editor" . "53a6b8ad8a6aabea3749366fb11f12a7dabcb11f")

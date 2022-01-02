@@ -418,6 +418,7 @@
     ((vertico-count . 20)
      (enable-recursive-minibuffers . t)
      (vertico-cycle . t)
+     (vertico-resize . t)
      (minibuffer-prompt-properties
       . '(read-only t cursor-intangible t face minibuffer-prompt))
      )
@@ -428,6 +429,25 @@
     (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
     (vertico-mode)
     )
+  (leaf consult-for-vertico
+      :after consult
+      :config
+      (vertico-multiform-mode)
+      
+      (setq vertico-multiform-commands
+            `((consult-imenu buffer ,(lambda (_) (text-scale-set -1)))
+              (consult-outline buffer ,(lambda (_) (text-scale-set -1)))))
+
+      ;; Configure the buffer display and the buffer display action
+      (setq vertico-multiform-categories
+        '((consult-grep
+           buffer
+           (vertico-buffer-display-action . (display-buffer-same-window)))))
+
+      ;; Disable preview for consult-grep commands
+      (consult-customize consult-ripgrep consult-git-grep consult-grep
+                         :preview-key nil)
+      )
 
   (leaf vertico-repeat
     :after vertico
@@ -522,7 +542,7 @@
      consult-theme
      consult-goto-line consult-line
      :preview-key (list :debounce 0.2 'any)
-     consult-ripgrep consult-git-grep consult-grep
+     ;; consult-ripgrep consult-git-grep consult-grep
      consult-bookmark consult-recent-file consult-xref
      consult--source-recent-file consult--source-project-recent-file consult--source-bookmark
      consult-find consult-org-agenda
