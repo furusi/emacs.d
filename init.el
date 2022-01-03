@@ -2265,21 +2265,21 @@ See `org-capture-templates' for more information."
 
 (leaf *lsp
   :config
+  
   (leaf lsp-mode
     :straight t
-    :commands (lsp lsp-deferred)
-    :custom (
-             (lsp-auto-execute-action . nil)
-             (lsp-keymap-prefix . "C-c C-l")
-             (lsp-ui-doc-show-with-cursor . t)
-             )
-    :hook ((c-mode-hook     . lsp-deferred)
-           (lsp-mode-hook . lsp-enable-which-key-integration)
-           (css-mode-hook . lsp-deferred)
-           (html-mode-hook . lsp-deferred))
     :require t
-    :init (setq read-process-output-max (* 1024 1024))
+    :commands (lsp lsp-deferred)
+    :custom ((lsp-auto-execute-action . nil)
+             (lsp-keymap-prefix . "C-c C-l"))
+    :hook ((lsp-mode-hook  . lsp-enable-which-key-integration)
+           (c-mode-hook    . lsp-deferred)
+           (css-mode-hook  . lsp-deferred)
+           (html-mode-hook . lsp-deferred))
+    :init
+    (setq read-process-output-max (* 1024 1024))
     (setq garbage-collection-messages t))
+  
   (leaf lsp-python-ms
     :disabled t
     :straight t
@@ -2337,10 +2337,10 @@ See `org-capture-templates' for more information."
   ;; optionally
   (leaf lsp-ui
     :straight t
-    :hook (lsp-mode-hook . lsp-ui-mode)
-    :commands lsp-ui-mode
     :after lsp-mode
     :custom
+    (lsp-ui-doc-show-with-cursor . t)
+    
     (lsp-ui-doc-enable                  . t)
     (lsp-ui-doc-header                  . t)
     (lsp-ui-doc-include-signature       . t)
