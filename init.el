@@ -99,8 +99,12 @@
   "from lsb_release"
   (interactive)
   (if (eq system-type 'gnu/linux)
-      (shell-command-to-string "lsb_release -sd")
+      (substring
+       (shell-command-to-string "lsb_release -sd")
+       1 -2)
     ""))
+(setq my:linux-distribution
+      (which-linux-distribution))
 
 (recentf-mode 1)
 
@@ -127,7 +131,8 @@
     (setq system-packages-use-sudo nil
           system-packages-package-manager 'brew))
   (when (or (string-match-p "arch" operating-system-release)
-            (string-match-p "manjaro" operating-system-release))
+            (string-match-p "manjaro" operating-system-release)
+            (string-match-p "endeavouros" my:linux-distribution))
     (add-to-list 'system-packages-supported-package-managers
                  '(yay .
                           ((default-sudo . nil)
@@ -227,9 +232,13 @@
   (aset char-width-table ?→ 2)
 
   (when (eq window-system 'x)
+    (setq font-height
+          (cond
+           ((string-match "endeavouros" my:linux-distribution) 120)
+           (t 200)))
     (set-face-attribute 'default nil
                         :family "Noto Sans Mono CJK JP"
-                        :height 200)))
+                        :height font-height)))
 
 ;; 記号をデフォルトのフォントにしない。(for Emacs 25.2)
 (setq use-default-font-for-symbols nil)
