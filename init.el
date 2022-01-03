@@ -160,7 +160,11 @@
    ("M-<f1>" . other-frame)  ;Macのショートカットに合わせる
    ("C-o" . my-insert-newline-and-indent)
    (:isearch-mode-map
-    ("C-o" . isearch-exit))))
+    ("C-o" . isearch-exit))
+   (:reb-mode-map
+          :package re-builder
+          ("C-c C-k". reb-quit))
+   ))
 
 (leaf special-characer-mode
   :url "https://github.com/madanh/special-characer-mode"
