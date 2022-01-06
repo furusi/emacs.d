@@ -203,9 +203,9 @@
     ;;                     :family "YuKyokasho Yoko")
     ;; 源ノ角ゴシック
     (set-face-attribute 'default nil
-                        :family "Noto Sans Mono CJK JP" :height 140)
+                        :family "PlemolJP" :height 140)
     (let* ((variable-tuple
-            (cond ((x-list-fonts "Noto Sans Mono CJK JP") '(:font "Noto Sans Mono CJK JP"))
+            (cond ((x-list-fonts "PlemolJP") '(:font "PlemolJP"))
                   ((x-list-fonts "Source Sans Pro")       '(:font "Source Sans Pro"))
                   ((x-list-fonts "Lucida Grande")         '(:font "Lucida Grande"))
                   ((x-list-fonts "Verdana")               '(:font "Verdana"))
@@ -238,7 +238,7 @@
            ((string-match "endeavouros" my:linux-distribution) 180)
            (t 200)))
     (set-face-attribute 'default nil
-                        :family "Noto Sans Mono CJK JP"
+                        :family "PlemolJP"
                         :height font-height)))
 
 ;; 記号をデフォルトのフォントにしない。(for Emacs 25.2)
@@ -1055,8 +1055,8 @@
           (plist-put org-format-latex-options :scale 2.0))
     ;; org-modeの固定幅フォントを設定
     (let ((fontset (cond
-                    ((eq window-system 'ns) "Noto Sans Mono CJK JP")
-                    ((eq window-system 'x) "Noto Sans Mono CJK JP"))))
+                    ((eq window-system 'ns) "PlemolJP")
+                    ((eq window-system 'x) "PlemolJP"))))
       (dolist (face '(org-table
                       org-formula
                       org-date))
