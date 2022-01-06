@@ -44,6 +44,7 @@
     (safe-local-variable-values . '((org-export-directory . "~/Dropbox/org")))
     (set-mark-command-repeat-pop . t)    ;; C-u C-SPCの後C-SPCだけでマークを遡れる
     (straight-vc-git-default-clone-depth . 150)
+    (tramp-ssh-controlmaster-options . "-4") ; ssh接続時にipv4アドレスを利用する
     (tool-bar-mode . nil)
     (truncate-lines . t)         ;文字列を折り返さない
     (use-dialog-box . nil)
@@ -234,7 +235,7 @@
   (when (eq window-system 'x)
     (setq font-height
           (cond
-           ((string-match "endeavouros" my:linux-distribution) 120)
+           ((string-match "endeavouros" my:linux-distribution) 180)
            (t 200)))
     (set-face-attribute 'default nil
                         :family "Noto Sans Mono CJK JP"
