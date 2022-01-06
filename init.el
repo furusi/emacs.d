@@ -100,11 +100,9 @@
   "from lsb_release"
   (interactive)
   (if (eq system-type 'gnu/linux)
-      (substring
-       (shell-command-to-string "lsb_release -sd")
-       1 -2)
+      (string-trim (shell-command-to-string "lsb_release -sd") "^\"")
     ""))
-(setq my:linux-distribution
+(setq my:lsb-distribution-name
       (which-linux-distribution))
 
 (recentf-mode 1)
@@ -133,7 +131,7 @@
           system-packages-package-manager 'brew))
   (when (or (string-match-p "arch" operating-system-release)
             (string-match-p "manjaro" operating-system-release)
-            (string-match-p "endeavouros" my:linux-distribution))
+            (string-match-p "endeavouros" my:lsb-distribution-name))
     (add-to-list 'system-packages-supported-package-managers
                  '(yay .
                           ((default-sudo . nil)
@@ -235,7 +233,7 @@
   (when (eq window-system 'x)
     (setq font-height
           (cond
-           ((string-match "endeavouros" my:linux-distribution) 180)
+           ((string-match "endeavouros" my:lsb-distribution-name) 180)
            (t 200)))
     (set-face-attribute 'default nil
                         :family "PlemolJP"
