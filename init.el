@@ -63,6 +63,16 @@
 (leaf authinfo
   :mode ("authinfo.gpg" . authinfo-mode))
 
+(leaf browse-url
+  :config
+  (when (and (eq system-type 'gnu/linux)
+             (string-match ".*-microsoft-standard-WSL2.*"
+                           operating-system-release))
+    (setq
+     browse-url-generic-program  "/mnt/c/Windows/System32/cmd.exe"
+     browse-url-generic-args     '("/c" "start")
+     browse-url-browser-function #'browse-url-generic)))
+
 (leaf image-mode
   :bind (:image-mode-map
          ("=" . image-increase-size)))
