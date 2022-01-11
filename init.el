@@ -1285,9 +1285,6 @@
     :after (org)
     :custom
     ((org-rst-headline-underline-characters . '(45 126 94 58 39 32 95))))
-  (leaf ox-hugo
-    :straight t
-    :after org)
   (leaf ob-browser
     :straight t
     :after org)
@@ -1807,6 +1804,7 @@
     :require t
     :after (org))
   (leaf ox-hugo
+    :straight (ox-hugo :type git :host github :repo "kaushalmodi/ox-hugo" :branch "main")
     :after org
     :config
     (defun org-hugo-new-subtree-post-capture-template ()

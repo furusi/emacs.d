@@ -100,7 +100,7 @@
  ("ox-epub" . "c9629ef4b4bc40d51afefd8c0bb2c683931e6409")
  ("ox-gfm" . "ad3906446dc88df2b51873b902525331f19131ba")
  ("ox-pandoc" . "aa37dc7e94213d4ebedb85c384c1ba35007da18e")
- ("ox-hugo" . "cd313dca9a2c7da9f8f4e1b2ddfe1a9cfaf45e34")
+ ("ox-hugo" . "79257479725c96100ef2b810ce877715ea1f7afa")
  ("ox-rst" . "99fa790da55b57a3f2e9aa187493ba434a64250e")
  ("ox-slimhtml" . "72cffc4292c82d5f3a24717ed386a953862485d8")
  ("pandoc.el" . "198d262d09e30448f1672338b0b5a81cf75e1eaa")
