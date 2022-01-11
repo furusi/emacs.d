@@ -73,6 +73,32 @@
      browse-url-generic-args     '("/c" "start")
      browse-url-browser-function #'browse-url-generic)))
 
+(leaf deepl-translate
+  :url "https://uwabami.github.io/cc-env/Emacs.html"
+  :commands my:deepl-translate
+  :preface
+  (require 'url-util)
+  (defun my:deepl-translate (&optional string)
+    (interactive)
+    (setq string
+          (cond ((stringp string) string)
+                ((use-region-p)
+                 (buffer-substring (region-beginning) (region-end))
+                 )
+                (t
+                 (save-excursion
+                   (let (s)
+                     (forward-char 1)
+                     (backward-sentence)
+                     (setq s (point))
+                     (forward-sentence)
+                     (buffer-substring s (point)))))))
+    (run-at-time 0.1 nil 'deactivate-mark)
+    (browse-url-generic
+     (format "https://www.deepl.com/translator#en/ja/%s" (url-hexify-string string)
+             ))
+    ))
+
 (leaf image-mode
   :bind (:image-mode-map
          ("=" . image-increase-size)))
