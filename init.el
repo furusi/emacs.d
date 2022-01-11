@@ -296,10 +296,16 @@
   :straight t
   :require t
   :config
-  (when (string-match "Ubuntu" my:lsb-distribution-name)
-    (let ((sound "/usr/share/sounds/gnome/default/alerts/glass.ogg"))
-      (setq pomodoro-work-start-sound sound
-            pomodoro-break-start-sound sound)))
+  (when (eq window-system 'ns)
+    (setq pomodoro-sound-player "afplay"))
+  
+  (let ((sound (cond
+                ((string-match "Ubuntu" my:lsb-distribution-name)
+                 "/usr/share/sounds/gnome/default/alerts/glass.ogg")
+                ((eq window-system 'ns)
+                 "/System/Library/Sounds/Glass.aiff"))))
+    (setq pomodoro-work-start-sound sound
+          pomodoro-break-start-sound sound))
   (pomodoro-add-to-mode-line))
 
 (leaf sudo-edit :straight t)
