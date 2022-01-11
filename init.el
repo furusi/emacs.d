@@ -291,6 +291,17 @@
   ((xwidget-webkit-mode-hook . (lambda ()
                                  (display-line-numbers-mode -1)))))
 
+(leaf pomodoro
+  :doc "A timer for the Pomodoro Technique"
+  :straight t
+  :require t
+  :config
+  (when (string-match "Ubuntu" my:lsb-distribution-name)
+    (let ((sound "/usr/share/sounds/gnome/default/alerts/glass.ogg"))
+      (setq pomodoro-work-start-sound sound
+            pomodoro-break-start-sound sound))
+  (pomodoro-add-to-mode-line))
+
 (leaf sudo-edit :straight t)
 
 (leaf so-long
