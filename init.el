@@ -300,7 +300,7 @@
     (let ((sound "/usr/share/sounds/gnome/default/alerts/glass.ogg"))
       (setq pomodoro-work-start-sound sound
             pomodoro-break-start-sound sound))
-  (pomodoro-add-to-mode-line))
+  (pomodoro-add-to-mode-line)))
 
 (leaf sudo-edit :straight t)
 
