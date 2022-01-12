@@ -1804,6 +1804,7 @@
     :require t
     :after (org))
   (leaf ox-hugo
+    :disabled t
     :straight (ox-hugo :type git :host github :repo "kaushalmodi/ox-hugo" :branch "main")
     :after org
     :config
