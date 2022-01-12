@@ -1461,7 +1461,7 @@
     (add-to-list 'org-latex-classes
                  '("lualatex-jlreq"
                    "\\documentclass[]{jlreq}
-\\usepackage{luatexja} % ltjclasses, ltjsclasses を使うときはこの行不要
+\\usepackage{luatexja} % ltjclasses, ltjsclasses を使うときはこの行は不要
 \\usepackage{luatexja-fontspec}
 \\usepackage{minted}
 \\usepackage[pdfencoding=auto]{hyperref}
@@ -2011,17 +2011,13 @@ See `org-capture-templates' for more information."
   ;;(setq tex-command "latexmk -e '$lualatex=q/lualatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$biber=q/biber %O --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex %O -o %D %S/' -norc -gg -pdflua")
   (setq bibtex-command "latexmk -e '$latex=q/uplatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$biber=q/biber %O --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex %O -o %D %S/' -e '$dvipdf=q/dvipdfmx %O -o %D %S/' -norc -gg -pdfdvi")
   (setq makeindex-command "latexmk -e '$latex=q/uplatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$biber=q/biber %O --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex %O -o %D %S/' -e '$dvipdf=q/dvipdfmx %O -o %D %S/' -norc -gg -pdfdvi")
-  (setq dvi2-command "open -a Skim")
-  ;;(setq dvi2-command "open -a Preview")
-  ;;(setq dvi2-command "open -a TeXShop")
-  ;;(setq dvi2-command "/Applications/TeXworks.app/Contents/MacOS/TeXworks")
-  ;;(setq dvi2-command "/Applications/texstudio.app/Contents/MacOS/texstudio --pdf-viewer-only")
-  (setq tex-pdfview-command "open -a Skim")
-  ;;(setq tex-pdfview-command "open -a Preview")
-  ;;(setq tex-pdfview-command "open -a TeXShop")
-  ;;(setq tex-pdfview-command "/Applications/TeXworks.app/Contents/MacOS/TeXworks")
-                                        ;(setq tex-pdfview-command "/Applications/texstudio.app/Contents/MacOS/texstudio --pdf-viewer-only")
-  (setq dviprint-command-format "open -a \"Adobe Acrobat Reader DC\" `echo %s | gsed -e \"s/\\.[^.]*$/\\.pdf/\"`")
+  (cond ((eq system-type 'darwin)
+         (setq dvi2-command "open -a Skim"
+               tex-pdfview-command "open -a Skim"
+               dviprint-command-format
+               "open -a \"Adobe Acrobat Reader DC\" `echo %s | gsed -e \"s/\\.[^.]*$/\\.pdf/\"`"))
+        (t (setq dvi2-command "evince"
+                tex-pdfview-command "evince")))
   (add-hook 'yatex-mode-hook
             '(lambda ()
                (auto-fill-mode -1)))
