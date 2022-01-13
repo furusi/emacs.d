@@ -1,7 +1,16 @@
-(defun straight-update-repositories ()
-  "melpa等のレポジトリとstraight, use-packageをpullする。"
+(defun my:set-frame-width ()
   (interactive)
-  (dolist (package
-            '("melpa" "gnu-elpa-mirror"
-              "emacsmirror-mirror" "straight" "use-package"))
-      (straight-pull-package-and-deps package)))
+  (set-frame-width (selected-frame) (my:set-frame--prompt "frame width")))
+(defun my:set-frame-height ()
+  (interactive)
+  (set-frame-height (selected-frame) (my:set-frame--prompt "frame height")))
+
+(defun my:set-frame--prompt (prompt-message)
+  (interactive)
+  (if (window-system)
+      (let ((width (string-to-number
+                    (read-from-minibuffer (format "%s: " prompt-message)))))
+        (when (< width 1)
+          (error (format "%s must be number is bigger than 0: %s" prompt-message width)))
+        width)
+    (error "Error: window system only")))
