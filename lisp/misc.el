@@ -6,7 +6,6 @@
   (set-frame-height (selected-frame) (my:set-frame--prompt "frame height")))
 
 (defun my:set-frame--prompt (prompt-message)
-  (interactive)
   (if (window-system)
       (let ((width (string-to-number
                     (read-from-minibuffer (format "%s: " prompt-message)))))
