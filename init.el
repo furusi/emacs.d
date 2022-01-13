@@ -494,9 +494,9 @@
     (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
     (vertico-mode)
     )
-  (leaf consult-for-vertico
+  (leaf vertico-multiform
     :disabled t
-    :after consult
+    :after consult vertico
     :config
     (vertico-multiform-mode)
     
