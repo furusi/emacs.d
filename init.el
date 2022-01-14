@@ -136,7 +136,7 @@
   "from lsb_release"
   (interactive)
   (if (eq system-type 'gnu/linux)
-      (string-trim (shell-command-to-string "lsb_release -sd") "^\"")
+      (string-trim (shell-command-to-string "lsb_release -sd") "^\"" "\"[ \t\n\r]+")
     ""))
 (setq my:lsb-distribution-name
       (which-linux-distribution))
