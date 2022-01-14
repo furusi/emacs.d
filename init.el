@@ -2444,6 +2444,16 @@ See `org-capture-templates' for more information."
     ((lsp-metals-server-args . '("-J-Dmetals.allow-multiline-string-formatting=off")))
     :hook (scala-mode-hook . lsp-deferred)
     )
+
+  (leaf lsp-dart
+  :doc "Dart support lsp-mode"
+  :req "emacs-26.3" "lsp-treemacs-0.3" "lsp-mode-7.0.1" "dap-mode-0.6" "f-0.20.0" "dash-2.14.1" "dart-mode-1.0.5"
+  :tag "extensions" "languages" "emacs>=26.3"
+  :url "https://emacs-lsp.github.io/lsp-dart"
+  :emacs>= 26.3
+  :straight t
+  :after lsp-treemacs lsp-mode dap-mode dart-mode)
+  
   (leaf dap-mode
     :straight t
     :after lsp-mode
