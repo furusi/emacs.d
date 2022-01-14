@@ -557,7 +557,7 @@
   (leaf consult
     :straight t
     :custom
-    ((consult-narrow-key . "<")
+    ((consult-narrow-key . ">")
      (consult-find-command
       . "fd -H -E .git --color=never --full-path ARG OPTS")
      (consult-ripgrep-args
