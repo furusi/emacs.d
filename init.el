@@ -348,6 +348,7 @@
          (isearch-mode-hook . skk-isearch-mode-setup) ; isearch で skk のセットアップ
          (isearch-mode-end-hook . skk-isearch-mode-cleanup) ; isearch で skk のクリーンアップ
          )
+  :mode ("jisyo" . skk-jisyo-edit-mode)
   :custom
   `((skk-japanese-message-and-error . t)
    (skk-share-private-jisyo . t)
