@@ -1091,8 +1091,6 @@
                "~/org/"))))
     :config
     
-    (leaf org-contrib
-      :straight (org-contrib :type git :repo "https://git.sr.ht/~bzg/org-contrib"))
     ;; org-habitモジュールを有効化
     (add-to-list 'org-modules 'org-habit)
     (add-to-list 'org-modules 'org-id)
@@ -1274,6 +1272,10 @@
     (add-to-list 'org-agenda-files (format "%s%s" org-directory "agenda/"))
     (add-to-list 'org-agenda-files (format "%s%s" org-directory "calendar/"))
     )
+
+  (leaf org-contrib
+    :after org
+    :straight (org-contrib :type git :repo "https://git.sr.ht/~bzg/org-contrib"))
 
   (leaf org-mu4e
     :disabled t
