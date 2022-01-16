@@ -18,7 +18,9 @@
 (leaf cus-edit
   :doc "tools for customizing Emacs and Lisp packages"
   :tag "builtin" "faces" "help"
-  :custom `((custom-file . ,(locate-user-emacs-file "custom.el"))))
+  :custom `((custom-file . ,(locate-user-emacs-file "custom.el")))
+  :config
+  (load-file (locate-user-emacs-file "custom.el")))
 
 (leaf custom-variables
   :doc "set custom variables"
