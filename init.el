@@ -1124,16 +1124,7 @@
             "/usr/local/opt/plantuml/libexec/plantuml.jar"))
 
 
-    (setq org-agenda-files
-          (list
-           (concat org-directory "agenda/")
-           (concat org-directory "task.org")
-           (concat org-directory "habit.org")
-           (concat org-directory "event.org")
-           (concat org-directory "inbox.org")
-           (concat org-directory "productivity.org")
-           (concat org-directory "org-ical.org")
-           (concat org-directory "calendar/")))
+    
     
     (setq org-refile-targets
           `((nil . (:maxlevel . 2))
@@ -1276,6 +1267,14 @@
              :base-extension "jpg\\|png\\|pdf"
              :publishing-function org-publish-attachment
              :recursive t))))
+
+  (leaf org-agenda
+    :after org
+    :config
+    (add-to-list 'org-agenda-files (format "%s%s" org-directory "agenda/"))
+    (add-to-list 'org-agenda-files (format "%s%s" org-directory "calendar/"))
+    )
+
   (leaf org-mu4e
     :disabled t
     :straight t
