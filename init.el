@@ -744,7 +744,7 @@
     (add-to-list 'completion-at-point-functions #'cape-keyword)
     (add-to-list 'completion-at-point-functions #'cape-file)
     :config
-    (if (eq system-type 'darwin)
+    (if (memq system-type '(darwin gnu/linux))
         (customize-set-variable 'cape-dict-file "/usr/share/dict/words")))
   (leaf kind-icon
     :emacs>= 27.1
