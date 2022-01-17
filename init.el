@@ -547,8 +547,8 @@
     :straight t
     :init
     (setq completion-styles '(orderless)
-        completion-category-defaults nil
-        completion-category-overrides '((file (styles basic partial-completion))))
+          completion-category-defaults nil
+          completion-category-overrides '((file (styles basic partial-completion))))
     )
 
   ;; Persist history over Emacs restarts. Vertico sorts by history position.
@@ -703,7 +703,10 @@
     ((org-refile-use-outline-path . 'file)
      (org-outline-path-complete-in-steps . nil)))
   (leaf corfu
-    :straight (corfu :type git :host github :repo "minad/corfu" :branch "main" :files ("*" (:exclude ".git")))
+    :url "https://github.com/minad/corfu"
+    :straight
+    (corfu :type git :host github :repo "minad/corfu" :branch "main"
+           :files ("*" (:exclude ".git")))
     :custom
     ((completion-cycle-threshold . 3)
      (corfu-auto . t)
@@ -713,7 +716,7 @@
     ((org-mode-hook        . corfu-mode)
      (lisp-mode-hook       . corfu-mode)
      (emacs-lisp-mode-hook . corfu-mode)
-    )
+     )
     ;; :init
     ;; (corfu-global-mode)
     )

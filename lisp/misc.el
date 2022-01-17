@@ -1,13 +1,13 @@
-(defun my:set-frame-width ()
+(defun my/set-frame-width ()
   (interactive)
   (set-frame-width (selected-frame)
-                   (my:set-frame--prompt "frame width" (frame-width))))
-(defun my:set-frame-height ()
+                   (my/set-frame--prompt "frame width" (frame-width))))
+(defun my/set-frame-height ()
   (interactive)
   (set-frame-height (selected-frame)
-                    (my:set-frame--prompt "frame height" (frame-height))))
+                    (my/set-frame--prompt "frame height" (frame-height))))
 
-(defun my:set-frame--prompt (prompt-message present-value)
+(defun my/set-frame--prompt (prompt-message present-value)
   (if (window-system)
       (let ((width (string-to-number
                     (read-from-minibuffer
