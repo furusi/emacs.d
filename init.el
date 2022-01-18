@@ -713,19 +713,12 @@
     ((completion-cycle-threshold . 3)
      (corfu-auto . t)
      (corfu-cycle . t)
+     (corfu-excluded-modes . '(rustic-mode)) ;major-modeを指定する
      (tab-always-indent . 'complete))
-    :hook
-    ((org-mode-hook        . corfu-mode)
-     (lisp-mode-hook       . corfu-mode)
-     (emacs-lisp-mode-hook . corfu-mode)
-     )
-    ;; :init
-    ;; (corfu-global-mode)
+    :init
+    (corfu-global-mode)
     )
-  (leaf corfu-in-magit
-    :after (corfu magit)
-    :hook
-    (git-commit-mode-hook . corfu-mode))
+  
   (leaf cape
     :doc "Completion At Point Extensions"
     :req "emacs-27.1"
