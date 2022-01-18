@@ -270,10 +270,11 @@
 
   (when (eq window-system 'x)
      ;ディスプレイのサイズに応じて調節したい (x-display-pixel-width)
+    
     (let ((font-height
            (cond
-            ((string-match "endeavouros" my:lsb-distribution-name) 180)
-            (t 200))))
+            ((> (x-display-pixel-width) 1680) 180)
+            (t 100))))
       (set-face-attribute 'default nil :family "PlemolJP" :height font-height))
     ))
 
