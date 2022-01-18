@@ -304,6 +304,8 @@
   (let ((sound (cond
                 ((string-match "Ubuntu" my:lsb-distribution-name)
                  "/usr/share/sounds/gnome/default/alerts/glass.ogg")
+                ((string-match "endeavouros" my:lsb-distribution-name)
+                 "/usr/share/sounds/freedesktop/stereo/service-login.oga")
                 ((eq window-system 'ns)
                  "/System/Library/Sounds/Glass.aiff"))))
     (setq pomodoro-work-start-sound sound
