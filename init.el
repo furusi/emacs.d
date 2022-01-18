@@ -269,13 +269,13 @@
   (aset char-width-table ?→ 2)
 
   (when (eq window-system 'x)
-    (setq font-height
-          (cond
-           ((string-match "endeavouros" my:lsb-distribution-name) 180)
-           (t 200)))
-    (set-face-attribute 'default nil
-                        :family "PlemolJP"
-                        :height font-height)))
+     ;ディスプレイのサイズに応じて調節したい (x-display-pixel-width)
+    (let ((font-height
+           (cond
+            ((string-match "endeavouros" my:lsb-distribution-name) 180)
+            (t 200))))
+      (set-face-attribute 'default nil :family "PlemolJP" :height font-height))
+    ))
 
 ;; 記号をデフォルトのフォントにしない。(for Emacs 25.2)
 (setq use-default-font-for-symbols nil)
