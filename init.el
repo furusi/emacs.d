@@ -135,10 +135,10 @@
   (initchart-record-execution-time-of require feature))
 
 (defun which-linux-distribution ()
-  "from lsb_release"
+  "return string which obtains from 'lsb_release' command"
   (interactive)
   (if (eq system-type 'gnu/linux)
-      (string-trim (shell-command-to-string "lsb_release -sd") "^\"" "\"[ \t\n\r]+")
+      (string-trim (shell-command-to-string "lsb_release -sd") "^\"" "\"?[ \t\n\r]+")
     ""))
 (setq my:lsb-distribution-name
       (which-linux-distribution))
@@ -303,7 +303,8 @@
     (setq pomodoro-sound-player "afplay"))
   
   (let ((sound (cond
-                ((string-match "Ubuntu" my:lsb-distribution-name)
+                ((or (string-match "Ubuntu" my:lsb-distribution-name)
+                     (string-match "debian" my:lsb-distribution-name))
                  "/usr/share/sounds/gnome/default/alerts/glass.ogg")
                 ((string-match "endeavouros" my:lsb-distribution-name)
                  "/usr/share/sounds/freedesktop/stereo/service-login.oga")
