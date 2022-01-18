@@ -31,7 +31,7 @@
     (byte-compile-warnings . '(cl-functions))
     (comment-style . 'multi-line)
     (custom-theme-directory . ,(concat user-emacs-directory "themes/")) ;; テーマのディレクトリを設定
-    (default-frame-alist .'((width . 200) (height . 50)))
+    (default-frame-alist .'((width . 180) (height . 40)))
     (dired-dwim-target . t)
     (ediff-diff-options . "-w")
     (ediff-split-window-function . 'split-window-horizontally)
