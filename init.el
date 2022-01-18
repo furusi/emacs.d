@@ -722,6 +722,10 @@
     ;; :init
     ;; (corfu-global-mode)
     )
+  (leaf corfu-in-magit
+    :after (corfu magit)
+    :hook
+    (git-commit-mode-hook . corfu-mode))
   (leaf cape
     :doc "Completion At Point Extensions"
     :req "emacs-27.1"
