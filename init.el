@@ -2150,10 +2150,16 @@ See `org-capture-templates' for more information."
 
 (leaf plantuml-mode
   :straight t
+  :custom
+  ((plantuml-default-exec-mode . 'jar)
+   (plantuml-output-type . "png"))
   :config
-  (when (eq system-type 'darwin)
-    (setq plantuml-jar-path
-          "/usr/local/opt/plantuml/libexec/plantuml.jar")))
+  (setq plantuml-jar-path
+        (cond ((eq system-type 'darwin)
+                "/usr/local/opt/plantuml/libexec/plantuml.jar")
+              ((string-match "ndeavour" my:lsb-distribution-name)
+               "/usr/share/java/plantuml/plantuml.jar")
+              (t ""))))
 
 (leaf htmlize :straight t)
 (leaf adoc-mode :straight t)
