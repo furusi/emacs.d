@@ -45,7 +45,7 @@
  ("emacs-which-key" . "5f19ec67f58585ab0b8fa713905243ea0de190e0")
  ("emacsmirror-mirror" . "95329e6cd941b123e04ea8027db3fd60c5a066bb")
  ("emacsql" . "9dca5996168c4963eb67e61c7f17fdcb8228e314")
- ("embark" . "ab1ee58dcc31e5c88428a7e258c12510f68b6898")
+ ("embark" . "7814a7345067da31a1e7af682bb1f6f050527001")
  ("epl" . "78ab7a85c08222cd15582a298a364774e3282ce6")
  ("exec-path-from-shell" . "3a8d97c096c2c5714b667130fd8a80d5622ee067")
  ("expand-region.el" . "95a773bd8f557cbd43d3b2dab2fa4417ec5927ab")
