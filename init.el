@@ -73,7 +73,9 @@
     (setq
      browse-url-generic-program  "/mnt/c/Windows/System32/cmd.exe"
      browse-url-generic-args     '("/c" "start")
-     browse-url-browser-function #'browse-url-generic)))
+     browse-url-browser-function #'browse-url-generic))
+  (when (eq system-type 'darwin)
+    (setq browse-url-browser-function #'browse-url-default-macosx-browser)))
 
 (leaf deepl-translate
   :url "https://uwabami.github.io/cc-env/Emacs.html"
@@ -85,8 +87,7 @@
     (setq string
           (cond ((stringp string) string)
                 ((use-region-p)
-                 (buffer-substring (region-beginning) (region-end))
-                 )
+                 (buffer-substring (region-beginning) (region-end)))
                 (t
                  (save-excursion
                    (let (s)
@@ -96,10 +97,12 @@
                      (forward-sentence)
                      (buffer-substring s (point)))))))
     (run-at-time 0.1 nil 'deactivate-mark)
-    (browse-url-generic
-     (format "https://www.deepl.com/translator#en/ja/%s" (url-hexify-string string)
-             ))
-    ))
+    (let ((url (format "https://www.deepl.com/translator#en/ja/%s"
+                       (url-hexify-string string))))
+      (if (eq system-type 'darwin)
+          (browse-url-default-macosx-browser url)
+        (browse-url-generic url))))
+  )
 
 (leaf image-mode
   :bind (:image-mode-map
