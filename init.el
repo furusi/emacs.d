@@ -82,7 +82,7 @@
   :commands my:deepl-translate
   :preface
   (require 'url-util)
-  (defun my:deepl-translate (&optional string)
+  (defun my/deepl-translate (&optional string)
     (interactive)
     (setq string
           (cond ((stringp string) string)
