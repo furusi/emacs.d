@@ -2512,13 +2512,25 @@ See `org-capture-templates' for more information."
   )
 
 (leaf eglot
+  :disabled t
   :straight t
+  :after corfu
   :hook
-  ((rustic-mode-hook . company-mode))
+  ((eglot-connect-hook . corfu-mode))
   :config
-  ;; (add-to-list 'eglot-server-programs '(rustic-mode . ("rust-analyzer")))
   ;; (add-hook 'rustic-mode-hook 'eglot-ensure)
+  ;; (add-to-list 'eglot-stay-out-of 'flymake)
   )
+
+(leaf consult-eglot
+  :doc "A consulting-read interface for eglot"
+  :req "emacs-27.1" "eglot-1.7" "consult-0.9"
+  :tag "lsp" "completion" "tools" "emacs>=27.1"
+  :url "https://github.com/mohkale/consult-eglot"
+  :emacs>= 27.1
+  :straight t
+  :after eglot consult)
+
 (leaf vterm
   :straight t)
 (leaf elfeed
