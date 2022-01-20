@@ -573,7 +573,8 @@
       . "rg --hidden --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number .")
      (xref-show-xrefs-function . #'consult-xref)
      (xref-show-definitions-function . #'consult-xref))
-    :bind (
+    :bind (("C-c h" . consult-history)
+           ("C-c m" . consult-mode-command)
            ("C-x C-SPC" . consult-global-mark)
            ("C-x b" . consult-buffer)
            ("C-x c i" . consult-imenu)
@@ -709,6 +710,18 @@
     :custom
     ((org-refile-use-outline-path . 'file)
      (org-outline-path-complete-in-steps . nil)))
+
+  (leaf all-the-icons-completion
+    :doc "Add icons to completion candidates"
+    :req "emacs-26.1" "all-the-icons-5.0"
+    :tag "lisp" "convenient" "emacs>=26.1"
+    :url "https://github.com/iyefrat/all-the-icons-completion"
+    :emacs>= 26.1
+    :straight t
+    :after all-the-icons
+    :config
+    (all-the-icons-completion-mode))
+  
   (leaf corfu
     :url "https://github.com/minad/corfu"
     :straight
@@ -2231,8 +2244,6 @@ See `org-capture-templates' for more information."
 (leaf csv-mode :straight t)
 
 
-
-(leaf flycheck :straight t)
 (leaf gnuplot :straight t)
 
 (leaf *gdb
