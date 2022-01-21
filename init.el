@@ -79,7 +79,7 @@
 
 (leaf deepl-translate
   :url "https://uwabami.github.io/cc-env/Emacs.html"
-  :commands my:deepl-translate
+  :commands my/deepl-translate
   :preface
   (require 'url-util)
   (defun my/deepl-translate (&optional string)
