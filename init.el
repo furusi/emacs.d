@@ -197,7 +197,6 @@
     )
   )
 
-
 (leaf bind-key
   :bind
   (("C-c t l" . toggle-truncate-lines)
@@ -2515,12 +2514,16 @@ See `org-capture-templates' for more information."
     )
   )
 
+(leaf flymake
+  :straight t)
 (leaf eglot
-  :disabled t
   :straight t
-  :after corfu
+  :after corfu flymake
   :hook
   ((eglot-connect-hook . corfu-mode))
+  :bind
+  ((:eglot-mode-map
+    ("C-c C-l a a" . eglot-code-actions)))
   :config
   ;; (add-hook 'rustic-mode-hook 'eglot-ensure)
   ;; (add-to-list 'eglot-stay-out-of 'flymake)

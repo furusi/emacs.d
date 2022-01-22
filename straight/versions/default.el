@@ -51,7 +51,7 @@
  ("expand-region.el" . "95a773bd8f557cbd43d3b2dab2fa4417ec5927ab")
  ("f.el" . "50af874cd19042f17c8686813d52569b1025c76a")
  ("flycheck" . "784f184cdd9f9cb4e3dbb997c09d93e954142842")
- ("flymake" . "c4b594425133bd65c91bfdd75c6804a67784545c")
+ ("flymake" . "cf0eb2a47125be42973822e5f91b33d5681bfd4c")
  ("git-modes" . "62fbf2e5b84ca789e7bc2f87939386023b5ba3df")
  ("gitignore-templates.el" . "d28cd1cec00242b688861648d36d086818b06099")
  ("gntp.el" . "767571135e2c0985944017dc59b0be79af222ef5")
