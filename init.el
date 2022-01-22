@@ -124,6 +124,11 @@
    ("v" . scroll-up-command)
    ("V" . scroll-down-command)))
 
+(leaf diff-mode
+  :bind
+  (:diff-mode-map
+   ("v" . scroll-up-command)
+   ("V" . scroll-down-command)))
 (leaf autorevert
   :hook
   (emacs-startup-hook . global-auto-revert-mode)
@@ -726,16 +731,20 @@
     :straight
     (corfu :type git :host github :repo "minad/corfu" :branch "main"
            :files ("*" (:exclude ".git")))
+    :emacs>= 27.1
     :custom
     ((completion-cycle-threshold . 3)
      (corfu-auto . t)
      (corfu-cycle . t)
-     (corfu-excluded-modes . '(rustic-mode)) ;major-modeを指定する
      (tab-always-indent . 'complete))
+    :hook
+    (eshell-mode-hook . (lambda ()
+                          (setq-local corfu-quit-at-boundary t
+                                      corfu-quit-no-match t
+                                      corfu-auto nil)))
     :init
-    (corfu-global-mode)
-    )
-  
+    (corfu-global-mode))
+
   (leaf cape
     :doc "Completion At Point Extensions"
     :req "emacs-27.1"
@@ -850,7 +859,7 @@
   :after rust-mode markdown-mode project spinner xterm-color
   :custom (
            (rustic-lsp-server . 'rust-analyzer)
-           ;; (rustic-lsp-client . 'eglot)
+           (rustic-lsp-client . 'eglot)
            )
   )
 
@@ -2519,8 +2528,6 @@ See `org-capture-templates' for more information."
 (leaf eglot
   :straight t
   :after corfu flymake
-  :hook
-  ((eglot-connect-hook . corfu-mode))
   :bind
   ((:eglot-mode-map
     ("C-c C-l a a" . eglot-code-actions)))
