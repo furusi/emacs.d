@@ -1010,10 +1010,10 @@
     :mode (("\\.org$" . org-mode))
     :straight
     (org :type git :repo "https://git.savannah.gnu.org/git/emacs/org-mode.git"
-                    :local-repo "org" :depth 300 :branch "main"
-                    :pre-build
-                    (straight-recipes-org-elpa--build) :build (:not autoloads)
-                    :files (:defaults "lisp/*.el" ("etc/styles/" "etc/styles/*")))
+         :local-repo "org" :depth 300 :branch "main"
+         :pre-build
+         (straight-recipes-org-elpa--build) :build (:not autoloads)
+         :files (:defaults "lisp/*.el" ("etc/styles/" "etc/styles/*")))
     :custom
     ((org-export-allow-bind-keywords . t)
      (org-export-backends . '(ascii html icalendar latex md odt taskjuggler asciidoc pandoc gfm))
@@ -1218,20 +1218,7 @@
 
     (add-to-list 'org-babel-tangle-lang-exts
                  '("C" . "c"))
-    ;; 有効にする言語 デフォルトでは elisp のみ
-    (org-babel-do-load-languages
-     'org-babel-load-languages '((C          . t)
-                                 (org        . t)
-                                 (python     . t)
-                                 (lisp       . t)
-                                 (emacs-lisp . t)
-                                 (ruby       . t)
-                                 (plantuml   . t)
-                                 (java       . t)
-                                 (gnuplot    . t)
-                                 (perl       . t)
-                                 (php        . t)
-                                 (dot        . t)))
+
 
     (setq org-use-speed-commands t)
     (setq org-icalendar-alarm-time 30)
@@ -1262,9 +1249,6 @@
     (org-babel-do-load-languages
      'org-babel-load-languages org-babel-load-languages)
     (add-hook 'org-mode-hook #'my-org-mode-hook)
-    ;;ob-plantuml
-    (add-to-list 'org-babel-default-header-args:plantuml
-                 '(:cmdline . "-charset utf-8"))
     (setq org-publish-project-alist
           '(("aip3"
              :base-directory "~/git/advancedinformationprocessing3/org"
@@ -1294,8 +1278,28 @@
     )
 
   (leaf org-contrib
+    :require t
     :after org
-    :straight (org-contrib :type git :repo "https://git.sr.ht/~bzg/org-contrib"))
+    :straight (org-contrib :type git :repo "https://git.sr.ht/~bzg/org-contrib")
+    :config
+    ;; 有効にする言語 デフォルトでは elisp のみ
+    (org-babel-do-load-languages
+     'org-babel-load-languages '((C          . t)
+                                 (org        . t)
+                                 (python     . t)
+                                 (lisp       . t)
+                                 (emacs-lisp . t)
+                                 (ruby       . t)
+                                 (plantuml   . t)
+                                 (java       . t)
+                                 (gnuplot    . t)
+                                 (perl       . t)
+                                 (php        . t)
+                                 (dot        . t)))
+    ;;ob-plantuml
+    (add-to-list 'org-babel-default-header-args:plantuml
+                 '(:cmdline . "-charset utf-8"))
+    )
 
   (leaf org-mu4e
     :disabled t
