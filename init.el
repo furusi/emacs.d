@@ -904,6 +904,7 @@
   :bind (("C-=" . er/expand-region)))
 
 (leaf all-the-icons
+  :if (display-graphic-p)
   :require t
   :straight t)
 
