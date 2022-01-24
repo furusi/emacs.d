@@ -724,7 +724,7 @@
     :straight t
     :after all-the-icons
     :config
-    (all-the-icons-completion-mode))
+    (all-the-icons-completion-mode t))
   
   (leaf corfu
     :url "https://github.com/minad/corfu"
@@ -903,7 +903,9 @@
   :require t
   :bind (("C-=" . er/expand-region)))
 
-(leaf all-the-icons :straight t)
+(leaf all-the-icons
+  :require t
+  :straight t)
 
 (leaf which-key :straight t
   :diminish t
