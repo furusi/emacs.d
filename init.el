@@ -776,12 +776,14 @@
      ("C-c f l" . cape-line)
      ("C-c f w" . cape-dict))
     :init
+    (add-to-list 'completion-at-point-functions #'cape-file)
     (add-to-list 'completion-at-point-functions #'cape-dabbrev)
     (add-to-list 'completion-at-point-functions #'cape-keyword)
-    (add-to-list 'completion-at-point-functions #'cape-file)
+    
     :config
     (if (memq system-type '(darwin gnu/linux))
         (customize-set-variable 'cape-dict-file "/usr/share/dict/words")))
+  
   (leaf kind-icon
     :emacs>= 27.1
     :straight (kind-icon :type git :host github :repo "jdtsmith/kind-icon"
