@@ -4,6 +4,7 @@
 
 ;;; Code:
 
+(require 'cl-lib)
 
 (show-paren-mode t)
 (column-number-mode)
@@ -1133,7 +1134,7 @@
     (setcar org-emphasis-regexp-components "-[:space:]\x200B('\"{")
     (setcar (nthcdr 1 org-emphasis-regexp-components) "-[:space:]\x200B.,:!?;'\")}\\[")
     (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
-    
+
     (setq org-format-latex-options
           (plist-put org-format-latex-options :scale 2.0))
     ;; org-modeの固定幅フォントを設定
@@ -1284,9 +1285,22 @@
   (leaf org-agenda
     :after org
     :config
-    (add-to-list 'org-agenda-files (format "%s%s" org-directory "agenda/"))
-    (add-to-list 'org-agenda-files (format "%s%s" org-directory "calendar/"))
-    )
+    (defvar org-agenda-static-dirs '("agenda"
+                                     "calendar"))
+    ;; agendaに重複して登録されるファイルを削除
+    (setq org-agenda-files
+          (let ((reg (format "%s\\(%s\\)"
+                             org-directory
+                             (string-join org-agenda-static-dirs "\\|"))))
+            (cl-remove-if (lambda (file)
+                            (string-match-p
+                             reg
+                             file))
+                          org-agenda-files)))
+    (mapc (lambda (d)
+            (add-to-list 'org-agenda-files
+                         (file-name-as-directory (format "%s%s" org-directory d))))
+          org-agenda-static-dirs))
 
   (leaf org-contrib
     :require t
