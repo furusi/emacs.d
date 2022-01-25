@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: docstring-error
+# key: //e
+# --
+
+/// #Errors
+///
+/// $0

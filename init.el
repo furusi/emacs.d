@@ -235,8 +235,8 @@
       (,(kbd "7") . ,(ins-val "&")) (,(kbd "&") . ,(ins-val "7")) (,[kp-7] . ,(ins-val "7"))
       (,(kbd "8") . ,(ins-val "*")) (,(kbd "*") . ,(ins-val "8")) (,[kp-8] . ,(ins-val "8")) (,[kp-multiply] . ,(ins-val "*"))
       (,(kbd "9") . ,(ins-val "(")) (,(kbd "(") . ,(ins-val "9")) (,[kp-9] . ,(ins-val "9"))
-      (,(kbd "0") . ,(ins-val ")")) (,(kbd ")") . ,(ins-val "0")) (,[kp-0] . ,(ins-val "0"))
-      )))
+      (,(kbd "0") . ,(ins-val ")")) (,(kbd ")") . ,(ins-val "0")) (,[kp-0] . ,(ins-val "0")))
+    ))
 
 (when (equal system-type 'darwin)
   (setq ns-command-modifier (quote meta))
@@ -643,6 +643,16 @@
           (consult-line (thing-at-point 'symbol))
         (consult-line)))
     )
+
+  (leaf consult-yasnippet
+    :doc "A consulting-read interface for yasnippet"
+    :req "emacs-27.1" "yasnippet-0.14" "consult-0.9"
+    :tag "emacs>=27.1"
+    :url "https://github.com/mohkale/consult-yasnippet"
+    :emacs>= 27.1
+    :straight t
+    :after yasnippet consult)
+  
   (leaf consult-projectile
     :after consult projectile
     :straight (consult-projectile
@@ -1293,9 +1303,7 @@
                              org-directory
                              (string-join org-agenda-static-dirs "\\|"))))
             (cl-remove-if (lambda (file)
-                            (string-match-p
-                             reg
-                             file))
+                            (string-match-p reg file))
                           org-agenda-files)))
     (mapc (lambda (d)
             (add-to-list 'org-agenda-files
@@ -2008,7 +2016,6 @@ See `org-capture-templates' for more information."
 
 (leaf company
   :straight t
-  :diminish company-mode
   :bind ((:company-mode-map
           ("C-M-i" . company-complete-common-or-cycle))
          (:company-active-map
