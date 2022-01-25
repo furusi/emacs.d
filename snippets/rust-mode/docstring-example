@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: docstring-example
+# key: //ex
+# --
+
+/// #Examples
+///
+/// \`\`\`
+/// $0
+/// \`\`\`
