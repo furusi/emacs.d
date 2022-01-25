@@ -2028,12 +2028,6 @@ See `org-capture-templates' for more information."
          (:company-search-map
           ("C-n"   . company-select-next)
           ("C-p"   . company-select-previous)))
-  :hook (
-         (c-mode-hook            . company-mode)
-         (shell-script-mode-hook . company-mode)
-         (sh-mode-hook           . company-mode)
-         (shell-mode-hook        . company-mode)
-         )
   :custom
   ((company-idle-delay . 0.2)
    (company-minimum-prefix-length . 2)
