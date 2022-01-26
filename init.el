@@ -810,6 +810,22 @@
   ;; ediff時にorgファイルを全て表示する
   (with-eval-after-load 'outline
     (add-hook 'ediff-prepare-buffer-hook #'show-all)))
+
+(leaf magit-delta
+  :unless (equal
+           (string-trim (shell-command-to-string "command -v delta") "^\"" "\"?[ \t\n\r]+")
+           "")
+  :doc "Use Delta when displaying diffs in Magit"
+  :req "emacs-25.1" "magit-20200426" "xterm-color-2.0"
+  :tag "emacs>=25.1"
+  :url "https://github.com/dandavison/magit-delta"
+  :added "2022-01-26"
+  :emacs>= 25.1
+  :straight t
+  :after magit xterm-color
+  :hook
+  (magit-mode-hook . (lambda () (magit-delta-mode t))))
+
 (leaf magit-svn
   :straight t)
 (leaf grip-mode
