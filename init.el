@@ -68,15 +68,21 @@
 
 (leaf browse-url
   :config
-  (when (and (eq system-type 'gnu/linux)
-             (string-match ".*-microsoft-standard-WSL2.*"
-                           operating-system-release))
-    (setq
-     browse-url-generic-program  "/mnt/c/Windows/System32/cmd.exe"
-     browse-url-generic-args     '("/c" "start")
-     browse-url-browser-function #'browse-url-generic))
-  (when (eq system-type 'darwin)
-    (setq browse-url-browser-function #'browse-url-default-macosx-browser)))
+  (when (eq system-type 'gnu/linux)
+    (cond
+     ;; wsl
+     ((string-match ".*-microsoft-standard-WSL2.*"
+                    operating-system-release)
+      (setq
+       browse-url-generic-program  "/mnt/c/Windows/System32/cmd.exe"
+       browse-url-generic-args     '("/c" "start")
+       browse-url-browser-function #'browse-url-generic))
+     ;; mac
+     ((eq system-type 'darwin)
+      (setq browse-url-browser-function #'browse-url-default-macosx-browser))
+     ;;linux     
+     (t
+      (setq browse-url-browser-function #'browse-url-firefox)))))
 
 (leaf deepl-translate
   :url "https://uwabami.github.io/cc-env/Emacs.html"
@@ -100,9 +106,12 @@
     (run-at-time 0.1 nil 'deactivate-mark)
     (let ((url (format "https://www.deepl.com/translator#en/ja/%s"
                        (url-hexify-string string))))
-      (if (eq system-type 'darwin)
-          (browse-url-default-macosx-browser url)
-        (browse-url-generic url))))
+      (cond ((eq system-type 'darwin)
+             (browse-url-default-macosx-browser url))
+            ((string-match ".*-microsoft-standard-WSL2.*" operating-system-release)
+             (browse-url-generic url))
+            (t
+             (browse-url-firefox url)))))
   )
 
 (leaf image-mode
@@ -886,11 +895,8 @@
   :tag "languages" "emacs>=26.1"
   :emacs>= 26.1
   :after rust-mode markdown-mode project spinner xterm-color
-  :custom (
-           (rustic-lsp-server . 'rust-analyzer)
-           (rustic-lsp-client . 'eglot)
-           )
-  )
+  :custom ((rustic-lsp-server . 'rust-analyzer)
+           (rustic-lsp-client . 'eglot)))
 
 (leaf ron-mode
   :doc "Rusty Object Notation mode"
