@@ -812,14 +812,14 @@
     (add-hook 'ediff-prepare-buffer-hook #'show-all)))
 
 (leaf magit-delta
-  :unless (equal
-           (string-trim (shell-command-to-string "command -v delta") "^\"" "\"?[ \t\n\r]+")
+  :unless (equal (string-trim
+                  (shell-command-to-string "command -v delta")
+                  "^\"" "\"?[ \t\n\r]+")
            "")
   :doc "Use Delta when displaying diffs in Magit"
   :req "emacs-25.1" "magit-20200426" "xterm-color-2.0"
   :tag "emacs>=25.1"
   :url "https://github.com/dandavison/magit-delta"
-  :added "2022-01-26"
   :emacs>= 25.1
   :straight t
   :after magit xterm-color
@@ -1537,320 +1537,21 @@
     (when (equal system-type 'gnu/linux)
       (setq org-file-apps
             '(("pdf" . "evince %s"))))
-    (add-to-list 'org-latex-classes
-                 '("lualatex-jlreq"
-                   "\\documentclass[]{jlreq}
-\\usepackage{luatexja} % ltjclasses, ltjsclasses を使うときはこの行は不要
-\\usepackage{luatexja-fontspec}
-\\usepackage{minted}
-\\usepackage[pdfencoding=auto]{hyperref}
-\\hypersetup{pdfborder = {0 0 0}}
-\\renewcommand{\\listingscaption}{リスト}
-\\newcommand{\\uline}[1]{\\underline{#1}}
-"
-                   ("\\section{%s}" . "\\section*{%s}")
-                   ("\\subsection{%s}" . "\\subsection*{%s}")
-                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                   ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-    (add-to-list 'org-latex-classes
-                 '("jlreq"
-                   "\\documentclass[11pt,paper=a4]{jlreq}
-[NO-DEFAULT-PACKAGES]
-\\usepackage{amsmath}
-\\usepackage{newtxtext,newtxmath}
-\\ifdefined\\kanjiskip
-  \\usepackage[dvipdfmx]{graphicx}
-  \\usepackage[dvipdfmx]{hyperref}
-  \\usepackage{pxjahyper}
-  \\hypersetup{colorlinks=true}
-\\else
-  \\usepackage{graphicx}
-  \\usepackage{hyperref}
-  \\hypersetup{pdfencoding=auto,colorlinks=true}
-\\fi"
-                   ("\\section{%s}" . "\\section*{%s}")
-                   ("\\subsection{%s}" . "\\subsection*{%s}")
-                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                   ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
-    (add-to-list 'org-latex-classes
-                 '("lualatex-yukyokasho"
-                   "\\documentclass[]{jlreq}
-\\usepackage{luatexja} % ltjclasses, ltjsclasses を使うときはこの行不要
-\\usepackage{luatexja-fontspec}
-\\setmainjfont{YuKyokasho Yoko Medium}"
-                   ("\\section{%s}" . "\\section*{%s}")
-                   ("\\subsection{%s}" . "\\subsection*{%s}")
-                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                   ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-    (add-to-list 'org-latex-classes
-                 '("bxjsarticle"
-                   ;; "\\documentclass[twocolumn,autodetect-engine,dvi=dvipdfmx,10pt,a4paper,ja=standard]{bxjsarticle}
-                   "\\documentclass[autodetect-engine,dvi=dvipdfmx,10pt,a4paper,ja=standard]{bxjsarticle}
-[NO-DEFAULT-PACKAGES]
-\\usepackage{amsmath}
-\\usepackage{siunitx}
-% \\usepackage{newtxtext,newtxmath}
-\\usepackage{graphicx}
-\\usepackage{hyperref}
-\\usepackage{fancyhdr}
-\\usepackage{listings}
-\\usepackage{fancybox}
-\\newcommand{\\uline}[1]{\\underline{#1}}
-\\ifdefined\\kanjiskip
-  \\usepackage{pxjahyper}
-  \\hypersetup{colorlinks=false}
-\\else
-  \\ifdefined\\XeTeXversion
-      \\hypersetup{colorlinks=true}
-  \\else
-    \\ifdefined\\directlua
-      \\hypersetup{pdfencoding=auto,colorlinks=true}
-    \\else
-      \\hypersetup{unicode,colorlinks=true}
-    \\fi
-  \\fi
-\\fi"
-                   ("\\section{%s}" . "\\section*{%s}")
-                   ("\\subsection{%s}" . "\\subsection*{%s}")
-                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                   ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
-    (add-to-list 'org-latex-classes
-                 '("beamer"
-                   "\\documentclass[unicode,dvipdfmx,cjk]{beamer}
-\\usepackage{bxdpx-beamer}
-\\usepackage{siunitx}
-\\usepackage{pxjahyper}
-\\usepackage{minijs}
-\\renewcommand{\\kanjifamilydefault}{\\gtdefault}
-\\newcommand{\\uline}[1]{\\underline{#1}}
-               [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
-                   ("\\section\{%s\}"       . "\\section*\{%s\}")
-                   ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
-                   ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")))
-    (add-to-list 'org-latex-classes
-                 '("beamer-lualatex"
-                   "\\documentclass[unicode,12pt]{beamer}
-\\usepackage{luatexja}
-\\usepackage[ipaex]{luatexja-preset}
-\\renewcommand{\kanjifamilydefault}{\gtdefault}
-\\usepackage{bxdpx-beamer}
-\\usepackage{siunitx}
-\\usepackage{pxjahyper}
-\\usepackage{minijs}
-\\renewcommand{\\kanjifamilydefault}{\\gtdefault}
-\\newcommand{\\uline}[1]{\\underline{#1}}
-               [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
-                   ("\\section\{%s\}"       . "\\section*\{%s\}")
-                   ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
-                   ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")))
-    (add-to-list 'org-latex-classes
-                 '("jsarticle"
-                   "\\documentclass[11pt,a4paper]{jsarticle}
-\\usepackage{amsmath}
-\\usepackage{amsthm}
-\\usepackage{bm}
-\\usepackage[dvipdfmx,hiresbb]{graphicx}
-\\usepackage[dvipdfmx]{color}"
-                   ("\\section{%s}" . "\\section*{%s}")
-                   ("\\subsection{%s}" . "\\subsection*{%s}")
-                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                   ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
-    (add-to-list 'org-latex-classes
-                 '("ieicej"
-
-                   "\\documentclass[paper]{ieicej}
-\\usepackage[dvipdfmx]{graphicx}
-\\usepackage[T1]{fontenc}
-\\usepackage{lmodern}
-\\usepackage{textcomp}
-\\usepackage{latexsym}
-\\usepackage{tabularx}
-\\usepackage{dcolumn}
-
-\\setcounter{page}{1}
-               [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
-                   ("\\section\{%s\}"       . "\\section*\{%s\}")
-                   ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
-                   ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
-                   ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
-                   ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
-    (setq org-latex-with-hyperref nil) ;ieicej出力時エラー対策
-    (add-to-list 'org-latex-classes
-                 '("tategaki"
-
-                   "\\documentclass[tate,book,jafontscale=1.3]{jlreq}
-\\usepackage[dvipdfmx]{graphicx}
-\\usepackage[T1]{fontenc}
-\\usepackage{lmodern}
-\\usepackage{textcomp}
-\\usepackage{latexsym}
-\\usepackage{tabularx}
-\\usepackage{dcolumn}
-
-\\setcounter{page}{1}
-               [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
-                   ("\\section\{%s\}"       . "\\section*\{%s\}")
-                   ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
-                   ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
-                   ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
-                   ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
-    (add-to-list 'org-latex-classes
-                 '("jlreq-yoko"
-
-                   "\\documentclass[book,jafontscale=1.3]{jlreq}
-\\usepackage[dvipdfmx]{graphicx}
-\\usepackage[T1]{fontenc}
-\\usepackage{lmodern}
-\\usepackage{textcomp}
-\\usepackage{latexsym}
-\\usepackage{tabularx}
-\\usepackage{dcolumn}
-
-\\setcounter{page}{1}
-               [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
-                   ("\\section\{%s\}"       . "\\section*\{%s\}")
-                   ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
-                   ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
-                   ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
-                   ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
-    (add-to-list 'org-latex-classes
-                 '("luatex-jlreq-tate"
-                   "\\documentclass[tate,book,jafontscale=1.3]{jlreq}
-
-\\usepackage[T1]{fontenc}
-\\usepackage{lmodern}
-\\usepackage{textcomp}
-\\usepackage{latexsym}
-\\usepackage{tabularx}
-\\usepackage{dcolumn}
-\\usepackage{luatexja-fontspec}
-
-\\setmainfont[Ligatures=TeX]{TeXGyreTermes}
-\\setsansfont[Ligatures=TeX]{TeXGyreHeros}
-
-\\setmainjfont[BoldFont=IPAexGothic]{YuKyokasho Medium}
-\\setsansjfont{IPAexGothic}
-
-\\newjfontfamily\\jisninety[CJKShape=JIS1990]{IPAexMincho}
-
-
-\\setcounter{page}{1}
-               [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
-                   ("\\section\{%s\}"       . "\\section*\{%s\}")
-                   ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
-                   ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
-                   ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
-                   ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
-    (add-to-list 'org-latex-classes
-                 '("lectureslide"
-                   "\\documentclass[unicode,11pt]{beamer}
-\\usepackage{bxdpx-beamer}
-
-\\usepackage{xeCJK}
-\\usepackage{zxjatype}
-\\usepackage{xltxtra} %便利なパッケージ群
-\\setCJKmonofont{IPAGothic}
-\\usepackage{bm}
-\\usepackage{color}
-\\usepackage{listings}
-\\usepackage{siunitx} %si単位系
-\\usepackage{hyperref} %しおり
-\\usepackage{ascmac} %角丸の枠
-\\usepackage{ulem} %下線
-\\usepackage{amsmath,amssymb} %数式，記号
-\\usefonttheme[onlymath]{serif}
-\\usepackage{minted}
-\\usepackage{capt-of} %キャプション
-\\usepackage{fancyhdr} %ヘッダ，フッタ
-\\usepackage{fancybox} %枠
-\\usepackage{tikz} %描画
-\\usepackage{graphicx} %画像貼り付け
-\\usetheme[progressbar=frametitle]{metropolis}
-\\metroset{sectionpage=progressbar, block=fill}
-\\setbeamertemplate{navigation symbols}{}
-\\setbeamertemplate{footline}[frame number]
-\\setbeamertemplate{footline}[page number]
-\\setbeamertemplate{itemize items}[triangle]
-\\setsansfont[ BoldFont={Fira Sans SemiBold}, ItalicFont={Fira Sans Italic}, BoldItalicFont={Fira Sans SemiBold Italic} ]{Fira Sans}
-\\definecolor{myfg}{HTML}{EC9F4C}
-\\definecolor{mainbg}{HTML}{3F597C}
-\\definecolor{mynormalbg}{HTML}{F2F2F2}
-\\definecolor{mynormalfg}{HTML}{4D4D4D}
-\\definecolor{myexampletitlefg}{HTML}{6d86ab}
-\\setbeamercolor{alerted text}{fg=myfg}
-\\setbeamercolor{frameslide}{fg=mynormalbg,bg=mainbg}
-\\setbeamercolor{palette primary}{bg=mainbg}
-\\setbeamercolor{normal text}{fg=mynormalfg,bg=mynormalbg}
-\\setbeamercolor{block title example}{fg=myexampletitlefg}
-\\setbeamerfont{alerted text}{series=\\bfseries}
-
-\\setcounter{page}{1}
-               [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
-                   ("\\section\{%s\}"       . "\\section*\{%s\}")
-                   ("\\subsection\{%s\}"    . "\\subsection*\{%s\}")
-                   ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")
-                   ("\\paragraph\{%s\}" . "\\paragraph*\{%s\}")
-                   ("\\subparagraph\{%s\}" . "\\subparagraph*\{%s\}")))
-    (add-to-list 'org-latex-classes
-                 '("lectureslide-lualatex"
-                   "\\documentclass[presentation]{beamer}
-[NO-DEFAULT-PACKAGES]
-\\usepackage{luatexja}
-\\usepackage{textcomp}
-\\usepackage{graphicx}
-% \\usepackage{booktabs}
-\\usepackage{longtable}
-\\usepackage{wrapfig}
-\\usepackage{hyperref}
-\\hypersetup{pdfencoding=auto, linkbordercolor={0 1 0}}
-%% Fonts
-% mathematical font
-\\usepackage{fontspec}
-\\usepackage{amsmath, amssymb}
-\\usepackage{qtxmath}    % Times (Gyre Termes)
-% English
-\\setmainfont[BoldFont=TeXGyreHeros, Ligatures=TeX]{TeXGyreTermes}  %Times
-\\setsansfont[Ligatures=TeX]{TeXGyreHeros}                          % Helvetica
-% Japanese
-\\usepackage{luacode}
-\\usepackage{luatexja-otf}
-\\usepackage[ipaex]{luatexja-preset}
-\\renewcommand{\\kanjifamilydefault}{\\gtdefault}
-% theme
-\\usetheme[progressbar=frametitle]{metropolis}
-\\metroset{sectionpage=progressbar, block=fill}
-\\setbeamertemplate{navigation symbols}{}
-\\setbeamertemplate{footline}[frame number]
-\\setbeamertemplate{footline}[page number]
-\\setbeamertemplate{itemize items}[triangle]
-\\setsansfont[ BoldFont={Fira Sans SemiBold}, ItalicFont={Fira Sans Italic}, BoldItalicFont={Fira Sans SemiBold Italic} ]{Fira Sans}
-\\definecolor{myfg}{HTML}{EC9F4C}
-\\definecolor{mainbg}{HTML}{3F597C}
-\\definecolor{mynormalbg}{HTML}{F2F2F2}
-\\definecolor{mynormalfg}{HTML}{4D4D4D}
-\\definecolor{myexampletitlefg}{HTML}{6d86ab}
-\\setbeamercolor{alerted text}{fg=myfg}
-\\setbeamercolor{frameslide}{fg=mynormalbg,bg=mainbg}
-\\setbeamercolor{palette primary}{bg=mainbg}
-\\setbeamercolor{normal text}{fg=mynormalfg,bg=mynormalbg}
-\\setbeamercolor{block title example}{fg=myexampletitlefg}
-\\setbeamerfont{alerted text}{series=\\bfseries}
-%%
-\\setbeamercovered{transparent}
-\\setbeamertemplate{navigation symbols}{}"
-                   ("\\section{%s}" . "\\section*{%s}")
-                   ("\\subsection{%s}" . "\\subsection*{%s}")
-                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                   ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+    (let ((template-dir (file-name-as-directory
+                         (format "%slisp/org/ox-latex/templates" user-emacs-directory)))
+          (section-list '(("\\section{%s}" . "\\section*{%s}")
+                          ("\\subsection{%s}" . "\\subsection*{%s}")
+                          ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                          ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                          ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+      (mapcar
+       (lambda (filename)
+         (add-to-list 'org-latex-classes
+                      (append `(,(file-name-base filename))
+                              `(,(org-file-contents (format "%s%s" template-dir filename)))
+                              section-list)))
+       (cddr (directory-files
+              (format "%slisp/org/ox-latex/templates" user-emacs-directory)))))
 
     ;; org-export-latex-no-toc
     (defun org-export-latex-no-toc (depth)
@@ -2606,10 +2307,12 @@ See `org-capture-templates' for more information."
   :emacs>= 24
   :straight t)
 
-(dolist (file (cddr (directory-files (concat
+(dolist (filename (cddr (directory-files (concat
                                       user-emacs-directory
                                       "lisp/"))))
-  (load-file (concat user-emacs-directory "lisp/" file)))
+  (let ((filepath (concat user-emacs-directory "lisp/" filename)))
+    (unless (file-directory-p filepath)
+      (load-file filepath))))
 
 
 ;; 読み込み専用で開く設定を持ったクラスを定義

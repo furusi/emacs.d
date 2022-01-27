@@ -1,0 +1,25 @@
+\documentclass[autodetect-engine,dvi=dvipdfmx,10pt,a4paper,ja=standard]{bxjsarticle}
+[NO-DEFAULT-PACKAGES]
+\usepackage{amsmath}
+\usepackage{siunitx}
+% \usepackage{newtxtext,newtxmath}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{fancybox}
+\newcommand{\uline}[1]{\underline{#1}}
+\ifdefined\kanjiskip
+  \usepackage{pxjahyper}
+  \hypersetup{colorlinks=false}
+\else
+  \ifdefined\XeTeXversion
+      \hypersetup{colorlinks=true}
+  \else
+    \ifdefined\directlua
+      \hypersetup{pdfencoding=auto,colorlinks=true}
+    \else
+      \hypersetup{unicode,colorlinks=true}
+    \fi
+  \fi
+\fi

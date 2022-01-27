@@ -1,0 +1,14 @@
+\documentclass[11pt,paper=a4]{jlreq}
+[NO-DEFAULT-PACKAGES]
+\usepackage{amsmath}
+\usepackage{newtxtext,newtxmath}
+\ifdefined\kanjiskip
+  \usepackage[dvipdfmx]{graphicx}
+  \usepackage[dvipdfmx]{hyperref}
+  \usepackage{pxjahyper}
+  \hypersetup{colorlinks=true}
+\else
+  \usepackage{graphicx}
+  \usepackage{hyperref}
+  \hypersetup{pdfencoding=auto,colorlinks=true}
+\fi
