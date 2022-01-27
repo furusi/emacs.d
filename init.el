@@ -190,23 +190,23 @@
             (string-match-p "endeavouros" my:lsb-distribution-name))
     (add-to-list 'system-packages-supported-package-managers
                  '(yay .
-                          ((default-sudo . nil)
-                           (install . "yay -S")
-                           (search . "yay -Ss")
-                           (uninstall . "yay -Rs")
-                           (update . "yay -Syu")
-                           (clean-cache . "yay -Sc")
-                           (log . "cat /var/log/pacman.log")
-                           (get-info . "yay -Qi")
-                           (get-info-remote . "yay -Si")
-                           (list-files-provided-by . "yay -Ql")
-                           (verify-all-packages . "yay -Qkk")
-                           (verify-all-dependencies . "yay -Dk")
-                           (remove-orphaned . "yay -Rns $(pacman -Qtdq)")
-                           (list-installed-packages . "yay -Qe")
-                           (list-installed-packages-all . "yay -Q")
-                           (list-dependencies-of . "yay -Qi")
-                           (noconfirm . "--noconfirm"))))
+                       ((default-sudo . nil)
+                        (install . "yay -S")
+                        (search . "yay -Ss")
+                        (uninstall . "yay -Rs")
+                        (update . "yay -Syu")
+                        (clean-cache . "yay -Sc")
+                        (log . "cat /var/log/pacman.log")
+                        (get-info . "yay -Qi")
+                        (get-info-remote . "yay -Si")
+                        (list-files-provided-by . "yay -Ql")
+                        (verify-all-packages . "yay -Qkk")
+                        (verify-all-dependencies . "yay -Dk")
+                        (remove-orphaned . "yay -Rns $(pacman -Qtdq)")
+                        (list-installed-packages . "yay -Qe")
+                        (list-installed-packages-all . "yay -Q")
+                        (list-dependencies-of . "yay -Qi")
+                        (noconfirm . "--noconfirm"))))
     (setq system-packages-use-sudo nil
           system-packages-package-manager 'yay)
     )
@@ -221,15 +221,14 @@
    (:isearch-mode-map
     ("C-o" . isearch-exit))
    (:reb-mode-map
-          :package re-builder
-          ("C-c C-k". reb-quit))
-   ))
+    :package re-builder
+    ("C-c C-k". reb-quit))))
 
 (leaf special-characer-mode
   :url "https://github.com/madanh/special-characer-mode"
   :config
   (defmacro ins-val (val)
-  `(lambda () (interactive) (insert ,val)))
+    `(lambda () (interactive) (insert ,val)))
   (define-minor-mode special-char-mode
     "Toggle Special Character mode"
     nil
@@ -286,8 +285,7 @@
   (aset char-width-table ?→ 2)
 
   (when (eq window-system 'x)
-     ;ディスプレイのサイズに応じて調節したい (x-display-pixel-width)
-    
+    ;; ディスプレイのサイズに応じて調節したい (x-display-pixel-width)
     (let ((font-height
            (cond
             ((> (x-display-pixel-width) 1680) 180)
@@ -337,7 +335,7 @@
   :doc "Say farewell to performance problems with minified code."
   :straight t
   :require t
-)
+  )
 
 (leaf projectile
   :bind ((:projectile-mode-map
@@ -374,15 +372,15 @@
   :mode ("jisyo" . skk-jisyo-edit-mode)
   :custom
   `((skk-japanese-message-and-error . t)
-   (skk-share-private-jisyo . t)
-   (skk-isearch-start-mode . 'latin); isearch で skk の初期状態
-   (skk-user-directory . ,(format "%sddskk/" user-emacs-directory))
-   (skk-use-jisx0201-input-method . t)
-   (skk-henkan-strict-okuri-precedence . t)
-   (skk-save-jisyo-instantly . t)
-   (skk-sticky-key . '(117 101))
-   (skk-egg-like-newline . t)           ;non-nilにするとEnterでの確定時に改行しない
-   )
+    (skk-share-private-jisyo . t)
+    (skk-isearch-start-mode . 'latin); isearch で skk の初期状態
+    (skk-user-directory . ,(format "%sddskk/" user-emacs-directory))
+    (skk-use-jisx0201-input-method . t)
+    (skk-henkan-strict-okuri-precedence . t)
+    (skk-save-jisyo-instantly . t)
+    (skk-sticky-key . '(117 101))
+    (skk-egg-like-newline . t)           ;non-nilにするとEnterでの確定時に改行しない
+    )
   :init
   (leaf skk-dropbox
     :if (file-exists-p "~/Dropbox/.config/ddskk/")
@@ -396,7 +394,7 @@
         context-skk-context-check-hook)
   (push (lambda ()
           (if (bolp)
-               (org-at-block-p)
+              (org-at-block-p)
             nil))
         context-skk-context-check-hook)
   (push (lambda ()
@@ -824,7 +822,7 @@
   :unless (equal (string-trim
                   (shell-command-to-string "command -v delta")
                   "^\"" "\"?[ \t\n\r]+")
-           "")
+                 "")
   :doc "Use Delta when displaying diffs in Magit"
   :req "emacs-25.1" "magit-20200426" "xterm-color-2.0"
   :tag "emacs>=25.1"
@@ -1797,7 +1795,7 @@ See `org-capture-templates' for more information."
                dviprint-command-format
                "open -a \"Adobe Acrobat Reader DC\" `echo %s | gsed -e \"s/\\.[^.]*$/\\.pdf/\"`"))
         (t (setq dvi2-command "evince"
-                tex-pdfview-command "evince")))
+                 tex-pdfview-command "evince")))
   (add-hook 'yatex-mode-hook
             '(lambda ()
                (auto-fill-mode -1)))
@@ -1894,7 +1892,7 @@ See `org-capture-templates' for more information."
   :hook (after-init-hook . smartparens-global-mode)
   :bind
   (:emacs-lisp-mode-map
-    ("C-c C-u" . sp-backward-up-sexp)))
+   ("C-c C-u" . sp-backward-up-sexp)))
 
 (leaf kotlin-mode
   :straight t
@@ -1926,7 +1924,7 @@ See `org-capture-templates' for more information."
   :config
   (setq plantuml-jar-path
         (cond ((eq system-type 'darwin)
-                "/usr/local/opt/plantuml/libexec/plantuml.jar")
+               "/usr/local/opt/plantuml/libexec/plantuml.jar")
               ((string-match "ndeavour" my:lsb-distribution-name)
                "/usr/share/java/plantuml/plantuml.jar")
               (t ""))))
@@ -2229,13 +2227,13 @@ See `org-capture-templates' for more information."
     )
 
   (leaf lsp-dart
-  :doc "Dart support lsp-mode"
-  :req "emacs-26.3" "lsp-treemacs-0.3" "lsp-mode-7.0.1" "dap-mode-0.6" "f-0.20.0" "dash-2.14.1" "dart-mode-1.0.5"
-  :tag "extensions" "languages" "emacs>=26.3"
-  :url "https://emacs-lsp.github.io/lsp-dart"
-  :emacs>= 26.3
-  :straight t
-  :after lsp-treemacs lsp-mode dap-mode dart-mode)
+    :doc "Dart support lsp-mode"
+    :req "emacs-26.3" "lsp-treemacs-0.3" "lsp-mode-7.0.1" "dap-mode-0.6" "f-0.20.0" "dash-2.14.1" "dart-mode-1.0.5"
+    :tag "extensions" "languages" "emacs>=26.3"
+    :url "https://emacs-lsp.github.io/lsp-dart"
+    :emacs>= 26.3
+    :straight t
+    :after lsp-treemacs lsp-mode dap-mode dart-mode)
   
   (leaf dap-mode
     :straight t
@@ -2246,12 +2244,12 @@ See `org-capture-templates' for more information."
     (require 'dap-cpptools)
     (require 'dap-gdb-lldb)
     (dap-register-debug-template "Rust::GDB Run Configuration"
-                             (list :type "gdb"
-                                   :request "launch"
-                                   :name "GDB::Run"
-                		   :gdbpath "rust-gdb"
-                                   :target nil
-                                   :cwd nil))
+                                 (list :type "gdb"
+                                       :request "launch"
+                                       :name "GDB::Run"
+                		       :gdbpath "rust-gdb"
+                                       :target nil
+                                       :cwd nil))
     (leaf dap-java
       :require t
       :after (lsp-java)))
@@ -2313,9 +2311,9 @@ See `org-capture-templates' for more information."
   :emacs>= 24
   :straight t)
 
-(dolist (filename (cddr (directory-files (concat
-                                      user-emacs-directory
-                                      "lisp/"))))
+(dolist (filename
+         (cddr (directory-files
+                (concat user-emacs-directory "lisp/"))))
   (let ((filepath (concat user-emacs-directory "lisp/" filename)))
     (unless (file-directory-p filepath)
       (load-file filepath))))
