@@ -26,12 +26,12 @@
 (leaf custom-variables
   :doc "set custom variables"
   :custom
-  `((auth-sources . '(,(expand-file-name "authinfo.gpg" user-emacs-directory)))
+  `((auth-sources . '(,(locate-user-emacs-file "authinfo.gpg")))
     (auto-save-interval . 10)
     (backup-directory-alist . '((".*" . "~/.ehist")))
     (byte-compile-warnings . '(cl-functions))
     (comment-style . 'multi-line)
-    (custom-theme-directory . ,(concat user-emacs-directory "themes/")) ;; テーマのディレクトリを設定
+    (custom-theme-directory . ,(locate-user-emacs-file "themes/")) ;; テーマのディレクトリを設定
     (default-frame-alist .'((width . 180) (height . 40)))
     (dired-dwim-target . t)
     (ediff-diff-options . "-w")
@@ -342,11 +342,11 @@
           ("C-c p" . projectile-command-map)))
   :straight t
   :custom
-  `((projectile-cache-file . ,(format "%sprojectile/%s/%s" user-emacs-directory emacs-version "projectile.cache"))
-    (projectile-known-projects-file . ,(format "%sprojectile/%s/%s" user-emacs-directory emacs-version "projectile-bookmarks.eld"))
+  `((projectile-cache-file . ,(locate-user-emacs-file (format "projectile/%s/projectile.cache" emacs-version)))
+    (projectile-known-projects-file . ,(locate-user-emacs-file (format "projectile/%s/projectile-bookmarks.eld" emacs-version)))
     (projectile-sort-order . 'recently-active))
   :init
-  (let ((dir (format "%sprojectile/%s/" user-emacs-directory emacs-version)))
+  (let ((dir (locate-user-emacs-file (format "projectile/%s/" emacs-version))))
     (unless (file-directory-p dir)
       (make-directory dir t))
     )
@@ -374,7 +374,7 @@
   `((skk-japanese-message-and-error . t)
     (skk-share-private-jisyo . t)
     (skk-isearch-start-mode . 'latin); isearch で skk の初期状態
-    (skk-user-directory . ,(format "%sddskk/" user-emacs-directory))
+    (skk-user-directory . ,(locate-user-emacs-file "ddskk/"))
     (skk-use-jisx0201-input-method . t)
     (skk-henkan-strict-okuri-precedence . t)
     (skk-save-jisyo-instantly . t)
@@ -403,7 +403,7 @@
                   (org-at-item-checkbox-p))
             nil))
         context-skk-context-check-hook)
-  (setq skk-get-jisyo-directory (expand-file-name (format "%sskk-get-jisyo/" user-emacs-directory)))
+  (setq skk-get-jisyo-directory (expand-file-name (locate-user-emacs-file "skk-get-jisyo/")))
   (let ((skk-jisyo-directory (if (file-exists-p "~/Dropbox/.config/ddskk/skkdic-utf8/")
                                  "~/Dropbox/.config/ddskk/skkdic-utf8/"
                                skk-get-jisyo-directory)))
@@ -1577,7 +1577,7 @@
       (setq org-file-apps
             '(("pdf" . "evince %s"))))
     (let ((template-dir (file-name-as-directory
-                         (format "%slisp/org/ox-latex/templates" user-emacs-directory)))
+                         (locate-user-emacs-file "lisp/org/ox-latex/templates")))
           (section-list '(("\\section{%s}" . "\\section*{%s}")
                           ("\\subsection{%s}" . "\\subsection*{%s}")
                           ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
@@ -1590,7 +1590,7 @@
                               `(,(org-file-contents (format "%s%s" template-dir filename)))
                               section-list)))
        (cddr (directory-files
-              (format "%slisp/org/ox-latex/templates" user-emacs-directory)))))
+              (locate-user-emacs-file "lisp/org/ox-latex/templates")))))
 
     ;; org-export-latex-no-toc
     (defun org-export-latex-no-toc (depth)
@@ -2348,8 +2348,9 @@ See `org-capture-templates' for more information."
 
 (dolist (filename
          (cddr (directory-files
-                (concat user-emacs-directory "lisp/"))))
-  (let ((filepath (concat user-emacs-directory "lisp/" filename)))
+                (locate-user-emacs-file "lisp"))))
+  (let ((filepath (locate-user-emacs-file (format "lisp/%s" filename))
+         ))
     (unless (file-directory-p filepath)
       (load-file filepath))))
 
@@ -2360,13 +2361,12 @@ See `org-capture-templates' for more information."
  '((nil .((buffer-read-only . t)))))
 ;; クラスをディレクトリに関連づける
 (dolist (dir
-         (mapcar (lambda (str)
-                   (format "%spackages/%s/straight/repos/"
-                           user-emacs-directory str))
+         (mapcar
+          (lambda (str) (locate-user-emacs-file (format "packages/%s/straight/repos/" str)))
                  (cddr (directory-files
-                        (concat user-emacs-directory "packages/")))
-                 ))
-  (dir-locals-set-directory-class (file-truename dir) 'read-only))
+                 (locate-user-emacs-file "packages/")))))
+  (dir-locals-set-directory-class
+   (file-truename dir) 'read-only))
 
 (let ((f "~/Dropbox/.config/emacs/config.el"))
   (when (file-exists-p f)

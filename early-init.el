@@ -17,12 +17,15 @@
 (setenv "LANG" "en_US.UTF-8")
 (setenv "LC_ALL" "en_US.UTF-8")
 (defvar bootstrap-version)
-(custom-set-variables `(package-user-dir ,(locate-user-emacs-file (format "elpa/%s/" emacs-version))))
-(setq straight-base-dir (format "%spackages/%s/"
-                                user-emacs-directory
-                                emacs-version
-                                ))
-(setq straight-profiles (list (cons nil (concat user-emacs-directory "straight/versions/default.el"))))
+(custom-set-variables `(package-user-dir
+                        ,(locate-user-emacs-file
+                          (format "elpa/%s/" emacs-version))))
+(setq straight-base-dir
+      (locate-user-emacs-file
+        (format "packages/%s/" emacs-version)))
+(setq straight-profiles
+      `((nil . ,(locate-user-emacs-file
+                 "straight/versions/default.el"))))
 
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" straight-base-dir))
