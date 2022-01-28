@@ -749,12 +749,9 @@
     :config
     (setq org-refile-targets
           `((nil . (:maxlevel . 2))
-            (,(let ((refile-dir
-                     (format "%srefile-target/" org-directory)))
-                (mapcar (lambda (filename)
-                          (format "%s%s" refile-dir filename))
-                        (cddr (directory-files refile-dir)))
-                ) . (:maxlevel . 2)))))
+            ((,(format "%s/refile-target/next-actions.org" org-directory)) . (:regexp . "today"))
+            ((,(format "%s/refile-target/inbox.org" org-directory)) . (:level . 1))
+            )))
 
   (leaf all-the-icons-completion
     :doc "Add icons to completion candidates"
