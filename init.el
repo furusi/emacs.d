@@ -959,9 +959,13 @@
   :require t
   :diminish yas-minor-mode
   :config
-  (yas-global-mode 1))
+  (yas-global-mode 1)
+  (add-to-list 'yas-snippet-dirs (format "%ssnippets/yasnippet/" user-emacs-directory))
+  )
 
-(leaf yasnippet-snippets :straight t)
+(leaf yasnippet-snippets
+  :straight t
+  :after yasnippet)
 
 (leaf gitignore-templates
   :doc "Create .gitignore using GitHub or gitignore.io API"
