@@ -1369,7 +1369,15 @@
     (mapc (lambda (d)
             (add-to-list 'org-agenda-files
                          (file-name-as-directory (format "%s%s" org-directory d))))
-          org-agenda-static-dirs))
+          org-agenda-static-dirs)
+    
+    (setq org-agenda-custom-commands
+          '(("a" "(override)Agenda for 2 weeks"
+             ((agenda "" ((org-agenda-span 14)))))
+            ("n" "Agenda and all TODOs"
+             ((agenda "")
+              (alltodo "")))))
+    )
 
   (leaf org-contrib
     :require t
