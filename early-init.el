@@ -4,7 +4,6 @@
           (lambda ()
             (setq file-name-handler-alist my:saved-file-name-handler-alist)))
 
-
 (defconst my:default-gc-cons-threshold (* 1024 1024 16))
 (setq gc-cons-threshold most-positive-fixnum)
 ;; Run GC every 60 seconds if emacs is idle.
@@ -28,7 +27,9 @@
                  "straight/versions/default.el"))))
 
 (let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" straight-base-dir))
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        straight-base-dir))
       (bootstrap-version 5))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer

@@ -156,7 +156,8 @@
   "return string which obtains from 'lsb_release' command"
   (interactive)
   (if (eq system-type 'gnu/linux)
-      (string-trim (shell-command-to-string "lsb_release -sd") "^\"" "\"?[ \t\n\r]+")
+      (string-trim (shell-command-to-string "lsb_release -sd")
+                   "^\"" "\"?[ \t\n\r]+")
     ""))
 (setq my:lsb-distribution-name
       (which-linux-distribution))
@@ -342,8 +343,10 @@
           ("C-c p" . projectile-command-map)))
   :straight t
   :custom
-  `((projectile-cache-file . ,(locate-user-emacs-file (format "projectile/%s/projectile.cache" emacs-version)))
-    (projectile-known-projects-file . ,(locate-user-emacs-file (format "projectile/%s/projectile-bookmarks.eld" emacs-version)))
+  `((projectile-cache-file . ,(locate-user-emacs-file
+                               (format "projectile/%s/projectile.cache" emacs-version)))
+    (projectile-known-projects-file . ,(locate-user-emacs-file
+                                        (format "projectile/%s/projectile-bookmarks.eld" emacs-version)))
     (projectile-sort-order . 'recently-active))
   :init
   (let ((dir (locate-user-emacs-file (format "projectile/%s/" emacs-version))))
@@ -404,9 +407,10 @@
             nil))
         context-skk-context-check-hook)
   (setq skk-get-jisyo-directory (expand-file-name (locate-user-emacs-file "skk-get-jisyo/")))
-  (let ((skk-jisyo-directory (if (file-exists-p "~/Dropbox/.config/ddskk/skkdic-utf8/")
-                                 "~/Dropbox/.config/ddskk/skkdic-utf8/"
-                               skk-get-jisyo-directory)))
+  (let ((skk-jisyo-directory
+         (if (file-exists-p "~/Dropbox/.config/ddskk/skkdic-utf8/")
+             "~/Dropbox/.config/ddskk/skkdic-utf8/"
+           skk-get-jisyo-directory)))
     (setq skk-large-jisyo (format "%sSKK-JISYO.L" skk-jisyo-directory))
     (setq skk-extra-jisyo-file-list
           (mapcar (lambda (x)
@@ -2302,6 +2306,7 @@ See `org-capture-templates' for more information."
 
 (leaf flymake
   :straight t)
+
 (leaf eglot
   :straight t
   :after corfu flymake
@@ -2363,8 +2368,8 @@ See `org-capture-templates' for more information."
 (dolist (filename
          (cddr (directory-files
                 (locate-user-emacs-file "lisp"))))
-  (let ((filepath (locate-user-emacs-file (format "lisp/%s" filename))
-         ))
+  (let ((filepath
+         (locate-user-emacs-file (format "lisp/%s" filename))))
     (unless (file-directory-p filepath)
       (load-file filepath))))
 
@@ -2377,7 +2382,7 @@ See `org-capture-templates' for more information."
 (dolist (dir
          (mapcar
           (lambda (str) (locate-user-emacs-file (format "packages/%s/straight/repos/" str)))
-                 (cddr (directory-files
+          (cddr (directory-files
                  (locate-user-emacs-file "packages/")))))
   (dir-locals-set-directory-class
    (file-truename dir) 'read-only))
