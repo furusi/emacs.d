@@ -763,6 +763,37 @@
     :init
     (corfu-global-mode))
 
+  (leaf tempel
+    :doc "Tempo templates/snippets with in-buffer field editing"
+    :req "emacs-27.1"
+    :tag "emacs>=27.1"
+    :url "https://github.com/minad/tempel"
+    :emacs>= 27.1
+    :straight t
+    :bind
+    (:tempel-map
+     ("C-i" . tempel-next)
+     ("C-I" . tempel-next)
+     )
+    :custom
+    `((tempel-file . ,(format "%ssnippets/tempel/templates" user-emacs-directory)))
+    :init
+    ;; Setup completion at point
+    (defun tempel-setup-capf ()
+      ;; Add the Tempel Capf to `completion-at-point-functions'.
+      ;; The depth is set to -1, such that `tempel-expand' is tried *before* the
+      ;; programming mode Capf. If a template name can be completed it takes
+      ;; precedence over the programming mode completion. `tempel-expand' only
+      ;; triggers on exact matches. Alternatively use `tempel-complete' if you
+      ;; want to see all matches, but then Tempel will probably trigger too
+      ;; often when you don't expect it.
+      (add-hook 'completion-at-point-functions #'tempel-expand -1 'local))
+
+      (add-hook 'prog-mode-hook 'tempel-setup-capf)
+      (add-hook 'text-mode-hook 'tempel-setup-capf)
+      (add-hook 'rustic-mode-hook 'tempel-setup-capf)
+    )
+
   (leaf cape
     :doc "Completion At Point Extensions"
     :req "emacs-27.1"
