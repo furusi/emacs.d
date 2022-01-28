@@ -86,10 +86,10 @@
 
 (leaf deepl-translate
   :url "https://uwabami.github.io/cc-env/Emacs.html"
-  :commands my/deepl-translate
+  :commands my-deepl-translate
   :preface
   (require 'url-util)
-  (defun my/deepl-translate (&optional string)
+  (defun my-deepl-translate (&optional string)
     (interactive)
     (setq string
           (cond ((stringp string) string)
@@ -159,7 +159,7 @@
       (string-trim (shell-command-to-string "lsb_release -sd")
                    "^\"" "\"?[ \t\n\r]+")
     ""))
-(setq my:lsb-distribution-name
+(setq my-lsb-distribution-name
       (which-linux-distribution))
 
 (recentf-mode 1)
@@ -188,7 +188,7 @@
           system-packages-package-manager 'brew))
   (when (or (string-match-p "arch" operating-system-release)
             (string-match-p "manjaro" operating-system-release)
-            (string-match-p "endeavouros" my:lsb-distribution-name))
+            (string-match-p "endeavouros" my-lsb-distribution-name))
     (add-to-list 'system-packages-supported-package-managers
                  '(yay .
                        ((default-sudo . nil)
@@ -319,10 +319,10 @@
     (setq pomodoro-sound-player "afplay"))
   
   (let ((sound (cond
-                ((or (string-match "Ubuntu" my:lsb-distribution-name)
-                     (string-match "debian" my:lsb-distribution-name))
+                ((or (string-match "Ubuntu" my-lsb-distribution-name)
+                     (string-match "debian" my-lsb-distribution-name))
                  "/usr/share/sounds/gnome/default/alerts/glass.ogg")
-                ((string-match "endeavouros" my:lsb-distribution-name)
+                ((string-match "endeavouros" my-lsb-distribution-name)
                  "/usr/share/sounds/freedesktop/stereo/service-login.oga")
                 ((eq window-system 'ns)
                  "/System/Library/Sounds/Glass.aiff"))))
@@ -1160,7 +1160,7 @@
            (:org-mode-map
             ("C-c C-\'" . org-insert-structure-template)))
     :init
-    (defvar my:org-item-key-bindings
+    (defvar my-org-item-key-bindings
       '(("p" . org-previous-item)
         ("n" . org-next-item)
         ("U" . org-metaup)
@@ -1180,14 +1180,14 @@
                    (princ "Speed commands\n==============\n")
                    (mapc #'org-print-speed-command
                          ;; FIXME: don't check `org-speed-commands-user' past 9.6
-                         my:org-item-key-bindings))
+                         my-org-item-key-bindings))
                  (with-current-buffer "*Help*"
                    (setq truncate-lines t)))
          )))
-    (defun my:org-item-speed-command-activate (keys)
+    (defun my-org-item-speed-command-activate (keys)
       (when (and (bolp)
                  (org-at-item-p))
-        (cdr (assoc keys my:org-item-key-bindings))))
+        (cdr (assoc keys my-org-item-key-bindings))))
     
     (defun insert-zero-width-space()
       (interactive)
@@ -1210,7 +1210,7 @@
     (add-to-list 'org-modules 'org-habit)
     (add-to-list 'org-modules 'org-id)
 
-    (push 'my:org-item-speed-command-activate
+    (push 'my-org-item-speed-command-activate
           org-speed-command-hook)
     (org-clock-persistence-insinuate)
     ;; 強調の規則を変更(別の環境で開いた場合は認識されなくなる...)
@@ -1984,7 +1984,7 @@ See `org-capture-templates' for more information."
   (setq plantuml-jar-path
         (cond ((eq system-type 'darwin)
                "/usr/local/opt/plantuml/libexec/plantuml.jar")
-              ((string-match "ndeavour" my:lsb-distribution-name)
+              ((string-match "ndeavour" my-lsb-distribution-name)
                "/usr/share/java/plantuml/plantuml.jar")
               (t ""))))
 
@@ -2118,7 +2118,7 @@ See `org-capture-templates' for more information."
     (indent-for-tab-command)))
 
 ;;from https://uwabami.github.io/cc-env/Emacs.html
-(defun my:make-scratch (&optional arg)
+(defun my-make-scratch (&optional arg)
   (interactive)
   (progn
     ;; "*scratch*" を作成して buffer-list に放り込む
@@ -2134,21 +2134,21 @@ See `org-capture-templates' for more information."
     (cond ((= arg 0) (message "*scratch* is cleared up."))
           ((= arg 1) (message "another *scratch* is created")))))
 ;;
-(defun my:buffer-name-list ()
+(defun my-buffer-name-list ()
   (mapcar (function buffer-name) (buffer-list)))
 (add-hook 'kill-buffer-query-functions
           ;; *scratch* バッファで kill-buffer したら内容を消去するだけにする
           (function (lambda ()
                       (if (string= "*scratch*" (buffer-name))
-                          (progn (my:make-scratch 0) nil)
+                          (progn (my-make-scratch 0) nil)
                         t))))
 (add-hook 'after-save-hook
           ;; *scratch* バッファの内容を保存したら
           ;; *scratch* バッファを新しく作る.
           (function
            (lambda ()
-             (unless (member "*scratch*" (my:buffer-name-list))
-               (my:make-scratch 1)))))
+             (unless (member "*scratch*" (my-buffer-name-list))
+               (my-make-scratch 1)))))
 
 (put 'narrow-to-region 'disabled nil)
 (leaf ispell
