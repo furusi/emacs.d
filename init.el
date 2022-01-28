@@ -2247,6 +2247,7 @@ See `org-capture-templates' for more information."
     (lsp-treemacs-sync-mode 1))
   ;; optionally if you want to use debugger
   (leaf lsp-java
+    :disabled t
     :straight t
     :require t
     :hook (java-mode-hook . (lambda ()
@@ -2311,6 +2312,19 @@ See `org-capture-templates' for more information."
   ;; (add-hook 'rustic-mode-hook 'eglot-ensure)
   ;; (add-to-list 'eglot-stay-out-of 'flymake)
   )
+
+(leaf eglot-java
+  :doc "Java extension for the eglot LSP client"
+  :req "emacs-26.1" "eglot-1.0" "jsonrpc-1.0.0"
+  :tag "languages" "convenience" "emacs>=26.1"
+  :url "https://github.com/yveszoundi/eglot-java"
+  :emacs>= 26.1
+  :straight t
+  :require t
+  :custom
+  ((eglot-java-prefix-key . "C-c C-l"))
+  :config
+  (eglot-java-init))
 
 (leaf consult-eglot
   :doc "A consulting-read interface for eglot"
