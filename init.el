@@ -744,7 +744,7 @@
   (leaf org-refile
     :after (org org-agenda)
     :custom
-    ((org-refile-use-outline-path . 'file)
+    ((org-refile-use-outline-path . t)
      (org-outline-path-complete-in-steps . nil))
     :config
     (setq org-refile-targets
