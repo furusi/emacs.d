@@ -297,7 +297,6 @@
 ;; 記号をデフォルトのフォントにしない。(for Emacs 25.2)
 (setq use-default-font-for-symbols nil)
 
-
 (leaf restart-emacs :straight t)
 
 (leaf dired*
@@ -482,7 +481,6 @@
                       (set-window-display-table w disptab)))))
   (add-hook 'window-configuration-change-hook #'skk-set-display-table)
   (add-hook 'after-init-hook #'skk-set-display-table))
-
 
 (leaf eww
   :commands (eww)
@@ -743,11 +741,15 @@
     ;; :init (with-eval-after-load 'embark
     ;;         (require 'embark-consult))
     )
-  (leaf vertico-org-refile
-    :after (org)
+  (leaf org-refile
+    :after (org org-agenda)
     :custom
     ((org-refile-use-outline-path . 'file)
-     (org-outline-path-complete-in-steps . nil)))
+     (org-outline-path-complete-in-steps . nil))
+    :config
+    (setq org-refile-targets
+          `((nil . (:maxlevel . 2))
+            (org-agenda-files . (:maxlevel . 2)))))
 
   (leaf all-the-icons-completion
     :doc "Add icons to completion candidates"
@@ -852,7 +854,6 @@
     )
   )
 
-
 (leaf magit
   :bind (("C-x g" . magit-status))
   :require t
@@ -911,10 +912,7 @@
   (load-library "migemo")
   (migemo-init))
 
-
 ;; SLIMEのロード
-
-
 (leaf undo-tree
   :straight (undo-tree :type git :host gitlab :repo "tsc25/undo-tree")
   :diminish (global-undo-tree-mode undo-tree-mode)
@@ -952,7 +950,6 @@
   :emacs>= 24.5
   :straight t
   :mode (("\\.ron$" . ron-mode)))
-
 
 (leaf moody
   :straight t
@@ -1037,7 +1034,6 @@
   :require t
   :straight t
   :mode (("\\.gradle$" . gradle-mode)))
-
 
 (leaf slime
   :emacs< "28"
@@ -1235,15 +1231,7 @@
     (when (equal system-type 'darwin)
       (setq org-plantuml-jar-path
             "/usr/local/opt/plantuml/libexec/plantuml.jar"))
-
-
     
-    
-    (setq org-refile-targets
-          `((nil . (:maxlevel . 2))
-            (org-agenda-files . (:maxlevel . 2))
-            (,(concat org-directory "calendar/") . (:maxlevel . 2))
-            ))
     (setq org-tag-alist
           '(("ignore" . ?i) ("@OFFICE" . ?o) ("@HOME" . ?h) ("SHOPPING" . ?s)
             ("MAIL" . ?m) ("PROJECT" . ?p) ("備忘録" . ?b)))
@@ -1313,7 +1301,6 @@
 
     (add-to-list 'org-babel-tangle-lang-exts
                  '("C" . "c"))
-
 
     (setq org-use-speed-commands t)
     (setq org-icalendar-alarm-time 30)
@@ -1674,7 +1661,6 @@ See `org-capture-templates' for more information."
                    (file+olp "all-posts.org" "Blog Ideas")
                    (function org-hugo-new-subtree-post-capture-template))))
 
-
   (leaf org-download
     :straight t
     :after org
@@ -1900,7 +1886,6 @@ See `org-capture-templates' for more information."
 (leaf rainbow-mode
   :straight t)
 
-
 (leaf poetry
   :straight t
   :require t)
@@ -1912,9 +1897,6 @@ See `org-capture-templates' for more information."
   (setq
    pipenv-projectile-after-switch-function
    #'pipenv-projectile-after-switch-extended))
-
-
-
 
 (leaf hydra :straight t)
 
@@ -1941,8 +1923,6 @@ See `org-capture-templates' for more information."
     (when (executable-find  "/opt/local/bin/ccls-clang-11")
       (setq ccls-executable "/opt/local/bin/ccls-clang-11"))
     ))
-
-
 
 (leaf smartparens
   :straight t
@@ -1973,7 +1953,6 @@ See `org-capture-templates' for more information."
                            ))
   (setq whitespace-space-regexp "\\(\u3000+\\)")
   (global-whitespace-mode 1))
-
 
 (leaf plantuml-mode
   :straight t
@@ -2055,7 +2034,6 @@ See `org-capture-templates' for more information."
   :mode (("\\.re\\'" . review-mode)))
 (leaf csv-mode :straight t)
 
-
 (leaf gnuplot :straight t)
 
 (leaf *gdb
@@ -2072,7 +2050,6 @@ See `org-capture-templates' for more information."
     ;;; バックアップファイルを作成しない
     (make-backup-files .t))
   )
-
 
 (leaf asm-mode
   :hook ((asm-mode-set-comment-hook . (lambda ()
@@ -2392,7 +2369,6 @@ See `org-capture-templates' for more information."
          (locate-user-emacs-file (format "lisp/%s" filename))))
     (unless (file-directory-p filepath)
       (load-file filepath))))
-
 
 ;; 読み込み専用で開く設定を持ったクラスを定義
 (dir-locals-set-class-variables
