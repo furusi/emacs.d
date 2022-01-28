@@ -360,6 +360,18 @@
     (add-to-list 'projectile-globally-ignored-directories d))
   )
 
+(leaf projectile-for-eglot
+    :url "https://glassonion.hatenablog.com/entry/2019/05/11/134135"
+    :after projectile
+    :preface
+    (defun my-projectile-project-find-function (dir)
+      (let ((root (projectile-project-root dir)))
+        (and root
+             (cons 'transient root))))
+    :config
+    (with-eval-after-load 'project
+      (add-to-list 'project-find-functions #'my-projectile-project-find-function)))
+
 ;; ddskk
 (leaf ddskk
   :straight (ddskk :type git :host github :repo "skk-dev/ddskk")
