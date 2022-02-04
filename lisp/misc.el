@@ -16,3 +16,11 @@
           (error (format "%s must be number is bigger than 0: %s" prompt-message width)))
         width)
     (error "Error: window system only")))
+
+(defun factoral (n)
+  (if (> n 0)
+      (* n (factoral (- n 1)))
+    1))
+
+(defun combination (n r)
+  (/ (factoral n) (* (factoral r) (factoral (- n r)))))

@@ -53,6 +53,7 @@
     (use-dialog-box . nil)
     (use-file-dialog . nil)
     (vc-follow-symlinks . t)
+    (vc-handled-backends . '(Git))
     )
   )
 
