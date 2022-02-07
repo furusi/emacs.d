@@ -95,7 +95,8 @@
     (setq string
           (cond ((stringp string) string)
                 ((use-region-p)
-                 (buffer-substring (region-beginning) (region-end)))
+                 (replace-regexp-in-string "\n" " "
+                                           (buffer-substring (region-beginning) (region-end))))
                 (t
                  (save-excursion
                    (let (s)
