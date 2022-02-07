@@ -1,16 +1,16 @@
-(defconst my:saved-file-name-handler-alist file-name-handler-alist)
+(defconst my-saved-file-name-handler-alist file-name-handler-alist)
 (setq file-name-handler-alist nil)
 (add-hook 'emacs-startup-hook
           (lambda ()
-            (setq file-name-handler-alist my:saved-file-name-handler-alist)))
+            (setq file-name-handler-alist my-saved-file-name-handler-alist)))
 
-(defconst my:default-gc-cons-threshold (* 1024 1024 16))
+(defconst my-default-gc-cons-threshold (* 1024 1024 16))
 (setq gc-cons-threshold most-positive-fixnum)
 ;; Run GC every 60 seconds if emacs is idle.
 (run-with-idle-timer 60.0 t #'garbage-collect)
 (add-hook 'emacs-startup-hook
           (lambda ()
-            (setq gc-cons-threshold my:default-gc-cons-threshold)))
+            (setq gc-cons-threshold my-default-gc-cons-threshold)))
 
 (setq system-time-locale "C")
 (setenv "LANG" "en_US.UTF-8")
