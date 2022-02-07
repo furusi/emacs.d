@@ -893,6 +893,7 @@
           ("g" . grip-mode))))
 
 (leaf migemo
+  :unless (equal (shell-command-to-string "command -v cmigemo") "")
   :straight t
   :require t
   :config
