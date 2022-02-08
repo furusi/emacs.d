@@ -5,6 +5,7 @@ rustic-mode
 (deri "#[derive(" (p "TRAIT") ")]")
 (strc "struct " (p "NAME") "{" n> r n> "}")
 (doce "/// Errors" n "/// " p)
+(blockdoc "/**" n> p n> "*/")
 
 
 text-mode
