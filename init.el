@@ -1842,15 +1842,15 @@ See `org-capture-templates' for more information."
         (t (setq dvi2-command "evince"
                  tex-pdfview-command "evince")))
   (add-hook 'yatex-mode-hook
-            '(lambda ()
-               (auto-fill-mode -1)))
+            (lambda ()
+              (auto-fill-mode -1)))
   (add-hook 'yatex-mode-hook
-            '(lambda ()
-               (reftex-mode 1)
-               (define-key reftex-mode-map
-                 (concat YaTeX-prefix ">") 'YaTeX-comment-region)
-               (define-key reftex-mode-map
-                 (concat YaTeX-prefix "<") 'YaTeX-uncomment-region))))
+            (lambda ()
+              (reftex-mode 1)
+              (define-key reftex-mode-map
+                (concat YaTeX-prefix ">") 'YaTeX-comment-region)
+              (define-key reftex-mode-map
+                (concat YaTeX-prefix "<") 'YaTeX-uncomment-region))))
 ;; for yatex
 (when (equal system-type 'darwin)
   (setenv "PATH" "/usr/local/bin:/Library/TeX/texbin/:/Applications/Skim.app/Contents/SharedSupport:$PATH" t)
