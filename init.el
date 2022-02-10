@@ -862,7 +862,9 @@
   )
 
 (leaf magit
-  :bind (("C-x g" . magit-status))
+  :bind (("C-x g" . magit-status)
+         (:magit-diff-mode-map
+          ("=" . magit-diff-more-context)))
   :require t
   :straight t
   :custom
