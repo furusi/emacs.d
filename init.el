@@ -140,7 +140,11 @@
   :bind
   (:diff-mode-map
    ("v" . scroll-up-command)
-   ("V" . scroll-down-command)))
+   ("V" . scroll-down-command))
+  :hook
+  (diff-mode-hook . (lambda () (read-only-mode t)))
+  )
+
 (leaf autorevert
   :hook
   (emacs-startup-hook . global-auto-revert-mode)
