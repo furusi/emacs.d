@@ -23,7 +23,7 @@
  ("dap-mode" . "76cad34de8984f57c2b1e374e9c985cc7ec8dad0")
  ("dart-mode" . "3bac14200f9f8f8fcebc383087572da5c3823c34")
  ("dash.el" . "da167c51e9fd167a48d06c7c0ee8e3ac7abd9718")
- ("ddskk" . "251df5b02c91311140d2375b019c1de836655fd0")
+ ("ddskk" . "61bfc38ba6f76a7ff1b187101e7a42bc89bb44e8")
  ("diminish.el" . "6ec6ebc391371418efc6c98d70b013f34af5a2ee")
  ("docker-compose-mode" . "abaa4f3aeb5c62d7d16e186dd7d77f4e846e126a")
  ("docker-tramp.el" . "7bfbb55417e7d2aac53adf92cb0e3fd329c495c1")

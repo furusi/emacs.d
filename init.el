@@ -379,7 +379,7 @@
 
 ;; ddskk
 (leaf ddskk
-  :straight (ddskk :type git :host github :repo "skk-dev/ddskk")
+  :straight (ddskk :type git :host github :repo "furusi/ddskk")
   :commands skk-mode
   :bind (("C-x C-j" . skk-mode)
          (:minibuffer-local-map
@@ -462,15 +462,6 @@
     (add-to-list 'context-skk-programming-mode 'rustic-mode)
     (add-to-list 'context-skk-programming-mode 'js-mode)
     (setq context-skk-mode-off-message "[context-skk] 日本語入力 off")
-    (when (version<= "28" emacs-version)
-      (defun my-context-skk-out-of-string-or-comment-in-programming-mode-p ()
-        (and (context-skk-in-programming-mode-p)
-             (not (or (nth 3 (parse-partial-sexp (point-min) (point)))
-                      (nth 4 (parse-partial-sexp (point-min) (point)))))))
-      (setq context-skk-context-check-hook
-            '(my-context-skk-out-of-string-or-comment-in-programming-mode-p
-              context-skk-on-keymap-defined-area-p
-              context-skk-in-read-only-p)))
     (push (lambda ()
             (if (bolp)
                 (org-at-heading-p)
