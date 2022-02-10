@@ -896,9 +896,12 @@
   :unless (equal (shell-command-to-string "command -v cmigemo") "")
   :straight t
   :require t
+  :custom
+  (migemo-options . '("-q" "--emacs"))
+  (migemo-coding-system . 'utf-8-unix)
+  (migemo-user-dictionary . nil)
+  (migemo-regex-dictionary . nil)
   :config
-  (setq migemo-options '("-q" "--emacs"))
-  (setq migemo-coding-system 'utf-8-unix)
   ;; Set your installed path
   (setq migemo-command
         (cond ((eq system-type 'darwin)    "cmigemo")
@@ -912,8 +915,6 @@
               ((string-match-p "arch" operating-system-release)
                "/usr/share/migemo/utf-8/migemo-dict")
               (t "/usr/share/cmigemo/utf-8/migemo-dict")))
-  (setq migemo-user-dictionary nil)
-  (setq migemo-regex-dictionary nil)
   (load-library "migemo")
   (migemo-init))
 
