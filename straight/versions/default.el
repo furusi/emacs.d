@@ -18,7 +18,7 @@
  ("consult-lsp" . "f4f195046b97be5ce0406e0723921b3393d9442e")
  ("consult-projectile" . "655b328ce3fe51a8ff89d7b0a839bc8dfe9e51c0")
  ("consult-yasnippet" . "9f38ad510328e708370a3a6b41cf40e8bd031b04")
- ("corfu" . "533b3b93b27eb3b7aad504de48312f6c22ee20aa")
+ ("corfu" . "8435c730c5e1e36a871520ad35a2c41ddde99fb2")
  ("csv-mode" . "50ecdbba544ac084e96f8283dd48d1f7c7acfa0c")
  ("dap-mode" . "76cad34de8984f57c2b1e374e9c985cc7ec8dad0")
  ("dart-mode" . "3bac14200f9f8f8fcebc383087572da5c3823c34")

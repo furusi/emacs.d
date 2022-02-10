@@ -782,17 +782,25 @@
     (corfu :type git :host github :repo "minad/corfu" :branch "main"
            :files ("*" (:exclude ".git")))
     :emacs>= 27.1
+    :bind
+    (:corfu-map
+     ("M-SPC" . corfu-insert-separator)
+     ("M-m" . corfu-move-to-minibuffer)
+     )
     :custom
     ((completion-cycle-threshold . 3)
      (corfu-auto . t)
-     (corfu-cycle . t)
-     (tab-always-indent . 'complete))
+     (corfu-cycle . t))
     :hook
     (eshell-mode-hook . (lambda ()
-                          (setq-local corfu-quit-at-boundary t
-                                      corfu-quit-no-match t
-                                      corfu-auto nil)))
+                          (setq-local corfu-auto t
+                                      corfu-quit-no-match 'separator)))
     :init
+    (defun corfu-move-to-minibuffer ()
+     (interactive)
+     (let ((completion-extra-properties corfu--extra)
+           completion-cycle-threshold completion-cycling)
+       (apply #'consult-completion-in-region completion-in-region--data)))
     (corfu-global-mode))
 
   (leaf tempel
