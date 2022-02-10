@@ -54,8 +54,7 @@
     (use-file-dialog . nil)
     (vc-follow-symlinks . t)
     (vc-handled-backends . '(Git))
-    )
-  )
+    ))
 
 (leaf custom-darwin
   :if (eq system-type 'darwin)
@@ -119,12 +118,6 @@
 (leaf image-mode
   :bind (:image-mode-map
          ("=" . image-increase-size)))
-
-(leaf completion
-  :emacs>= 27
-  :config
-  (push 'flex completion-styles)
-  )
 
 (leaf help-mode
   :bind
@@ -650,8 +643,9 @@
 
     (consult-customize
      consult-theme
+     :preview-key (list :debounce 0.6 'any)
      consult-goto-line consult-line
-     :preview-key (list :debounce 0.2 'any)
+     :preview-key (list 'any)
      consult-ripgrep consult-git-grep consult-grep
      consult-bookmark consult-recent-file consult-xref
      consult--source-recent-file consult--source-project-recent-file consult--source-bookmark
