@@ -2353,6 +2353,15 @@ See `org-capture-templates' for more information."
   :custom
   (elfeed-search-date-format . '("%Y-%m-%d %H:%M" 16 :left))
   )
+(leaf elfeed-web
+  :doc "web interface to Elfeed"
+  :req "simple-httpd-1.5.1" "elfeed-3.2.0" "emacs-24.3"
+  :tag "emacs>=24.3"
+  :url "https://github.com/skeeto/elfeed"
+  :emacs>= 24.3
+  :straight t
+  :require t
+  :after elfeed)
 (leaf powershell
   :doc "Mode for editing PowerShell scripts"
   :req "emacs-24"
