@@ -643,7 +643,7 @@
 
     (consult-customize
      consult-theme
-     :preview-key (list :debounce 0.6 'any)
+     :preview-key (list :debounce 1.0 'any)
      consult-goto-line consult-line
      :preview-key (list 'any)
      consult-ripgrep consult-git-grep consult-grep
@@ -919,7 +919,9 @@
   :diminish (global-undo-tree-mode undo-tree-mode)
   :require t
   :global-minor-mode global-undo-tree-mode
-  :custom (undo-tree-history-directory-alist . '(("." . "~/.emacs.d/undo-tree/"))))
+  :custom
+  ((undo-tree-history-directory-alist . '(("." . "~/.emacs.d/undo-tree/")))
+   (undo-tree-incompatible-major-modes . '(term-mode fundamental-mode))))
 
 (leaf rust-mode
   :doc "A major-mode for editing Rust source code"
