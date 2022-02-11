@@ -1461,7 +1461,8 @@
     :commands (org-roam-node-find)
     :custom
     ((org-roam-title-to-slug-function . (lambda (text) text))
-     (org-roam-v2-ack . t))
+     (org-roam-v2-ack . t)
+     (org-roam-completion-everywhere . t))
     :bind
     (("C-c n l" . org-roam-buffer-toggle)
      ("C-c n f" . org-roam-node-find)
