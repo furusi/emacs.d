@@ -1459,7 +1459,7 @@
   (leaf org-roam
     :req "emacs-26.1" "dash-2.13" "f-0.17.2" "org-9.4" "emacsql-3.0.0" "emacsql-sqlite-1.0.0" "magit-section-3.0.0"
     :emacs>= 26.1
-    :straight t
+    :straight (org-roam :type git :flavor melpa :files (:defaults "extensions/*" "org-roam-pkg.el") :host github :repo "org-roam/org-roam")
     :commands (org-roam-node-find)
     :custom
     ((org-roam-title-to-slug-function . (lambda (text) text))
@@ -1496,14 +1496,18 @@
                    :head "#+title: ${title}\n* Overview\n"
                    :unnarrowed t)
                  )
+    (setq org-roam-dailies-capture-templates
+      '(("d" "default" entry
+         "* %?"
+         :target
+         (file+head+olp "%<%Y-%m>.org" "#+TITLE: %<%Y-%m>\n\n\n" ("%<%Y-%m-%d>"))
+         )))
     (leaf org-roam-protocol
       :require t
       :after org
       )
-    ;; (leaf org-roam-ui
-    ;;   :straight (org-roam-ui :type git :host github :repo "org-roam/org-roam-ui")
-    ;;   )
-    (leaf org-roam-ui
+    )
+  (leaf org-roam-ui
       :req "emacs-27.1" "org-roam-2.0.0" "simple-httpd-20191103.1446" "websocket-1.13"
       :emacs>= 27.1
       :after org
@@ -1512,10 +1516,7 @@
       :hook (after-init-hook . org-roam-ui-mode)
       :custom ((org-roam-ui-sync-theme . t)
                (org-roam-ui-follow . t)
-               (org-roam-ui-update-on-save . t)
-               ;; (org-roam-ui-open-on-start . t)
-               ))
-    )
+               (org-roam-ui-update-on-save . t)))
 
   (leaf org-journal
     :straight t
