@@ -888,6 +888,7 @@
 
 (leaf migemo
   :unless (equal (shell-command-to-string "command -v cmigemo") "")
+  :disabled t
   :straight t
   :require t
   :custom
