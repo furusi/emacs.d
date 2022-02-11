@@ -1357,6 +1357,8 @@
 
   (leaf org-agenda
     :after org
+    :custom
+    ((org-agenda-span . 'fortnight))
     :config
     (defvar org-agenda-static-dirs '("agenda"
                                      "calendar"))
@@ -1371,15 +1373,7 @@
     (mapc (lambda (d)
             (add-to-list 'org-agenda-files
                          (file-name-as-directory (format "%s%s" org-directory d))))
-          org-agenda-static-dirs)
-    
-    (setq org-agenda-custom-commands
-          '(("a" "(override)Agenda for 2 weeks"
-             ((agenda "" ((org-agenda-span 14)))))
-            ("n" "Agenda and all TODOs"
-             ((agenda "")
-              (alltodo "")))))
-    )
+          org-agenda-static-dirs))
 
   (leaf org-contrib
     :require t
