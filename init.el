@@ -2153,14 +2153,19 @@ See `org-capture-templates' for more information."
     :require t
     :commands (lsp lsp-deferred)
     :custom ((lsp-auto-execute-action . nil)
-             (lsp-keymap-prefix . "C-c C-l"))
+             (lsp-keymap-prefix . "C-c C-l")
+             (lsp-completion-provider . :none))
     :hook ((lsp-mode-hook  . lsp-enable-which-key-integration)
+           (lsp-completion-mode-hook . my-lsp-mode-setup-completion)
            (c-mode-hook    . lsp-deferred)
            (css-mode-hook  . lsp-deferred)
            (html-mode-hook . lsp-deferred))
     :init
     (setq read-process-output-max (* 1024 1024))
-    (setq garbage-collection-messages t))
+    (setq garbage-collection-messages t)
+    (defun my-lsp-mode-setup-completion ()
+      (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+            '(flex))))
   
   (leaf lsp-python-ms
     :disabled t
