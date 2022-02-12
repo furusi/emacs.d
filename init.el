@@ -378,6 +378,7 @@
          (:minibuffer-local-map
           ("C-j" . skk-kakutei)))
   :hook ((skk-load-hook . (lambda () (require 'context-skk))) ;自動的に英字モードになる
+         (skk-jisyo-edit-mode-hook . (lambda () (read-only-mode t)))
          ;; isearch
          (isearch-mode-hook . skk-isearch-mode-setup) ; isearch で skk のセットアップ
          (isearch-mode-end-hook . skk-isearch-mode-cleanup) ; isearch で skk のクリーンアップ
