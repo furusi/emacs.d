@@ -31,7 +31,7 @@
     (backup-directory-alist . '((".*" . "~/.ehist")))
     (byte-compile-warnings . '(cl-functions))
     (comment-style . 'multi-line)
-    (custom-theme-directory . ,(locate-user-emacs-file "themes/")) ;; テーマのディレクトリを設定
+    (custom-theme-directory . ,(locate-user-emacs-file "themes")) ;; テーマのディレクトリを設定
     (default-frame-alist .'((width . 180) (height . 40)))
     (dired-dwim-target . t)
     (ediff-diff-options . "-w")
@@ -280,7 +280,7 @@
     )
   )
 (when (equal system-type 'gnu/linux)
-  (add-to-list 'load-path "~/opt/mu-1.0/mu4e/")
+  (add-to-list 'load-path "~/opt/mu-1.0/mu4e")
   ;;曖昧な文字幅を指定する
   (aset char-width-table ?→ 2)
 
@@ -347,7 +347,7 @@
                                         (format "projectile/%s/projectile-bookmarks.eld" emacs-version)))
     (projectile-sort-order . 'recently-active))
   :init
-  (let ((dir (locate-user-emacs-file (format "projectile/%s/" emacs-version))))
+  (let ((dir (locate-user-emacs-file (format "projectile/%s" emacs-version))))
     (unless (file-directory-p dir)
       (make-directory dir t))
     )
@@ -388,7 +388,7 @@
   `((skk-japanese-message-and-error . t)
     (skk-share-private-jisyo . t)
     (skk-isearch-start-mode . 'latin); isearch で skk の初期状態
-    (skk-user-directory . ,(locate-user-emacs-file "ddskk/"))
+    (skk-user-directory . ,(locate-user-emacs-file "ddskk"))
     (skk-use-jisx0201-input-method . t)
     (skk-henkan-strict-okuri-precedence . t)
     (skk-save-jisyo-instantly . t)
@@ -397,19 +397,20 @@
     )
   :init
   (leaf skk-dropbox
-    :if (file-exists-p "~/Dropbox/.config/ddskk/")
+    :if (file-exists-p "~/Dropbox/.config/ddskk")
     :custom
     ((skk-jisyo . "~/Dropbox/.config/ddskk/jisyo")
      (skk-jisyo-code . 'utf-8)))
-  (setq skk-get-jisyo-directory (expand-file-name (locate-user-emacs-file "skk-get-jisyo/")))
+  
+  (setq skk-get-jisyo-directory (expand-file-name (locate-user-emacs-file "skk-get-jisyo")))
   (let ((skk-jisyo-directory
-         (if (file-exists-p "~/Dropbox/.config/ddskk/skkdic-utf8/")
-             "~/Dropbox/.config/ddskk/skkdic-utf8/"
+         (if (file-exists-p "~/Dropbox/.config/ddskk/skkdic-utf8")
+             "~/Dropbox/.config/ddskk/skkdic-utf8"
            skk-get-jisyo-directory)))
-    (setq skk-large-jisyo (format "%sSKK-JISYO.L" skk-jisyo-directory))
+    (setq skk-large-jisyo (format "%s/SKK-JISYO.L" skk-jisyo-directory))
     (setq skk-extra-jisyo-file-list
           (mapcar (lambda (x)
-                    (format "%s%s" skk-jisyo-directory x))
+                    (format "%s/%s" skk-jisyo-directory x))
                   '("SKK-JISYO.lisp" "SKK-JISYO.station"
                     "SKK-JISYO.assoc" "SKK-JISYO.edict"
                     "SKK-JISYO.law" "SKK-JISYO.jinmei"
@@ -807,7 +808,7 @@
       ("C-i" . tempel-next)
       ("C-I" . tempel-previous)))
     :custom
-    `((tempel-file . ,(format "%ssnippets/tempel/templates" user-emacs-directory))))
+    `((tempel-file . ,(format "%s/snippets/tempel/templates" user-emacs-directory))))
 
   (leaf cape
     :doc "Completion At Point Extensions"
@@ -921,7 +922,7 @@
   :require t
   :global-minor-mode global-undo-tree-mode
   :custom
-  ((undo-tree-history-directory-alist . '(("." . "~/.emacs.d/undo-tree/")))
+  ((undo-tree-history-directory-alist . '(("." . "~/.emacs.d/undo-tree")))
    (undo-tree-incompatible-major-modes . '(term-mode fundamental-mode))))
 
 (leaf rust-mode
@@ -1008,7 +1009,7 @@
   :diminish yas-minor-mode
   :config
   (yas-global-mode 1)
-  (add-to-list 'yas-snippet-dirs (format "%ssnippets/yasnippet/" user-emacs-directory))
+  (add-to-list 'yas-snippet-dirs (locate-user-emacs-file "snippets/yasnippet"))
   )
 
 (leaf yasnippet-snippets
@@ -1108,7 +1109,7 @@
          :local-repo "org" :depth 300 :branch "main"
          :pre-build
          (straight-recipes-org-elpa--build) :build (:not autoloads)
-         :files (:defaults "lisp/*.el" ("etc/styles/" "etc/styles/*")))
+         :files (:defaults "lisp/*.el" ("etc/styles" "etc/styles/*")))
     :custom
     ((org-export-allow-bind-keywords . t)
      (org-export-backends . '(ascii html icalendar latex md odt taskjuggler asciidoc pandoc gfm))
@@ -1198,12 +1199,12 @@
       (insert-zero-width-space))
     (setq org-directory
           (expand-file-name
-           (if (file-exists-p "~/git/notes/")
-               "~/git/notes/"
+           (if (file-exists-p "~/git/notes")
+               "~/git/notes"
              (progn
-               (when(not (file-exists-p "~/org/"))
-                 (mkdir "~/org/"))
-               "~/org/"))))
+               (when(not (file-exists-p "~/org"))
+                 (mkdir "~/org"))
+               "~/org"))))
     :config
     
     ;; org-habitモジュールを有効化
@@ -1241,34 +1242,34 @@
             ("MAIL" . ?m) ("PROJECT" . ?p) ("備忘録" . ?b)))
     (setq org-capture-templates
           `(("i" "インボックス" entry
-             (file ,(concat org-directory "inbox.org"))
+             (file ,(concat org-directory "/inbox.org"))
              "* %? %i\n%U\n")
             ;; ("h" "定期的にやること" entry
             ;;  (file ,(concat org-directory "habit.org"))
             ;;  "* %?\n %U\n")
             ("t" "タスク" entry
-             (file ,(concat org-directory "task.org"))
+             (file ,(concat org-directory "/task.org"))
              "* TODO %? %i\n%U\n")
             ("e" "イベント" entry
-             (file ,(concat org-directory "event.org"))
+             (file ,(concat org-directory "/event.org"))
              "* EVENT %?\n %a\n%U\n")
             ("n"
              "ノート(本文から書く)"
              entry
-             (file+headline, (concat org-directory "notes.org") "MEMO")
+             (file+headline, (concat org-directory "/notes.org") "MEMO")
              "* %U \n%?")
             ("N"
              "ノート(見出しから書く)"
              entry
-             (file+headline, (concat org-directory "notes.org") "MEMO")
+             (file+headline, (concat org-directory "/notes.org") "MEMO")
              "* %U %?\n\n\n")
             ("r" "読みかけ(リンク付き)" entry
-             (file ,(concat org-directory "reading.org"))
+             (file ,(concat org-directory "/reading.org"))
              "* %?\n %a\n %U\n")
             ("m"
              "みんなで会議"
              entry
-             (file+olp+datetree (concat org-directory "minutes.org") "会議")
+             (file+olp+datetree (concat org-directory "/minutes.org") "会議")
              "* %T %?"
              :empty-lines 1
              :jump-to-captured 1)
@@ -1283,19 +1284,19 @@
             ("g"
              "とりあえず 仕事を放り込む"
              entry
-             (file+headline (concat org-directory "gtd.org") "GTD")
+             (file+headline (concat org-directory "/gtd.org") "GTD")
              "** TODO %T %?\n   Entered on %U    %i\n"
              :empty-lines 1)
             ("i"
              "itemのテスト"
              item
-             (file+headline (concat org-directory "gtd.org") "GTD")
+             (file+headline (concat org-directory "/gtd.org") "GTD")
              "** TODO %T %?\n   Entered on %U    %i\n"
              :empty-lines 1)
             ("z"
              "'あれ'についてのメモ"
              entry
-             (file+headline , (concat org-directory "notes.org") "MEMO")
+             (file+headline , (concat org-directory "/notes.org") "MEMO")
              "* %U %? %^g\n\n"
              :empty-lines 1)))
     ;;
@@ -1365,7 +1366,7 @@
                                      "calendar"))
     ;; agendaに重複して登録されるファイルを削除
     (setq org-agenda-files
-          (let ((reg (format "%s\\(%s\\)"
+          (let ((reg (format "%s/\\(%s\\)"
                              org-directory
                              (string-join org-agenda-static-dirs "\\|"))))
             (cl-remove-if (lambda (file)
@@ -1373,7 +1374,7 @@
                           org-agenda-files)))
     (mapc (lambda (d)
             (add-to-list 'org-agenda-files
-                         (file-name-as-directory (format "%s%s" org-directory d))))
+                         (file-name-as-directory (format "%s/%s" org-directory d))))
           org-agenda-static-dirs))
 
   (leaf org-contrib
@@ -1479,7 +1480,7 @@
      ;;  ("C-c n I" . org-roam-insert-immediate))
      )
     :config
-    (setq org-roam-directory (format "%sroam/" org-directory))
+    (setq org-roam-directory (format "%s/roam" org-directory))
     (org-roam-db-autosync-mode)
     (when (eq system-type 'darwin)
       (setq org-roam-graph-viewer "open"))
@@ -1526,7 +1527,7 @@
       (org-journal-file-format . "%Y%m.org")
       (org-journal-file-header . "# -*- mode: org-journal; -*-"))
     :config
-    (setq org-journal-dir (concat org-directory "journal/")))
+    (setq org-journal-dir (concat org-directory "/journal")))
 
   ;; Org Mode LaTeX Export
 
@@ -1597,7 +1598,7 @@
        (lambda (filename)
          (add-to-list 'org-latex-classes
                       (append `(,(file-name-base filename))
-                              `(,(org-file-contents (format "%s%s" template-dir filename)))
+                              `(,(org-file-contents (format "%s/%s" template-dir filename)))
                               section-list)))
        (cddr (directory-files
               (locate-user-emacs-file "lisp/org/ox-latex/templates")))))
@@ -2390,9 +2391,9 @@ See `org-capture-templates' for more information."
 ;; クラスをディレクトリに関連づける
 (dolist (dir
          (mapcar
-          (lambda (str) (locate-user-emacs-file (format "packages/%s/straight/repos/" str)))
+          (lambda (str) (locate-user-emacs-file (format "packages/%s/straight/repos" str)))
           (cddr (directory-files
-                 (locate-user-emacs-file "packages/")))))
+                 (locate-user-emacs-file "packages")))))
   (dir-locals-set-directory-class
    (file-truename dir) 'read-only))
 
