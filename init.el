@@ -41,6 +41,7 @@
     (inhibit-startup-screen . t)
     (mark-ring-max . 32);; マークの数を32に増やす
     (menu-bar-mode . t)
+    (package-user-dir . ,(locate-user-emacs-file (format "elpa/%s" emacs-version)))
     (recentf-auto-cleanup . 'never)
     (recentf-max-menu-items . 30)
     (recentf-max-saved-items . 2000)
@@ -385,15 +386,24 @@
          )
   :mode ("jisyo" . skk-jisyo-edit-mode)
   :custom
-  `((skk-japanese-message-and-error . t)
-    (skk-share-private-jisyo . t)
-    (skk-isearch-start-mode . 'latin); isearch で skk の初期状態
-    (skk-user-directory . ,(locate-user-emacs-file "ddskk"))
-    (skk-use-jisx0201-input-method . t)
-    (skk-henkan-strict-okuri-precedence . t)
-    (skk-save-jisyo-instantly . t)
-    (skk-sticky-key . '(117 101))
+  `((skk-auto-insert-paren . t)
+    (skk-dcomp-activate . t)         ;動的補完
     (skk-egg-like-newline . t)           ;non-nilにするとEnterでの確定時に改行しない
+    (skk-get-jisyo-directory . ,(expand-file-name (locate-user-emacs-file "skk-get-jisyo")))
+    (skk-henkan-show-candidates-keys . '(?a ?o ?e ?u ?h ?t ?n ?s))
+    (skk-henkan-strict-okuri-precedence . t)
+    (skk-isearch-start-mode . 'latin); isearch で skk の初期状態
+    (skk-kutouten-type . 'en)
+    (skk-rom-kana-rule-list . '(("tni" nil ("ティ" . "てぃ")) ("dni" nil ("ディ" . "でぃ"))))
+    (skk-save-jisyo-instantly . t)
+    (skk-search-katakana . 'jisx0201-kana)
+    (skk-search-sagyo-henkaku . t)   ;サ行変格活用の動詞も送りあり変換出来るようにする
+    (skk-share-private-jisyo . t)
+    (skk-sticky-key . '(117 101))
+    (skk-use-act . t)                ;全角・半角カタカナを変換候補にする
+    (skk-use-jisx0201-input-method . t)
+    (skk-user-directory . ,(locate-user-emacs-file "ddskk"))
+    (skk-japanese-message-and-error . t)
     )
   :init
   (leaf skk-dropbox
@@ -402,7 +412,6 @@
     ((skk-jisyo . "~/Dropbox/.config/ddskk/jisyo")
      (skk-jisyo-code . 'utf-8)))
   
-  (setq skk-get-jisyo-directory (expand-file-name (locate-user-emacs-file "skk-get-jisyo")))
   (let ((skk-jisyo-directory
          (if (file-exists-p "~/Dropbox/.config/ddskk/skkdic-utf8")
              "~/Dropbox/.config/ddskk/skkdic-utf8"
@@ -416,20 +425,8 @@
                     "SKK-JISYO.law" "SKK-JISYO.jinmei"
                     "SKK-JISYO.fullname" "SKK-JISYO.geo"
                     "SKK-JISYO.itaiji" "SKK-JISYO.zipcode"
-                    "SKK-JISYO.okinawa" "SKK-JISYO.propernoun")))
-    )
-  ;; サ行変格活用の動詞も送りあり変換出来るようにする
-  (setq skk-search-sagyo-henkaku t)
-  ;; 全角・半角カタカナを変換候補にする
-  (setq skk-search-katakana 'jisx0201-kana)
-  (setq skk-use-act t)
-  (setq skk-henkan-show-candidates-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
-  (setq-default skk-kutouten-type 'en)
-  ;; 動的補完
-  (setq skk-dcomp-activate t)
-  (setq skk-rom-kana-rule-list
-        '(("tni" nil ("ティ" . "てぃ"))
-          ("dni" nil ("ディ" . "でぃ"))))
+                    "SKK-JISYO.okinawa" "SKK-JISYO.propernoun"))))
+  
   ;; ▼モードで BS を押したときには確定しないで前候補を表示する
   (setq skk-delete-implies-kakutei nil)
   ;; @@ skk-search-web.el
@@ -440,17 +437,18 @@
   ;; (add-to-list 'skk-search-prog-list
   ;; 	       '(skk-search-web 'skk-google-cgi-api-for-japanese-input)
   ;; 	       t))
-  (setq skk-auto-insert-paren t)
+  
   (add-hook  'dired-load-hook
-             (load "dired-x")
-             (global-set-key "\C-x\C-j" 'skk-mode))
+             (lambda ()
+               (load "dired-x")
+               (global-set-key "\C-x\C-j" 'skk-mode)))
   (leaf skk-study
     :require t)
   (leaf skk-hint
     :require t
-    :config
-    ;; ▼モード中で=漢字の読み方を指定する
-    (setq skk-hint-start-char ?=))
+    :custom
+    (skk-hint-start-char . ?=)          ;▼モード中で=漢字の読み方を指定する
+    )
   (leaf context-skk
     :config
     (add-to-list 'context-skk-programming-mode 'python-mode)
@@ -486,8 +484,9 @@
 
 (leaf eww
   :commands (eww)
+  :custom
+  (eww-search-prefix . "https://www.google.co.jp/search?q=")
   :config
-  (setq eww-search-prefix "https://www.google.co.jp/search?q=")
   (defun eww-disable-images ()
     "eww で画像表示させない"
     (interactive)
@@ -923,7 +922,8 @@
   :global-minor-mode global-undo-tree-mode
   :custom
   ((undo-tree-history-directory-alist . '(("." . "~/.emacs.d/undo-tree")))
-   (undo-tree-incompatible-major-modes . '(term-mode fundamental-mode))))
+   (undo-tree-incompatible-major-modes . '(term-mode fundamental-mode))
+   (undo-tree-visualizer-diff . t)))
 
 (leaf rust-mode
   :doc "A major-mode for editing Rust source code"
