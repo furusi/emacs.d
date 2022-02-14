@@ -933,7 +933,11 @@
   :emacs>= 26.1
   :after rust-mode markdown-mode project spinner xterm-color
   :custom ((rustic-lsp-server . 'rust-analyzer)
-           (rustic-lsp-client . 'eglot)))
+           (rustic-lsp-client . 'eglot))
+  :config
+  (when (eq rustic-lsp-client 'eglot)
+    (add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1))))
+  )
 
 (leaf ron-mode
   :doc "Rusty Object Notation mode"
