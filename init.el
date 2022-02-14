@@ -373,7 +373,7 @@
 
 ;; ddskk
 (leaf ddskk
-  :straight (ddskk :type git :host github :repo "furusi/ddskk")
+  :straight (ddskk :type git :host github :repo "skk-dev/ddskk")
   :commands skk-mode
   :bind (("C-x C-j" . skk-mode)
          (:minibuffer-local-map
