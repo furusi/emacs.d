@@ -388,6 +388,7 @@
   :custom
   `((skk-auto-insert-paren . t)
     (skk-dcomp-activate . t)         ;動的補完
+    (skk-delete-implies-kakutei . nil) ; ▼モードで BS を押したときには確定しないで前候補を表示する
     (skk-egg-like-newline . t)           ;non-nilにするとEnterでの確定時に改行しない
     (skk-get-jisyo-directory . ,(expand-file-name (locate-user-emacs-file "skk-get-jisyo")))
     (skk-henkan-show-candidates-keys . '(?a ?o ?e ?u ?h ?t ?n ?s))
@@ -426,18 +427,6 @@
                     "SKK-JISYO.fullname" "SKK-JISYO.geo"
                     "SKK-JISYO.itaiji" "SKK-JISYO.zipcode"
                     "SKK-JISYO.okinawa" "SKK-JISYO.propernoun"))))
-  
-  ;; ▼モードで BS を押したときには確定しないで前候補を表示する
-  (setq skk-delete-implies-kakutei nil)
-  ;; @@ skk-search-web.el
-  ;; (setq skk-use-search-web t)
-  ;; (when skk-use-search-web
-  ;; ;; 辞書変換が尽きたら Google CGI API for Japanese Input による変換を実行
-  ;; ;; https://www.google.co.jp/ime/cgiapi.html
-  ;; (add-to-list 'skk-search-prog-list
-  ;; 	       '(skk-search-web 'skk-google-cgi-api-for-japanese-input)
-  ;; 	       t))
-  
   (add-hook  'dired-load-hook
              (lambda ()
                (load "dired-x")
