@@ -13,7 +13,7 @@
  ("cape" . "92c3168283c6d9faa3fcf2e72d0d71afbfa5d6e1")
  ("cfrs" . "c1f639d7bfd3e728cf85dbe224b06a4be76158f4")
  ("company-mode" . "c25f1fbc3850e36e6521b77fa1641d5583365d8b")
- ("consult" . "1a6ed29e92f00266daff4ff5f62602f53ef7d158")
+ ("consult" . "2106eee75f84206715631da45eae08827da266f9")
  ("consult-eglot" . "f93c571dc392a8b11d35541bffde30bd9f411d30")
  ("consult-lsp" . "f4f195046b97be5ce0406e0723921b3393d9442e")
  ("consult-projectile" . "655b328ce3fe51a8ff89d7b0a839bc8dfe9e51c0")

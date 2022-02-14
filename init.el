@@ -601,7 +601,7 @@
            ([remap goto-line] . consult-goto-line)
            (:isearch-mode-map
             ("C-i" . my-consult-line)
-            ("M-e" . consult-isearch))
+            ("M-e" . consult-isearch-history))
            )
     :hook
     (completion-list-mode-hook . consult-preview-at-point-mode)
