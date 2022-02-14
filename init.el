@@ -1030,15 +1030,14 @@
   :mode (("\\.gradle$" . gradle-mode)))
 
 (leaf slime
-  :emacs< "28"
   :if (file-exists-p "~/.roswell/helper.el")
+  :straight t
+  :after macrostep
   :custom
   ((slime-auto-start . 'ask)
    )
   :hook ((lisp-mode-hook . slime-mode)
          )
-  :init
-  (load (expand-file-name "~/.roswell/helper.el"))
   :config
   ;; (slime-setup '(slime-fancy slime-company))
   (leaf slime-company
