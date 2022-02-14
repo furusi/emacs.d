@@ -256,7 +256,7 @@
     ;;                     :family "YuKyokasho Yoko")
     ;; 源ノ角ゴシック
     (set-face-attribute 'default nil
-                        :family "PlemolJP" :height 140)
+                        :family "PlemolJP" :height 150)
     (let* ((variable-tuple
             (cond ((x-list-fonts "PlemolJP") '(:font "PlemolJP"))
                   ((x-list-fonts "Source Sans Pro")       '(:font "Source Sans Pro"))
@@ -2359,6 +2359,7 @@ See `org-capture-templates' for more information."
   :straight t
   :require t
   :after elfeed)
+
 (leaf powershell
   :doc "Mode for editing PowerShell scripts"
   :req "emacs-24"
