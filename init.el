@@ -248,9 +248,8 @@
     ))
 
 (when (equal system-type 'darwin)
-  (setq ns-command-modifier (quote meta))
-  (when (or (eq window-system 'ns)
-            (eq window-system 'mac))
+  (setq ns-command-modifier 'meta)
+  (when (memq window-system '(ns mac))
     ;; 游教科書体
     ;; (set-face-attribute 'default nil
     ;;                     :family "YuKyokasho Yoko")

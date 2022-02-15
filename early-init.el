@@ -18,7 +18,7 @@
 (defvar bootstrap-version)
 (custom-set-variables `(package-user-dir
                         ,(locate-user-emacs-file
-                          (format "elpa/%s/" emacs-version))))
+                          (format "elpa/%s" emacs-version))))
 (setq straight-base-dir
       (locate-user-emacs-file
         (format "packages/%s/" emacs-version)))
@@ -60,15 +60,23 @@
     :ensure t
     :init
     ;; optional packages if you want to use :hydra, :el-get, :blackout,,,
-    (leaf hydra :ensure t)
-    (leaf el-get :ensure t)
-    (leaf blackout :ensure t)
+    (straight-use-package 'hydra)
+    (straight-use-package 'el-get)
+    (straight-use-package 'blackout)
 
     :config
     ;; initialize leaf-keywords.el
     (leaf-keywords-init))
+  
   (leaf leaf-convert
-    :ensure t))
+    :doc "Convert many format to leaf format"
+    :req "emacs-26.1" "leaf-3.6.0" "leaf-keywords-1.1.0" "ppp-2.1"
+    :tag "tools" "emacs>=26.1"
+    :url "https://github.com/conao3/leaf-convert.el"
+    :emacs>= 26.1
+    :straight t
+    :after leaf leaf-keywords ppp)
+  )
 
 (leaf diminish
   :straight t
