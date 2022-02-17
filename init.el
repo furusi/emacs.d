@@ -1512,7 +1512,6 @@
     :commands org-journal-new-entry
     :custom
     `((org-journal-file-type . 'monthly)
-      (org-journal-enable-agenda-integration . t)
       (org-journal-date-format . "%F (%a)")
       (org-journal-time-format . "<%Y-%m-%d %R> ")
       (org-journal-file-format . "%Y%m.org")
