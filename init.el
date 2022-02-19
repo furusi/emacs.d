@@ -37,6 +37,7 @@
     (ediff-diff-options . "-w")
     (ediff-split-window-function . 'split-window-horizontally)
     (ediff-window-setup-function . 'ediff-setup-windows-plain)
+    ;; (garbage-collection-messages . t) ; GC発動のタイミングを確認するときに有効にする
     (indent-tabs-mode . nil)
     (inhibit-startup-screen . t)
     (mark-ring-max . 32);; マークの数を32に増やす
@@ -2168,7 +2169,6 @@ See `org-capture-templates' for more information."
            (html-mode-hook . lsp-deferred))
     :init
     (setq read-process-output-max (* 1024 1024))
-    (setq garbage-collection-messages t)
     (defun my-lsp-mode-setup-completion ()
       (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
             '(flex))))
