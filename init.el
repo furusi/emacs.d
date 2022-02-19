@@ -138,15 +138,17 @@
   :url "https://github.com/Wilfred/helpful"
   :emacs>= 25
   :straight t
-  :after elisp-refs embark
   :bind
   ((:help-map
-   ("v" . helpful-variable)
-   ("f" . helpful-function)
-   ("o" . helpful-symbol)
-   )
+    :package help
+    ("v" . helpful-variable)
+    ("f" . helpful-callable)
+    ("o" . helpful-symbol)
+    ("k" . helpful-key)
+    )
    (:embark-symbol-map
-   ("h" . helpful-symbol)))
+    :package embark
+    ("h" . helpful-symbol)))
   )
 
 (leaf diff-mode
