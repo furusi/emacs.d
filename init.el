@@ -130,6 +130,24 @@
    ("v" . scroll-up-command)
    ("V" . scroll-down-command)))
 
+(leaf helpful
+  :doc "A better *help* buffer"
+  :req "emacs-25" "dash-2.18.0" "s-1.11.0" "f-0.20.0" "elisp-refs-1.2"
+  :tag "lisp" "help" "emacs>=25"
+  :url "https://github.com/Wilfred/helpful"
+  :emacs>= 25
+  :straight t
+  :after elisp-refs embark
+  :bind
+  ((:help-map
+   ("v" . helpful-variable)
+   ("f" . helpful-function)
+   ("o" . helpful-symbol)
+   )
+   (:embark-symbol-map
+   ("h" . helpful-symbol)))
+  )
+
 (leaf diff-mode
   :bind
   (:diff-mode-map
