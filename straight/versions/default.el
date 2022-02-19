@@ -96,7 +96,7 @@
  ("melpa" . "b46e83f2ea2c4df1ef343c79c7e249605c9639b3")
  ("meson-mode" . "1a2e2abb098c9288c2cdb3affbad76edd98abf59")
  ("migemo" . "f756cba3d5268968da361463c2e29b3a659a3de7")
- ("modus-themes" . "4f177f036b30dd6c1f2e6c5342f2b87e034dc97e")
+ ("modus-themes" . "1c7776497617a6437a3ff3d805fc0eeee41d30e0")
  ("moody" . "60d49cb8ead8fc24b7034fff4de3c4ad959398b6")
  ("ob-browser" . "a347d9df1c87b7eb660be8723982c7ad2563631a")
  ("orderless" . "1ccf74ffdbb0dd34caa63022e92f947c09c49c86")

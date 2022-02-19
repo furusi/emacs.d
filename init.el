@@ -616,6 +616,8 @@
            ("C-x r j" . consult-register)
            ("C-x r l"  . consult-bookmark)
            ("M-y" . consult-yank-pop)
+           ("C-x 4 b" . consult-buffer-other-window)
+           ("C-x 5 b" . consult-buffer-other-frame)
            ([remap goto-line] . consult-goto-line)
            (:isearch-mode-map
             ("C-i" . my-consult-line)
