@@ -1,3 +1,4 @@
+;;;  -*- lexical-binding: t -*-
 (defun my-set-frame-width ()
   (interactive)
   (set-frame-width (selected-frame)
@@ -24,3 +25,41 @@
 
 (defun combination (n r)
   (/ (factoral n) (* (factoral r) (factoral (- n r)))))
+
+(defvar my-resize-window-map
+  (let ((map (make-sparse-keymap)))
+    (suppress-keymap map)
+    (mapc (lambda (char)
+            (define-key map (string char)
+              'my--resize-window-help-message))
+          (number-sequence #x21 #x7F))
+    (mapc (lambda (e)
+            (define-key map (string (car e))
+              (lambda ()
+                (interactive)
+                (apply (cadr e) (cddr e)) (my--resize-window-help-message))))
+          '((?> . (enlarge-window-horizontally 1))
+            (?< . (shrink-window-horizontally 1))
+            (?+ . (enlarge-window 1))
+            (?= . (enlarge-window 1))
+            (?- . (shrink-window 1))))
+    map
+    ))
+
+(defun my--resize-window-help-message ()
+  (interactive)
+  (message "+/-: change height, >/<: change width, q: quit"))
+
+(defun my-resize-window-interactively ()
+  ""
+  (interactive)
+  (let ((original-map (current-local-map)))
+    (my--resize-window-help-message)
+    (define-key my-resize-window-map (string ?q)
+      (lambda ()
+        (interactive)
+        (use-local-map original-map)
+        (define-key my-resize-window-map (string ?q) nil)
+        (message "quit")))
+      (use-local-map my-resize-window-map)
+    ))

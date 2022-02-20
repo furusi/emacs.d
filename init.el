@@ -887,7 +887,7 @@
   :url "https://github.com/dandavison/magit-delta"
   :emacs>= 25.1
   :straight t
-  :after magit xterm-color
+  :after magit
   :hook
   (magit-mode-hook . (lambda () (magit-delta-mode t))))
 
