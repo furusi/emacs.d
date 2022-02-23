@@ -48,7 +48,6 @@
     (recentf-max-saved-items . 2000)
     (safe-local-variable-values . '((org-export-directory . "~/Dropbox/org")))
     (set-mark-command-repeat-pop . t)    ;; C-u C-SPCの後C-SPCだけでマークを遡れる
-    (straight-vc-git-default-clone-depth . 150)
     (tramp-ssh-controlmaster-options . "-4") ; ssh接続時にipv4アドレスを利用する
     (tool-bar-mode . nil)
     (truncate-lines . t)         ;文字列を折り返さない
@@ -356,6 +355,37 @@
   :straight t
   :require t
   )
+(leaf magit
+  :bind (("C-x g" . magit-status)
+         (:magit-diff-mode-map
+          ("=" . magit-diff-more-context)))
+  :require t
+  :straight t
+  :custom
+  ((magit-display-buffer-function . 'magit-display-buffer-fullframe-status-v1)
+   (magit-diff-refine-hunk . 'all))
+  :config
+  ;; ediff時にorgファイルを全て表示する
+  (with-eval-after-load 'outline
+    (add-hook 'ediff-prepare-buffer-hook #'show-all)))
+
+(leaf magit-delta
+  :unless (equal (string-trim
+                  (shell-command-to-string "command -v delta")
+                  "^\"" "\"?[ \t\n\r]+")
+                 "")
+  :doc "Use Delta when displaying diffs in Magit"
+  :req "emacs-25.1" "magit-20200426" "xterm-color-2.0"
+  :tag "emacs>=25.1"
+  :url "https://github.com/dandavison/magit-delta"
+  :emacs>= 25.1
+  :straight t
+  :after magit
+  :hook
+  (magit-mode-hook . (lambda () (magit-delta-mode t))))
+
+(leaf magit-svn
+  :straight t)
 
 (leaf projectile
   :bind ((:projectile-mode-map
@@ -855,37 +885,7 @@
     )
   )
 
-(leaf magit
-  :bind (("C-x g" . magit-status)
-         (:magit-diff-mode-map
-          ("=" . magit-diff-more-context)))
-  :require t
-  :straight t
-  :custom
-  ((magit-display-buffer-function . 'magit-display-buffer-fullframe-status-v1)
-   (magit-diff-refine-hunk . 'all))
-  :config
-  ;; ediff時にorgファイルを全て表示する
-  (with-eval-after-load 'outline
-    (add-hook 'ediff-prepare-buffer-hook #'show-all)))
 
-(leaf magit-delta
-  :unless (equal (string-trim
-                  (shell-command-to-string "command -v delta")
-                  "^\"" "\"?[ \t\n\r]+")
-                 "")
-  :doc "Use Delta when displaying diffs in Magit"
-  :req "emacs-25.1" "magit-20200426" "xterm-color-2.0"
-  :tag "emacs>=25.1"
-  :url "https://github.com/dandavison/magit-delta"
-  :emacs>= 25.1
-  :straight t
-  :after magit
-  :hook
-  (magit-mode-hook . (lambda () (magit-delta-mode t))))
-
-(leaf magit-svn
-  :straight t)
 (leaf grip-mode
   :straight t
   :bind ((:markdown-mode-command-map

@@ -41,6 +41,7 @@
   (load bootstrap-file nil 'nomessage))
 
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+(custom-set-variables '(straight-vc-git-default-clone-depth 150))
 
 ;; Language and Character Code
 (set-language-environment 'Japanese)
