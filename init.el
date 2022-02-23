@@ -467,13 +467,12 @@
     (add-hook 'org-mode-hook (lambda ()
                                (setq-local
                                 context-skk-context-check-hook
-                                (append (lambda () (if (bolp) (org-at-heading-p) nil))
-                                        (lambda () (if (bolp) (org-at-block-p) nil))
-                                        (lambda () (if (bolp) (or (org-at-item-bullet-p) (org-at-item-checkbox-p)) nil))
-                                        '(context-skk-out-of-string-or-comment-in-programming-mode-p
-                                          context-skk-on-keymap-defined-area-p
-                                          context-skk-in-read-only-p)))
-                               ))
+                                `(,(lambda () (if (bolp) (org-at-heading-p) nil))
+                                  ,(lambda () (if (bolp) (org-at-block-p) nil))
+                                  ,(lambda () (if (bolp) (or (org-at-item-bullet-p) (org-at-item-checkbox-p)) nil))
+                                  context-skk-out-of-string-or-comment-in-programming-mode-p
+                                  context-skk-on-keymap-defined-area-p
+                                  context-skk-in-read-only-p))))
     (context-skk-mode)
     )
   (defun skk-set-display-table ()
