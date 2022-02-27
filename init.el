@@ -361,13 +361,42 @@
           ("=" . magit-diff-more-context)))
   :require t
   :straight t
+  :hook
+  (ediff-keymap-setup-hook . add-d-to-ediff-mode-map)
   :custom
   ((magit-display-buffer-function . 'magit-display-buffer-fullframe-status-v1)
    (magit-diff-refine-hunk . 'all))
+  :init
+  ;; https://stackoverflow.com/questions/9656311/conflict-resolution-with-emacs-ediff-how-can-i-take-the-changes-of-both-version/29757750#29757750
+  (defun ediff-copy-both-to-C ()
+    (interactive)
+    (ediff-copy-diff ediff-current-difference nil 'C nil
+                     (concat
+                      (ediff-get-region-contents ediff-current-difference 'A ediff-control-buffer)
+                      (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
+  (defun add-d-to-ediff-mode-map ()
+    (when (ediff-merge-job)
+      (define-key ediff-mode-map "d" 'ediff-copy-both-to-C)
+      (setq-local ediff-long-help-message-merge
+            "
+p,DEL -previous diff |     | -vert/horiz split   |  x -copy buf X's region to C
+n,SPC -next diff     |     h -highlighting       |  d -copy both to C
+    j -jump to diff  |     @ -auto-refinement    |  r -restore buf C's old diff
+   gx -goto X's point|    ## -ignore whitespace  |  * -refine current region
+  C-l -recenter      | #f/#h -focus/hide regions |  ! -update diff regions
+  v/V -scroll up/dn  |     X -read-only in buf X |  + -combine diff regions
+  </> -scroll lt/rt  |     m -wide display       | wx -save buf X
+    ~ -swap variants |     s -shrink window C    | wd -save diff output
+                     |  $$ -show clashes only    |  / -show/hide ancestor buff
+                     |  $* -skip changed regions |  & -merge w/new default
+"
+            )))
   :config
   ;; ediff時にorgファイルを全て表示する
   (with-eval-after-load 'outline
-    (add-hook 'ediff-prepare-buffer-hook #'show-all)))
+    (add-hook 'ediff-prepare-buffer-hook #'show-all))
+  
+  )
 
 (leaf magit-delta
   :unless (equal (string-trim
