@@ -87,7 +87,7 @@
  ("lsp-treemacs" . "c40a381730251039d33400cc14539c1e0729385f")
  ("lsp-ui" . "39043fe44cd82df2bc67deb07ad3224c651ea7b2")
  ("macrostep" . "424e3734a1ee526a1bd7b5c3cd1d3ef19d184267")
- ("magit" . "16b313ba47872613c735863e9ece4193d4fc0ec4")
+ ("magit" . "512d78cb3a15cd4fec8f14eb219462b577e6547d")
  ("magit-delta" . "5fc7dbddcfacfe46d3fd876172ad02a9ab6ac616")
  ("magit-svn" . "350493217afdb7637564e089f475909adecd9208")
  ("marginalia" . "e9540a7b80f9c4d044748b88720e5cba3e30c20a")
