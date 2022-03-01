@@ -1821,6 +1821,15 @@ See `org-capture-templates' for more information."
      (org-gcal-up-days . 180))
     :config
     (load "~/Dropbox/org/googlecalendar/org-gcal-config.el"))
+
+  (leaf org-modern
+  :doc "Modern looks for Org"
+  :req "emacs-27.1"
+  :tag "emacs>=27.1"
+  :url "https://github.com/minad/org-modern"
+  :emacs>= 27.1
+  :straight t)
+  
   (leaf ox-slimhtml
     :after org
     :straight t
