@@ -46,7 +46,6 @@
     (recentf-auto-cleanup . 'never)
     (recentf-max-menu-items . 30)
     (recentf-max-saved-items . 2000)
-    (safe-local-variable-values . '((org-export-directory . "~/Dropbox/org")))
     (set-mark-command-repeat-pop . t)    ;; C-u C-SPCの後C-SPCだけでマークを遡れる
     (tramp-ssh-controlmaster-options . "-4") ; ssh接続時にipv4アドレスを利用する
     (tool-bar-mode . nil)
