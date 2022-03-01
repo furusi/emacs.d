@@ -88,6 +88,10 @@
 (leaf deepl-translate
   :url "https://uwabami.github.io/cc-env/Emacs.html"
   :commands my-deepl-translate
+  :bind
+  (:embark-region-map
+   :package embark
+   ("T" . my-deepl-translate))
   :preface
   (require 'url-util)
   (defun my-deepl-translate (&optional string)
