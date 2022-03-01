@@ -81,7 +81,7 @@
      ;; mac
      ((eq system-type 'darwin)
       (setq browse-url-browser-function #'browse-url-default-macosx-browser))
-     ;;linux     
+     ;;linux
      (t
       (setq browse-url-browser-function #'browse-url-firefox)))))
 
@@ -177,7 +177,7 @@
   (initchart-record-execution-time-of require feature))
 
 (defun which-linux-distribution ()
-  "return string which obtains from 'lsb_release' command"
+  "Return string which obtains from 'lsb_release' command."
   (interactive)
   (if (eq system-type 'gnu/linux)
       (string-trim (shell-command-to-string "lsb_release -sd")
@@ -256,8 +256,7 @@
     `(lambda () (interactive) (insert ,val)))
   (define-minor-mode special-char-mode
     "Toggle Special Character mode"
-    nil
-    " SpecialChar"
+    :init-value " SpecialChar"
     `(
       (,(kbd "1") . ,(ins-val "!")) (,(kbd "!") . ,(ins-val "1")) (,[kp-1] . ,(ins-val "1"))
       (,(kbd "2") . ,(ins-val "@")) (,(kbd "@") . ,(ins-val "2")) (,[kp-2] . ,(ins-val "2"))
@@ -1807,9 +1806,11 @@ See `org-capture-templates' for more information."
       (display-line-numbers-mode -1)
       (setq pdf-annot-activate-created-annotations t)
       (setq pdf-view-resize-factor 1.1)))
+
   (leaf org-re-reveal
     :straight t
     :after org)
+
   (leaf org-gcal
     :if (file-exists-p "~/Dropbox/org/googlecalendar/org-gcal-config.el")
     :straight t
@@ -2193,7 +2194,7 @@ See `org-capture-templates' for more information."
 
 ;; https://gist.github.com/tek-nishi/a7fc3933be5e62c7eeaa
 (defun my-insert-newline-and-indent(arg)
-  "カーソル行の上や下に一行挿入してインデント(前置引数が４だと上の行に挿入)"
+  "カーソル行の上や下に一行挿入してインデント(ARGが４だと上の行に挿入)."
   (interactive "p")
   (let ((p (if (eq arg 4)
                1
@@ -2204,6 +2205,8 @@ See `org-capture-templates' for more information."
 
 ;;from https://uwabami.github.io/cc-env/Emacs.html
 (defun my-make-scratch (&optional arg)
+  "SCRATCHバッファを作成する.
+ARGはなんに使う？"
   (interactive)
   (progn
     ;; "*scratch*" を作成して buffer-list に放り込む
@@ -2220,6 +2223,7 @@ See `org-capture-templates' for more information."
           ((= arg 1) (message "another *scratch* is created")))))
 ;;
 (defun my-buffer-name-list ()
+  "バッファのリストを作成する."
   (mapcar (function buffer-name) (buffer-list)))
 (add-hook 'kill-buffer-query-functions
           ;; *scratch* バッファで kill-buffer したら内容を消去するだけにする
