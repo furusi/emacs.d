@@ -380,7 +380,7 @@
     (when (ediff-merge-job)
       (define-key ediff-mode-map "d" 'ediff-copy-both-to-C)
       (setq-local ediff-long-help-message-merge
-            "
+                  "
 p,DEL -previous diff |     | -vert/horiz split   |  x -copy buf X's region to C
 n,SPC -next diff     |     h -highlighting       |  d -copy both to C
     j -jump to diff  |     @ -auto-refinement    |  r -restore buf C's old diff
@@ -392,7 +392,7 @@ n,SPC -next diff     |     h -highlighting       |  d -copy both to C
                      |  $$ -show clashes only    |  / -show/hide ancestor buff
                      |  $* -skip changed regions |  & -merge w/new default
 "
-            )))
+                  )))
   :config
   ;; ediff時にorgファイルを全て表示する
   (with-eval-after-load 'outline
@@ -780,7 +780,9 @@ n,SPC -next diff     |     h -highlighting       |  d -copy both to C
     :bind
     (("C-." . embark-act)         ;; pick some comfortable binding
      ("C-;" . embark-dwim)        ;; good alternative: M-.
-     ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+     ("C-h B" . embark-bindings) ;; alternative for `describe-bindings'
+     (:embark-package-map
+      ("b" . embark-browse-package-url)))
 
     :init
 
@@ -1164,6 +1166,7 @@ n,SPC -next diff     |     h -highlighting       |  d -copy both to C
                              (file . find-file)
                              (wl . wl-other-frame)))
      (org-todo-keywords . '((sequence "TODO(t)" "WAIT(w)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELLED(c)")))
+     (org-special-ctrl-a/e . t)
      (org-src-lang-modes . '(("C" . c)
                              ("C++" . c++)
                              ("arduino" . arduino)
