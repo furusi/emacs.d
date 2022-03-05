@@ -524,15 +524,19 @@ n,SPC -next diff     |     h -highlighting       |  d -copy both to C
     (dolist (mode '(python-mode js-mode rustic-mode))
       (add-to-list 'context-skk-programming-mode mode))
     (setq context-skk-mode-off-message "[context-skk] 日本語入力 off")
+    (defun my-context-skk-check-org ()
+      (if (bolp)
+            (cond
+             ((org-at-heading-p) t)
+             ((org-at-block-p) t)
+             ((or (org-at-item-bullet-p) (org-at-item-checkbox-p)) t)
+             (t nil))
+          nil))
     (add-hook 'org-mode-hook
               (lambda ()
                 (setq-local
                  context-skk-context-check-hook
-                 `(,(lambda () (if (bolp) (org-at-heading-p) nil))
-                   ,(lambda () (if (bolp) (org-at-block-p) nil))
-                   ,(lambda () (if (bolp) (or (org-at-item-bullet-p) (org-at-item-checkbox-p)) nil))
-                   context-skk-out-of-string-or-comment-in-programming-mode-p
-                   context-skk-on-keymap-defined-area-p
+                 '(my-context-skk-check-org
                    context-skk-in-read-only-p))))
     (context-skk-mode)
     )
