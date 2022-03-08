@@ -1408,10 +1408,10 @@ n,SPC -next diff     |     h -highlighting       |  d -copy both to C
       (interactive)
       (if (equal (shell-command-to-string "command -v pngpaste") "")
           (error "not found 'pngpaste' command"))
-      (let ((filename (format "%s/img/%s%s.png"
+      (let ((filename (format "%s/img/%s_%s.png"
                               org-directory
                               (format-time-string "%Y%m%d_%H%M%S")
-                              (make-temp-name "_"))))
+                              (make-temp-name ""))))
         (call-process "pngpaste" nil nil nil filename)
         (insert (format "[[%s]]" (file-relative-name filename)))
         (org-display-inline-images))))
