@@ -1146,7 +1146,6 @@ n,SPC -next diff     |     h -highlighting       |  d -copy both to C
 (leaf org*
   :config
   (leaf org
-    :commands ((org-at-item-bullet-p))
     :mode (("\\.org$" . org-mode))
     :straight
     (org :type git :repo "https://git.savannah.gnu.org/git/emacs/org-mode.git"
