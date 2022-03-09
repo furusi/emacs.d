@@ -783,11 +783,11 @@ n,SPC -next diff     |     h -highlighting       |  d -copy both to C
     :straight (embark :host github :repo "oantolin/embark" :branch "master" :files (:defaults))
     :emacs>= 26.1
     :bind
-    (("C-." . embark-act)         ;; pick some comfortable binding
-     ("C-;" . embark-dwim)        ;; good alternative: M-.
-     ("C-h B" . embark-bindings) ;; alternative for `describe-bindings'
-     (:embark-package-map
-      ("b" . embark-browse-package-url)))
+    `((,(if window-system "C-." "C-^") . embark-act)         ;; pick some comfortable binding
+      ("C-;" . embark-dwim)        ;; good alternative: M-.
+      ("C-h B" . embark-bindings) ;; alternative for `describe-bindings'
+      (:embark-package-map
+       ("b" . embark-browse-package-url)))
 
     :init
 
