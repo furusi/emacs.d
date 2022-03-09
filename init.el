@@ -2139,7 +2139,10 @@ See `org-capture-templates' for more information."
    )
   :config
   (modus-themes-load-themes)
-  (modus-themes-load-operandi))
+  (if window-system
+      (modus-themes-load-operandi)
+    (modus-themes-load-vivendi))
+  )
 
 (leaf markdown-mode
   :straight t
