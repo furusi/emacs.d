@@ -32,6 +32,7 @@
     (byte-compile-warnings . '(cl-functions))
     (comment-style . 'multi-line)
     (custom-theme-directory . ,(locate-user-emacs-file "themes")) ;; テーマのディレクトリを設定
+    (cursor-type . '(bar . 4))
     (default-frame-alist .'((width . 180) (height . 40)))
     (dired-dwim-target . t)
     (ediff-diff-options . "-w")
