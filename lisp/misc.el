@@ -107,6 +107,8 @@
 (defun my-resize-frame-interactively ()
   ""
   (interactive)
+  (unless window-system
+    (error "This function works GUI mode only."))
   (let ((map (copy-keymap my-resize-frame-map)))
     (setq-local my-resize-frame--original-map (current-local-map))
     (my-resize-window--help-message)

@@ -240,7 +240,7 @@
 (leaf bind-key
   :bind
   (("C-c t l" . toggle-truncate-lines)
-   ("C-t" . other-window)
+   ;; ("C-t" . other-window)
    ("M-<f1>" . other-frame)  ;Macのショートカットに合わせる
    ("C-o" . my-insert-newline-and-indent)
    (:isearch-mode-map
@@ -722,7 +722,7 @@ n,SPC -next diff     |     h -highlighting       |  d -copy both to C
      consult-bookmark consult-recent-file consult-xref
      consult--source-recent-file consult--source-project-recent-file consult--source-bookmark
      consult-find consult-org-agenda
-     :preview-key (kbd "C-,"))
+     :preview-key (kbd (if window-system "C-," "M-,")))
     (autoload 'projectile-project-root "projectile")
     (setq consult-project-root-function #'projectile-project-root)
     (setq completion-in-region-function
@@ -784,7 +784,7 @@ n,SPC -next diff     |     h -highlighting       |  d -copy both to C
     :straight (embark :host github :repo "oantolin/embark" :branch "master" :files (:defaults))
     :emacs>= 26.1
     :bind
-    `((,(if window-system "C-." "C-^") . embark-act)         ;; pick some comfortable binding
+    `((,(if window-system "C-." "M-.") . embark-act)         ;; pick some comfortable binding
       ("C-;" . embark-dwim)        ;; good alternative: M-.
       ("C-h B" . embark-bindings) ;; alternative for `describe-bindings'
       (:embark-package-map
@@ -932,7 +932,6 @@ n,SPC -next diff     |     h -highlighting       |  d -copy both to C
 
 (leaf migemo
   :unless (equal (shell-command-to-string "command -v cmigemo") "")
-  :disabled t
   :straight t
   :require t
   :custom
