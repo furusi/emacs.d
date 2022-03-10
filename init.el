@@ -468,7 +468,8 @@ n,SPC -next diff     |     h -highlighting       |  d -copy both to C
          )
   :mode ("jisyo" . skk-jisyo-edit-mode)
   :custom
-  `((skk-auto-insert-paren . t)
+  `((default-input-method . "japanese-skk")
+    (skk-auto-insert-paren . t)
     (skk-dcomp-activate . t)         ;動的補完
     (skk-delete-implies-kakutei . nil) ; ▼モードで BS を押したときには確定しないで前候補を表示する
     (skk-egg-like-newline . t)           ;non-nilにするとEnterでの確定時に改行しない
