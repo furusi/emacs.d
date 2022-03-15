@@ -1836,7 +1836,9 @@ See `org-capture-templates' for more information."
   :emacs>= 27.1
   :straight t
   :hook
-  ((org-agenda-finalize-hook . org-modern-agenda)))
+  ((org-agenda-finalize-hook . (lambda ()
+                                 (org-modern-mode)
+                                 (org-modern-agenda)))))
   
   (leaf ox-slimhtml
     :after org
