@@ -1834,7 +1834,9 @@ See `org-capture-templates' for more information."
   :tag "emacs>=27.1"
   :url "https://github.com/minad/org-modern"
   :emacs>= 27.1
-  :straight t)
+  :straight t
+  :hook
+  ((org-agenda-finalize-hook . org-modern-agenda)))
   
   (leaf ox-slimhtml
     :after org

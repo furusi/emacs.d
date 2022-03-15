@@ -110,7 +110,7 @@
  ("org-download" . "947ca223643d28e189480e607df68449c15786cb")
  ("org-gcal.el" . "8b6df4b727339e3933c68045e104b6b1d99816f7")
  ("org-journal" . "f121450610650c63aabf13afd0d2089e05fad2e4")
- ("org-modern" . "5c50baecd7cd605ec8ac23857f3696b7f1fee4c8")
+ ("org-modern" . "0b7fc3742000431390a2de6be159f547dc4bd436")
  ("org-noter" . "9ead81d42dd4dd5074782d239b2efddf9b8b7b3d")
  ("org-pdftools" . "a5b61bca3f8c91b0859bb0df1a929f9a31a57b99")
  ("org-re-reveal" . "55fca47c740c50fe04cbf2b8ae90e02174626c0c")
