@@ -2077,7 +2077,9 @@ See `org-capture-templates' for more information."
   :hook (after-init-hook . smartparens-global-mode)
   :bind
   (:emacs-lisp-mode-map
-   ("C-c C-u" . sp-backward-up-sexp)))
+   ("C-c C-u" . sp-backward-up-sexp)
+   ("C-c C-n" . sp-next-sexp)
+   ("C-c C-p" . sp-previous-sexp)))
 
 (leaf kotlin-mode
   :straight t
