@@ -39,6 +39,9 @@
     (ediff-split-window-function . 'split-window-horizontally)
     (ediff-window-setup-function . 'ediff-setup-windows-plain)
     ;; (garbage-collection-messages . t) ; GC発動のタイミングを確認するときに有効にする
+    (eol-mnemonic-dos . "(CRLF)")
+    (eol-mnemonic-mac . "(CR)")
+    (eol-mnemonic-unix . "(LF)")
     (indent-tabs-mode . nil)
     (inhibit-startup-screen . t)
     (mark-ring-max . 32);; マークの数を32に増やす
@@ -48,6 +51,7 @@
     (recentf-max-menu-items . 30)
     (recentf-max-saved-items . 2000)
     (set-mark-command-repeat-pop . t)    ;; C-u C-SPCの後C-SPCだけでマークを遡れる
+    (show-paren-style . 'mixed)
     (tramp-ssh-controlmaster-options . "-4") ; ssh接続時にipv4アドレスを利用する
     (tool-bar-mode . nil)
     (truncate-lines . t)         ;文字列を折り返さない
