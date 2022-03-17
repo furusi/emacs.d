@@ -2534,6 +2534,12 @@ ARGはなんに使う？"
   :emacs>= 24
   :straight t)
 
+(leaf twittering-mode
+  :doc "Major mode for Twitter"
+  :tag "web" "twitter"
+  :url "http://twmode.sf.net/"
+  :straight t)
+
 (dolist (filename
          (cddr (directory-files
                 (locate-user-emacs-file "lisp"))))
