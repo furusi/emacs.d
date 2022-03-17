@@ -1839,6 +1839,24 @@ See `org-capture-templates' for more information."
   ((org-agenda-finalize-hook . (lambda ()
                                  (org-modern-mode)
                                  (org-modern-agenda)))))
+
+  (leaf anki-editor
+  :doc "Minor mode for making Anki cards with Org"
+  :req "emacs-25" "request-0.3.0" "dash-2.12.0"
+  :tag "emacs>=25"
+  :url "https://github.com/louietan/anki-editor"
+  :emacs>= 25
+  :straight t
+  :hook
+  (anki-editor-mode-hook . (lambda ()
+                             (leaf embark-anki-editor
+                               :bind
+                               (:embark-region-map
+                                :package embark
+                                ("c" . (lambda (_text)
+                                         (call-interactively 'anki-editor-cloze-region)
+                                         ))))))
+  )
   
   (leaf ox-slimhtml
     :after org
