@@ -2169,7 +2169,8 @@ See `org-capture-templates' for more information."
    (modus-themes-paren-match . '(bold intense))
    (modus-themes-org-blocks . 'gray-background)
    (modus-themes-mode-line . '(borderless accented))
-   (modus-themes-vivendi-color-overrides . '((bg-main . "gray20")))
+   (modus-themes-vivendi-color-overrides  . '((bg-main . "gray20")))
+   (modus-themes-operandi-color-overrides . '((bg-main . "#F6F6EF")))
    )
   :config
   (modus-themes-load-themes)
