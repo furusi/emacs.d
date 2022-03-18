@@ -1861,7 +1861,10 @@ See `org-capture-templates' for more information."
                                (:embark-region-map
                                 :package embark
                                 ("c" . (lambda (_text)
-                                         (call-interactively 'anki-editor-cloze-region)
+                                         (call-interactively
+                                          (lambda (&optional arg hint)
+                                            (interactive "NNumber: \nsHint (optional): ")
+                                            (anki-editor-cloze-region arg hint)))
                                          ))))))
   )
   
