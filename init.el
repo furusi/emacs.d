@@ -386,16 +386,16 @@
       (define-key ediff-mode-map "d" 'ediff-copy-both-to-C)
       (setq-local ediff-long-help-message-merge
                   "
-p,DEL -previous diff |     | -vert/horiz split   |  x -copy buf X's region to C
-n,SPC -next diff     |     h -highlighting       |  d -copy both to C
-    j -jump to diff  |     @ -auto-refinement    |  r -restore buf C's old diff
-   gx -goto X's point|    ## -ignore whitespace  |  * -refine current region
-  C-l -recenter      | #f/#h -focus/hide regions |  ! -update diff regions
-  v/V -scroll up/dn  |     X -read-only in buf X |  + -combine diff regions
-  </> -scroll lt/rt  |     m -wide display       | wx -save buf X
-    ~ -swap variants |     s -shrink window C    | wd -save diff output
-                     |  $$ -show clashes only    |  / -show/hide ancestor buff
-                     |  $* -skip changed regions |  & -merge w/new default
+p,DEL -previous diff  |     | -vert/horiz split   |  x -copy buf X's region to C
+n,SPC -next diff      |     h -highlighting       |  d -copy both to C
+    j -jump to diff   |     @ -auto-refinement    |  r -restore buf C's old diff
+   gx -goto X's point |    ## -ignore whitespace  |  * -refine current region
+  C-l -recenter       | #f/#h -focus/hide regions |  ! -update diff regions
+  v/V -scroll up/dn   |     X -read-only in buf X |  + -combine diff regions
+  </> -scroll lt/rt   |     m -wide display       | wx -save buf X
+    ~ -swap variants  |     s -shrink window C    | wd -save diff output
+                      |  $$ -show clashes only    |  / -show/hide ancestor buff
+                      |  $* -skip changed regions |  & -merge w/new default
 "
                   )))
   :config
