@@ -627,7 +627,9 @@ n,SPC -next diff     |     h -highlighting       |  d -copy both to C
 
   (leaf vertico-repeat
     :after vertico
-    :bind ("M-r" . vertico-repeat)
+    :require t
+    :bind (("M-r" . vertico-repeat-last)
+           ("M-R" . vertico-repeat-select))
     :hook
     (minibuffer-setup-hook . vertico-repeat-save))
   (leaf vertico-directory
@@ -728,7 +730,7 @@ n,SPC -next diff     |     h -highlighting       |  d -copy both to C
      consult-find consult-org-agenda
      :preview-key (kbd (if window-system "C-," "M-,")))
     (autoload 'projectile-project-root "projectile")
-    (setq consult-project-root-function #'projectile-project-root)
+    (setq consult-project-function #'projectile-project-root)
     (setq completion-in-region-function
           (lambda (&rest args)
             (apply (if vertico-mode
