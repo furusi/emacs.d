@@ -282,9 +282,9 @@
     ;;                     :family "YuKyokasho Yoko")
     ;; 源ノ角ゴシック
     (set-face-attribute 'default nil
-                        :family "PlemolJP" :height 150)
+                        :family "UDEV Gothic JPDOC" :height 150)
     (let* ((variable-tuple
-            (cond ((x-list-fonts "PlemolJP") '(:font "PlemolJP"))
+            (cond ((x-list-fonts "UDEV Gothic JPDOC") '(:font "UDEV Gothic JPDOC"))
                   ((x-list-fonts "Source Sans Pro")       '(:font "Source Sans Pro"))
                   ((x-list-fonts "Lucida Grande")         '(:font "Lucida Grande"))
                   ((x-list-fonts "Verdana")               '(:font "Verdana"))
@@ -317,7 +317,7 @@
            (cond
             ((> (x-display-pixel-width) 1680) 180)
             (t 100))))
-      (set-face-attribute 'default nil :family "PlemolJP" :height font-height))
+      (set-face-attribute 'default nil :family "UDEV Gothic JPDOC" :height font-height))
     ))
 
 ;; 記号をデフォルトのフォントにしない。(for Emacs 25.2)
@@ -1277,8 +1277,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
           (plist-put org-format-latex-options :scale 2.0))
     ;; org-modeの固定幅フォントを設定
     (let ((fontset (cond
-                    ((eq window-system 'ns) "PlemolJP")
-                    ((eq window-system 'x) "PlemolJP"))))
+                    ((eq window-system 'ns) "UDEV Gothic JPDOC")
+                    ((eq window-system 'x) "UDEV Gothic JPDOC"))))
       (dolist (face '(org-table
                       org-formula
                       org-date))
