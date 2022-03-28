@@ -1843,7 +1843,7 @@ See `org-capture-templates' for more information."
   :tag "emacs>=27.1"
   :url "https://github.com/minad/org-modern"
   :emacs>= 27.1
-  :straight t
+  :straight (org-modern :type git :host github :repo "furusi/org-modern" :branch "bugfix")
   :hook
   ((org-agenda-finalize-hook . (lambda ()
                                  (org-modern-mode)
