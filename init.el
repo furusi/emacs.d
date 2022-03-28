@@ -2549,13 +2549,8 @@ ARGはなんに使う？"
   :url "http://twmode.sf.net/"
   :straight t)
 
-(dolist (filename
-         (cddr (directory-files
-                (locate-user-emacs-file "lisp"))))
-  (let ((filepath
-         (locate-user-emacs-file (format "lisp/%s" filename))))
-    (unless (file-directory-p filepath)
-      (load-file filepath))))
+(add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
+(require 'misc)
 
 ;; 読み込み専用で開く設定を持ったクラスを定義
 (dir-locals-set-class-variables

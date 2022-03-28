@@ -103,7 +103,7 @@
     map
     ))
 
-
+;;;###autoload
 (defun my-resize-frame-interactively ()
   ""
   (interactive)
@@ -120,3 +120,5 @@
         (message "quit")))
     (use-local-map map)
     ))
+
+(provide 'misc)
