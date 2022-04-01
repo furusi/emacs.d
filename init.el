@@ -886,7 +886,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       ("C-i" . tempel-next)
       ("C-I" . tempel-previous)))
     :custom
-    `((tempel-path . ,(format "%s/snippets/tempel/templates" user-emacs-directory)))
+    `((tempel-path . ,(format "%s/snippets/tempel" user-emacs-directory)))
     :config
     (defun tempel-setup-capf ()
       ;; Add the Tempel Capf to `completion-at-point-functions'. `tempel-expand'
