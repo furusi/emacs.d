@@ -1,5 +1,11 @@
 ;; -*- mode: lisp -*-
 
+fundamental-mode
+
+(∈ "\\in")
+(自然数Z "\\mathbb{Z}")
+(長い右向きの中抜き矢印 "\\Longrightarrow")
+
 rustic-mode
 
 (deri "#[derive(" (p "TRAIT") ")]")

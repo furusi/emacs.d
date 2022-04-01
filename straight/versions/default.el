@@ -161,7 +161,7 @@
  ("svg-lib" . "7bd1c00a67cd78e1f7315bbe100f51b008c7c60f")
  ("system-packages" . "05add2fe051846e2ecb3c23ef22c41ecc59a1f36")
  ("tablist" . "faab7a035ef2258cc4ea2182f67e3aedab7e2af9")
- ("tempel" . "6ca08f66585dee09d1e48ee600cbaab579720488")
+ ("tempel" . "56ee3bf1462efeb40caf7008ac93a3ea25866453")
  ("transient" . "ecf340cbfff8434ad00a26b408bd3587a10ef59b")
  ("treemacs" . "200861dedd5e6270903a8c3ff5e7abf91e452a3e")
  ("twittering-mode" . "114891e8fdb4f06b1326a6cf795e49c205cf9e29")

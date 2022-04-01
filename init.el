@@ -886,7 +886,21 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       ("C-i" . tempel-next)
       ("C-I" . tempel-previous)))
     :custom
-    `((tempel-file . ,(format "%s/snippets/tempel/templates" user-emacs-directory))))
+    `((tempel-path . ,(format "%s/snippets/tempel/templates" user-emacs-directory)))
+    :config
+    (defun tempel-setup-capf ()
+      ;; Add the Tempel Capf to `completion-at-point-functions'. `tempel-expand'
+      ;; only triggers on exact matches. Alternatively use `tempel-complete' if
+      ;; you want to see all matches, but then Tempel will probably trigger too
+      ;; often when you don't expect it.
+      ;; NOTE: We add `tempel-expand' *before* the main programming mode Capf,
+      ;; such that it will be tried first.
+      (setq-local completion-at-point-functions
+                  (cons #'tempel-expand
+                        completion-at-point-functions)))
+    (add-hook 'prog-mode-hook 'tempel-setup-capf)
+    (add-hook 'text-mode-hook 'tempel-setup-capf)
+    )
 
   (leaf cape
     :doc "Completion At Point Extensions"
@@ -1415,16 +1429,19 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       :url "https://dev.classmethod.jp/articles/org-mode-paste-show-clipboard-image/"
       :config
       (defun my-org-screenshot ()
-      (interactive)
-      (if (equal (shell-command-to-string "command -v pngpaste") "")
-          (error "not found 'pngpaste' command"))
-      (let ((filename (format "%s/img/%s_%s.png"
-                              org-directory
-                              (format-time-string "%Y%m%d_%H%M%S")
-                              (make-temp-name ""))))
-        (call-process "pngpaste" nil nil nil filename)
-        (insert (format "[[%s]]" (file-relative-name filename)))
-        (org-display-inline-images))))
+        (interactive)
+        (if (and (eq system-type 'darwin)
+                 (equal (shell-command-to-string "command -v pngpaste") ""))
+            (error "not found 'pngpaste' command"))
+        (let ((filename (format "%s/img/%s_%s.png"
+                                org-directory
+                                (format-time-string "%Y%m%d_%H%M%S")
+                                (make-temp-name "")))
+              (cmd (if (eq system-type 'darwin) "pngpaste" "import")))
+          (call-process cmd nil nil nil filename)
+          (insert (format "[[%s]]" (file-relative-name filename)))
+          (org-display-inline-images)))
+      )
     )
 
   (leaf org-image
