@@ -12,7 +12,7 @@
           (lambda ()
             (setq gc-cons-threshold my-default-gc-cons-threshold)))
 
-(setq system-time-locale nil)
+(setq system-time-locale "C")
 (setenv "LANG" "en_US.UTF-8")
 (setenv "LC_ALL" "en_US.UTF-8")
 (defvar bootstrap-version)
