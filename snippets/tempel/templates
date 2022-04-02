@@ -1,6 +1,6 @@
-;; -*- mode: lisp -*-
+;; -*- mode: emacs-lisp -*-
 
-fundamental-mode
+latex-mode org-mode
 
 (∈ "\\in")
 (自然数Z "\\mathbb{Z}")
@@ -23,3 +23,8 @@ text-mode
           "+-" (make-string (length str) ?-) "-+" n)
 (rot13 (p "plain text" text) n "----" n (rot13 text))
 (calc (p "taylor(sin(x),x=0,3)" formula) n "----" n (format "%s" (calc-eval formula)))
+
+mermaid-mode
+
+(text-on-open-link (p "start") "---|" (p "label") "|" (p "terminal"))
+(flowchart "flowchart " (p "UD or LR") n>)
