@@ -1525,17 +1525,19 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     ;; 有効にする言語 デフォルトでは elisp のみ
     (org-babel-do-load-languages
      'org-babel-load-languages '((C          . t)
-                                 (org        . t)
-                                 (python     . t)
-                                 (lisp       . t)
+                                 (dot        . t)
                                  (emacs-lisp . t)
-                                 (ruby       . t)
-                                 (plantuml   . t)
-                                 (java       . t)
                                  (gnuplot    . t)
+                                 (java       . t)
+                                 (lisp       . t)
+                                 (mermaid    . t)
+                                 (org        . t)
                                  (perl       . t)
                                  (php        . t)
-                                 (dot        . t)))
+                                 (plantuml   . t)
+                                 (python     . t)
+                                 (ruby       . t)
+                                 (scheme     . t)))
     ;;ob-plantuml
     (add-to-list 'org-babel-default-header-args:plantuml
                  '(:cmdline . "-charset utf-8"))
@@ -1768,6 +1770,13 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (ox-extras-activate '(latex-header-blocks ignore-headlines)))
   (leaf ob-kotlin
     :after (org))
+
+  (leaf ob-mermaid
+    :doc "org-babel support for mermaid evaluation"
+    :tag "lisp"
+    :url "https://github.com/arnm/ob-mermaid"
+    :straight t)
+  
   (leaf ox-asciidoc
     :straight t
     :require t
@@ -1892,6 +1901,14 @@ See `org-capture-templates' for more information."
     :straight t
     :require t)
   )
+
+(leaf mermaid-mode
+  :doc "major mode for working with mermaid graphs"
+  :req "f-0.20.0" "emacs-25.3"
+  :tag "processes" "tools" "graphs" "mermaid" "emacs>=25.3"
+  :url "https://github.com/abrochard/mermaid-mode"
+  :emacs>= 25.3
+  :straight t)
 
 (leaf mu4e
   :disabled t
