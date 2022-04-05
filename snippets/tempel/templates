@@ -9,6 +9,9 @@ latex-mode yatex-mode
 
 latex-mode org-mode
 
+(∩ "\\cap")
+(∪ "\\cup")
+(以下である-less "\\leq")
 (∈ "\\in")
 (自然数Z "\\mathbb{Z}")
 (長い右向きの中抜き矢印 "\\Longrightarrow")
