@@ -1442,6 +1442,28 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
           (insert (format "[[%s]]" (file-relative-name filename)))
           (org-display-inline-images)))
       )
+
+    (leaf org-monokakido
+      :url ("https://alhassy.github.io/org-special-block-extras/#Links"
+            "https://gist.github.com/skoji/936a89f5e1e7c6f93d4a216175408659")
+      )
+    (org-link-set-parameters
+     "mkdictionaries"
+     :follow
+     (lambda (label)
+       (call-process
+        "open" nil 0 nil
+        (concat "mkdictionaries:///?text=" label)))
+     :export 
+     (lambda (label description backend)
+       (if (memq backend '(html latex))
+           (format (pcase backend
+                 ('html "<a href=\"%s\">%s</a>")
+                 ('latex "\\href{%s}{%s}")
+                 (_ "I don’t know how to export that!"))
+               (concat "mkdictionaries:///?text=" label)
+               (or description label))
+         (or description label))))
     )
 
   (leaf org-image
