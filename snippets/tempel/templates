@@ -1,14 +1,14 @@
 ;; -*- mode: emacs-lisp -*-
 
-latex-mode yatex-mode
+latex-mode yatex-mode org-mode
 
 (begin "\\begin{" (s env) "}" > n> r> "\\end{" (s env) "}")
 (frac "\\frac{" p "}{" p "}")
 (enumerate "\\begin{enumerate}\n\\item " r> n> "\\end{enumerate}")
 (itemize "\\begin{itemize}\n\\item " r> n> "\\end{itemize}")
-
-latex-mode org-mode
-
+(combination "{}_" p " \\mathrm{C}_" p)
+(paren-big "\\left(" r "\\right)")
+(cancel "\\cancel{" r "}")
 (∩ "\\cap")
 (∪ "\\cup")
 (以下である-less "\\leq")
