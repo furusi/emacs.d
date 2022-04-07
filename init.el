@@ -1754,7 +1754,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     ;; (setq org-latex-pdf-process '("latexmk -gg -pdfdvi  %f"))
     ;; (setq org-latex-pdf-process '("latexmk %f"))
     (setq org-latex-pdf-process '("latexmk -gg -pdflua  %f"))
-    (add-to-list 'org-latex-packages-alist '("" "minted"))
+    (add-to-list 'org-latex-packages-alist '("" "minted" t))
+    (add-to-list 'org-latex-packages-alist '("" "cancel" t))
     (setq org-highlight-latex-and-related
           '(latex script entities))
     ;;(setq org-latex-pdf-process '("latexmk -e '$lualatex=q/lualatex %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex -o %D %S/' -norc -gg -pdflua %f"))
