@@ -1380,14 +1380,30 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (setq org-icalendar-timezone "Asia/Tokyo")
 
     ;; htmlで数式
-    (setf org-html-mathjax-options
-          '((path "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")
-            (scale "100")
-            (align "center")
-            (indent "2em")
-            (mathml nil)))
-    (setf org-html-mathjax-template
-          "<script type=\"text/javascript\" src=\"%PATH\"></script>")
+    (setq org-html-mathjax-template
+          "<script type=\"text/x-mathjax-config\">
+    MathJax.Hub.Config({
+        displayAlign: \"%ALIGN\",
+        displayIndent: \"%INDENT\",
+
+        \"HTML-CSS\": { scale: %SCALE,
+                        linebreaks: { automatic: \"%LINEBREAKS\" },
+                        webFont: \"%FONT\"
+                       },
+        SVG: {scale: %SCALE,
+              linebreaks: { automatic: \"%LINEBREAKS\" },
+              font: \"%FONT\"},
+        NativeMML: {scale: %SCALE},
+        TeX: {
+               extensions: [\"cancel.js\"],
+               equationNumbers: {autoNumber: \"%AUTONUMBER\"},
+               MultLineWidth: \"%MULTLINEWIDTH\",
+               TagSide: \"%TAGSIDE\",
+               TagIndent: \"%TAGINDENT\"
+             }
+});
+</script>
+<script src=\"%PATH\"></script>")
     (defun org-todo-list-current-file (&optional arg)
       "Like `org-todo-list', but using only the current buffer's file."
       (interactive "P")
