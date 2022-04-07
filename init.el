@@ -883,7 +883,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     ((("M-+" . tempel-complete) ;; Alternative tempel-expand
       ("M-*" . tempel-insert))
      (:tempel-map
-      ("M-RET" . tempel-done)
+      ("M-RET" . tempel-next)
       ))
     :custom
     `((tempel-path . ,(format "%s/snippets/tempel" user-emacs-directory)))
