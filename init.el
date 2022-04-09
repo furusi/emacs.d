@@ -655,7 +655,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   (leaf orderless
     :straight t
     :init
-    (setq completion-styles '(orderless)
+    (setq completion-styles '(orderless basic)
           completion-category-defaults nil
           completion-category-overrides '((file (styles basic partial-completion))))
     )
