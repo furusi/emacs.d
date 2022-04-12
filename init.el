@@ -470,7 +470,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
          (isearch-mode-hook . skk-isearch-mode-setup) ; isearch で skk のセットアップ
          (isearch-mode-end-hook . skk-isearch-mode-cleanup) ; isearch で skk のクリーンアップ
          )
-  :mode ("jisyo" . skk-jisyo-edit-mode)
   :custom
   `((default-input-method . "japanese-skk")
     (skk-auto-insert-paren . t)
@@ -1455,7 +1454,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                                 (make-temp-name "")))
               (cmd (if (eq system-type 'darwin) "pngpaste" "import")))
           (call-process cmd nil nil nil filename)
-          (insert (format "[[%s]]" (file-relative-name filename)))
+          (insert (format "[[file:%s]]" (file-relative-name filename)))
           (org-display-inline-images)))
       )
 
