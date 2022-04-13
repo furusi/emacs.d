@@ -1937,26 +1937,6 @@ See `org-capture-templates' for more information."
                                             (interactive "NNumber: \nsHint (optional): ")
                                             (anki-editor-cloze-region arg hint)))
                                          ))))))
-  :config
-  ;; https://github.com/louietan/anki-editor/issues/39
-  (defun filter-out-p (str _ _)
-    (replace-regexp-in-string "\n<p>\\|\n</p>\n\\|</p>\n\\|<p>\n\\|\n</p>" "" str))
-
-  (setq anki-editor--ox-anki-html-backend
-    (if anki-editor-use-math-jax
-        (org-export-create-backend
-         :parent 'html
-         :filters
-         '((:filter-paragraph . filter-out-p))
-         :transcoders '((latex-fragment . anki-editor--ox-latex-for-mathjax)
-                        (latex-environment . anki-editor--ox-latex-for-mathjax)))
-      (org-export-create-backend
-       :parent 'html
-       :filters
-       '((:filter-paragraph . filter-out-p))
-       :transcoders '((latex-fragment . anki-editor--ox-latex)
-                      (latex-environment . anki-editor--ox-latex)))))
-
   )
   
   (leaf ox-slimhtml
