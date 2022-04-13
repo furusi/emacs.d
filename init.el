@@ -1922,7 +1922,9 @@ See `org-capture-templates' for more information."
   :tag "emacs>=25"
   :url "https://github.com/louietan/anki-editor"
   :emacs>= 25
-  :straight t
+  :straight (anki-editor :type git :host github :repo "louietan/anki-editor"
+                         :fork
+                         (:host github :repo "furusi/anki-editor" :branch "master"))
   :hook
   (anki-editor-mode-hook . (lambda ()
                              (leaf embark-anki-editor
