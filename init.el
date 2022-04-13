@@ -2647,19 +2647,6 @@ ARGはなんに使う？"
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
 (require 'misc)
 
-;; 読み込み専用で開く設定を持ったクラスを定義
-(dir-locals-set-class-variables
- 'read-only
- '((nil .((buffer-read-only . t)))))
-;; クラスをディレクトリに関連づける
-(dolist (dir
-         (mapcar
-          (lambda (str) (locate-user-emacs-file (format "packages/%s/straight/repos" str)))
-          (cddr (directory-files
-                 (locate-user-emacs-file "packages")))))
-  (dir-locals-set-directory-class
-   (file-truename dir) 'read-only))
-
 (let ((f "~/Dropbox/.config/emacs/config.el"))
   (when (file-exists-p f)
     (load-file f)))
