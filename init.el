@@ -114,7 +114,11 @@
                      (forward-sentence)
                      (buffer-substring s (point)))))))
     (run-at-time 0.1 nil 'deactivate-mark)
-    (let ((url (format "https://www.deepl.com/translator#en/ja/%s"
+    (let* ((string (replace-regexp-in-string
+                    "/"
+                    (regexp-quote "\x005c\x002f")
+                    string))
+           (url (format "https://www.deepl.com/translator#en/ja/%s"
                        (url-hexify-string string))))
       (cond ((eq system-type 'darwin)
              (browse-url-default-macosx-browser url))
