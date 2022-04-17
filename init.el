@@ -795,6 +795,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   (leaf embark
     :straight (embark :host github :repo "oantolin/embark" :branch "master" :files (:defaults))
     :emacs>= 26.1
+    :require t
     :bind
     `((,(if window-system "C-." "M-.") . embark-act)         ;; pick some comfortable binding
       ("C-;" . embark-dwim)        ;; good alternative: M-.
@@ -1934,16 +1935,17 @@ See `org-capture-templates' for more information."
                          (:host github :repo "furusi/anki-editor" :branch "master"))
   :hook
   (anki-editor-mode-hook . (lambda ()
-                             (leaf embark-anki-editor
-                               :bind
-                               (:embark-region-map
-                                :package embark
-                                ("c" . (lambda (_text)
-                                         (call-interactively
-                                          (lambda (&optional arg hint)
-                                            (interactive "NNumber: \nsHint (optional): ")
-                                            (anki-editor-cloze-region arg hint)))
-                                         ))))))
+                             (let* ((keymap (copy-keymap embark-region-map)))
+                               (define-key keymap (kbd "c")
+                                 'my-anki-editor-cloze-region)
+                               (setq-local embark-region-map keymap))
+                             ))
+  :config
+  (defun my-anki-editor-cloze-region (_text)
+    (call-interactively
+     (lambda (&optional arg hint)
+       (interactive "NNumber: \nsHint (optional): ")
+       (anki-editor-cloze-region arg hint))))
   )
   
   (leaf ox-slimhtml
