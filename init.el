@@ -2633,6 +2633,14 @@ ARGはなんに使う？"
   :url "http://twmode.sf.net/"
   :straight t)
 
+(leaf lua-mode
+  :doc "a major-mode for editing Lua scripts"
+  :req "emacs-24.3"
+  :tag "tools" "processes" "languages" "emacs>=24.3"
+  :url "https://immerrr.github.io/lua-mode"
+  :emacs>= 24.3
+  :straight t)
+
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
 (require 'misc)
 
