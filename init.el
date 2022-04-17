@@ -1930,6 +1930,7 @@ See `org-capture-templates' for more information."
   :tag "emacs>=25"
   :url "https://github.com/louietan/anki-editor"
   :emacs>= 25
+  :after embark
   :straight (anki-editor :type git :host github :repo "louietan/anki-editor"
                          :fork
                          (:host github :repo "furusi/anki-editor" :branch "master"))
@@ -1940,7 +1941,7 @@ See `org-capture-templates' for more information."
                                  'my-anki-editor-cloze-region)
                                (setq-local embark-region-map keymap))
                              ))
-  :config
+  :init
   (defun my-anki-editor-cloze-region (_text)
     (call-interactively
      (lambda (&optional arg hint)
@@ -1953,6 +1954,16 @@ See `org-capture-templates' for more information."
     :straight t
     :require t)
   )
+
+(leaf anki-editor-org-src
+  :after org
+  ;; :leaf-defer nil
+  :hook
+  (org-src-mode-hook . (lambda ()
+                         (if (string-match (regexp-quote "[ anki-editor ]") (buffer-name))
+                             (anki-editor-mode))))
+  :init
+  (add-to-list 'org-src-lang-modes '("anki-editor" . org)))
 
 (leaf mermaid-mode
   :doc "major mode for working with mermaid graphs"
