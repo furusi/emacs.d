@@ -1,4 +1,4 @@
-;;; init.el --- my init script
+;;; init.el --- my init script  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -472,11 +472,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
          (:minibuffer-local-map
           ("C-j" . skk-kakutei)))
   :hook ((skk-load-hook . (lambda () (require 'context-skk))) ;自動的に英字モードになる
-         (skk-jisyo-edit-mode-hook . (lambda () (read-only-mode t)))
-         ;; isearch
-         (isearch-mode-hook . skk-isearch-mode-setup) ; isearch で skk のセットアップ
-         (isearch-mode-end-hook . skk-isearch-mode-cleanup) ; isearch で skk のクリーンアップ
-         )
+         (skk-jisyo-edit-mode-hook . (lambda () (read-only-mode t))))
   :custom
   `((default-input-method . "japanese-skk")
     (skk-auto-insert-paren . t)
@@ -984,6 +980,15 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                "/usr/share/migemo/utf-8/migemo-dict")
               (t "/usr/share/cmigemo/utf-8/migemo-dict")))
   (load-library "migemo")
+  ;; https://www.yewton.net/2022/02/07/consult-ripgrep-migemo/
+  (defun consult--migemo-regexp-compiler (input type _)
+    (setq input (mapcar #'migemo-get-pattern (consult--split-escaped input)))
+    (cons (mapcar (lambda (x) (consult--convert-regexp x type)) input)
+          (when-let (regexps (seq-filter #'consult--valid-regexp-p input))
+            (lambda (str)
+              (consult--highlight-regexps regexps str)))))
+  (setq migemo-options '("--quiet" "--nonewline" "--emacs"))
+  (setq consult--regexp-compiler #'consult--migemo-regexp-compiler)
   (migemo-init))
 
 ;; SLIMEのロード
