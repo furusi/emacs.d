@@ -2654,6 +2654,31 @@ ARGはなんに使う？"
   :emacs>= 24.3
   :straight t)
 
+(leaf pcre2el
+  :doc "regexp syntax converter"
+  :req "emacs-24" "cl-lib-0.3"
+  :tag "emacs>=24"
+  :url "https://github.com/joddie/pcre2el"
+  :straight t
+  :custom
+  ((reb-re-syntax . 'pcre))
+  :bind
+  (:reb-mode-map
+   ("C-r" . reb-prev-match)
+   ("C-s" . reb-next-match)))
+
+(leaf regex-tool
+  :doc "A regular expression evaluation tool for programmers"
+  :tag "development" "programming" "languages" "regex"
+  :url "http://www.newartisans.com/"
+  :straight t
+  :custom
+  (regex-tool-backend . 'perl)
+  :bind
+  (:regex-tool-mode-map
+   ("C-c C-q" . regex-tool-quit)))
+
+
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
 (require 'misc)
 

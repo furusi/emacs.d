@@ -40,6 +40,7 @@ mermaid-mode
 (flowchart "flowchart " (p "TD or LR") n>)
 (classDiagram "classDiagram" n>)
 (関連 (p "ClassA") " -- " (p "ClassB") " : " (p "label"))
+(flowchart-openlink (p "NodeA") " --- " (p "NodeB"))
 (多重度付き関連_has_a (p "ClassA") " \"" (p "多重度") "\""
                 " -- "
                 "\"" (p "多重度") "\" " (p "ClassB") " : " (p "label"))
