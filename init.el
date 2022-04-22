@@ -2678,6 +2678,17 @@ ARGはなんに使う？"
   (:regex-tool-mode-map
    ("C-c C-q" . regex-tool-quit)))
 
+(leaf visual-regexp-steroids
+  :doc "Extends visual-regexp to support other regexp engines"
+  :req "visual-regexp-1.1"
+  :tag "feedback" "visual" "python" "replace" "regexp" "foreign" "external"
+  :url "https://github.com/benma/visual-regexp-steroids.el/"
+  :straight t
+  :require t
+  :config
+  (setq vr/command-python (replace-regexp-in-string "^python "  "python3 " vr--command-python-default))
+  )
+
 
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
 (require 'misc)
