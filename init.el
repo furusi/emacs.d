@@ -539,7 +539,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (defun my-context-skk-check-org ()
       (if (bolp)
             (cond
-             ((org-at-heading-p) t)
+             ((org-at-heading-or-item-p) t)
              ((org-at-block-p) t)
              ((or (org-at-item-bullet-p) (org-at-item-checkbox-p)) t)
              (t nil))
@@ -1023,7 +1023,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   :req "emacs-26.1" "rust-mode-1.0.3" "dash-2.13.0" "f-0.18.2" "let-alist-1.0.4" "markdown-mode-2.3" "project-0.3.0" "s-1.10.0" "seq-2.3" "spinner-1.7.3" "xterm-color-1.6"
   :tag "languages" "emacs>=26.1"
   :emacs>= 26.1
-  :after rust-mode markdown-mode project spinner xterm-color
   :custom ((rustic-lsp-server . 'rust-analyzer)
            (rustic-lsp-client . 'eglot))
   :config
