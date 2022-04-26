@@ -2697,6 +2697,24 @@ ARGはなんに使う？"
   (setq vr/command-python (replace-regexp-in-string "^python "  "python3 " vr--command-python-default))
   )
 
+(leaf repeat-mode
+  :custom
+  (repeat-exit-key . "q")
+  :config
+  (repeat-mode t))
+
+(leaf window
+  :emacs>= 28
+  :bind
+  (:resize-window-repeat-map
+   ("+" . enlarge-window)
+   ("=" . enlarge-window)
+   ("-" . shrink-window)
+   ("_" . shrink-window)
+   (">" . enlarge-window-horizontally)
+   ("<" . shrink-window-horizontally))
+  )
+
 
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
 (require 'misc)
