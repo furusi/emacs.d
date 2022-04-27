@@ -8,6 +8,26 @@
   (set-frame-height (selected-frame)
                     (my-set-frame--prompt "frame height" (frame-height))))
 
+(defun my-enlarge-frame ()
+  (interactive)
+  (set-frame-height (selected-frame)
+                    (+ (frame-height) 2)))
+
+(defun my-shrink-frame ()
+  (interactive)
+  (set-frame-height (selected-frame)
+                    (+ (frame-height) -1)))
+
+(defun my-enlarge-frame-horizontally ()
+  (interactive)
+  (set-frame-width (selected-frame)
+                   (+ (frame-width) (* my-resize-frame-scale-width 2))))
+
+(defun my-shrink-frame-horizontally ()
+  (interactive)
+  (set-frame-width (selected-frame)
+                   (+ (frame-width) (* my-resize-frame-scale-width -1))))
+
 (defun my-set-frame--prompt (prompt-message present-value)
   (if (window-system)
       (let ((width (string-to-number
@@ -120,5 +140,29 @@
         (message "quit")))
     (use-local-map map)
     ))
+
+(leaf my-resize-frame
+  :emacs>= 28.1
+  :init
+  (put 'my-enlarge-frame 'repeat-map 'resize-frame-repeat-map)
+  (put 'my-shrink-frame 'repeat-map 'resize-frame-repeat-map)
+  (put 'my-enlarge-frame-horizontally 'repeat-map 'resize-frame-repeat-map)
+  (put 'my-shrink-frame-horizontally 'repeat-map 'resize-frame-repeat-map)
+  :preface
+  (defvar resize-frame-repeat-map
+    (let ((map (make-sparse-keymap)))
+      (define-key map (kbd "+")   #'my-enlarge-frame)
+      (define-key map (kbd "=")   #'my-enlarge-frame)
+      (define-key map (kbd "-")   #'my-shrink-frame)
+      (define-key map (kbd "_")   #'my-shrink-frame)
+      (define-key map (kbd ">")   #'my-enlarge-frame-horizontally)
+      (define-key map (kbd "C-}") #'my-enlarge-frame-horizontally)
+      (define-key map (kbd "<")   #'my-shrink-frame-horizontally)
+      (define-key map (kbd "C-{") #'my-shrink-frame-horizontally)
+      map
+      ))
+  :bind
+  (("C-x C-{" . my-shrink-frame-horizontally)
+   ("C-x C-}" . my-enlarge-frame-horizontally)))
 
 (provide 'misc)
