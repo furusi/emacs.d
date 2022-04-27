@@ -2254,10 +2254,6 @@ See `org-capture-templates' for more information."
 (leaf autodisass-java-bytecode
   :straight t)
 
-(leaf google-c-style
-  :straight t
-  :commands
-  (google-set-c-style))
 (leaf regex-tool :straight t)
 
 (leaf solarized-theme
