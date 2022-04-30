@@ -407,9 +407,11 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                   )))
   :config
   ;; ediff時にorgファイルを全て表示する
-  (with-eval-after-load 'outline
-    (add-hook 'ediff-prepare-buffer-hook #'show-all))
+  (defun my-ediff-prepare-buffer-function ()
+    (show-all))
   
+  (with-eval-after-load 'outline
+    (add-hook 'ediff-prepare-buffer-hook #'my-ediff-prepare-buffer-function))
   )
 
 (leaf magit-delta
