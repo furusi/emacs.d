@@ -434,7 +434,9 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
 
 (leaf projectile
   :bind ((:projectile-mode-map
-          ("C-c p" . projectile-command-map)))
+          ("C-c p" . projectile-command-map))
+         (:projectile-command-map
+          ("v" . my-projectile-vc-in-new-tab)))
   :straight t
   :custom
   `((projectile-cache-file . ,(locate-user-emacs-file
@@ -447,6 +449,10 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (unless (file-directory-p dir)
       (make-directory dir t))
     )
+  (defun my-projectile-vc-in-new-tab ()
+    (interactive)
+    (other-tab-prefix)
+    (projectile-vc))
   :config
   (projectile-mode +1)
   (dolist
