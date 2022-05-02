@@ -381,6 +381,12 @@
   ((magit-display-buffer-function . 'magit-display-buffer-fullframe-status-v1)
    (magit-diff-refine-hunk . 'all))
   :init
+  (defun my-magit-mode-bury-buffer ()
+    (interactive)
+    (call-interactively #'magit-mode-bury-buffer)
+    (when (< 1(length (tab-bar-tabs)))
+     (tab-close))
+    )
   ;; https://stackoverflow.com/questions/9656311/conflict-resolution-with-emacs-ediff-how-can-i-take-the-changes-of-both-version/29757750#29757750
   (defun ediff-copy-both-to-C ()
     (interactive)
@@ -451,8 +457,25 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     )
   (defun my-projectile-vc-in-new-tab ()
     (interactive)
-    (other-tab-prefix)
-    (projectile-vc))
+    (let ((tab-name-list (mapcar #'cdadr (tab-bar-tabs)))
+          (project-name (format "=p:%s"
+                                (replace-regexp-in-string (format "^%s" (getenv "HOME")) "~"
+                                                          (projectile-acquire-root)))))
+      (cond
+       ;; 既に同名のタブがあったらそれを使う
+       ((member project-name tab-name-list)
+        (tab-switch project-name)
+        (projectile-vc))
+       ((not (memq major-mode '(magit-diff-mode
+                                magit-log-mode
+                                magit-revision-mode
+                                magit-status-mode)))
+        (other-tab-prefix)
+        (projectile-vc)
+        (tab-rename project-name))
+       (t
+        (projectile-vc))))
+    )
   :config
   (projectile-mode +1)
   (dolist
