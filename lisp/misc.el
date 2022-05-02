@@ -142,7 +142,7 @@
     ))
 
 (leaf my-resize-frame
-  :emacs>= 28.1
+  :emacs>= 28
   :init
   (put 'my-enlarge-frame 'repeat-map 'resize-frame-repeat-map)
   (put 'my-shrink-frame 'repeat-map 'resize-frame-repeat-map)
