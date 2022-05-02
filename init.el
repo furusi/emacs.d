@@ -458,21 +458,22 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   (defun my-projectile-vc-in-new-tab ()
     (interactive)
     (let ((tab-name-list (mapcar #'cdadr (tab-bar-tabs)))
-          (project-name (format "=p:%s"
+          (tab-name (format "=p:%s"
                                 (replace-regexp-in-string (format "^%s" (getenv "HOME")) "~"
-                                                          (projectile-acquire-root)))))
+                                                          (projectile-acquire-root))))
+          (project-root (projectile-acquire-root)))
       (cond
        ;; 既に同名のタブがあったらそれを使う
-       ((member project-name tab-name-list)
-        (tab-switch project-name)
-        (projectile-vc))
+       ((member tab-name tab-name-list)
+        (tab-switch tab-name)
+        (projectile-vc project-root))
        ((not (memq major-mode '(magit-diff-mode
                                 magit-log-mode
                                 magit-revision-mode
                                 magit-status-mode)))
         (other-tab-prefix)
         (projectile-vc)
-        (tab-rename project-name))
+        (tab-rename tab-name))
        (t
         (projectile-vc))))
     )
