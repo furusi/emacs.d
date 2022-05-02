@@ -1751,7 +1751,18 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (org-journal-time-format . "<%Y-%m-%d %R> ")
       (org-journal-file-format . "%Y%m.org")
       (org-journal-file-header . "# -*- mode: org-journal; -*-"))
+    :preface
+    (defvar my-org-journal-repeat-map
+      (let ((map (make-sparse-keymap)))
+        (define-key map (kbd "C-f")   #'org-journal-next-entry)
+        (define-key map (kbd "f")   #'org-journal-next-entry)
+        (define-key map (kbd "C-b")   #'org-journal-previous-entry)
+        (define-key map (kbd "b")   #'org-journal-previous-entry)
+        map
+        ))
     :config
+    (put 'org-journal-next-entry 'repeat-map 'my-org-journal-repeat-map)
+    (put 'org-journal-previous-entry 'repeat-map 'my-org-journal-repeat-map)
     (setq org-journal-dir (concat org-directory "/journal")))
 
   ;; Org Mode LaTeX Export
