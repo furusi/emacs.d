@@ -122,7 +122,7 @@
                      string))
                    )
            (url (format "https://www.deepl.com/translator#en/ja/%s"
-                       (url-hexify-string string))))
+                        (url-hexify-string string))))
       (cond ((eq system-type 'darwin)
              (browse-url-default-macosx-browser url))
             ((string-match ".*-microsoft-standard-WSL2.*" operating-system-release)
@@ -385,7 +385,7 @@
     (interactive)
     (call-interactively #'magit-mode-bury-buffer)
     (when (< 1(length (tab-bar-tabs)))
-     (tab-close))
+      (tab-close))
     )
   ;; https://stackoverflow.com/questions/9656311/conflict-resolution-with-emacs-ediff-how-can-i-take-the-changes-of-both-version/29757750#29757750
   (defun ediff-copy-both-to-C ()
@@ -414,7 +414,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   :config
   ;; ediff時にorgファイルを全て表示する
   (defun my-ediff-prepare-buffer-function ()
-    (show-all))
+    (outline-show-all))
   
   (with-eval-after-load 'outline
     (add-hook 'ediff-prepare-buffer-hook #'my-ediff-prepare-buffer-function))
@@ -459,8 +459,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (interactive)
     (let ((tab-name-list (mapcar #'cdadr (tab-bar-tabs)))
           (tab-name (format "=p:%s"
-                                (replace-regexp-in-string (format "^%s" (getenv "HOME")) "~"
-                                                          (projectile-acquire-root))))
+                            (replace-regexp-in-string (format "^%s" (getenv "HOME")) "~"
+                                                      (projectile-acquire-root))))
           (project-root (projectile-acquire-root)))
       (cond
        ;; 既に同名のタブがあったらそれを使う
@@ -485,16 +485,16 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   )
 
 (leaf projectile-for-eglot
-    :url "https://glassonion.hatenablog.com/entry/2019/05/11/134135"
-    :after projectile
-    :preface
-    (defun my-projectile-project-find-function (dir)
-      (let ((root (projectile-project-root dir)))
-        (and root
-             (cons 'transient root))))
-    :config
-    (with-eval-after-load 'project
-      (add-to-list 'project-find-functions #'my-projectile-project-find-function)))
+  :url "https://glassonion.hatenablog.com/entry/2019/05/11/134135"
+  :after projectile
+  :preface
+  (defun my-projectile-project-find-function (dir)
+    (let ((root (projectile-project-root dir)))
+      (and root
+           (cons 'transient root))))
+  :config
+  (with-eval-after-load 'project
+    (add-to-list 'project-find-functions #'my-projectile-project-find-function)))
 
 ;; ddskk
 (leaf ddskk
@@ -570,12 +570,12 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (setq context-skk-mode-off-message "[context-skk] 日本語入力 off")
     (defun my-context-skk-check-org ()
       (if (bolp)
-            (cond
-             ((org-at-heading-or-item-p) t)
-             ((org-at-block-p) t)
-             ((or (org-at-item-bullet-p) (org-at-item-checkbox-p)) t)
-             (t nil))
-          nil))
+          (cond
+           ((org-at-heading-or-item-p) t)
+           ((org-at-block-p) t)
+           ((or (org-at-item-bullet-p) (org-at-item-checkbox-p)) t)
+           (t nil))
+        nil))
     (add-hook 'org-mode-hook
               (lambda ()
                 (setq-local
@@ -905,10 +905,10 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                                       corfu-quit-no-match 'separator)))
     :init
     (defun corfu-move-to-minibuffer ()
-     (interactive)
-     (let ((completion-extra-properties corfu--extra)
-           completion-cycle-threshold completion-cycling)
-       (apply #'consult-completion-in-region completion-in-region--data)))
+      (interactive)
+      (let ((completion-extra-properties corfu--extra)
+            completion-cycle-threshold completion-cycling)
+        (apply #'consult-completion-in-region completion-in-region--data)))
     (corfu-global-mode))
 
   (leaf tempel
@@ -1521,11 +1521,11 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
      (lambda (label description backend)
        (if (memq backend '(html latex))
            (format (pcase backend
-                 ('html "<a href=\"%s\">%s</a>")
-                 ('latex "\\href{%s}{%s}")
-                 (_ "I don’t know how to export that!"))
-               (concat "mkdictionaries:///?text=" label)
-               (or description label))
+                     ('html "<a href=\"%s\">%s</a>")
+                     ('latex "\\href{%s}{%s}")
+                     (_ "I don’t know how to export that!"))
+                   (concat "mkdictionaries:///?text=" label)
+                   (or description label))
          (or description label))))
     )
 
@@ -1720,26 +1720,26 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                    :unnarrowed t)
                  )
     (setq org-roam-dailies-capture-templates
-      '(("d" "default" entry
-         "* %?"
-         :target
-         (file+head+olp "%<%Y-%m>.org" "#+TITLE: %<%Y-%m>\n\n\n" ("%<%Y-%m-%d>"))
-         )))
+          '(("d" "default" entry
+             "* %?"
+             :target
+             (file+head+olp "%<%Y-%m>.org" "#+TITLE: %<%Y-%m>\n\n\n" ("%<%Y-%m-%d>"))
+             )))
     (leaf org-roam-protocol
       :require t
       :after org
       )
     )
   (leaf org-roam-ui
-      :req "emacs-27.1" "org-roam-2.0.0" "simple-httpd-20191103.1446" "websocket-1.13"
-      :emacs>= 27.1
-      :after org
-      :straight
-      (org-roam-ui :host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
-      :hook (after-init-hook . org-roam-ui-mode)
-      :custom ((org-roam-ui-sync-theme . t)
-               (org-roam-ui-follow . t)
-               (org-roam-ui-update-on-save . t)))
+    :req "emacs-27.1" "org-roam-2.0.0" "simple-httpd-20191103.1446" "websocket-1.13"
+    :emacs>= 27.1
+    :after org
+    :straight
+    (org-roam-ui :host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
+    :hook (after-init-hook . org-roam-ui-mode)
+    :custom ((org-roam-ui-sync-theme . t)
+             (org-roam-ui-follow . t)
+             (org-roam-ui-update-on-save . t)))
 
   (leaf org-journal
     :straight t
@@ -1940,6 +1940,8 @@ See `org-capture-templates' for more information."
                                     (display-line-numbers-mode 0)))
       :custom ((pdf-view-use-scaling . t))
       :config
+      ;; (setenv "PKG_CONFIG_PATH"
+      ;;         (string-trim (shell-command-to-string "echo \"$(brew --prefix poppler)/lib/pkgconfig:$(brew --prefix libffi)/lib/pkgconfig:$(brew --prefix zlib)/lib/pkgconfig:$(brew --prefix)/lib/pkgconfig:/opt/X11/lib/pkgconfig\"")))
       (pdf-tools-install)
       (display-line-numbers-mode -1)
       (setq pdf-annot-activate-created-annotations t)
@@ -1961,44 +1963,44 @@ See `org-capture-templates' for more information."
     (load "~/Dropbox/org/googlecalendar/org-gcal-config.el"))
 
   (leaf org-modern
-  :doc "Modern looks for Org"
-  :req "emacs-27.1"
-  :tag "emacs>=27.1"
-  :url "https://github.com/minad/org-modern"
-  :emacs>= 27.1
-  :straight (org-modern
-             :type git :host github :repo "minad/org-modern"
-             :fork
-             (:host github :repo "furusi/org-modern" :branch "bugfix"))
-  :hook
-  ((org-agenda-finalize-hook . (lambda ()
-                                 (org-modern-mode)
-                                 (org-modern-agenda)))))
+    :doc "Modern looks for Org"
+    :req "emacs-27.1"
+    :tag "emacs>=27.1"
+    :url "https://github.com/minad/org-modern"
+    :emacs>= 27.1
+    :straight (org-modern
+               :type git :host github :repo "minad/org-modern"
+               :fork
+               (:host github :repo "furusi/org-modern" :branch "bugfix"))
+    :hook
+    ((org-agenda-finalize-hook . (lambda ()
+                                   (org-modern-mode)
+                                   (org-modern-agenda)))))
 
   (leaf anki-editor
-  :doc "Minor mode for making Anki cards with Org"
-  :req "emacs-25" "request-0.3.0" "dash-2.12.0"
-  :tag "emacs>=25"
-  :url "https://github.com/louietan/anki-editor"
-  :emacs>= 25
-  :after embark
-  :straight (anki-editor :type git :host github :repo "louietan/anki-editor"
-                         :fork
-                         (:host github :repo "furusi/anki-editor" :branch "master"))
-  :hook
-  (anki-editor-mode-hook . (lambda ()
-                             (let* ((keymap (copy-keymap embark-region-map)))
-                               (define-key keymap (kbd "c")
-                                 'my-anki-editor-cloze-region)
-                               (setq-local embark-region-map keymap))
-                             ))
-  :init
-  (defun my-anki-editor-cloze-region (_text)
-    (call-interactively
-     (lambda (&optional arg hint)
-       (interactive "NNumber: \nsHint (optional): ")
-       (anki-editor-cloze-region arg hint))))
-  )
+    :doc "Minor mode for making Anki cards with Org"
+    :req "emacs-25" "request-0.3.0" "dash-2.12.0"
+    :tag "emacs>=25"
+    :url "https://github.com/louietan/anki-editor"
+    :emacs>= 25
+    :after embark
+    :straight (anki-editor :type git :host github :repo "louietan/anki-editor"
+                           :fork
+                           (:host github :repo "furusi/anki-editor" :branch "master"))
+    :hook
+    (anki-editor-mode-hook . (lambda ()
+                               (let* ((keymap (copy-keymap embark-region-map)))
+                                 (define-key keymap (kbd "c")
+                                   'my-anki-editor-cloze-region)
+                                 (setq-local embark-region-map keymap))
+                               ))
+    :init
+    (defun my-anki-editor-cloze-region (_text)
+      (call-interactively
+       (lambda (&optional arg hint)
+         (interactive "NNumber: \nsHint (optional): ")
+         (anki-editor-cloze-region arg hint))))
+    )
   
   (leaf ox-slimhtml
     :after org
