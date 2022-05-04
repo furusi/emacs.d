@@ -1757,8 +1757,10 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (let ((map (make-sparse-keymap)))
         (define-key map (kbd "C-f")   #'org-journal-next-entry)
         (define-key map (kbd "f")   #'org-journal-next-entry)
+        (define-key map (kbd "n")   #'org-journal-next-entry)
         (define-key map (kbd "C-b")   #'org-journal-previous-entry)
         (define-key map (kbd "b")   #'org-journal-previous-entry)
+        (define-key map (kbd "p")   #'org-journal-previous-entry)
         map
         ))
     :config
