@@ -833,13 +833,23 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       ("C-;" . embark-dwim)        ;; good alternative: M-.
       ("C-h B" . embark-bindings) ;; alternative for `describe-bindings'
       (:embark-package-map
-       ("b" . embark-browse-package-url)))
+       ("b" . embark-browse-package-url))
+      (:embark-region-map
+       ("C-l" . my-lookup-mkdict))
+      (:embark-symbol-map
+       ("C-l" . my-lookup-mkdict)))
 
     :init
 
     ;; Optionally replace the key help with a completing-read interface
     (setq prefix-help-command #'embark-prefix-help-command)
-
+    (defun my-lookup-mkdict ()
+      (interactive)
+      (let ((str (read-from-minibuffer "Input: ")))
+        (call-process
+        "open" nil 0 nil
+        (concat "mkdictionaries:///?text=" str)))
+      )
     :config
 
     ;; Hide the mode line of the Embark live/completions buffers
