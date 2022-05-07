@@ -1066,7 +1066,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   :tag "languages" "emacs>=26.1"
   :emacs>= 26.1
   :custom ((rustic-lsp-server . 'rust-analyzer)
-           (rustic-lsp-client . 'eglot))
+           (rustic-lsp-client . 'lsp-mode))
   :config
   (when (eq rustic-lsp-client 'eglot)
     (add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1))))
@@ -2103,6 +2103,7 @@ See `org-capture-templates' for more information."
            ("/archive" . ?a))))
 
 (leaf company
+  :disabled t
   :straight t
   :bind ((:company-mode-map
           ("C-M-i" . company-complete-common-or-cycle))
@@ -2477,7 +2478,8 @@ ARGはなんに使う？"
     :commands (lsp lsp-deferred)
     :custom ((lsp-auto-execute-action . nil)
              (lsp-keymap-prefix . "C-c C-l")
-             (lsp-completion-provider . :none))
+             (lsp-completion-provider . :none) ;disable company-capf
+             )
     :hook ((lsp-mode-hook  . lsp-enable-which-key-integration)
            (lsp-completion-mode-hook . my-lsp-mode-setup-completion)
            (c-mode-hook    . lsp-deferred)
@@ -2487,7 +2489,7 @@ ARGはなんに使う？"
     (setq read-process-output-max (* 1024 1024))
     (defun my-lsp-mode-setup-completion ()
       (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-            '(flex))))
+            '(orderless))))
   
   (leaf lsp-python-ms
     :disabled t
