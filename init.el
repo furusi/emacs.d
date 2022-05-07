@@ -919,7 +919,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (let ((completion-extra-properties corfu--extra)
             completion-cycle-threshold completion-cycling)
         (apply #'consult-completion-in-region completion-in-region--data)))
-    (corfu-global-mode))
+    (global-corfu-mode))
 
   (leaf tempel
     :doc "Tempo templates/snippets with in-buffer field editing"
