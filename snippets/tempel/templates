@@ -9,6 +9,7 @@ latex-mode yatex-mode org-mode
 (combination "{}_" p " \\mathrm{C}_" p)
 (paren-big "\\left(" r "\\right)")
 (cancel "\\cancel{" r "}")
+(SI単位 "\\SI{" p "}{" p "}")
 (∩ "\\cap")
 (∪ "\\cup")
 (以下である-less "\\leq")

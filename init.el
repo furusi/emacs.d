@@ -935,7 +935,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       ("C-i" . tempel-next)
       ))
     :custom
-    `((tempel-path . ,(format "%s/snippets/tempel" user-emacs-directory)))
+    `((tempel-path . ,(format "%ssnippets/tempel/templates" user-emacs-directory)))
     :config
     (defun tempel-setup-capf ()
       ;; Add the Tempel Capf to `completion-at-point-functions'. `tempel-expand'
@@ -1826,6 +1826,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (setq org-latex-pdf-process '("latexmk -gg -pdflua  %f"))
     (add-to-list 'org-latex-packages-alist '("" "minted" t))
     (add-to-list 'org-latex-packages-alist '("" "cancel" t))
+    (add-to-list 'org-latex-packages-alist '("" "siunitx" t))
     (setq org-highlight-latex-and-related
           '(latex script entities))
     ;;(setq org-latex-pdf-process '("latexmk -e '$lualatex=q/lualatex %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex -o %D %S/' -norc -gg -pdflua %f"))
