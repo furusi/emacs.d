@@ -956,7 +956,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :req "emacs-27.1"
     :tag "emacs>=27.1"
     :url "https://github.com/minad/cape"
-    :added "2021-11-30"
     :emacs>= 27.1
     :straight t
     :bind
@@ -1077,7 +1076,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   :req "emacs-24.5.1"
   :tag "languages" "emacs>=24.5.1"
   :url "https://chiselapp.com/user/Hutzdog/repository/ron-mode/home"
-  :added "2021-12-26"
   :emacs>= 24.5
   :straight t
   :mode (("\\.ron$" . ron-mode)))
@@ -1147,7 +1145,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   :req "emacs-24.3"
   :tag "tools" "emacs>=24.3"
   :url "https://github.com/xuchunyang/gitignore-templates.el"
-  :added "2021-12-17"
   :emacs>= 24.3
   :straight t)
 
@@ -2676,7 +2673,6 @@ ARGはなんに使う？"
   :req "emacs-24.3"
   :tag "emacs>=24.3"
   :url "https://github.com/skeeto/elfeed"
-  :added "2021-12-03"
   :emacs>= 24.3
   :straight t
   :bind (:elfeed-search-mode-map
@@ -2700,7 +2696,6 @@ ARGはなんに使う？"
   :req "emacs-24"
   :tag "languages" "powershell" "emacs>=24"
   :url "http://github.com/jschaf/powershell.el"
-  :added "2021-12-04"
   :emacs>= 24
   :straight t)
 
