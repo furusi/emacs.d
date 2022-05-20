@@ -337,7 +337,13 @@
   (when (eq system-type 'darwin)
     (setq dired-use-ls-dired nil)))
 
-(leaf xwidget-webkit
+(leaf xwidget
+  :leaf-autoload nil
+  :leaf-defun nil
+  :bind
+  (:xwidget-webkit-mode-map
+   ("j" . xwidget-webkit-scroll-up-line)
+   ("k" . xwidget-webkit-scroll-down-line))
   :hook
   ((xwidget-webkit-mode-hook . (lambda ()
                                  (display-line-numbers-mode -1)))))
@@ -2773,7 +2779,6 @@ ARGはなんに使う？"
    (">" . enlarge-window-horizontally)
    ("<" . shrink-window-horizontally))
   )
-
 
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
 (require 'misc)
