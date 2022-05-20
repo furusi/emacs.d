@@ -2754,6 +2754,14 @@ ARGはなんに使う？"
   :config
   (repeat-mode t))
 
+(leaf grip-mode
+  :doc "Instant GitHub-flavored Markdown/Org preview using grip."
+  :req "emacs-24.4"
+  :tag "preview" "markdown" "convenience" "emacs>=24.4"
+  :url "https://github.com/seagle0128/grip-mode"
+  :emacs>= 24.4
+  :straight t)
+
 (leaf window
   :emacs>= 28
   :bind
