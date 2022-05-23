@@ -906,6 +906,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (corfu :type git :host github :repo "minad/corfu" :branch "main"
            :files ("*" (:exclude ".git")))
     :emacs>= 27.1
+    :require t
     :bind
     (:corfu-map
      ("M-SPC" . corfu-insert-separator)
@@ -925,7 +926,25 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (let ((completion-extra-properties corfu--extra)
             completion-cycle-threshold completion-cycling)
         (apply #'consult-completion-in-region completion-in-region--data)))
+    :config
     (global-corfu-mode))
+
+  (leaf popon
+    :straight (popon :type git :repo "https://codeberg.org/akib/emacs-popon.git")
+    :init
+    (unless (display-graphic-p)
+      (require 'popon)))
+
+  (leaf corfu-terminal
+    :after corfu popon
+    :straight (corfu-terminal
+               :type git
+               :repo "https://codeberg.org/akib/emacs-corfu-terminal.git")
+    :require t
+    :config
+    (unless (display-graphic-p)
+      (corfu-terminal-mode +1))
+    )
 
   (leaf tempel
     :doc "Tempo templates/snippets with in-buffer field editing"
