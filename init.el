@@ -1090,10 +1090,10 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   :tag "languages" "emacs>=26.1"
   :emacs>= 26.1
   :custom ((rustic-lsp-server . 'rust-analyzer)
-           (rustic-lsp-client . 'lsp-mode))
+           (rustic-lsp-client . 'eglot))
   :config
-  (when (eq rustic-lsp-client 'eglot)
-    (add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1))))
+  ;; (when (eq rustic-lsp-client 'eglot)
+  ;;   (add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1))))
   )
 
 (leaf ron-mode
@@ -2801,6 +2801,7 @@ ARGはなんに使う？"
 
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
 (require 'misc)
+(require 'my-window)
 
 (let ((f "~/Dropbox/.config/emacs/config.el"))
   (when (file-exists-p f)

@@ -26,3 +26,5 @@
           (if this-win-2nd (other-window 1))))))
 (leaf toggle-window-split
   :bind ("C-x |" . toggle-window-split))
+
+(provide 'my-window)
