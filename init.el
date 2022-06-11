@@ -1090,7 +1090,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   :tag "languages" "emacs>=26.1"
   :emacs>= 26.1
   :custom ((rustic-lsp-server . 'rust-analyzer)
-           (rustic-lsp-client . 'eglot))
+           (rustic-lsp-client . 'lsp-mode))
   :config
   ;; (when (eq rustic-lsp-client 'eglot)
   ;;   (add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1))))
@@ -1308,6 +1308,15 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
            (:org-mode-map
             ("C-c C-\'" . org-insert-structure-template)))
     :init
+    (defun my-org-item-speed-command-help ()
+      (interactive)
+      (with-output-to-temp-buffer "*Help*"
+        (princ "Speed commands\n==============\n")
+        (mapc #'org-print-speed-command
+              ;; FIXME: don't check `org-speed-commands-user' past 9.6
+              my-org-item-key-bindings))
+      (with-current-buffer "*Help*"
+        (setq truncate-lines t)))
     (defvar my-org-item-key-bindings
       '(("p" . org-previous-item)
         ("n" . org-next-item)
@@ -1323,15 +1332,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
         ("Clock Commands")
         ("I" . org-clock-in)
         ("O" . org-clock-out)
-        ("?" . (progn
-                 (with-output-to-temp-buffer "*Help*"
-                   (princ "Speed commands\n==============\n")
-                   (mapc #'org-print-speed-command
-                         ;; FIXME: don't check `org-speed-commands-user' past 9.6
-                         my-org-item-key-bindings))
-                 (with-current-buffer "*Help*"
-                   (setq truncate-lines t)))
-         )))
+        ("?" . my-org-item-speed-command-help)))
     (defun my-org-item-speed-command-activate (keys)
       (when (and (bolp)
                  (org-at-item-p))
@@ -2442,8 +2443,7 @@ See `org-capture-templates' for more information."
 
 ;;from https://uwabami.github.io/cc-env/Emacs.html
 (defun my-make-scratch (&optional arg)
-  "SCRATCHバッファを作成する.
-ARGはなんに使う？"
+  "SCRATCHバッファを作成する."
   (interactive)
   (progn
     ;; "*scratch*" を作成して buffer-list に放り込む
@@ -2785,6 +2785,27 @@ ARGはなんに使う？"
   :tag "preview" "markdown" "convenience" "emacs>=24.4"
   :url "https://github.com/seagle0128/grip-mode"
   :emacs>= 24.4
+  :straight t)
+
+(leaf tree-sitter
+  :disabled t
+  :doc "Incremental parsing system"
+  :req "emacs-25.1" "tsc-0.18.0"
+  :tag "tree-sitter" "parsers" "tools" "languages" "emacs>=25.1"
+  :url "https://github.com/emacs-tree-sitter/elisp-tree-sitter"
+  :emacs>= 25.1
+  :straight tree-sitter tree-sitter-langs
+  :require tree-sitter-langs
+  :hook (tree-sitter-after-on-hook . tree-sitter-hl-mode)
+  :config
+  (global-tree-sitter-mode))
+
+(leaf dirvish
+  :doc "A modern file manager based on dired mode"
+  :req "emacs-27.1"
+  :tag "convenience" "files" "emacs>=27.1"
+  :url "https://github.com/alexluigit/dirvish"
+  :emacs>= 27.1
   :straight t)
 
 (leaf window
