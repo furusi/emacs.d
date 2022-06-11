@@ -10,6 +10,7 @@ latex-mode yatex-mode org-mode
 (paren-big "\\left(" r "\\right)")
 (cancel "\\cancel{" r "}")
 (SI単位 "\\SI{" p "}{" p "}")
+(sum "\\sum_{" p "}^{" p "}")
 (∩ "\\cap")
 (∪ "\\cup")
 (以下である-less "\\leq")
