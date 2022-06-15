@@ -1096,6 +1096,17 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   ;;   (add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1))))
   )
 
+(leaf lsp-haskell
+  :doc "Haskell support for lsp-mode"
+  :req "emacs-24.3" "lsp-mode-3.0"
+  :tag "haskell" "emacs>=24.3"
+  :url "https://github.com/emacs-lsp/lsp-haskell"
+  :emacs>= 24.3
+  :straight t
+  :after lsp-mode
+  :require t
+  :hook (haskell-mode-hook . lsp))
+
 (leaf ron-mode
   :doc "Rusty Object Notation mode"
   :req "emacs-24.5.1"
@@ -2497,7 +2508,7 @@ See `org-capture-templates' for more information."
   
   (leaf lsp-mode
     :straight t
-    :require t
+    :require 'lsp
     :commands (lsp lsp-deferred)
     :custom ((lsp-auto-execute-action . nil)
              (lsp-keymap-prefix . "C-c C-l")
