@@ -623,7 +623,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
 
 (leaf *vertico
   :config
-  
   (leaf vertico
     :emacs>= 27.1
     :straight (vertico :type git :host github :repo "minad/vertico"
