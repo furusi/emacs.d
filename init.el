@@ -2710,11 +2710,22 @@ See `org-capture-templates' for more information."
   :url "https://github.com/skeeto/elfeed"
   :emacs>= 24.3
   :straight t
+  :require t
   :bind (:elfeed-search-mode-map
          ("j" . next-line)
          ("k" . previous-line))
   :custom
   (elfeed-search-date-format . '("%Y-%m-%d %H:%M" 16 :left))
+  )
+(leaf elfeed-goodies
+  :doc "Elfeed goodies"
+  :req "popwin-1.0.0" "powerline-2.2" "elfeed-2.0.0" "cl-lib-0.5" "link-hint-0.1"
+  :url "https://github.com/algernon/elfeed-goodies"
+  :straight t
+  :require elfeed-goodies popwin
+  :after elfeed
+  :config
+  (elfeed-goodies/setup)
   )
 (leaf elfeed-web
   :doc "web interface to Elfeed"
