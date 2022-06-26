@@ -179,6 +179,18 @@
   (emacs-startup-hook . global-auto-revert-mode)
   )
 
+(leaf window
+  :emacs>= 28
+  :bind
+  (:resize-window-repeat-map
+   ("+" . enlarge-window)
+   ("=" . enlarge-window)
+   ("-" . shrink-window)
+   ("_" . shrink-window)
+   (">" . enlarge-window-horizontally)
+   ("<" . shrink-window-horizontally))
+  )
+
 (leaf initchart
   :disabled t
   :straight (initchart :type git :host github :repo "yuttie/initchart")
@@ -2826,17 +2838,15 @@ See `org-capture-templates' for more information."
   :emacs>= 27.1
   :straight t)
 
-(leaf window
-  :emacs>= 28
-  :bind
-  (:resize-window-repeat-map
-   ("+" . enlarge-window)
-   ("=" . enlarge-window)
-   ("-" . shrink-window)
-   ("_" . shrink-window)
-   (">" . enlarge-window-horizontally)
-   ("<" . shrink-window-horizontally))
-  )
+(leaf nov
+  :doc "Featureful EPUB reader mode"
+  :req "esxml-0.3.6" "emacs-25.1"
+  :tag "epub" "multimedia" "hypermedia" "emacs>=25.1"
+  :url "https://depp.brause.cc/nov.el"
+  :emacs>= 25.1
+  :straight t
+  :mode ("\\.epub\\'" . nov-mode))
+
 
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
 (require 'misc)
