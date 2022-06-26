@@ -809,8 +809,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     ((affe-find-command . "fd -H -E .git --color=never --full-path")
      (affe-grep-command . "rg --hidden --color=never --max-columns=1000 --no-heading --line-number -v ^$ .")
      )
-    
-    
     :config
     ;; Configure Orderless
     (setq affe-regexp-function #'orderless-pattern-compiler
@@ -843,11 +841,9 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
        ("C-l" . my-lookup-mkdict))
       (:embark-symbol-map
        ("C-l" . my-lookup-mkdict)))
-
     :init
-
     ;; Optionally replace the key help with a completing-read interface
-    (setq prefix-help-command #'embark-prefix-help-command)
+    ;; (setq prefix-help-command #'embark-prefix-help-command)
     (defun my-lookup-mkdict ()
       (interactive)
       (let ((str (read-from-minibuffer "Input: ")))
@@ -856,12 +852,12 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
         (concat "mkdictionaries:///?text=" str)))
       )
     :config
-
     ;; Hide the mode line of the Embark live/completions buffers
     (add-to-list 'display-buffer-alist
                  '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                    nil
-                   (window-parameters (mode-line-format . none)))))
+                   (window-parameters (mode-line-format . none))))
+    )
 
   ;; Consult users will also want the embark-consult package.
   (leaf embark-consult
@@ -1149,7 +1145,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   :require t
   :straight t)
 
-(leaf which-key :straight t
+(leaf which-key
+  :straight t
   :diminish t
   :custom
   (which-key-idle-secondary-delay . 0.0)
