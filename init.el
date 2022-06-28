@@ -1654,6 +1654,14 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                          (file-name-as-directory (format "%s/%s" org-directory d))))
           org-agenda-static-dirs))
 
+  (leaf ob-php
+    :doc "Execute PHP within org-mode source blocks."
+    :req "org-8"
+    :tag "php" "babel" "org"
+    :url "https://repo.or.cz/ob-php.git"
+    :straight t
+    :after org)
+
   (leaf org-contrib
     :require t
     :after org
