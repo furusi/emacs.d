@@ -683,8 +683,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   (leaf vertico-repeat
     :after vertico
     :require t
-    :bind (("M-r" . vertico-repeat-last)
-           ("M-R" . vertico-repeat-select))
+    :bind (("C-x c r" . vertico-repeat-last)
+           ("C-x c R" . vertico-repeat-select))
     :hook
     (minibuffer-setup-hook . vertico-repeat-save))
   (leaf vertico-directory
@@ -2742,6 +2742,8 @@ See `org-capture-templates' for more information."
   :straight t
   :require elfeed-goodies popwin
   :after elfeed
+  :bind (:elfeed-search-mode-map
+         ("l" . elfeed-goodies/toggle-logs))
   :config
   (elfeed-goodies/setup)
   )
