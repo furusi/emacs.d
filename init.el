@@ -1350,6 +1350,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
         ("t" . org-toggle-checkbox)
         ("i" . (lambda () (org-insert-item) (org-move-item-down) (org-beginning-of-line)))
         ("c" . (lambda ()  (org-insert-item t) (org-move-item-down) (org-beginning-of-line)))
+        ("k" . (lambda () (forward-char) (org-mark-element) (call-interactively #'kill-region)))
         ("Clock Commands")
         ("I" . org-clock-in)
         ("O" . org-clock-out)
