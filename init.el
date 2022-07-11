@@ -34,7 +34,6 @@
     (custom-theme-directory . ,(locate-user-emacs-file "themes")) ;; テーマのディレクトリを設定
     (cursor-type . '(bar . 4))
     (default-frame-alist .'((width . 180) (height . 40)))
-    (dired-dwim-target . t)
     (ediff-diff-options . "-w")
     (ediff-split-window-function . 'split-window-horizontally)
     (ediff-window-setup-function . 'ediff-setup-windows-plain)
@@ -344,7 +343,10 @@
 
 (leaf restart-emacs :straight t)
 
-(leaf dired*
+(leaf dired
+  :custom
+  ((dired-dwim-target . t)
+   (dired-recursive-copies . 'always))
   :config
   (when (eq system-type 'darwin)
     (setq dired-use-ls-dired nil)))
