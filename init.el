@@ -264,7 +264,7 @@
   (("C-c t l" . toggle-truncate-lines)
    ;; ("C-t" . other-window)
    ("M-<f1>" . other-frame)  ;Macのショートカットに合わせる
-   ("C-o" . my-insert-newline-and-indent)
+   ;; ("C-o" . my-insert-newline-and-indent)
    (:isearch-mode-map
     ("C-o" . isearch-exit))
    (:reb-mode-map
@@ -896,6 +896,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
           `((nil . (:maxlevel . 2))
             ((,(format "%s/refile-target/next-actions.org" org-directory)) . (:regexp . "today"))
             ((,(format "%s/refile-target/inbox.org" org-directory)) . (:level . 1))
+            ((,(format "%s/refile-target/references.org" org-directory)) . (:level . 1))
             )))
 
   (leaf all-the-icons-completion
@@ -1321,6 +1322,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
      (org-startup-folded . t)
      (org-preview-latex-default-process . 'dvisvgm)
      (org-clock-persist . t)
+     (org-enforce-todo-dependencies . t)
      )
     :bind (("C-c c" . org-capture)
            ("C-c l" . org-store-link)
@@ -2746,6 +2748,7 @@ See `org-capture-templates' for more information."
   :require elfeed-goodies popwin
   :after elfeed
   :bind (:elfeed-search-mode-map
+         :package (elfeed elfeed-goodies)
          ("l" . elfeed-goodies/toggle-logs))
   :config
   (elfeed-goodies/setup)
