@@ -1101,6 +1101,11 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   :emacs>= 26.1
   :custom ((rustic-lsp-server . 'rust-analyzer)
            (rustic-lsp-client . 'lsp-mode))
+  :bind
+  ((:rustic-mode-map
+    ("C-<return>" . default-indent-new-line)))
+  :hook
+  (rustic-mode-hook . (lambda () (electric-pair-mode 1)))
   :config
   ;; (when (eq rustic-lsp-client 'eglot)
   ;;   (add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1))))
