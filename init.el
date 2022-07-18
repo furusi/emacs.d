@@ -939,6 +939,17 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :config
     (global-corfu-mode))
 
+  (leaf corfu-doc
+    :doc "Documentation popup for Corfu"
+    :req "emacs-27.1" "corfu-0.25"
+    :tag "convenience" "documentation" "popup" "corfu" "emacs>=27.1"
+    :url "https://github.com/galeo/corfu-doc"
+    :emacs>= 27.1
+    :straight t
+    :after corfu
+    :hook
+    (corfu-mode-hook . corfu-doc-mode))
+
   (leaf popon
     :straight (popon :type git :repo "https://codeberg.org/akib/emacs-popon.git")
     :init
