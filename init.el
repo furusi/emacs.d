@@ -1082,6 +1082,26 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
    (undo-tree-incompatible-major-modes . '(term-mode fundamental-mode))
    (undo-tree-visualizer-diff . t)))
 
+(leaf undo-fu
+  :doc "Undo helper with redo"
+  :req "emacs-25.1"
+  :tag "emacs>=25.1"
+  :url "https://codeberg.org/ideasman42/emacs-undo-fu"
+  :emacs>= 25.1
+  :straight t)
+
+(leaf undo-fu-session
+  :doc "Persistent undo, available between sessions"
+  :req "emacs-28.1"
+  :tag "convenience" "emacs>=28.1"
+  :url "https://codeberg.org/ideasman42/emacs-undo-fu-session"
+  :emacs>= 28.1
+  :straight t
+  :custom
+  (undo-fu-session-incompatible-files . '("/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'"))
+  :config
+  (global-undo-fu-session-mode))
+
 (leaf rust-mode
   :doc "A major-mode for editing Rust source code"
   :req "emacs-25.1"
