@@ -434,9 +434,9 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   :config
   ;; ediff時にorgファイルを全て表示する
   (defun my-ediff-prepare-buffer-function ()
-    (outline-show-all))
+    (org-fold-show-all))
   
-  (with-eval-after-load 'outline
+  (with-eval-after-load 'org-fold
     (add-hook 'ediff-prepare-buffer-hook #'my-ediff-prepare-buffer-function))
   )
 
