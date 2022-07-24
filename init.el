@@ -1380,6 +1380,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
      (org-preview-latex-default-process . 'dvisvgm)
      (org-clock-persist . t)
      (org-enforce-todo-dependencies . t)
+     (org-enforce-todo-checkbox-dependencies . t)
      )
     :bind (("C-c c" . org-capture)
            ("C-c l" . org-store-link)
