@@ -102,8 +102,8 @@
     (setq string
           (cond ((stringp string) string)
                 ((use-region-p)
-                 (replace-regexp-in-string "\n" " "
-                                           (buffer-substring (region-beginning) (region-end))))
+                 (string-fill (buffer-substring (region-beginning) (region-end))
+                              5000))
                 (t
                  (save-excursion
                    (let (s)
