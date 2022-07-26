@@ -2922,6 +2922,15 @@ See `org-capture-templates' for more information."
   :straight t
   :mode ("\\.epub\\'" . nov-mode))
 
+(leaf speed-type
+  :doc "Practice touch and speed typing"
+  :req "emacs-25.1"
+  :tag "games" "emacs>=25.1"
+  :url "https://github.com/parkouss/speed-type"
+  :emacs>= 25.1
+  :straight t
+  :require t)
+
 
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
 (require 'misc)
