@@ -1868,7 +1868,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :straight t
     :require t
     :after org
-    :commands org-journal-new-entry
+    ;; :commands org-journal-new-entry
     :custom
     `((org-journal-file-type . 'monthly)
       (org-journal-date-format . "%F (%a)")
@@ -1890,7 +1890,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :config
     (put 'org-journal-next-entry 'repeat-map 'my-org-journal-repeat-map)
     (put 'org-journal-previous-entry 'repeat-map 'my-org-journal-repeat-map)
-    (setq org-journal-dir (concat org-directory "/journal")))
+    (setq org-journal-dir (concat org-directory "/journal/")))
 
   ;; Org Mode LaTeX Export
 
@@ -2098,7 +2098,7 @@ See `org-capture-templates' for more information."
     :straight (org-modern
                :type git :host github :repo "minad/org-modern"
                :fork
-               (:host github :repo "furusi/org-modern" :branch "bugfix"))
+               (:host nil :repo "git@github.com:furusi/org-modern.git" :branch "bugfix"))
     :hook
     ((org-agenda-finalize-hook . (lambda ()
                                    (org-modern-mode)
