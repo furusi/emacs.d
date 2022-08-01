@@ -13,6 +13,7 @@ latex-mode yatex-mode org-mode
 (sum "\\sum_{" p "}^{" p "}")
 (∩ "\\cap")
 (∪ "\\cup")
+(× "\\times")
 (以下である-less "\\leq")
 (∈ "\\in")
 (自然数Z "\\mathbb{Z}")

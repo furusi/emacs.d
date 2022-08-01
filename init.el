@@ -918,7 +918,50 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
             ((,(format "%s/refile-target/next-actions.org" org-directory)) . (:regexp . "today"))
             ((,(format "%s/refile-target/inbox.org" org-directory)) . (:level . 1))
             ((,(format "%s/refile-target/references.org" org-directory)) . (:level . 1))
-            )))
+            ))
+    (leaf org-refile-source-log
+      :url "https://emacs.stackexchange.com/questions/36390/add-original-location-of-refiled-entries-to-logbook-after-org-refile"
+      :config
+      ;; add custom logging instead
+      (add-hook 'org-after-refile-insert-hook #'clavis-org-refile-add-refiled-from-note)
+
+      (advice-add 'org-refile
+                  :before
+                  #'clavis-org-save-source-id-and-header)
+
+      (defvar clavis-org-refile-refiled-from-id nil)
+      (defvar clavis-org-refile-refiled-from-header nil)
+
+      (defun clavis-org-save-source-id-and-header (_)
+        "Saves refile's source entry's id and header name to `clavis-org-refile-refiled-from-id' and `clavis-org-refile-refiled-from-header'. If refiling entry is first level entry then it stores file path and buffer name respectively."
+        (interactive)
+        (save-excursion
+          (if (org-up-heading-safe)
+              (progn
+                (setq clavis-org-refile-refiled-from-id (org-id-get nil t))
+                (setq clavis-org-refile-refiled-from-header
+                      (org-get-heading 'no-tags 'no-todo 'no-priority 'no-comment)))
+            (setq clavis-org-refile-refiled-from-id (buffer-file-name))
+            (setq clavis-org-refile-refiled-from-header (buffer-name)))))
+
+      (defun clavis-org-refile-add-refiled-from-note ()
+        "Adds a note to entry at point on where the entry was refiled from using the org ID from `clavis-org-refile-refiled-from-id' and `clavis-org-refile-refiled-from-header' variables."
+        (interactive)
+        (when (and clavis-org-refile-refiled-from-id
+                   clavis-org-refile-refiled-from-header)
+          (save-excursion
+            (let* ((note-format "- Refiled on [%s] from [[id:%s][%s]]\n")
+                   (time-format (substring (cdr org-time-stamp-formats) 1 -1))
+                   (time-stamp (format-time-string time-format (current-time))))
+              (goto-char (org-log-beginning t))
+              (insert (format note-format
+                              time-stamp
+                              clavis-org-refile-refiled-from-id
+                              clavis-org-refile-refiled-from-header))))
+          (setq clavis-org-refile-refiled-from-id nil)
+          (setq clavis-org-refile-refiled-from-header nil)))
+      )
+    )
 
   (leaf all-the-icons-completion
     :doc "Add icons to completion candidates"
