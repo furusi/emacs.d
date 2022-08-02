@@ -1743,22 +1743,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   (leaf org-agenda
     :after org
     :custom
-    ((org-agenda-span . 'fortnight))
-    :config
-    (defvar org-agenda-static-dirs '("agenda"
-                                     "calendar"))
-    ;; agendaに重複して登録されるファイルを削除
-    (setq org-agenda-files
-          (let ((reg (format "%s/\\(%s\\)"
-                             org-directory
-                             (string-join org-agenda-static-dirs "\\|"))))
-            (cl-remove-if (lambda (file)
-                            (string-match-p reg file))
-                          org-agenda-files)))
-    (mapc (lambda (d)
-            (add-to-list 'org-agenda-files
-                         (file-name-as-directory (format "%s/%s" org-directory d))))
-          org-agenda-static-dirs))
+    ((org-agenda-span . 'fortnight)))
 
   (leaf ob-php
     :doc "Execute PHP within org-mode source blocks."
