@@ -2122,11 +2122,13 @@ See `org-capture-templates' for more information."
     :req "emacs-27.1"
     :tag "emacs>=27.1"
     :url "https://github.com/minad/org-modern"
+    :require t
     :emacs>= 27.1
+    :after org
     :straight (org-modern
                :type git :host github :repo "minad/org-modern")
-    :hook
-    ((org-agenda-finalize-hook . #'org-modern-agenda)))
+    :config
+    (add-hook 'org-agenda-finalize-hook #'org-modern-agenda))
 
   (leaf anki-editor
     :doc "Minor mode for making Anki cards with Org"
