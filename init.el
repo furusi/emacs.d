@@ -9,6 +9,8 @@
 (show-paren-mode t)
 (column-number-mode)
 
+(defvar my-dropbox-dir  (expand-file-name "~/Dropbox"))
+
 ;; 絵文字のフォント設定
 (when window-system
   (set-fontset-font t 'symbol "Apple Color Emoji")
@@ -1902,7 +1904,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (org-journal-date-format . "%F (%a)")
       (org-journal-time-format . "<%Y-%m-%d %R> ")
       (org-journal-file-format . "%Y%m.org")
-      ;; (org-journal-file-header . "# -*- mode: org-journal; -*-")
+      (org-journal-file-header . "# -*- mode: org-journal; -*-
+#+STARTUP: showall")
       )
     :preface
     (defvar my-org-journal-repeat-map
