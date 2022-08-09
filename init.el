@@ -2955,7 +2955,13 @@ See `org-capture-templates' for more information."
   :url "https://github.com/parkouss/speed-type"
   :emacs>= 25.1
   :straight t
-  :require t)
+  :require t
+  :config
+  (add-hook 'speed-type-mode-hook
+            (lambda ()
+              (when (and (featurep 'corfu)
+                         global-corfu-mode)
+                (corfu-mode -1)))))
 
 
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
