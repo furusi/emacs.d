@@ -917,9 +917,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :config
     (setq org-refile-targets
           `((nil . (:maxlevel . 2))
-            ((,(format "%s/refile-target/next-actions.org" org-directory)) . (:regexp . "today"))
-            ((,(format "%s/refile-target/inbox.org" org-directory)) . (:level . 1))
-            ((,(format "%s/refile-target/references.org" org-directory)) . (:level . 1))
+            ((,(format "%s/next-actions.org" org-directory)) . (:level . 1))
+            ((,(format "%s/references.org" org-directory)) . (:level . 1))
             ))
     (leaf org-refile-source-log
       :url "https://emacs.stackexchange.com/questions/36390/add-original-location-of-refiled-entries-to-logbook-after-org-refile"
@@ -935,7 +934,11 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (defvar clavis-org-refile-refiled-from-header nil)
 
       (defun clavis-org-save-source-id-and-header (_)
-        "Saves refile's source entry's id and header name to `clavis-org-refile-refiled-from-id' and `clavis-org-refile-refiled-from-header'. If refiling entry is first level entry then it stores file path and buffer name respectively."
+        "Saves refile's source entry's id and header name to
+`clavis-org-refile-refiled-from-id' and
+`clavis-org-refile-refiled-from-header'. If refiling entry is
+first level entry then it stores file path and buffer name
+respectively."
         (interactive)
         (save-excursion
           (if (org-up-heading-safe)
@@ -947,7 +950,9 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
             (setq clavis-org-refile-refiled-from-header (buffer-name)))))
 
       (defun clavis-org-refile-add-refiled-from-note ()
-        "Adds a note to entry at point on where the entry was refiled from using the org ID from `clavis-org-refile-refiled-from-id' and `clavis-org-refile-refiled-from-header' variables."
+        "Adds a note to entry at point on where the entry was refiled
+from using the org ID from `clavis-org-refile-refiled-from-id'
+and `clavis-org-refile-refiled-from-header' variables."
         (interactive)
         (when (and clavis-org-refile-refiled-from-id
                    clavis-org-refile-refiled-from-header)
