@@ -303,6 +303,7 @@
     ;; 源ノ角ゴシック
     (set-face-attribute 'default nil
                         :family "UDEV Gothic JPDOC" :height 150)
+    (set-fontset-font nil '(#x30000 . #x3134F) (font-spec :family "Source Han Sans SC" :height 150))
     (let* ((variable-tuple
             (cond ((x-list-fonts "UDEV Gothic JPDOC") '(:font "UDEV Gothic JPDOC"))
                   ((x-list-fonts "Source Sans Pro")       '(:font "Source Sans Pro"))
