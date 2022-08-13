@@ -170,7 +170,7 @@
  ("smartparens" . "8b6a3c3b31afd5b3f846e09859b5fc62eb06e7c1")
  ("so-long" . "93ba1e1c8e11543ffef6f89b223cbc5421eea359")
  ("solarized-emacs" . "94e7c342da1b04326028708e5503973d554bd828")
- ("speed-type" . "52aaaa4af46d4bab4b83e38e1a5205fe40f285db")
+ ("speed-type" . "a3540c37cf4d476b67b545a8339c1b4d3dc84ece")
  ("spinner" . "34905eae12a236753fa88abc831eff1e41e8576e")
  ("ssh-config-mode-el" . "d560a0876a93ad4130baf33dae1b9405ad37a405")
  ("straight.el" . "4517e118ee43f849f708025dbb2cf4f281793121")
