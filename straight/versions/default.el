@@ -12,7 +12,7 @@
  ("avy" . "ba5f035be33693d1a136a5cbeedb24327f551a92")
  ("blackout" . "7707211370f03f03a2f74df15f42ac24a1e99300")
  ("bui.el" . "f3a137628e112a91910fd33c0cff0948fa58d470")
- ("cape" . "86a1df6cbacd0e05b801208f83be5ca6c1cc8cec")
+ ("cape" . "ab2f4ec9ec778d256c7e4b3490ecd50269c422f0")
  ("cfrs" . "f3a21f237b2a54e6b9f8a420a9da42b4f0a63121")
  ("company-mode" . "d5145006b948f93e673f439a766da01f636d39fc")
  ("compat" . "e1a22bf72ff8af445157db421adae2fbc549b224")
