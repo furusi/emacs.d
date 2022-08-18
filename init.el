@@ -786,7 +786,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                 "fd")))
       (pcase-let* ((`(,arg . ,opts) (consult--command-split input))
                    (`(,re . ,hl) (funcall consult--regexp-compiler
-                                          arg 'extended)))
+                                          arg 'extended t)))
         (when re
           (list :command (append
                           (list consult--fd-command
@@ -2751,6 +2751,15 @@ See `org-capture-templates' for more information."
     :emacs>= 26.3
     :straight t
     :after lsp-treemacs lsp-mode dap-mode dart-mode)
+
+  (leaf lsp-tailwindcss
+    :doc "A lsp-mode client for tailwindcss"
+    :req "lsp-mode-7.1" "f-0.20.0" "emacs-26.1"
+    :tag "tools" "language" "emacs>=26.1"
+    :url "https://github.com/merrickluo/lsp-tailwindcss"
+    :emacs>= 26.1
+    :straight t
+    )
   
   (leaf dap-mode
     :straight t
