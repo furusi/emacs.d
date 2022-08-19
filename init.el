@@ -263,9 +263,7 @@
 
 (leaf bind-key
   :bind
-  (("C-c t l" . toggle-truncate-lines)
-   ;; ("C-t" . other-window)
-   ("M-<f1>" . other-frame)  ;Macのショートカットに合わせる
+  (("M-<f1>" . other-frame)  ;Macのショートカットに合わせる
    ;; ("C-o" . my-insert-newline-and-indent)
    (:isearch-mode-map
     ("C-o" . isearch-exit))
