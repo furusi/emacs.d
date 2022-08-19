@@ -1824,9 +1824,15 @@ and `clavis-org-refile-refiled-from-header' variables."
       :if (or (file-exists-p "/usr/bin/pandoc")
               (file-exists-p "/usr/local/bin/pandoc")
               (file-exists-p "/opt/local/bin/pandoc")
-              (file-exists-p "/opt/homebrew/bin/pandoc"))))
-  
-  
+              (file-exists-p "/opt/homebrew/bin/pandoc")))
+    (leaf ox-slimhtml
+      :straight t
+      :require t)
+
+      (leaf ox-tailwind
+        :straight '(ox-tailwind :type git :host github :repo "vascoferreira25/ox-tailwind")
+        :require t)
+      )
   (leaf org-brain
     :straight t
     :after org
@@ -2161,11 +2167,6 @@ See `org-capture-templates' for more information."
          (interactive "NNumber: \nsHint (optional): ")
          (anki-editor-cloze-region arg hint))))
     )
-  
-  (leaf ox-slimhtml
-    :after org
-    :straight t
-    :require t)
   )
 
 (leaf anki-editor-org-src
