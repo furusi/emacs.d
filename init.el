@@ -85,7 +85,7 @@
        browse-url-browser-function #'browse-url-generic))
      ;; mac
      ((eq system-type 'darwin)
-      (setq browse-url-browser-function #'browse-url-default-macosx-browser))
+      (setq browse-url-browser-function #'browse-url-firefox))
      ;;linux
      (t
       (setq browse-url-browser-function #'browse-url-firefox)))))
