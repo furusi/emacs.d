@@ -595,10 +595,9 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                     "SKK-JISYO.fullname" "SKK-JISYO.geo"
                     "SKK-JISYO.itaiji" "SKK-JISYO.zipcode"
                     "SKK-JISYO.okinawa" "SKK-JISYO.propernoun"))))
-  (add-hook  'dired-load-hook
-             (lambda ()
-               (load "dired-x")
-               (global-set-key "\C-x\C-j" 'skk-mode)))
+  (with-eval-after-load 'dired
+                     (load "dired-x")
+                     (global-set-key "\C-x\C-j" 'skk-mode))
   (leaf skk-study
     :require t)
   (leaf skk-hint
