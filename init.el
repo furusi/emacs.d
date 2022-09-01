@@ -2374,6 +2374,14 @@ See `org-capture-templates' for more information."
   :after lsp-mode
   :hook (go-mode-hook . lsp-deferred))
 
+(leaf csharp-mode
+  :doc "C# mode derived mode"
+  :req "emacs-26.1"
+  :tag "mode" "oop" "languages" "c#" "emacs>=26.1"
+  :url "https://github.com/emacs-csharp/csharp-mode"
+  :emacs>= 26.1
+  :straight t)
+
 (leaf android-mode
   :straight t
   :disabled t)
