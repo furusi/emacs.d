@@ -2352,6 +2352,14 @@ See `org-capture-templates' for more information."
                                 '((company-ac-php-backend company-dabbrev-code)
                                   company-capf company-files)))))
 
+(leaf typescript-mode
+  :doc "Major mode for editing typescript"
+  :req "emacs-24.3"
+  :tag "languages" "typescript" "emacs>=24.3"
+  :url "http://github.com/ananthakumaran/typescript.el"
+  :emacs>= 24.3
+  :straight t)
+
 (leaf rainbow-mode
   :straight t)
 
