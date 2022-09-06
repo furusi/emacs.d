@@ -2980,6 +2980,15 @@ See `org-capture-templates' for more information."
   :straight t
   :mode ("\\.epub\\'" . nov-mode))
 
+(leaf nov-xwidget
+  :after nov
+  :straight (nov-xwidget
+             :type git :host github :repo "chenyanming/nov-xwidget")
+  :require t
+  :config
+  (define-key nov-mode-map (kbd "o") 'nov-xwidget-view)
+  (add-hook 'nov-mode-hook 'nov-xwidget-inject-all-files))
+
 (leaf speed-type
   :doc "Practice touch and speed typing"
   :req "emacs-25.1"
