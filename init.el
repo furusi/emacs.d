@@ -1898,7 +1898,6 @@ and `clavis-org-refile-refiled-from-header' variables."
     :after org
     :straight
     (org-roam-ui :host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
-    :hook (after-init-hook . org-roam-ui-mode)
     :custom ((org-roam-ui-sync-theme . t)
              (org-roam-ui-follow . t)
              (org-roam-ui-update-on-save . t)))
@@ -2970,6 +2969,34 @@ See `org-capture-templates' for more information."
   :url "https://github.com/alexluigit/dirvish"
   :emacs>= 27.1
   :straight t)
+
+(leaf shrface
+  :doc "Extend shr/eww with org features and analysis capability"
+  :req "emacs-25.1" "org-9.0" "language-detection-0.1.0"
+  :tag "faces" "emacs>=25.1"
+  :url "https://github.com/chenyanming/shrface"
+  :emacs>= 25.1
+  :straight t
+  :require t
+  :config
+  (shrface-basic)
+  (shrface-trial)
+  (shrface-default-keybindings) ; setup default keybindings
+  (setq shrface-href-versatile t)
+
+  (leaf shrface-nov
+    :after nov
+    :init (add-hook 'nov-mode-hook #'shrface-mode)
+    :config
+    (setq nov-shr-rendering-functions '((img . nov-render-img)
+                                        (title . nov-render-title)))
+    (setq nov-shr-rendering-functions (append nov-shr-rendering-functions
+                                              shr-external-rendering-functions))
+    (define-key nov-mode-map (kbd "n") 'org-next-visible-heading)
+    (define-key nov-mode-map (kbd "p") 'org-previous-visible-heading)
+    (define-key nov-mode-map (kbd "s") 'org-toggle-narrow-to-subtree)
+    (define-key nov-mode-map (kbd "u") 'outline-up-heading))
+  )
 
 (leaf nov
   :doc "Featureful EPUB reader mode"
