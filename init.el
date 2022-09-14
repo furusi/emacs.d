@@ -2449,7 +2449,12 @@ See `org-capture-templates' for more information."
               (t ""))))
 
 (leaf htmlize :straight t)
-(leaf adoc-mode :straight t)
+(leaf adoc-mode
+  :straight t
+  :bind
+  (:adoc-mode-map
+   ("C-c C-n" . outline-next-visible-heading)
+   ("C-c C-p" . outline-previous-visible-heading)))
 (leaf pandoc :straight t)
 (leaf graphviz-dot-mode :straight t)
 (leaf editorconfig
