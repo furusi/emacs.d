@@ -83,12 +83,7 @@
        browse-url-generic-program  "/mnt/c/Windows/System32/cmd.exe"
        browse-url-generic-args     '("/c" "start")
        browse-url-browser-function #'browse-url-generic))
-     ;; mac
-     ((eq system-type 'darwin)
-      (setq browse-url-browser-function #'browse-url-firefox))
-     ;;linux
-     (t
-      (setq browse-url-browser-function #'browse-url-firefox)))))
+     )))
 
 (leaf deepl-translate
   :url "https://uwabami.github.io/cc-env/Emacs.html"
