@@ -2134,7 +2134,9 @@ See `org-capture-templates' for more information."
     :straight (org-modern
                :type git :host github :repo "minad/org-modern")
     :config
-    (add-hook 'org-agenda-finalize-hook #'org-modern-agenda))
+    (add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
+    (set-face-attribute 'org-modern-date-inactive nil
+                        :family "UDEV Gothic JPDOC"))
 
   (leaf anki-editor
     :doc "Minor mode for making Anki cards with Org"
