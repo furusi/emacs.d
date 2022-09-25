@@ -295,7 +295,7 @@
     ;;                     :family "YuKyokasho Yoko")
     ;; 源ノ角ゴシック
     (set-face-attribute 'default nil
-                        :family "UDEV Gothic JPDOC" :height 150)
+                        :family "UDEV Gothic JPDOC")
     (set-fontset-font nil '(#x30000 . #x3134F) (font-spec :family "Source Han Sans SC"))
     (set-fontset-font nil '(#xAA80 . #xAADF) (font-spec :family "Noto Sans Tai Viet"))
     (let* ((variable-tuple
@@ -327,13 +327,7 @@
   (aset char-width-table ?→ 2)
 
   (when (eq window-system 'x)
-    ;; ディスプレイのサイズに応じて調節したい (x-display-pixel-width)
-    (let ((font-height
-           (cond
-            ((> (x-display-pixel-width) 1680) 180)
-            (t 100))))
-      (set-face-attribute 'default nil :family "UDEV Gothic JPDOC" :height font-height))
-    ))
+    (set-face-attribute 'default nil :family "UDEV Gothic JPDOC")))
 
 ;; 記号をデフォルトのフォントにしない。(for Emacs 25.2)
 (setq use-default-font-for-symbols nil)
