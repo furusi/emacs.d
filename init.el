@@ -2976,6 +2976,7 @@ See `org-capture-templates' for more information."
   :emacs>= 25.1
   :straight t
   :require t
+  :hook (eww-after-render-hook . shrface-mode)
   :config
   (shrface-basic)
   (shrface-trial)
