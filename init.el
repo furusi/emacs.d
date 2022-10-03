@@ -2849,7 +2849,8 @@ See `org-capture-templates' for more information."
   :require t
   :bind (:elfeed-search-mode-map
          ("j" . next-line)
-         ("k" . previous-line))
+         ("k" . previous-line)
+         ("e" . (lambda () (interactive)(eww (car (mapcar #'elfeed-entry-link (elfeed-search-selected)))))))
   :custom
   (elfeed-search-date-format . '("%Y-%m-%d %H:%M" 16 :left))
   )
