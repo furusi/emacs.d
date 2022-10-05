@@ -453,6 +453,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   )
 
 (leaf magit-delta
+  :disabled t
   :unless (equal (string-trim
                   (shell-command-to-string "command -v delta")
                   "^\"" "\"?[ \t\n\r]+")
