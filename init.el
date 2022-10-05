@@ -604,9 +604,9 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (defun my-context-skk-at-heading-p ()
       (if (bolp)
           (cond
-           ((org-at-heading-or-item-p) t)
-           ((org-at-block-p) t)
+           ((org-at-heading-p) t)
            ((or (org-at-item-bullet-p) (org-at-item-checkbox-p)) t)
+           ((org-at-block-p) t)
            (t nil))
         nil))
     (add-hook 'org-mode-hook
