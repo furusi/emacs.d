@@ -405,7 +405,7 @@
   :bind (("C-x g" . magit-status)
          (:magit-diff-mode-map
           ("=" . magit-diff-more-context)))
-  :require t
+  :require (magit magit-extras)
   :straight t
   :hook
   (ediff-keymap-setup-hook . add-d-to-ediff-mode-map)
