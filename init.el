@@ -482,7 +482,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                                (format "projectile/%s/projectile.cache" emacs-version)))
     (projectile-known-projects-file . ,(locate-user-emacs-file
                                         (format "projectile/%s/projectile-bookmarks.eld" emacs-version)))
-    (projectile-sort-order . 'recently-active))
+    (projectile-sort-order . 'recently-active)
+    (projectile-switch-project-action . 'projectile-commander))
   :init
   (let ((dir (locate-user-emacs-file (format "projectile/%s" emacs-version))))
     (unless (file-directory-p dir)
@@ -600,7 +601,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (dolist (mode '(python-mode js-mode rustic-mode))
       (add-to-list 'context-skk-programming-mode mode))
     (setq context-skk-mode-off-message "[context-skk] 日本語入力 off")
-    (defun my-context-skk-check-org ()
+    (defun my-context-skk-at-heading-p ()
       (if (bolp)
           (cond
            ((org-at-heading-or-item-p) t)
@@ -612,7 +613,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
               (lambda ()
                 (setq-local
                  context-skk-context-check-hook
-                 '(my-context-skk-check-org
+                 '(my-context-skk-at-heading-p
                    context-skk-in-read-only-p))))
     (context-skk-mode)
     )
@@ -2027,8 +2028,10 @@ and `clavis-org-refile-refiled-from-header' variables."
   (leaf ob-mermaid
     :doc "org-babel support for mermaid evaluation"
     :tag "lisp"
+    :after org
     :url "https://github.com/arnm/ob-mermaid"
-    :straight t)
+    :straight t
+    :custom (ob-mermaid-cli-path . "~/.npm/bin/mmdc"))
   
   (leaf ox-asciidoc
     :straight t
