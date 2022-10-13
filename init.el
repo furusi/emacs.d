@@ -2641,8 +2641,9 @@ See `org-capture-templates' for more information."
     :require 'lsp
     :commands (lsp lsp-deferred)
     :custom ((lsp-auto-execute-action . nil)
-             (lsp-keymap-prefix . "C-c C-l")
              (lsp-completion-provider . :none) ;disable company-capf
+             (lsp-keymap-prefix . "C-c C-l")
+             (lsp-semantic-tokens-enable . t)
              )
     :hook ((lsp-mode-hook  . lsp-enable-which-key-integration)
            (lsp-completion-mode-hook . my-lsp-mode-setup-completion)
