@@ -1196,7 +1196,15 @@ and `clavis-org-refile-refiled-from-header' variables."
   ((:rustic-mode-map
     ("C-<return>" . default-indent-new-line)))
   :hook
-  (rustic-mode-hook . (lambda () (electric-pair-mode 1)))
+  (rustic-mode-hook . (lambda ()
+                        (electric-pair-mode 1)
+                        (when (featurep 'embark)
+                          (setq-local embark-target-finders
+                                      (append (remove
+                                               'embark-target-file-at-point
+                                               embark-target-finders)
+                                              '(embark-target-file-at-point)))
+                          )))
   :config
   ;; (when (eq rustic-lsp-client 'eglot)
   ;;   (add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1))))
