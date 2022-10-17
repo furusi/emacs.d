@@ -2863,9 +2863,29 @@ See `org-capture-templates' for more information."
   :bind (:elfeed-search-mode-map
          ("j" . next-line)
          ("k" . previous-line)
-         ("e" . (lambda () (interactive)(eww (car (mapcar #'elfeed-entry-link (elfeed-search-selected)))))))
+         ("e" . (lambda () (interactive)(eww (my-elfeed-yank-entry-url))))
+         ;;osascript -e 'tell application "Safari" to add reading list item "http://totl.net/"'
+         ("a" .(lambda ()
+                 (interactive)
+                 (if (and (eq system-type 'darwin)
+                          (equal (shell-command-to-string "command -v osascript") ""))
+                     (error "not found 'osascript' command"))
+                 (let ((url (car (mapcar #'elfeed-entry-link (elfeed-search-selected)))))
+                   (call-process-shell-command
+                    (format "osascript -e 'tell application \"Safari\" to add reading list item \"%s\"'" (my-elfeed-yank-entry-url)))
+                   (message "The selected entry added to Safari's reading list.")
+                   (elfeed-search-untag-all-unread))))
+         )
   :custom
   (elfeed-search-date-format . '("%Y-%m-%d %H:%M" 16 :left))
+  :config
+  (defun my-elfeed-yank-entry-url ()
+      (interactive)
+    (let ((url (car (mapcar #'elfeed-entry-link (elfeed-search-selected)))))
+      (if (equal url "")
+          (error "Selected entry's url is empty.")
+        url
+        )))
   )
 (leaf elfeed-goodies
   :doc "Elfeed goodies"
