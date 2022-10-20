@@ -2427,6 +2427,13 @@ See `org-capture-templates' for more information."
   :straight t
   :mode (("\\.kt\\'" . kotlin-mode)))
 
+(leaf fsharp-mode
+  :doc "Support for the F# programming language"
+  :req "emacs-25"
+  :tag "languages" "emacs>=25"
+  :emacs>= 25
+  :straight t)
+
 (leaf whitespace
   :require t
   :diminish global-whitespace-mode
