@@ -645,8 +645,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (insert alt))
   ;; はじめから非表示
   (defun eww-mode-hook--disable-image ()
-    (setq-local shr-put-image-function 'shr-put-image-alt))
-  (add-hook 'eww-mode-hook 'eww-mode-hook--disable-image))
+    (setq-local shr-put-image-function 'shr-put-image-alt)))
 
 (leaf *vertico
   :config
