@@ -85,6 +85,9 @@
        browse-url-browser-function #'browse-url-generic))
      )))
 
+(leaf recentf
+  :custom `(recentf-save-file . ,(locate-user-emacs-file (format "recentf-%s" emacs-version))))
+
 (leaf deepl-translate
   :url "https://uwabami.github.io/cc-env/Emacs.html"
   :commands my-deepl-translate
