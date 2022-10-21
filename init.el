@@ -475,10 +475,11 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   :straight t)
 
 (leaf projectile
-  :bind ((:projectile-mode-map
-          ("C-c p" . projectile-command-map))
-         (:projectile-command-map
-          ("v" . my-projectile-vc-in-new-tab)))
+  :bind `((:projectile-mode-map
+           ("C-c p" . projectile-command-map))
+          ,(when (string> emacs-version "28")
+             '(:projectile-command-map
+               ("v" . my-projectile-vc-in-new-tab))))
   :straight t
   :custom
   `((projectile-cache-file . ,(locate-user-emacs-file
@@ -2906,6 +2907,8 @@ See `org-capture-templates' for more information."
   :bind (:elfeed-search-mode-map
          :package (elfeed elfeed-goodies)
          ("l" . elfeed-goodies/toggle-logs))
+  :custom
+  ((elfeed-goodies/entry-pane-position . 'bottom))
   :config
   (elfeed-goodies/setup)
   )
@@ -2977,6 +2980,7 @@ See `org-capture-templates' for more information."
   )
 
 (leaf repeat-mode
+  :emacs>= 28
   :custom
   (repeat-exit-key . "q")
   :config
