@@ -497,8 +497,11 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (interactive)
     (let ((tab-name-list (mapcar #'cdadr (tab-bar-tabs)))
           (tab-name (format "=p:%s"
-                            (replace-regexp-in-string (format "^%s" (getenv "HOME")) "~"
-                                                      (projectile-acquire-root))))
+                            (replace-regexp-in-string
+                             "\.emacs\.d/packages/.*/straight/.*repos" "REPO"
+                             (replace-regexp-in-string
+                              (format "^%s" (getenv "HOME")) "~"
+                              (projectile-acquire-root)))))
           (project-root (projectile-acquire-root)))
       (cond
        ;; 既に同名のタブがあったらそれを使う
@@ -520,6 +523,9 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   (dolist
       (d '(".ccls-cache"))
     (add-to-list 'projectile-globally-ignored-directories d))
+  (when (string> emacs-version "28")
+    (def-projectile-commander-method ?v "Open project root in vc-dir or magit."
+    (my-projectile-vc-in-new-tab)))
   )
 
 (leaf projectile-for-eglot
