@@ -204,5 +204,5 @@
  ("yaml.el" . "73fde9d8fbbaf2596449285df9eb412ae9dd74d9")
  ("yasnippet" . "5cbdbf0d2015540c59ed8ee0fcf4788effdf75b6")
  ("yasnippet-snippets" . "cd665c9cba4bab646f6d50ac098bee63573a4ca5")
- ("yatex" . "d7c4355c45ca07a1cf9fa139feddbe9ec1103700"))
+ ("yatex" . "2d437efd97c5f014678d566a20cdaf354cf64d81"))
 :gamma
