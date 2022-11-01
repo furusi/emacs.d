@@ -2952,6 +2952,11 @@ See `org-capture-templates' for more information."
   :emacs>= 24.3
   :straight t)
 
+(leaf protobuf-mode
+  :doc "major mode for editing protocol buffers."
+  :tag "languages" "protobuf" "google"
+  :straight t)
+
 (leaf pcre2el
   :doc "regexp syntax converter"
   :req "emacs-24" "cl-lib-0.3"
