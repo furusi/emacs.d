@@ -2224,34 +2224,6 @@ See `org-capture-templates' for more information."
            ("/trash"   . ?t)
            ("/archive" . ?a))))
 
-(leaf company
-  :disabled t
-  :straight t
-  :bind ((:company-mode-map
-          ("C-M-i" . company-complete-common-or-cycle))
-         (:company-active-map
-          ("C-n"   . company-select-next)
-          ("C-p"   . company-select-previous)
-          ("C-s"   . company-filter-candidates)
-          ("C-i"   . company-complete-selection))
-         (:company-search-map
-          ("C-n"   . company-select-next)
-          ("C-p"   . company-select-previous)))
-  :custom
-  ((company-idle-delay . 0.2)
-   (company-minimum-prefix-length . 2)
-   (company-selection-wrap-around . t)
-   )
-  :config
-  (defvar company-mode/enable-yas t
-    "Enable yasnippet for all backends.")
-
-  (defun company-mode/backend-with-yas (backend)
-    (if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
-        backend
-      (append (if (consp backend) backend (list backend))
-              '(:with company-yasnippet))))
-  (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends)))
 
 (leaf yatex
   :straight t
