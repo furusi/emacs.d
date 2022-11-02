@@ -335,7 +335,7 @@
 ;; 記号をデフォルトのフォントにしない。(for Emacs 25.2)
 (setq use-default-font-for-symbols nil)
 
-(leaf restart-emacs :straight t)
+(elpaca restart-emacs)
 
 (leaf dired
   :custom
@@ -376,13 +376,9 @@
           pomodoro-break-start-sound sound))
   (pomodoro-add-to-mode-line))
 
-(leaf sudo-edit :straight t)
+(elpaca sudo-edit)
 
-(leaf so-long
-  :doc "Say farewell to performance problems with minified code."
-  :straight t
-  :require t
-  )
+(elpaca so-long)
 
 (leaf japanese-holidays
   :doc "Calendar functions for the Japanese calendar"
@@ -408,8 +404,6 @@
   :bind (("C-x g" . magit-status)
          (:magit-diff-mode-map
           ("=" . magit-diff-more-context)))
-  :require (magit magit-extras)
-  :straight t
   :hook
   (ediff-keymap-setup-hook . add-d-to-ediff-mode-map)
   :custom
@@ -447,6 +441,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
 "
                   )))
   :config
+  (require 'magit-extras)
   ;; ediff時にorgファイルを全て表示する
   (defun my-ediff-prepare-buffer-function ()
     (org-fold-show-all))
@@ -455,24 +450,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (add-hook 'ediff-prepare-buffer-hook #'my-ediff-prepare-buffer-function))
   )
 
-(leaf magit-delta
-  :disabled t
-  :unless (equal (string-trim
-                  (shell-command-to-string "command -v delta")
-                  "^\"" "\"?[ \t\n\r]+")
-                 "")
-  :doc "Use Delta when displaying diffs in Magit"
-  :req "emacs-25.1" "magit-20200426" "xterm-color-2.0"
-  :tag "emacs>=25.1"
-  :url "https://github.com/dandavison/magit-delta"
-  :emacs>= 25.1
-  :straight t
-  :after magit
-  :hook
-  (magit-mode-hook . (lambda () (magit-delta-mode t))))
 
-(leaf magit-svn
-  :straight t)
+(elpaca magit-svn)
 
 (leaf projectile
   :bind `((:projectile-mode-map
@@ -541,8 +520,9 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (add-to-list 'project-find-functions #'my-projectile-project-find-function)))
 
 ;; ddskk
-(leaf ddskk
-  :straight (ddskk :type git :host github :repo "skk-dev/ddskk")
+(elpaca-use-package (ddskk :host github :repo "skk-dev/ddskk" :depth 10))
+(with-eval-after-load 'ddskk
+  (leaf ddskk
   :commands skk-mode
   :bind (("C-x C-j" . skk-mode)
          (:minibuffer-local-map
@@ -635,6 +615,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                       (set-window-display-table w disptab)))))
   (add-hook 'window-configuration-change-hook #'skk-set-display-table)
   (add-hook 'after-init-hook #'skk-set-display-table))
+)
 
 (leaf eww
   :commands (eww)
@@ -1107,10 +1088,6 @@ and `clavis-org-refile-refiled-from-header' variables."
   )
 
 
-(leaf grip-mode
-  :straight t
-  :bind ((:markdown-mode-command-map
-          ("g" . grip-mode))))
 
 (leaf migemo
   :unless (equal (shell-command-to-string "command -v cmigemo") "")
@@ -1256,32 +1233,31 @@ and `clavis-org-refile-refiled-from-header' variables."
    (wgrep-auto-save-buffer . t))
   )
 
-(leaf highlight-symbol
-  :straight t
-  :require t)
+(elpaca highlight-symbol)
 
+(elpaca expand-region)
 (leaf expand-region
-  :straight t
-  :require t
   :bind (("C-=" . er/expand-region)))
 
-(leaf all-the-icons
-  :if (display-graphic-p)
-  :require t
-  :straight t)
+(when (display-graphic-p)
+  (elpaca all-the-icons)
+  (require 'all-the-icons)
+  )
 
+(elpaca-use-package which-key)
 (leaf which-key
-  :straight t
   :diminish t
   :custom
   (which-key-idle-secondary-delay . 0.0)
   (which-key-max-description-length . 35)
   :config
-  ;; 3つの表示方法どれか1つ選ぶ
-  (which-key-setup-side-window-bottom)    ;ミニバッファ
-  ;; (which-key-setup-side-window-right)     ;右端
-  ;; (which-key-setup-side-window-right-bottom) ;両方使う
-  (which-key-mode 1))
+  (with-eval-after-load 'which-key
+    ;; 3つの表示方法どれか1つ選ぶ
+    (which-key-setup-side-window-bottom)    ;ミニバッファ
+    ;; (which-key-setup-side-window-right)     ;右端
+    ;; (which-key-setup-side-window-right-bottom) ;両方使う
+    (which-key-mode 1))
+  )
 
 ;;;yasnippet
 (leaf yasnippet
@@ -1297,13 +1273,7 @@ and `clavis-org-refile-refiled-from-header' variables."
   :straight t
   :after yasnippet)
 
-(leaf gitignore-templates
-  :doc "Create .gitignore using GitHub or gitignore.io API"
-  :req "emacs-24.3"
-  :tag "tools" "emacs>=24.3"
-  :url "https://github.com/xuchunyang/gitignore-templates.el"
-  :emacs>= 24.3
-  :straight t)
+(elpaca gitignore-templates)
 
 ;; Emacs起動時にrst.elを読み込み
 (leaf rst
@@ -2188,13 +2158,7 @@ See `org-capture-templates' for more information."
   :init
   (add-to-list 'org-src-lang-modes '("anki-editor" . org)))
 
-(leaf mermaid-mode
-  :doc "major mode for working with mermaid graphs"
-  :req "f-0.20.0" "emacs-25.3"
-  :tag "processes" "tools" "graphs" "mermaid" "emacs>=25.3"
-  :url "https://github.com/abrochard/mermaid-mode"
-  :emacs>= 25.3
-  :straight t)
+(elpaca mermaid-mode)
 
 (leaf mu4e
   :disabled t
@@ -2863,8 +2827,8 @@ See `org-capture-templates' for more information."
   :straight t
   :after eglot consult)
 
-(leaf vterm
-  :straight t)
+(elpaca vterm)
+
 (leaf elfeed
   :doc "an Emacs Atom/RSS feed reader"
   :req "emacs-24.3"
@@ -2925,19 +2889,10 @@ See `org-capture-templates' for more information."
   :require t
   :after elfeed)
 
-(leaf powershell
-  :doc "Mode for editing PowerShell scripts"
-  :req "emacs-24"
-  :tag "languages" "powershell" "emacs>=24"
-  :url "http://github.com/jschaf/powershell.el"
-  :emacs>= 24
-  :straight t)
+(elpaca powershell)
 
-(leaf twittering-mode
-  :doc "Major mode for Twitter"
-  :tag "web" "twitter"
-  :url "http://twmode.sf.net/"
-  :straight t)
+;; Major mode for Twitter http://twmode.sf.net/
+(elpaca twittering-mode)
 
 (leaf lua-mode
   :doc "a major-mode for editing Lua scripts"
@@ -2994,13 +2949,11 @@ See `org-capture-templates' for more information."
   :config
   (repeat-mode t))
 
+;; Instant GitHub-flavored Markdown/Org preview using grip.
+(elpaca grip-mode)
 (leaf grip-mode
-  :doc "Instant GitHub-flavored Markdown/Org preview using grip."
-  :req "emacs-24.4"
-  :tag "preview" "markdown" "convenience" "emacs>=24.4"
-  :url "https://github.com/seagle0128/grip-mode"
-  :emacs>= 24.4
-  :straight t)
+  :bind ((:markdown-mode-command-map
+          ("g" . grip-mode))))
 
 (leaf tree-sitter
   :disabled t
@@ -3015,13 +2968,7 @@ See `org-capture-templates' for more information."
   :config
   (global-tree-sitter-mode))
 
-(leaf dirvish
-  :doc "A modern file manager based on dired mode"
-  :req "emacs-27.1"
-  :tag "convenience" "files" "emacs>=27.1"
-  :url "https://github.com/alexluigit/dirvish"
-  :emacs>= 27.1
-  :straight t)
+(elpaca dirvish)
 
 (leaf shrface
   :doc "Extend shr/eww with org features and analysis capability"
@@ -3070,20 +3017,21 @@ See `org-capture-templates' for more information."
   (define-key nov-mode-map (kbd "o") 'nov-xwidget-view)
   (add-hook 'nov-mode-hook 'nov-xwidget-inject-all-files))
 
+(elpaca speed-type)
 (leaf speed-type
   :doc "Practice touch and speed typing"
   :req "emacs-25.1"
   :tag "games" "emacs>=25.1"
   :url "https://github.com/parkouss/speed-type"
   :emacs>= 25.1
-  :straight t
-  :require t
   :config
-  (add-hook 'speed-type-mode-hook
+  (with-eval-after-load 'speed-type
+    (add-hook 'speed-type-mode-hook
             (lambda ()
               (when (and (featurep 'corfu)
                          global-corfu-mode)
                 (corfu-mode -1)))))
+  )
 
 
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
