@@ -45,7 +45,7 @@
 
 ;;elpaca
 (declare-function elpaca-generate-autoloads "elpaca")
-(defvar elpaca-directory (format "%s%s/" (expand-file-name "elpaca/" user-emacs-directory) emacs-version))
+(defvar elpaca-directory (format "%spackages/%s/elpaca/" (expand-file-name user-emacs-directory) emacs-version))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (when-let ((elpaca-repo (expand-file-name "repos/elpaca/" elpaca-directory))
            (elpaca-build (expand-file-name "elpaca/" elpaca-builds-directory))
@@ -71,6 +71,8 @@
 (require 'elpaca-autoloads)
 (add-hook 'after-init-hook #'elpaca-process-queues)
 (elpaca (elpaca :host github :repo "progfolio/elpaca"))
+(elpaca use-package (require 'use-package))
+(setq package-enable-at-startup nil)
 ;;elpaca end
 
 ;; Language and Character Code
