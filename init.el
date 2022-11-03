@@ -145,23 +145,23 @@
    ("V" . scroll-down-command)))
 (elpaca helpful
   (leaf helpful
-  :doc "A better *help* buffer"
-  :req "emacs-25" "dash-2.18.0" "s-1.11.0" "f-0.20.0" "elisp-refs-1.2"
-  :tag "lisp" "help" "emacs>=25"
-  :url "https://github.com/Wilfred/helpful"
-  :emacs>= 25
-  :bind
-  ((:help-map
-    :package help
-    ("v" . helpful-variable)
-    ("f" . helpful-callable)
-    ("o" . helpful-symbol)
-    ("k" . helpful-key)
+    :doc "A better *help* buffer"
+    :req "emacs-25" "dash-2.18.0" "s-1.11.0" "f-0.20.0" "elisp-refs-1.2"
+    :tag "lisp" "help" "emacs>=25"
+    :url "https://github.com/Wilfred/helpful"
+    :emacs>= 25
+    :bind
+    ((:help-map
+      :package help
+      ("v" . helpful-variable)
+      ("f" . helpful-callable)
+      ("o" . helpful-symbol)
+      ("k" . helpful-key)
+      )
+     (:embark-symbol-map
+      :package embark
+      ("h" . helpful-symbol)))
     )
-   (:embark-symbol-map
-    :package embark
-    ("h" . helpful-symbol)))
-  )
   )
 (leaf diff-mode
   :bind
@@ -401,33 +401,33 @@
 (elpaca magit
   (leaf magit
     :require t
-  :bind (("C-x g" . magit-status)
-         (:magit-diff-mode-map
-          ("=" . magit-diff-more-context)))
-  :hook
-  (ediff-keymap-setup-hook . add-d-to-ediff-mode-map)
-  :custom
-  ((magit-display-buffer-function . 'magit-display-buffer-fullframe-status-v1)
-   (magit-diff-refine-hunk . 'all))
-  :init
-  (defun my-magit-mode-bury-buffer ()
-    (interactive)
-    (call-interactively #'magit-mode-bury-buffer)
-    (when (< 1(length (tab-bar-tabs)))
-      (tab-close))
-    )
-  ;; https://stackoverflow.com/questions/9656311/conflict-resolution-with-emacs-ediff-how-can-i-take-the-changes-of-both-version/29757750#29757750
-  (defun ediff-copy-both-to-C ()
-    (interactive)
-    (ediff-copy-diff ediff-current-difference nil 'C nil
-                     (concat
-                      (ediff-get-region-contents ediff-current-difference 'A ediff-control-buffer)
-                      (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
-  (defun add-d-to-ediff-mode-map ()
-    (when (ediff-merge-job)
-      (define-key ediff-mode-map "d" 'ediff-copy-both-to-C)
-      (setq-local ediff-long-help-message-merge
-                  "
+    :bind (("C-x g" . magit-status)
+           (:magit-diff-mode-map
+            ("=" . magit-diff-more-context)))
+    :hook
+    (ediff-keymap-setup-hook . add-d-to-ediff-mode-map)
+    :custom
+    ((magit-display-buffer-function . 'magit-display-buffer-fullframe-status-v1)
+     (magit-diff-refine-hunk . 'all))
+    :init
+    (defun my-magit-mode-bury-buffer ()
+      (interactive)
+      (call-interactively #'magit-mode-bury-buffer)
+      (when (< 1(length (tab-bar-tabs)))
+        (tab-close))
+      )
+    ;; https://stackoverflow.com/questions/9656311/conflict-resolution-with-emacs-ediff-how-can-i-take-the-changes-of-both-version/29757750#29757750
+    (defun ediff-copy-both-to-C ()
+      (interactive)
+      (ediff-copy-diff ediff-current-difference nil 'C nil
+                       (concat
+                        (ediff-get-region-contents ediff-current-difference 'A ediff-control-buffer)
+                        (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
+    (defun add-d-to-ediff-mode-map ()
+      (when (ediff-merge-job)
+        (define-key ediff-mode-map "d" 'ediff-copy-both-to-C)
+        (setq-local ediff-long-help-message-merge
+                    "
 p,DEL -previous diff  |     | -vert/horiz split   |  x -copy buf X's region to C
 n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     j -jump to diff   |     @ -auto-refinement    |  r -restore buf C's old diff
@@ -439,16 +439,16 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                       |  $$ -show clashes only    |  / -show/hide ancestor buff
                       |  $* -skip changed regions |  & -merge w/new default
 "
-                  )))
-  :config
-  (require 'magit-extras)
-  ;; ediff時にorgファイルを全て表示する
-  (defun my-ediff-prepare-buffer-function ()
-    (org-fold-show-all))
-  
-  (with-eval-after-load 'org-fold
-    (add-hook 'ediff-prepare-buffer-hook #'my-ediff-prepare-buffer-function))
-  )
+                    )))
+    :config
+    (require 'magit-extras)
+    ;; ediff時にorgファイルを全て表示する
+    (defun my-ediff-prepare-buffer-function ()
+      (org-fold-show-all))
+    
+    (with-eval-after-load 'org-fold
+      (add-hook 'ediff-prepare-buffer-hook #'my-ediff-prepare-buffer-function))
+    )
 )
 
 
@@ -457,57 +457,57 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
 (elpaca projectile
   (leaf projectile
     :require t
-  :bind `((:projectile-mode-map
-           ("C-c p" . projectile-command-map))
-          ,(when (string> emacs-version "28")
-             '(:projectile-command-map
-               ("v" . my-projectile-vc-in-new-tab))))
-  :custom
-  `((projectile-cache-file . ,(locate-user-emacs-file
-                               (format "projectile/%s/projectile.cache" emacs-version)))
-    (projectile-known-projects-file . ,(locate-user-emacs-file
-                                        (format "projectile/%s/projectile-bookmarks.eld" emacs-version)))
-    (projectile-sort-order . 'recently-active)
-    (projectile-switch-project-action . 'projectile-commander))
-  :init
-  (let ((dir (locate-user-emacs-file (format "projectile/%s" emacs-version))))
-    (unless (file-directory-p dir)
-      (make-directory dir t))
+    :bind `((:projectile-mode-map
+             ("C-c p" . projectile-command-map))
+            ,(when (string> emacs-version "28")
+               '(:projectile-command-map
+                 ("v" . my-projectile-vc-in-new-tab))))
+    :custom
+    `((projectile-cache-file . ,(locate-user-emacs-file
+                                 (format "projectile/%s/projectile.cache" emacs-version)))
+      (projectile-known-projects-file . ,(locate-user-emacs-file
+                                          (format "projectile/%s/projectile-bookmarks.eld" emacs-version)))
+      (projectile-sort-order . 'recently-active)
+      (projectile-switch-project-action . 'projectile-commander))
+    :init
+    (let ((dir (locate-user-emacs-file (format "projectile/%s" emacs-version))))
+      (unless (file-directory-p dir)
+        (make-directory dir t))
+      )
+    (defun my-projectile-vc-in-new-tab ()
+      (interactive)
+      (let ((tab-name-list (mapcar #'cdadr (tab-bar-tabs)))
+            (tab-name (format "=p:%s"
+                              (replace-regexp-in-string
+                               "\.emacs\.d/packages/.*/straight/.*repos" "REPO"
+                               (replace-regexp-in-string
+                                (format "^%s" (getenv "HOME")) "~"
+                                (projectile-acquire-root)))))
+            (project-root (projectile-acquire-root)))
+        (cond
+         ;; 既に同名のタブがあったらそれを使う
+         ((member tab-name tab-name-list)
+          (tab-switch tab-name)
+          (projectile-vc project-root))
+         ((not (memq major-mode '(magit-diff-mode
+                                  magit-log-mode
+                                  magit-revision-mode
+                                  magit-status-mode)))
+          (other-tab-prefix)
+          (projectile-vc)
+          (tab-rename tab-name))
+         (t
+          (projectile-vc))))
+      )
+    :config
+    (projectile-mode +1)
+    (dolist
+        (d '(".ccls-cache"))
+      (add-to-list 'projectile-globally-ignored-directories d))
+    (when (string> emacs-version "28")
+      (def-projectile-commander-method ?v "Open project root in vc-dir or magit."
+        (my-projectile-vc-in-new-tab)))
     )
-  (defun my-projectile-vc-in-new-tab ()
-    (interactive)
-    (let ((tab-name-list (mapcar #'cdadr (tab-bar-tabs)))
-          (tab-name (format "=p:%s"
-                            (replace-regexp-in-string
-                             "\.emacs\.d/packages/.*/straight/.*repos" "REPO"
-                             (replace-regexp-in-string
-                              (format "^%s" (getenv "HOME")) "~"
-                              (projectile-acquire-root)))))
-          (project-root (projectile-acquire-root)))
-      (cond
-       ;; 既に同名のタブがあったらそれを使う
-       ((member tab-name tab-name-list)
-        (tab-switch tab-name)
-        (projectile-vc project-root))
-       ((not (memq major-mode '(magit-diff-mode
-                                magit-log-mode
-                                magit-revision-mode
-                                magit-status-mode)))
-        (other-tab-prefix)
-        (projectile-vc)
-        (tab-rename tab-name))
-       (t
-        (projectile-vc))))
-    )
-  :config
-  (projectile-mode +1)
-  (dolist
-      (d '(".ccls-cache"))
-    (add-to-list 'projectile-globally-ignored-directories d))
-  (when (string> emacs-version "28")
-    (def-projectile-commander-method ?v "Open project root in vc-dir or magit."
-    (my-projectile-vc-in-new-tab)))
-  )
   )
 
 (leaf projectile-for-eglot
@@ -643,239 +643,239 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
 (leaf *vertico
   :config
   (elpaca (vertico :host github :repo "minad/vertico" :files (:defaults "extensions/*.el"))
-  (leaf vertico
-    :emacs>= 27.1
-    :bind ((:vertico-map
-            ("M-RET" . minibuffer-force-complete-and-exit)
-            ("M-TAB" . minibuffer-complete)
-            ("C-r" . vertico-previous)
-            ("C-s" . vertico-next)))
-    :custom
-    ((vertico-count . 20)
-     (enable-recursive-minibuffers . t)
-     (vertico-cycle . t)
-     (vertico-resize . t)
-     (minibuffer-prompt-properties
-      . '(read-only t cursor-intangible t face minibuffer-prompt))
-     )
-    :init
-    (defun crm-indicator (args)
-      (cons (concat "[CRM] " (car args)) (cdr args)))
-    (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
-    (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
-    (vertico-mode)
-    )
-  (leaf vertico-multiform
-    :disabled t
-    :after consult vertico
-    :config
-    (vertico-multiform-mode)
-    
-    (setq vertico-multiform-commands
-          `((consult-imenu buffer ,(lambda (_) (text-scale-set -1)))
-            (consult-outline buffer ,(lambda (_) (text-scale-set -1)))))
+    (leaf vertico
+      :emacs>= 27.1
+      :bind ((:vertico-map
+              ("M-RET" . minibuffer-force-complete-and-exit)
+              ("M-TAB" . minibuffer-complete)
+              ("C-r" . vertico-previous)
+              ("C-s" . vertico-next)))
+      :custom
+      ((vertico-count . 20)
+       (enable-recursive-minibuffers . t)
+       (vertico-cycle . t)
+       (vertico-resize . t)
+       (minibuffer-prompt-properties
+        . '(read-only t cursor-intangible t face minibuffer-prompt))
+       )
+      :init
+      (defun crm-indicator (args)
+        (cons (concat "[CRM] " (car args)) (cdr args)))
+      (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+      (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+      (vertico-mode)
+      )
+    (leaf vertico-multiform
+      :disabled t
+      :after consult vertico
+      :config
+      (vertico-multiform-mode)
+      
+      (setq vertico-multiform-commands
+            `((consult-imenu buffer ,(lambda (_) (text-scale-set -1)))
+              (consult-outline buffer ,(lambda (_) (text-scale-set -1)))))
 
-    ;; Configure the buffer display and the buffer display action
-    (setq vertico-multiform-categories
-          '((consult-grep
-             buffer
-             (vertico-buffer-display-action . (display-buffer-same-window)))))
+      ;; Configure the buffer display and the buffer display action
+      (setq vertico-multiform-categories
+            '((consult-grep
+               buffer
+               (vertico-buffer-display-action . (display-buffer-same-window)))))
 
-    ;; Disable preview for consult-grep commands
-    (consult-customize consult-ripgrep consult-git-grep consult-grep
-                       :preview-key nil)
-    )
+      ;; Disable preview for consult-grep commands
+      (consult-customize consult-ripgrep consult-git-grep consult-grep
+                         :preview-key nil)
+      )
 
-  (leaf vertico-repeat
-    :after vertico
-    :require t
-    :bind (("C-x c r" . vertico-repeat-last)
-           ("C-x c R" . vertico-repeat-select))
-    :hook
-    (minibuffer-setup-hook . vertico-repeat-save))
-  (leaf vertico-directory
-    :after vertico
-    :bind ((:vertico-map
-            ("RET"    . vertico-directory-enter)
-            ("DEL"    . vertico-directory-delete-char)
-            ("M-DEL"  . vertico-directory-delete-word)
-            ("C-l"    . vertico-directory-up))
-           )
-    ;; Tidy shadowed file names
-    :hook
-    (rfn-eshadow-update-overlay-hook . vertico-directory-tidy))
-  (leaf vertico-quick
-    :after vertico
-    :custom
-    ((vertico-quick1 . "aoeu")
-     (vertico-quick2 . "htns")))
+    (leaf vertico-repeat
+      :after vertico
+      :require t
+      :bind (("C-x c r" . vertico-repeat-last)
+             ("C-x c R" . vertico-repeat-select))
+      :hook
+      (minibuffer-setup-hook . vertico-repeat-save))
+    (leaf vertico-directory
+      :after vertico
+      :bind ((:vertico-map
+              ("RET"    . vertico-directory-enter)
+              ("DEL"    . vertico-directory-delete-char)
+              ("M-DEL"  . vertico-directory-delete-word)
+              ("C-l"    . vertico-directory-up))
+             )
+      ;; Tidy shadowed file names
+      :hook
+      (rfn-eshadow-update-overlay-hook . vertico-directory-tidy))
+    (leaf vertico-quick
+      :after vertico
+      :custom
+      ((vertico-quick1 . "aoeu")
+       (vertico-quick2 . "htns")))
     )
   ;; Use the `orderless' completion style.
   ;; Enable `partial-completion' for files to allow path expansion.
   ;; You may prefer to use `initials' instead of `partial-completion'.
   (elpaca orderless
-  (leaf orderless
-    :init
-    (setq completion-styles '(orderless basic)
-          completion-category-defaults nil
-          completion-category-overrides '((file (styles basic partial-completion))))
+    (leaf orderless
+      :init
+      (setq completion-styles '(orderless basic)
+            completion-category-defaults nil
+            completion-category-overrides '((file (styles basic partial-completion))))
       ))
   ;; Persist history over Emacs restarts. Vertico sorts by history position.
   (leaf savehist
     :init
     (savehist-mode))
   (elpaca consult
-  (leaf consult
-    :straight t
-    :custom
-    ((consult-narrow-key . ">")
-     (consult-find-command
-      . "fd -H -E .git --color=never --full-path ARG OPTS")
-     (consult-ripgrep-args
-      . "rg --hidden --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number .")
-     (xref-show-xrefs-function . #'consult-xref)
-     (xref-show-definitions-function . #'consult-xref))
-    :bind (("C-c h" . consult-history)
-           ("C-c m" . consult-mode-command)
-           ("C-x C-SPC" . consult-global-mark)
-           ("C-x b" . consult-buffer)
-           ("C-x c i" . consult-imenu)
-           ("C-x j" . consult-recent-file)
-           ("C-x r j" . consult-register)
-           ("C-x r l"  . consult-bookmark)
-           ("M-y" . consult-yank-pop)
-           ("C-x 4 b" . consult-buffer-other-window)
-           ("C-x 5 b" . consult-buffer-other-frame)
-           ([remap goto-line] . consult-goto-line)
-           (:isearch-mode-map
-            ("C-i" . my-consult-line)
-            ("M-e" . consult-isearch-history))
-           )
-    :hook
-    (completion-list-mode-hook . consult-preview-at-point-mode)
-    :config
-    ;; https://github.com/minad/consult/wiki#find-files-using-fd
-    (defvar consult--fd-command nil)
-    (defun consult--fd-builder (input)
-      (unless consult--fd-command
-        (setq consult--fd-command
-              (if (eq 0 (call-process-shell-command "fdfind"))
-                  "fdfind"
-                "fd")))
-      (pcase-let* ((`(,arg . ,opts) (consult--command-split input))
-                   (`(,re . ,hl) (funcall consult--regexp-compiler
-                                          arg 'extended t)))
-        (when re
-          (list :command (append
-                          (list consult--fd-command
-                                "--color=never" "--full-path"
-                                (consult--join-regexps re 'extended))
-                          opts)
-                :highlight hl))))
+    (leaf consult
+      :straight t
+      :custom
+      ((consult-narrow-key . ">")
+       (consult-find-command
+        . "fd -H -E .git --color=never --full-path ARG OPTS")
+       (consult-ripgrep-args
+        . "rg --hidden --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number .")
+       (xref-show-xrefs-function . #'consult-xref)
+       (xref-show-definitions-function . #'consult-xref))
+      :bind (("C-c h" . consult-history)
+             ("C-c m" . consult-mode-command)
+             ("C-x C-SPC" . consult-global-mark)
+             ("C-x b" . consult-buffer)
+             ("C-x c i" . consult-imenu)
+             ("C-x j" . consult-recent-file)
+             ("C-x r j" . consult-register)
+             ("C-x r l"  . consult-bookmark)
+             ("M-y" . consult-yank-pop)
+             ("C-x 4 b" . consult-buffer-other-window)
+             ("C-x 5 b" . consult-buffer-other-frame)
+             ([remap goto-line] . consult-goto-line)
+             (:isearch-mode-map
+              ("C-i" . my-consult-line)
+              ("M-e" . consult-isearch-history))
+             )
+      :hook
+      (completion-list-mode-hook . consult-preview-at-point-mode)
+      :config
+      ;; https://github.com/minad/consult/wiki#find-files-using-fd
+      (defvar consult--fd-command nil)
+      (defun consult--fd-builder (input)
+        (unless consult--fd-command
+          (setq consult--fd-command
+                (if (eq 0 (call-process-shell-command "fdfind"))
+                    "fdfind"
+                  "fd")))
+        (pcase-let* ((`(,arg . ,opts) (consult--command-split input))
+                     (`(,re . ,hl) (funcall consult--regexp-compiler
+                                            arg 'extended t)))
+          (when re
+            (list :command (append
+                            (list consult--fd-command
+                                  "--color=never" "--full-path"
+                                  (consult--join-regexps re 'extended))
+                            opts)
+                  :highlight hl))))
 
-    (defun consult-fd (&optional dir initial)
-      (interactive "P")
-      (let* ((prompt-dir (consult--directory-prompt "Fd" dir))
-             (default-directory (cdr prompt-dir)))
-        (find-file (consult--find (car prompt-dir) #'consult--fd-builder initial))))
+      (defun consult-fd (&optional dir initial)
+        (interactive "P")
+        (let* ((prompt-dir (consult--directory-prompt "Fd" dir))
+               (default-directory (cdr prompt-dir)))
+          (find-file (consult--find (car prompt-dir) #'consult--fd-builder initial))))
 
-    (consult-customize
-     consult-theme
-     :preview-key (list :debounce 1.0 'any)
-     consult-goto-line consult-line
-     :preview-key (list 'any)
-     consult-ripgrep consult-git-grep consult-grep
-     consult-bookmark consult-recent-file consult-xref
-     consult--source-recent-file consult--source-project-recent-file consult--source-bookmark
-     consult-find consult-org-agenda
-     :preview-key (kbd (if window-system "C-," "M-,")))
-    (autoload 'projectile-project-root "projectile")
-    (setq consult-project-function #'projectile-project-root)
-    (setq completion-in-region-function
-          (lambda (&rest args)
-            (apply (if vertico-mode
-                       #'consult-completion-in-region
-                     #'completion--in-region)
-                   args)))
-    (defun my-consult-line (&optional at-point)
-      (interactive "P")
-      (if at-point
-          (consult-line (thing-at-point 'symbol))
-        (consult-line)))
-    )
+      (consult-customize
+       consult-theme
+       :preview-key (list :debounce 1.0 'any)
+       consult-goto-line consult-line
+       :preview-key (list 'any)
+       consult-ripgrep consult-git-grep consult-grep
+       consult-bookmark consult-recent-file consult-xref
+       consult--source-recent-file consult--source-project-recent-file consult--source-bookmark
+       consult-find consult-org-agenda
+       :preview-key (kbd (if window-system "C-," "M-,")))
+      (autoload 'projectile-project-root "projectile")
+      (setq consult-project-function #'projectile-project-root)
+      (setq completion-in-region-function
+            (lambda (&rest args)
+              (apply (if vertico-mode
+                         #'consult-completion-in-region
+                       #'completion--in-region)
+                     args)))
+      (defun my-consult-line (&optional at-point)
+        (interactive "P")
+        (if at-point
+            (consult-line (thing-at-point 'symbol))
+          (consult-line)))
+      )
     )
   (elpaca consult-yasnippet
-  (leaf consult-yasnippet
-    :doc "A consulting-read interface for yasnippet"
-    :req "emacs-27.1" "yasnippet-0.14" "consult-0.9"
-    :tag "emacs>=27.1"
-    :url "https://github.com/mohkale/consult-yasnippet"
-    :emacs>= 27.1
+    (leaf consult-yasnippet
+      :doc "A consulting-read interface for yasnippet"
+      :req "emacs-27.1" "yasnippet-0.14" "consult-0.9"
+      :tag "emacs>=27.1"
+      :url "https://github.com/mohkale/consult-yasnippet"
+      :emacs>= 27.1
       :after yasnippet consult))
   (elpaca consult-projectile)
   (elpaca affe
-  (leaf affe
-    :after consult orderless
-    :custom
-    ((affe-find-command . "fd -H -E .git --color=never --full-path")
-     (affe-grep-command . "rg --hidden --color=never --max-columns=1000 --no-heading --line-number -v ^$ .")
-     )
-    :config
-    ;; Configure Orderless
-    (setq affe-regexp-function #'orderless-pattern-compiler
-          affe-highlight-function #'orderless--highlight)
+    (leaf affe
+      :after consult orderless
+      :custom
+      ((affe-find-command . "fd -H -E .git --color=never --full-path")
+       (affe-grep-command . "rg --hidden --color=never --max-columns=1000 --no-heading --line-number -v ^$ .")
+       )
+      :config
+      ;; Configure Orderless
+      (setq affe-regexp-function #'orderless-pattern-compiler
+            affe-highlight-function #'orderless--highlight)
 
-    ;; Manual preview key for `affe-grep'
+      ;; Manual preview key for `affe-grep'
       (consult-customize affe-grep :preview-key (kbd "M-."))))
   (elpaca marginalia
-  (leaf marginalia
-    :bind (
-           ("M-A" . marginalia-cycle)
-           (:minibuffer-local-map
-            ("M-A" . marginalia-cycle))
-           )
-    :init
+    (leaf marginalia
+      :bind (
+             ("M-A" . marginalia-cycle)
+             (:minibuffer-local-map
+              ("M-A" . marginalia-cycle))
+             )
+      :init
       (marginalia-mode)))
   (elpaca embark
-  (leaf embark
-    :straight (embark :host github :repo "oantolin/embark" :branch "master" :files (:defaults))
-    :emacs>= 26.1
-    :require t
-    :bind
-    `((,(if window-system "C-." "M-.") . embark-act)         ;; pick some comfortable binding
-      ("C-;" . embark-dwim)        ;; good alternative: M-.
-      ("C-h B" . embark-bindings) ;; alternative for `describe-bindings'
-      (:embark-package-map
-       ("b" . embark-browse-package-url))
-      (:embark-region-map
-       ("C-l" . my-lookup-mkdict))
-      (:embark-symbol-map
-       ("C-l" . my-lookup-mkdict)))
-    :init
-    ;; Optionally replace the key help with a completing-read interface
-    ;; (setq prefix-help-command #'embark-prefix-help-command)
-    (defun my-lookup-mkdict ()
-      (interactive)
-      (let ((str (read-from-minibuffer "Input: ")))
-        (call-process
-        "open" nil 0 nil
-        (concat "mkdictionaries:///?text=" str)))
-      )
-    :config
-    ;; Hide the mode line of the Embark live/completions buffers
-    (add-to-list 'display-buffer-alist
-                 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                   nil
-                   (window-parameters (mode-line-format . none))))
-  ;; Consult users will also want the embark-consult package.
-  (leaf embark-consult
-    :require t
-    :hook
-    (embark-collect-mode-hook . consult-preview-at-point-mode)
-    ;; :init (with-eval-after-load 'embark
-    ;;         (require 'embark-consult))
-    )
-            ))
+    (leaf embark
+      :straight (embark :host github :repo "oantolin/embark" :branch "master" :files (:defaults))
+      :emacs>= 26.1
+      :require t
+      :bind
+      `((,(if window-system "C-." "M-.") . embark-act)         ;; pick some comfortable binding
+        ("C-;" . embark-dwim)        ;; good alternative: M-.
+        ("C-h B" . embark-bindings) ;; alternative for `describe-bindings'
+        (:embark-package-map
+         ("b" . embark-browse-package-url))
+        (:embark-region-map
+         ("C-l" . my-lookup-mkdict))
+        (:embark-symbol-map
+         ("C-l" . my-lookup-mkdict)))
+      :init
+      ;; Optionally replace the key help with a completing-read interface
+      ;; (setq prefix-help-command #'embark-prefix-help-command)
+      (defun my-lookup-mkdict ()
+        (interactive)
+        (let ((str (read-from-minibuffer "Input: ")))
+          (call-process
+           "open" nil 0 nil
+           (concat "mkdictionaries:///?text=" str)))
+        )
+      :config
+      ;; Hide the mode line of the Embark live/completions buffers
+      (add-to-list 'display-buffer-alist
+                   '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                     nil
+                     (window-parameters (mode-line-format . none))))
+      ;; Consult users will also want the embark-consult package.
+      (leaf embark-consult
+        :require t
+        :hook
+        (embark-collect-mode-hook . consult-preview-at-point-mode)
+        ;; :init (with-eval-after-load 'embark
+        ;;         (require 'embark-consult))
+        )
+      ))
   (leaf all-the-icons-completion
     :doc "Add icons to completion candidates"
     :req "emacs-26.1" "all-the-icons-5.0"
@@ -1019,37 +1019,37 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   )
 (elpaca migemo
   (leaf migemo
-  :unless (equal (shell-command-to-string "command -v cmigemo") "")
-  :require t
-  :custom
-  (migemo-options . '("-q" "--emacs"))
-  (migemo-coding-system . 'utf-8-unix)
-  (migemo-user-dictionary . nil)
-  (migemo-regex-dictionary . nil)
-  :config
-  ;; Set your installed path
-  (setq migemo-command
-        (cond ((eq system-type 'darwin)    "cmigemo")
-              ((eq system-type 'windows-nt)    "cmigemo")
-              ((eq system-type 'gnu/linux) "/usr/bin/cmigemo")))
-  (setq migemo-dictionary
-        (cond ((eq system-type 'darwin)
-               "/opt/homebrew/opt/cmigemo/share/migemo/utf-8/migemo-dict")
-              ((eq system-type 'windows-nt)
-               "~/opt/cmigemo-default-win64/dict/utf-8")
-              ((string-match-p "arch" operating-system-release)
-               "/usr/share/migemo/utf-8/migemo-dict")
-              (t "/usr/share/cmigemo/utf-8/migemo-dict")))
-  (load-library "migemo")
-  ;; https://www.yewton.net/2022/02/07/consult-ripgrep-migemo/
-  (defun consult--migemo-regexp-compiler (input type ignore-case)
-    (setq input (mapcar #'migemo-get-pattern (consult--split-escaped input)))
-    (cons (mapcar (lambda (x) (consult--convert-regexp x type)) input)
-          (when-let (regexps (seq-filter #'consult--valid-regexp-p input))
-            (apply-partially #'consult--highlight-regexps regexps ignore-case))))
-  (setq migemo-options '("--quiet" "--nonewline" "--emacs"))
-  (setq consult--regexp-compiler #'consult--migemo-regexp-compiler)
-  (migemo-init))
+    :unless (equal (shell-command-to-string "command -v cmigemo") "")
+    :require t
+    :custom
+    (migemo-options . '("-q" "--emacs"))
+    (migemo-coding-system . 'utf-8-unix)
+    (migemo-user-dictionary . nil)
+    (migemo-regex-dictionary . nil)
+    :config
+    ;; Set your installed path
+    (setq migemo-command
+          (cond ((eq system-type 'darwin)    "cmigemo")
+                ((eq system-type 'windows-nt)    "cmigemo")
+                ((eq system-type 'gnu/linux) "/usr/bin/cmigemo")))
+    (setq migemo-dictionary
+          (cond ((eq system-type 'darwin)
+                 "/opt/homebrew/opt/cmigemo/share/migemo/utf-8/migemo-dict")
+                ((eq system-type 'windows-nt)
+                 "~/opt/cmigemo-default-win64/dict/utf-8")
+                ((string-match-p "arch" operating-system-release)
+                 "/usr/share/migemo/utf-8/migemo-dict")
+                (t "/usr/share/cmigemo/utf-8/migemo-dict")))
+    (load-library "migemo")
+    ;; https://www.yewton.net/2022/02/07/consult-ripgrep-migemo/
+    (defun consult--migemo-regexp-compiler (input type ignore-case)
+      (setq input (mapcar #'migemo-get-pattern (consult--split-escaped input)))
+      (cons (mapcar (lambda (x) (consult--convert-regexp x type)) input)
+            (when-let (regexps (seq-filter #'consult--valid-regexp-p input))
+              (apply-partially #'consult--highlight-regexps regexps ignore-case))))
+    (setq migemo-options '("--quiet" "--nonewline" "--emacs"))
+    (setq consult--regexp-compiler #'consult--migemo-regexp-compiler)
+    (migemo-init))
   )
 ;; SLIMEのロード
 (leaf undo-tree
@@ -1083,43 +1083,43 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   (global-undo-fu-session-mode))
 (elpaca rust-mode
   (leaf rust-mode
-  :doc "A major-mode for editing Rust source code"
-  :req "emacs-25.1"
-  :tag "languages" "emacs>=25.1"
-  :url "https://github.com/rust-lang/rust-mode"
-  :emacs>= 25.1
-  :hook (rust-mode-hook . (lambda () (prettify-symbols-mode)))
-  :config
-  (push '(".add" . ?∔) rust-prettify-symbols-alist)
-  )
+    :doc "A major-mode for editing Rust source code"
+    :req "emacs-25.1"
+    :tag "languages" "emacs>=25.1"
+    :url "https://github.com/rust-lang/rust-mode"
+    :emacs>= 25.1
+    :hook (rust-mode-hook . (lambda () (prettify-symbols-mode)))
+    :config
+    (push '(".add" . ?∔) rust-prettify-symbols-alist)
+    )
   )
 (elpaca rustic
   (leaf rustic
-  :doc "Rust development environment"
-  :req "emacs-26.1" "rust-mode-1.0.3" "dash-2.13.0" "f-0.18.2" "let-alist-1.0.4" "markdown-mode-2.3" "project-0.3.0" "s-1.10.0" "seq-2.3" "spinner-1.7.3" "xterm-color-1.6"
-  :tag "languages" "emacs>=26.1"
-  :emacs>= 26.1
-  :custom `((rustic-lsp-server . 'rust-analyzer)
-            ,(if (string> emacs-version "29")
-                 '(rustic-lsp-client . 'eglot)
-               '(rustic-lsp-client . 'lsp-mode)))
-  :bind
-  ((:rustic-mode-map
-    ("C-<return>" . default-indent-new-line)))
-  :hook
-  (rustic-mode-hook . (lambda ()
-                        (electric-pair-mode 1)
-                        (when (featurep 'embark)
-                          (setq-local embark-target-finders
-                                      (append (remove
-                                               'embark-target-file-at-point
-                                               embark-target-finders)
-                                              '(embark-target-file-at-point)))
-                          )))
-  :config
-  ;; (when (eq rustic-lsp-client 'eglot)
-  ;;   (add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1))))
-  )
+    :doc "Rust development environment"
+    :req "emacs-26.1" "rust-mode-1.0.3" "dash-2.13.0" "f-0.18.2" "let-alist-1.0.4" "markdown-mode-2.3" "project-0.3.0" "s-1.10.0" "seq-2.3" "spinner-1.7.3" "xterm-color-1.6"
+    :tag "languages" "emacs>=26.1"
+    :emacs>= 26.1
+    :custom `((rustic-lsp-server . 'rust-analyzer)
+              ,(if (string> emacs-version "29")
+                   '(rustic-lsp-client . 'eglot)
+                 '(rustic-lsp-client . 'lsp-mode)))
+    :bind
+    ((:rustic-mode-map
+      ("C-<return>" . default-indent-new-line)))
+    :hook
+    (rustic-mode-hook . (lambda ()
+                          (electric-pair-mode 1)
+                          (when (featurep 'embark)
+                            (setq-local embark-target-finders
+                                        (append (remove
+                                                 'embark-target-file-at-point
+                                                 embark-target-finders)
+                                                '(embark-target-file-at-point)))
+                            )))
+    :config
+    ;; (when (eq rustic-lsp-client 'eglot)
+    ;;   (add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1))))
+    )
   )
 (leaf lsp-haskell
   :doc "Haskell support for lsp-mode"
@@ -1279,217 +1279,217 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
 (leaf org*
   :config
   (elpaca (org :depth 10)
-  (leaf org
-    :mode (("\\.org$" . org-mode))
-    :custom
-    ((org-export-allow-bind-keywords . t)
-     (org-export-backends . '(ascii html icalendar latex md odt taskjuggler asciidoc pandoc gfm))
-     (org-id-link-to-org-use-id . t)
-     (org-icalendar-use-scheduled . '(event-if-todo todo-start))
-     (org-link-file-path-type . 'relative)
-     (org-list-allow-alphabetical . t)
-     (org-return-follows-link . t)
-     (org-agenda-start-on-weekday . 0)
-     (org-link-frame-setup .
-                           '((vm . vm-visit-folder-other-frame)
-                             (vm-imap . vm-visit-imap-folder-other-frame)
-                             (gnus . org-gnus-no-new-news)
-                             (file . find-file)
-                             (wl . wl-other-frame)))
-     (org-todo-keywords . '((sequence "TODO(t)" "WAIT(w)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELLED(c)")))
-     (org-special-ctrl-a/e . t)
-     ;; (org-src-lang-modes . '(("C" . c)
-     ;;                         ("C++" . c++)
-     ;;                         ("arduino" . arduino)
-     ;;                         ("asm" . asm)
-     ;;                         ("asymptote" . asy)
-     ;;                         ("bash" . sh)
-     ;;                         ("browser" . html)
-     ;;                         ("browser" . web)
-     ;;                         ("calc" . fundamental)
-     ;;                         ("cpp" . c++)
-     ;;                         ("ditaa" . artist)
-     ;;                         ("dot" . graphviz-dot)
-     ;;                         ("elisp" . emacs-lisp)
-     ;;                         ("html" . web)
-     ;;                         ("ocaml" . tuareg)
-     ;;                         ("php" . php)
-     ;;                         ("python" . python)
-     ;;                         ("redis" . redis)
-     ;;                         ("rust" . rustic)
-     ;;                         ("screen" . shell-script)
-     ;;                         ("shell" . sh)
-     ;;                         ("sqlite" . sql)
-     ;;                         ))
-     (org-src-preserve-indentation . t)
-     (org-startup-folded . t)
-     (org-preview-latex-default-process . 'dvisvgm)
-     (org-clock-persist . t)
-     (org-enforce-todo-dependencies . t)
-     (org-enforce-todo-checkbox-dependencies . t)
-     )
-    :bind (("C-c c" . org-capture)
-           ("C-c l" . org-store-link)
-           ("C-c a" . org-agenda)
-           ("<f2>" . insert-zero-width-space)
-           (:org-mode-map
-            ("C-c C-\'" . org-insert-structure-template)))
-    :init
-    (defun my-org-item-speed-command-help ()
-      (interactive)
-      (with-output-to-temp-buffer "*Help*"
-        (princ "Speed commands\n==============\n")
-        (mapc #'org-print-speed-command
-              ;; FIXME: don't check `org-speed-commands-user' past 9.6
-              my-org-item-key-bindings))
-      (with-current-buffer "*Help*"
-        (setq truncate-lines t)))
-    (defvar my-org-item-key-bindings
-      '(("p" . org-previous-item)
-        ("n" . org-next-item)
-        ("U" . org-metaup)
-        ("D" . org-metadown)
-        ("r" .   org-metaright)
-        ("l" .   org-metaleft)
-        ("R" .   org-shiftmetaright)
-        ("L" .   org-shiftmetaleft)
-        ("t" . org-toggle-checkbox)
-        ("i" . (lambda () (org-insert-item) (org-move-item-down) (org-beginning-of-line)))
-        ("c" . (lambda ()  (org-insert-item t) (org-move-item-down) (org-beginning-of-line)))
-        ("k" . (lambda () (forward-char) (org-mark-element) (call-interactively #'kill-region)))
-        ("Clock Commands")
-        ("I" . org-clock-in)
-        ("O" . org-clock-out)
-        ("?" . my-org-item-speed-command-help)))
-    (defun my-org-item-speed-command-activate (keys)
-      (when (and (bolp)
-                 (org-at-item-p))
-        (cdr (assoc keys my-org-item-key-bindings))))
-    
-    (defun insert-zero-width-space()
-      (interactive)
-      (insert-char #x200b))
-    (defun insert-zero-width-space-twice()
-      (interactive)
-      (insert-zero-width-space)
-      (insert-zero-width-space))
-    (setq org-directory
-          (expand-file-name
-           (if (file-exists-p "~/git/notes")
-               "~/git/notes"
-             (progn
-               (when(not (file-exists-p "~/org"))
-                 (mkdir "~/org"))
-               "~/org"))))
-    :config
-    
-    ;; org-habitモジュールを有効化
-    (add-to-list 'org-modules 'org-habit)
-    (add-to-list 'org-modules 'org-id)
+    (leaf org
+      :mode (("\\.org$" . org-mode))
+      :custom
+      ((org-export-allow-bind-keywords . t)
+       (org-export-backends . '(ascii html icalendar latex md odt taskjuggler asciidoc pandoc gfm))
+       (org-id-link-to-org-use-id . t)
+       (org-icalendar-use-scheduled . '(event-if-todo todo-start))
+       (org-link-file-path-type . 'relative)
+       (org-list-allow-alphabetical . t)
+       (org-return-follows-link . t)
+       (org-agenda-start-on-weekday . 0)
+       (org-link-frame-setup .
+                             '((vm . vm-visit-folder-other-frame)
+                               (vm-imap . vm-visit-imap-folder-other-frame)
+                               (gnus . org-gnus-no-new-news)
+                               (file . find-file)
+                               (wl . wl-other-frame)))
+       (org-todo-keywords . '((sequence "TODO(t)" "WAIT(w)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELLED(c)")))
+       (org-special-ctrl-a/e . t)
+       ;; (org-src-lang-modes . '(("C" . c)
+       ;;                         ("C++" . c++)
+       ;;                         ("arduino" . arduino)
+       ;;                         ("asm" . asm)
+       ;;                         ("asymptote" . asy)
+       ;;                         ("bash" . sh)
+       ;;                         ("browser" . html)
+       ;;                         ("browser" . web)
+       ;;                         ("calc" . fundamental)
+       ;;                         ("cpp" . c++)
+       ;;                         ("ditaa" . artist)
+       ;;                         ("dot" . graphviz-dot)
+       ;;                         ("elisp" . emacs-lisp)
+       ;;                         ("html" . web)
+       ;;                         ("ocaml" . tuareg)
+       ;;                         ("php" . php)
+       ;;                         ("python" . python)
+       ;;                         ("redis" . redis)
+       ;;                         ("rust" . rustic)
+       ;;                         ("screen" . shell-script)
+       ;;                         ("shell" . sh)
+       ;;                         ("sqlite" . sql)
+       ;;                         ))
+       (org-src-preserve-indentation . t)
+       (org-startup-folded . t)
+       (org-preview-latex-default-process . 'dvisvgm)
+       (org-clock-persist . t)
+       (org-enforce-todo-dependencies . t)
+       (org-enforce-todo-checkbox-dependencies . t)
+       )
+      :bind (("C-c c" . org-capture)
+             ("C-c l" . org-store-link)
+             ("C-c a" . org-agenda)
+             ("<f2>" . insert-zero-width-space)
+             (:org-mode-map
+              ("C-c C-\'" . org-insert-structure-template)))
+      :init
+      (defun my-org-item-speed-command-help ()
+        (interactive)
+        (with-output-to-temp-buffer "*Help*"
+          (princ "Speed commands\n==============\n")
+          (mapc #'org-print-speed-command
+                ;; FIXME: don't check `org-speed-commands-user' past 9.6
+                my-org-item-key-bindings))
+        (with-current-buffer "*Help*"
+          (setq truncate-lines t)))
+      (defvar my-org-item-key-bindings
+        '(("p" . org-previous-item)
+          ("n" . org-next-item)
+          ("U" . org-metaup)
+          ("D" . org-metadown)
+          ("r" .   org-metaright)
+          ("l" .   org-metaleft)
+          ("R" .   org-shiftmetaright)
+          ("L" .   org-shiftmetaleft)
+          ("t" . org-toggle-checkbox)
+          ("i" . (lambda () (org-insert-item) (org-move-item-down) (org-beginning-of-line)))
+          ("c" . (lambda ()  (org-insert-item t) (org-move-item-down) (org-beginning-of-line)))
+          ("k" . (lambda () (forward-char) (org-mark-element) (call-interactively #'kill-region)))
+          ("Clock Commands")
+          ("I" . org-clock-in)
+          ("O" . org-clock-out)
+          ("?" . my-org-item-speed-command-help)))
+      (defun my-org-item-speed-command-activate (keys)
+        (when (and (bolp)
+                   (org-at-item-p))
+          (cdr (assoc keys my-org-item-key-bindings))))
+      
+      (defun insert-zero-width-space()
+        (interactive)
+        (insert-char #x200b))
+      (defun insert-zero-width-space-twice()
+        (interactive)
+        (insert-zero-width-space)
+        (insert-zero-width-space))
+      (setq org-directory
+            (expand-file-name
+             (if (file-exists-p "~/git/notes")
+                 "~/git/notes"
+               (progn
+                 (when(not (file-exists-p "~/org"))
+                   (mkdir "~/org"))
+                 "~/org"))))
+      :config
+      
+      ;; org-habitモジュールを有効化
+      (add-to-list 'org-modules 'org-habit)
+      (add-to-list 'org-modules 'org-id)
 
-    (push 'my-org-item-speed-command-activate
-          org-speed-command-hook)
-    (org-clock-persistence-insinuate)
-    ;; 強調の規則を変更(別の環境で開いた場合は認識されなくなる...)
-    (setcar org-emphasis-regexp-components "-[:space:]\x200B('\"{")
-    (setcar (nthcdr 1 org-emphasis-regexp-components) "-[:space:]\x200B.,:!?;'\")}\\[")
-    (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
+      (push 'my-org-item-speed-command-activate
+            org-speed-command-hook)
+      (org-clock-persistence-insinuate)
+      ;; 強調の規則を変更(別の環境で開いた場合は認識されなくなる...)
+      (setcar org-emphasis-regexp-components "-[:space:]\x200B('\"{")
+      (setcar (nthcdr 1 org-emphasis-regexp-components) "-[:space:]\x200B.,:!?;'\")}\\[")
+      (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
 
-    (setq org-format-latex-options
-          (plist-put org-format-latex-options :scale 2.0))
-    ;; org-modeの固定幅フォントを設定
-    (let ((fontset (cond
-                    ((eq window-system 'ns) "UDEV Gothic JPDOC")
-                    ((eq window-system 'x) "UDEV Gothic JPDOC"))))
-      (dolist (face '(org-table
-                      org-formula
-                      org-date))
-        (set-face-attribute face nil :family fontset)))
+      (setq org-format-latex-options
+            (plist-put org-format-latex-options :scale 2.0))
+      ;; org-modeの固定幅フォントを設定
+      (let ((fontset (cond
+                      ((eq window-system 'ns) "UDEV Gothic JPDOC")
+                      ((eq window-system 'x) "UDEV Gothic JPDOC"))))
+        (dolist (face '(org-table
+                        org-formula
+                        org-date))
+          (set-face-attribute face nil :family fontset)))
 
-    (add-to-list 'face-font-rescale-alist
-                 '(".*IPAゴシック.*" . 0.85))
+      (add-to-list 'face-font-rescale-alist
+                   '(".*IPAゴシック.*" . 0.85))
 
-    (when (equal system-type 'darwin)
-      (setq org-plantuml-jar-path
-            "/usr/local/opt/plantuml/libexec/plantuml.jar"))
-    
-    (setq org-tag-alist
-          '(("ignore" . ?i) ("@OFFICE" . ?o) ("@HOME" . ?h) ("SHOPPING" . ?s)
-            ("MAIL" . ?m) ("PROJECT" . ?p) ("備忘録" . ?b)))
-    (setq org-capture-templates
-          `(("i" "インボックス" entry
-             (file ,(concat org-directory "/inbox.org"))
-             "* %? %i\n%U\n")
-            ;; ("h" "定期的にやること" entry
-            ;;  (file ,(concat org-directory "habit.org"))
-            ;;  "* %?\n %U\n")
-            ("t" "タスク" entry
-             (file ,(concat org-directory "/task.org"))
-             "* TODO %? %i\n%U\n")
-            ("e" "イベント" entry
-             (file ,(concat org-directory "/event.org"))
-             "* EVENT %?\n %a\n%U\n")
-            ("n"
-             "ノート(本文から書く)"
-             entry
-             (file+headline, (concat org-directory "/notes.org") "MEMO")
-             "* %U \n%?")
-            ("N"
-             "ノート(見出しから書く)"
-             entry
-             (file+headline, (concat org-directory "/notes.org") "MEMO")
-             "* %U %?\n\n\n")
-            ("r" "読みかけ(リンク付き)" entry
-             (file ,(concat org-directory "/reading.org"))
-             "* %?\n %a\n %U\n")
-            ("m"
-             "みんなで会議"
-             entry
-             (file+olp+datetree (concat org-directory "/minutes.org") "会議")
-             "* %T %?"
-             :empty-lines 1
-             :jump-to-captured 1)
-            ("p"
-             "ぱっと 読み返したいと思ったとき"
-             plain
-             (file+headline nil "PLAIN")
-             "%?"
-             :empty-lines 1
-             :jump-to-captured 1
-             :unnarrowed 1)
-            ("g"
-             "とりあえず 仕事を放り込む"
-             entry
-             (file+headline (concat org-directory "/gtd.org") "GTD")
-             "** TODO %T %?\n   Entered on %U    %i\n"
-             :empty-lines 1)
-            ("i"
-             "itemのテスト"
-             item
-             (file+headline (concat org-directory "/gtd.org") "GTD")
-             "** TODO %T %?\n   Entered on %U    %i\n"
-             :empty-lines 1)
-            ("z"
-             "'あれ'についてのメモ"
-             entry
-             (file+headline , (concat org-directory "/notes.org") "MEMO")
-             "* %U %? %^g\n\n"
-             :empty-lines 1)))
-    ;;
-    (setq org-agenda-default-appointment-duration 60)
-    ;; コードを評価するとき尋ねない
-    (setq org-confirm-babel-evaluate nil)
+      (when (equal system-type 'darwin)
+        (setq org-plantuml-jar-path
+              "/usr/local/opt/plantuml/libexec/plantuml.jar"))
+      
+      (setq org-tag-alist
+            '(("ignore" . ?i) ("@OFFICE" . ?o) ("@HOME" . ?h) ("SHOPPING" . ?s)
+              ("MAIL" . ?m) ("PROJECT" . ?p) ("備忘録" . ?b)))
+      (setq org-capture-templates
+            `(("i" "インボックス" entry
+               (file ,(concat org-directory "/inbox.org"))
+               "* %? %i\n%U\n")
+              ;; ("h" "定期的にやること" entry
+              ;;  (file ,(concat org-directory "habit.org"))
+              ;;  "* %?\n %U\n")
+              ("t" "タスク" entry
+               (file ,(concat org-directory "/task.org"))
+               "* TODO %? %i\n%U\n")
+              ("e" "イベント" entry
+               (file ,(concat org-directory "/event.org"))
+               "* EVENT %?\n %a\n%U\n")
+              ("n"
+               "ノート(本文から書く)"
+               entry
+               (file+headline, (concat org-directory "/notes.org") "MEMO")
+               "* %U \n%?")
+              ("N"
+               "ノート(見出しから書く)"
+               entry
+               (file+headline, (concat org-directory "/notes.org") "MEMO")
+               "* %U %?\n\n\n")
+              ("r" "読みかけ(リンク付き)" entry
+               (file ,(concat org-directory "/reading.org"))
+               "* %?\n %a\n %U\n")
+              ("m"
+               "みんなで会議"
+               entry
+               (file+olp+datetree (concat org-directory "/minutes.org") "会議")
+               "* %T %?"
+               :empty-lines 1
+               :jump-to-captured 1)
+              ("p"
+               "ぱっと 読み返したいと思ったとき"
+               plain
+               (file+headline nil "PLAIN")
+               "%?"
+               :empty-lines 1
+               :jump-to-captured 1
+               :unnarrowed 1)
+              ("g"
+               "とりあえず 仕事を放り込む"
+               entry
+               (file+headline (concat org-directory "/gtd.org") "GTD")
+               "** TODO %T %?\n   Entered on %U    %i\n"
+               :empty-lines 1)
+              ("i"
+               "itemのテスト"
+               item
+               (file+headline (concat org-directory "/gtd.org") "GTD")
+               "** TODO %T %?\n   Entered on %U    %i\n"
+               :empty-lines 1)
+              ("z"
+               "'あれ'についてのメモ"
+               entry
+               (file+headline , (concat org-directory "/notes.org") "MEMO")
+               "* %U %? %^g\n\n"
+               :empty-lines 1)))
+      ;;
+      (setq org-agenda-default-appointment-duration 60)
+      ;; コードを評価するとき尋ねない
+      (setq org-confirm-babel-evaluate nil)
 
-    (add-to-list 'org-babel-tangle-lang-exts
-                 '("C" . "c"))
+      (add-to-list 'org-babel-tangle-lang-exts
+                   '("C" . "c"))
 
-    (setq org-use-speed-commands t)
-    (setq org-icalendar-alarm-time 30)
-    (setq org-icalendar-timezone "Asia/Tokyo")
+      (setq org-use-speed-commands t)
+      (setq org-icalendar-alarm-time 30)
+      (setq org-icalendar-timezone "Asia/Tokyo")
 
-    ;; htmlで数式
-    (setq org-html-mathjax-template
-          "<script type=\"text/x-mathjax-config\">
+      ;; htmlで数式
+      (setq org-html-mathjax-template
+            "<script type=\"text/x-mathjax-config\">
     MathJax.Hub.Config({
         displayAlign: \"%ALIGN\",
         displayIndent: \"%INDENT\",
@@ -1512,138 +1512,138 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
 });
 </script>
 <script src=\"%PATH\"></script>")
-    (defun org-todo-list-current-file (&optional arg)
-      "Like `org-todo-list', but using only the current buffer's file."
-      (interactive "P")
-      (let ((org-agenda-files (list (buffer-file-name (current-buffer)))))
-        (if (null (car org-agenda-files))
-            (error "%s is not visiting a file" (buffer-name (current-buffer)))
-          (org-todo-list arg))))
+      (defun org-todo-list-current-file (&optional arg)
+        "Like `org-todo-list', but using only the current buffer's file."
+        (interactive "P")
+        (let ((org-agenda-files (list (buffer-file-name (current-buffer)))))
+          (if (null (car org-agenda-files))
+              (error "%s is not visiting a file" (buffer-name (current-buffer)))
+            (org-todo-list arg))))
 
-    (defun my-org-mode-hook ()
-      (add-hook 'completion-at-point-functions
-                'pcomplete-completions-at-point nil t)
-      ;; (face-remap-add-relative 'default :height 173)
-      )
-    (org-babel-do-load-languages
-     'org-babel-load-languages org-babel-load-languages)
-    (add-hook 'org-mode-hook #'my-org-mode-hook)
-    (setq org-publish-project-alist
-          '(("aip3"
-             :base-directory "~/git/advancedinformationprocessing3/org"
-             :publishing-directory "~/git/advancedinformationprocessing3/pub"
-             :base-extension "org"
-             :publishing-function org-html-publish-to-html
-             :html-postamble "<a href=\"index.html\">サイトのトップへ戻る</a>"
-             :language "ja"
-             :with-tags nil
-             ;; :auto-sitemap t
-             :htmlized-source t
-             :with-tags nil
-             :makeindex t
-             :recursive t)
-            ("aip3-image"
-             :base-directory "~/git/advancedinformationprocessing3/image"
-             :publishing-directory "~/git/advancedinformationprocessing3/pub/image"
-             :base-extension "jpg\\|png\\|pdf"
-             :publishing-function org-publish-attachment
-             :recursive t)))
+      (defun my-org-mode-hook ()
+        (add-hook 'completion-at-point-functions
+                  'pcomplete-completions-at-point nil t)
+        ;; (face-remap-add-relative 'default :height 173)
+        )
+      (org-babel-do-load-languages
+       'org-babel-load-languages org-babel-load-languages)
+      (add-hook 'org-mode-hook #'my-org-mode-hook)
+      (setq org-publish-project-alist
+            '(("aip3"
+               :base-directory "~/git/advancedinformationprocessing3/org"
+               :publishing-directory "~/git/advancedinformationprocessing3/pub"
+               :base-extension "org"
+               :publishing-function org-html-publish-to-html
+               :html-postamble "<a href=\"index.html\">サイトのトップへ戻る</a>"
+               :language "ja"
+               :with-tags nil
+               ;; :auto-sitemap t
+               :htmlized-source t
+               :with-tags nil
+               :makeindex t
+               :recursive t)
+              ("aip3-image"
+               :base-directory "~/git/advancedinformationprocessing3/image"
+               :publishing-directory "~/git/advancedinformationprocessing3/pub/image"
+               :base-extension "jpg\\|png\\|pdf"
+               :publishing-function org-publish-attachment
+               :recursive t)))
 
-    (leaf org-screenshot
-      :url "https://dev.classmethod.jp/articles/org-mode-paste-show-clipboard-image/"
-      :config
-      (defun my-org-screenshot ()
-        (interactive)
-        (if (and (eq system-type 'darwin)
-                 (equal (shell-command-to-string "command -v pngpaste") ""))
-            (error "not found 'pngpaste' command"))
-        (let ((filename (format "%s/img/%s_%s.png"
-                                org-directory
-                                (format-time-string "%Y%m%d_%H%M%S")
-                                (make-temp-name "")))
-              (cmd (if (eq system-type 'darwin) "pngpaste" "import")))
-          (call-process cmd nil nil nil filename)
-          (insert (format "[[file:%s]]" (file-relative-name filename)))
-          (org-display-inline-images)))
-      )
+      (leaf org-screenshot
+        :url "https://dev.classmethod.jp/articles/org-mode-paste-show-clipboard-image/"
+        :config
+        (defun my-org-screenshot ()
+          (interactive)
+          (if (and (eq system-type 'darwin)
+                   (equal (shell-command-to-string "command -v pngpaste") ""))
+              (error "not found 'pngpaste' command"))
+          (let ((filename (format "%s/img/%s_%s.png"
+                                  org-directory
+                                  (format-time-string "%Y%m%d_%H%M%S")
+                                  (make-temp-name "")))
+                (cmd (if (eq system-type 'darwin) "pngpaste" "import")))
+            (call-process cmd nil nil nil filename)
+            (insert (format "[[file:%s]]" (file-relative-name filename)))
+            (org-display-inline-images)))
+        )
 
-    (leaf org-monokakido
-      :url ("https://alhassy.github.io/org-special-block-extras/#Links"
-            "https://gist.github.com/skoji/936a89f5e1e7c6f93d4a216175408659")
-      )
-    (org-link-set-parameters
-     "mkdictionaries"
-     :follow
-     (lambda (label)
-       (call-process
-        "open" nil 0 nil
-        (concat "mkdictionaries:///?text=" label)))
-     :export 
-     (lambda (label description backend)
-       (if (memq backend '(html latex))
-           (format (pcase backend
-                     ('html "<a href=\"%s\">%s</a>")
-                     ('latex "\\href{%s}{%s}")
-                     (_ "I don’t know how to export that!"))
-                   (concat "mkdictionaries:///?text=" label)
-                   (or description label))
-         (or description label))))
-  (leaf org-image
-    :url "https://misohena.jp/blog/2020-05-26-limit-maximum-inline-image-size-in-org-mode.html"
-    :config
-    (defcustom org-limit-image-size '(0.99 . 0.5) "Maximum image size") ;; integer or float or (width-int-or-float . height-int-or-float)
+      (leaf org-monokakido
+        :url ("https://alhassy.github.io/org-special-block-extras/#Links"
+              "https://gist.github.com/skoji/936a89f5e1e7c6f93d4a216175408659")
+        )
+      (org-link-set-parameters
+       "mkdictionaries"
+       :follow
+       (lambda (label)
+         (call-process
+          "open" nil 0 nil
+          (concat "mkdictionaries:///?text=" label)))
+       :export 
+       (lambda (label description backend)
+         (if (memq backend '(html latex))
+             (format (pcase backend
+                       ('html "<a href=\"%s\">%s</a>")
+                       ('latex "\\href{%s}{%s}")
+                       (_ "I don’t know how to export that!"))
+                     (concat "mkdictionaries:///?text=" label)
+                     (or description label))
+           (or description label))))
+      (leaf org-image
+        :url "https://misohena.jp/blog/2020-05-26-limit-maximum-inline-image-size-in-org-mode.html"
+        :config
+        (defcustom org-limit-image-size '(0.99 . 0.5) "Maximum image size") ;; integer or float or (width-int-or-float . height-int-or-float)
 
-    (defun org-limit-image-size--get-limit-size (width-p)
-      (let ((limit-size (if (numberp org-limit-image-size)
-                            org-limit-image-size
-                          (if width-p (car org-limit-image-size)
-                            (cdr org-limit-image-size)))))
-        (if (floatp limit-size)
-            (ceiling (* limit-size (if width-p (frame-text-width) (frame-text-height))))
-          limit-size)))
+        (defun org-limit-image-size--get-limit-size (width-p)
+          (let ((limit-size (if (numberp org-limit-image-size)
+                                org-limit-image-size
+                              (if width-p (car org-limit-image-size)
+                                (cdr org-limit-image-size)))))
+            (if (floatp limit-size)
+                (ceiling (* limit-size (if width-p (frame-text-width) (frame-text-height))))
+              limit-size)))
 
-    (defvar org-limit-image-size--in-org-display-inline-images nil)
+        (defvar org-limit-image-size--in-org-display-inline-images nil)
 
-    (defun org-limit-image-size--create-image
-        (old-func file-or-data &optional type data-p &rest props)
+        (defun org-limit-image-size--create-image
+            (old-func file-or-data &optional type data-p &rest props)
 
-      (if (and org-limit-image-size--in-org-display-inline-images
-               org-limit-image-size
-               (null type)
-               ;;(image-type-available-p 'imagemagick) ;;Emacs27 support scaling by default?
-               (null (plist-get props :width)))
-          ;; limit to maximum size
-          (apply
-           old-func
-           file-or-data
-           (if (image-type-available-p 'imagemagick) 'imagemagick)
-           data-p
-           (plist-put
-            (plist-put
-             (org-plist-delete props :width) ;;remove (:width nil)
-             :max-width (org-limit-image-size--get-limit-size t))
-            :max-height (org-limit-image-size--get-limit-size nil)))
+          (if (and org-limit-image-size--in-org-display-inline-images
+                   org-limit-image-size
+                   (null type)
+                   ;;(image-type-available-p 'imagemagick) ;;Emacs27 support scaling by default?
+                   (null (plist-get props :width)))
+              ;; limit to maximum size
+              (apply
+               old-func
+               file-or-data
+               (if (image-type-available-p 'imagemagick) 'imagemagick)
+               data-p
+               (plist-put
+                (plist-put
+                 (org-plist-delete props :width) ;;remove (:width nil)
+                 :max-width (org-limit-image-size--get-limit-size t))
+                :max-height (org-limit-image-size--get-limit-size nil)))
 
-        ;; default
-        (apply old-func file-or-data type data-p props)))
+            ;; default
+            (apply old-func file-or-data type data-p props)))
 
-    (defun org-limit-image-size--org-display-inline-images (old-func &rest args)
-      (let ((org-limit-image-size--in-org-display-inline-images t))
-        (apply old-func args)))
+        (defun org-limit-image-size--org-display-inline-images (old-func &rest args)
+          (let ((org-limit-image-size--in-org-display-inline-images t))
+            (apply old-func args)))
 
-    (defun org-limit-image-size-activate ()
-      (interactive)
-      (advice-add #'create-image :around #'org-limit-image-size--create-image)
-      (advice-add #'org-display-inline-images :around #'org-limit-image-size--org-display-inline-images))
+        (defun org-limit-image-size-activate ()
+          (interactive)
+          (advice-add #'create-image :around #'org-limit-image-size--create-image)
+          (advice-add #'org-display-inline-images :around #'org-limit-image-size--org-display-inline-images))
 
-    (defun org-limit-image-size-deactivate ()
-      (interactive)
-      (advice-remove #'create-image #'org-limit-image-size--create-image)
-      (advice-remove #'org-display-inline-images #'org-limit-image-size--org-display-inline-images)))
-  (leaf org-agenda
-    :after org
-    :custom
-    ((org-agenda-span . 'fortnight)))
+        (defun org-limit-image-size-deactivate ()
+          (interactive)
+          (advice-remove #'create-image #'org-limit-image-size--create-image)
+          (advice-remove #'org-display-inline-images #'org-limit-image-size--org-display-inline-images)))
+      (leaf org-agenda
+        :after org
+        :custom
+        ((org-agenda-span . 'fortnight)))
       (leaf org-refile
         :after (org org-agenda)
         :custom
@@ -1704,184 +1704,184 @@ and `clavis-org-refile-refiled-from-header' variables."
               (setq clavis-org-refile-refiled-from-header nil)))
           )
         )
-  (leaf org-mu4e
-    :disabled t
-    :straight t
-    :after (org mu4e)
-    :config
-    ;;store link to message if in header view, not to header query
-    (setq org-mu4e-link-query-in-headers-mode nil))
-  (leaf ob-java
-    :custom
-    ((org-babel-java-compiler . "javac -encoding UTF-8")))
-  (leaf org-eldoc
-    :after org
-    :require t
-    :hook (org-mode-hook . eldoc-mode)
-    :config
-    (defadvice org-eldoc-documentation-function (around add-field-info activate)
-      (or
-       (ignore-errors (and (not (org-at-table-hline-p))
-                           (org-table-field-info nil)))
-       ad-do-it))
-    (eldoc-add-command-completions
-     "org-table-next-" "org-table-previous" "org-cycle"))
+      (leaf org-mu4e
+        :disabled t
+        :straight t
+        :after (org mu4e)
+        :config
+        ;;store link to message if in header view, not to header query
+        (setq org-mu4e-link-query-in-headers-mode nil))
+      (leaf ob-java
+        :custom
+        ((org-babel-java-compiler . "javac -encoding UTF-8")))
+      (leaf org-eldoc
+        :after org
+        :require t
+        :hook (org-mode-hook . eldoc-mode)
+        :config
+        (defadvice org-eldoc-documentation-function (around add-field-info activate)
+          (or
+           (ignore-errors (and (not (org-at-table-hline-p))
+                               (org-table-field-info nil)))
+           ad-do-it))
+        (eldoc-add-command-completions
+         "org-table-next-" "org-table-previous" "org-cycle"))
 
-  (leaf ox-latex
-    :require t
-    :straight nil
-    :after (org)
-    :custom ((org-latex-minted-options . '(("frame" "single")
-                                           ("breaklines" "")
-                                           ("style" "xcode")
-                                           ("fontsize" "\\footnotesize")))
-             (org-latex-compiler . "lualatex")
-             (org-latex-default-class . "lualatex-jlreq")
-             (org-latex-listings . 'minted)
-             (org-latex-listings-options . '(("frame" "single")
-                                             ("basicstyle" "{\\ttfamily\\scriptsize}")
-                                             ("numbers" "left")
-                                             ("commentstyle" "{\\ttfamily\\scriptsize}")
-                                             ("breaklines" "true")
-                                             ("showstringspaces" "false")))
-             (org-latex-minted-langs . '((rust "rust")
-                                         (emacs-lisp "common-lisp")
-                                         (cc "c++")
-                                         (cperl "perl")
-                                         (shell-script "bash")
-                                         (caml "ocaml")
-                                         (bash "bash")
-                                         (conf "ini")))
-             (org-preview-latex-default-process . 'dvisvgm)
-             )
-    :config
-    ;; (setq org-latex-pdf-process '("latexmk -gg -pdfdvi  %f"))
-    ;; (setq org-latex-pdf-process '("latexmk %f"))
-    (setq org-latex-pdf-process '("latexmk -gg -pdflua  %f"))
-    (add-to-list 'org-latex-packages-alist '("" "minted" t))
-    (add-to-list 'org-latex-packages-alist '("" "cancel" t))
-    (add-to-list 'org-latex-packages-alist '("" "siunitx" t))
-    (setq org-highlight-latex-and-related
-          '(latex script entities))
-    ;;(setq org-latex-pdf-process '("latexmk -e '$lualatex=q/lualatex %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex -o %D %S/' -norc -gg -pdflua %f"))
-    ;;(setq org-export-in-background t)
-    (when (equal system-type 'darwin)
-      (setq org-file-apps
-            '(("pdf" . "open -a Skim %s")
-              ("php". emacs))))
-    (when (equal system-type 'gnu/linux)
-      (setq org-file-apps
-            '(("pdf" . "evince %s"))))
-    (let ((template-dir (file-name-as-directory
-                         (locate-user-emacs-file "lisp/org/ox-latex/templates")))
-          (section-list '(("\\section{%s}" . "\\section*{%s}")
-                          ("\\subsection{%s}" . "\\subsection*{%s}")
-                          ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                          ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                          ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
-      (mapcar
-       (lambda (filename)
-         (add-to-list 'org-latex-classes
-                      (append `(,(file-name-base filename))
-                              `(,(org-file-contents (format "%s/%s" template-dir filename)))
-                              section-list)))
-       (cddr (directory-files
-              (locate-user-emacs-file "lisp/org/ox-latex/templates")))))
+      (leaf ox-latex
+        :require t
+        :straight nil
+        :after (org)
+        :custom ((org-latex-minted-options . '(("frame" "single")
+                                               ("breaklines" "")
+                                               ("style" "xcode")
+                                               ("fontsize" "\\footnotesize")))
+                 (org-latex-compiler . "lualatex")
+                 (org-latex-default-class . "lualatex-jlreq")
+                 (org-latex-listings . 'minted)
+                 (org-latex-listings-options . '(("frame" "single")
+                                                 ("basicstyle" "{\\ttfamily\\scriptsize}")
+                                                 ("numbers" "left")
+                                                 ("commentstyle" "{\\ttfamily\\scriptsize}")
+                                                 ("breaklines" "true")
+                                                 ("showstringspaces" "false")))
+                 (org-latex-minted-langs . '((rust "rust")
+                                             (emacs-lisp "common-lisp")
+                                             (cc "c++")
+                                             (cperl "perl")
+                                             (shell-script "bash")
+                                             (caml "ocaml")
+                                             (bash "bash")
+                                             (conf "ini")))
+                 (org-preview-latex-default-process . 'dvisvgm)
+                 )
+        :config
+        ;; (setq org-latex-pdf-process '("latexmk -gg -pdfdvi  %f"))
+        ;; (setq org-latex-pdf-process '("latexmk %f"))
+        (setq org-latex-pdf-process '("latexmk -gg -pdflua  %f"))
+        (add-to-list 'org-latex-packages-alist '("" "minted" t))
+        (add-to-list 'org-latex-packages-alist '("" "cancel" t))
+        (add-to-list 'org-latex-packages-alist '("" "siunitx" t))
+        (setq org-highlight-latex-and-related
+              '(latex script entities))
+        ;;(setq org-latex-pdf-process '("latexmk -e '$lualatex=q/lualatex %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex -o %D %S/' -norc -gg -pdflua %f"))
+        ;;(setq org-export-in-background t)
+        (when (equal system-type 'darwin)
+          (setq org-file-apps
+                '(("pdf" . "open -a Skim %s")
+                  ("php". emacs))))
+        (when (equal system-type 'gnu/linux)
+          (setq org-file-apps
+                '(("pdf" . "evince %s"))))
+        (let ((template-dir (file-name-as-directory
+                             (locate-user-emacs-file "lisp/org/ox-latex/templates")))
+              (section-list '(("\\section{%s}" . "\\section*{%s}")
+                              ("\\subsection{%s}" . "\\subsection*{%s}")
+                              ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                              ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                              ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+          (mapcar
+           (lambda (filename)
+             (add-to-list 'org-latex-classes
+                          (append `(,(file-name-base filename))
+                                  `(,(org-file-contents (format "%s/%s" template-dir filename)))
+                                  section-list)))
+           (cddr (directory-files
+                  (locate-user-emacs-file "lisp/org/ox-latex/templates")))))
 
-    ;; org-export-latex-no-toc
-    (defun org-export-latex-no-toc (depth)
-      (when depth
-        (format "%% Org-mode is exporting headings to %s levels.\n"
-                depth)))
-    (setq org-export-latex-format-toc-function 'org-export-latex-no-toc)
-    )
+        ;; org-export-latex-no-toc
+        (defun org-export-latex-no-toc (depth)
+          (when depth
+            (format "%% Org-mode is exporting headings to %s levels.\n"
+                    depth)))
+        (setq org-export-latex-format-toc-function 'org-export-latex-no-toc)
+        )
 
-  (leaf ox-taskjuggler
-    :custom
-    ((org-taskjuggler-process-command . "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")))
-  (setq org-ditaa-jar-path
-        "/usr/local/opt/ditaa/libexec/ditaa-0.11.0-standalone.jar")
+      (leaf ox-taskjuggler
+        :custom
+        ((org-taskjuggler-process-command . "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")))
+      (setq org-ditaa-jar-path
+            "/usr/local/opt/ditaa/libexec/ditaa-0.11.0-standalone.jar")
 
-  (leaf ox-extra
-    :after org
-    :require t
-    :config
-    ;; ignoreタグで見出しを非表示にしつつ内容を表示する
-    (ox-extras-activate '(latex-header-blocks ignore-headlines)))
-  (leaf ob-kotlin
-    :after (org))
+      (leaf ox-extra
+        :after org
+        :require t
+        :config
+        ;; ignoreタグで見出しを非表示にしつつ内容を表示する
+        (ox-extras-activate '(latex-header-blocks ignore-headlines)))
+      (leaf ob-kotlin
+        :after (org))
 
-  
-  (leaf ox-hugo
-    :disabled t
-    :straight (ox-hugo :type git :host github :repo "kaushalmodi/ox-hugo" :branch "main")
-    :after org
-    :config
-    (defun org-hugo-new-subtree-post-capture-template ()
-      "Returns `org-capture' template string for new Hugo post.
+      
+      (leaf ox-hugo
+        :disabled t
+        :straight (ox-hugo :type git :host github :repo "kaushalmodi/ox-hugo" :branch "main")
+        :after org
+        :config
+        (defun org-hugo-new-subtree-post-capture-template ()
+          "Returns `org-capture' template string for new Hugo post.
 See `org-capture-templates' for more information."
-      (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
-             (fname (org-hugo-slug title)))
-        (mapconcat #'identity
-                   `(
-                     ,(concat "* TODO " title)
-                     ":PROPERTIES:"
-                     ,(concat ":EXPORT_FILE_NAME: " fname)
-                     ":END:"
-                     "%?\n")          ;Place the cursor here finally
-                   "\n")))
-    (add-to-list 'org-capture-templates
-                 '("h"                ;`org-capture' binding + h
-                   "Hugo post"
-                   entry
-                   ;; It is assumed that below file is present in `org-directory'
-                   ;; and that it has a "Blog Ideas" heading. It can even be a
-                   ;; symlink pointing to the actual location of all-posts.org!
-                   (file+olp "all-posts.org" "Blog Ideas")
-                   (function org-hugo-new-subtree-post-capture-template))))
+          (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
+                 (fname (org-hugo-slug title)))
+            (mapconcat #'identity
+                       `(
+                         ,(concat "* TODO " title)
+                         ":PROPERTIES:"
+                         ,(concat ":EXPORT_FILE_NAME: " fname)
+                         ":END:"
+                         "%?\n")          ;Place the cursor here finally
+                       "\n")))
+        (add-to-list 'org-capture-templates
+                     '("h"                ;`org-capture' binding + h
+                       "Hugo post"
+                       entry
+                       ;; It is assumed that below file is present in `org-directory'
+                       ;; and that it has a "Blog Ideas" heading. It can even be a
+                       ;; symlink pointing to the actual location of all-posts.org!
+                       (file+olp "all-posts.org" "Blog Ideas")
+                       (function org-hugo-new-subtree-post-capture-template))))
 
-  (leaf org-re-reveal
+      (leaf org-re-reveal
         :disabled t
-    :straight t
-    :after org)
+        :straight t
+        :after org)
 
-  (leaf org-gcal
+      (leaf org-gcal
         :disabled t
-    :if (file-exists-p "~/Dropbox/org/googlecalendar/org-gcal-config.el")
-    :straight t
-    :after org
-    :require t
-    :custom
-    ((org-gcal-down-days . 180)
-     (org-gcal-up-days . 180))
-    :config
-    (load "~/Dropbox/org/googlecalendar/org-gcal-config.el"))
+        :if (file-exists-p "~/Dropbox/org/googlecalendar/org-gcal-config.el")
+        :straight t
+        :after org
+        :require t
+        :custom
+        ((org-gcal-down-days . 180)
+         (org-gcal-up-days . 180))
+        :config
+        (load "~/Dropbox/org/googlecalendar/org-gcal-config.el"))
       )
     )
   (leaf anki-editor
-    :doc "Minor mode for making Anki cards with Org"
-    :req "emacs-25" "request-0.3.0" "dash-2.12.0"
-    :tag "emacs>=25"
-    :url "https://github.com/louietan/anki-editor"
-    :emacs>= 25
-    :after embark
-    :straight (anki-editor :type git :host github :repo "louietan/anki-editor"
-                           :fork
-                           (:host github :repo "furusi/anki-editor" :branch "master"))
-    :hook
-    (anki-editor-mode-hook . (lambda ()
-                               (let* ((keymap (copy-keymap embark-region-map)))
-                                 (define-key keymap (kbd "c")
-                                   'my-anki-editor-cloze-region)
-                                 (setq-local embark-region-map keymap))
-                               ))
-    :init
-    (defun my-anki-editor-cloze-region (_text)
-      (call-interactively
-       (lambda (&optional arg hint)
-         (interactive "NNumber: \nsHint (optional): ")
-         (anki-editor-cloze-region arg hint))))
-    )
+        :doc "Minor mode for making Anki cards with Org"
+        :req "emacs-25" "request-0.3.0" "dash-2.12.0"
+        :tag "emacs>=25"
+        :url "https://github.com/louietan/anki-editor"
+        :emacs>= 25
+        :after embark
+        :straight (anki-editor :type git :host github :repo "louietan/anki-editor"
+                               :fork
+                               (:host github :repo "furusi/anki-editor" :branch "master"))
+        :hook
+        (anki-editor-mode-hook . (lambda ()
+                                   (let* ((keymap (copy-keymap embark-region-map)))
+                                     (define-key keymap (kbd "c")
+                                       'my-anki-editor-cloze-region)
+                                     (setq-local embark-region-map keymap))
+                                   ))
+        :init
+        (defun my-anki-editor-cloze-region (_text)
+          (call-interactively
+           (lambda (&optional arg hint)
+             (interactive "NNumber: \nsHint (optional): ")
+             (anki-editor-cloze-region arg hint))))
+        )
   (elpaca org-brain
     (leaf org-brain
         :after org
@@ -2058,7 +2058,7 @@ See `org-capture-templates' for more information."
           (define-key map (kbd "b")   #'org-journal-previous-entry)
           (define-key map (kbd "p")   #'org-journal-previous-entry)
           map
-    ))
+          ))
       :config
       (put 'org-journal-next-entry 'repeat-map 'my-org-journal-repeat-map)
       (put 'org-journal-previous-entry 'repeat-map 'my-org-journal-repeat-map)
@@ -2278,8 +2278,8 @@ See `org-capture-templates' for more information."
 (elpaca hydra)
 (elpaca go-mode
   (leaf go-mode
-  :after lsp-mode
-  :hook (go-mode-hook . lsp-deferred))
+    :after lsp-mode
+    :hook (go-mode-hook . lsp-deferred))
   )
 (leaf csharp-mode
   :doc "C# mode derived mode"
@@ -2371,9 +2371,9 @@ See `org-capture-templates' for more information."
 (leaf graphviz-dot-mode :straight t)
 (elpaca editorconfig
   (leaf editorconfig
-  :diminish editorconfig-mode
-  :config
-  (editorconfig-mode 1))
+    :diminish editorconfig-mode
+    :config
+    (editorconfig-mode 1))
   )
 (leaf easy-hugo
   :disabled t
@@ -2399,22 +2399,22 @@ See `org-capture-templates' for more information."
   )
 (elpaca modus-themes
   (leaf modus-themes
-  :require t
-  :custom
-  ((modus-themes-italic-constructs . t)
-   (modus-themes-region . '(bg-only no-extend))
-   (modus-themes-paren-match . '(bold intense))
-   (modus-themes-org-blocks . 'gray-background)
-   (modus-themes-mode-line . '(borderless accented))
-   (modus-themes-vivendi-color-overrides  . '((bg-main . "gray20")))
-   (modus-themes-operandi-color-overrides . '((bg-main . "#F6F6EF")))
-   )
-  :config
-  (modus-themes-load-themes)
-  (if window-system
-      (modus-themes-load-operandi)
-    (modus-themes-load-vivendi))
-  )
+    :require t
+    :custom
+    ((modus-themes-italic-constructs . t)
+     (modus-themes-region . '(bg-only no-extend))
+     (modus-themes-paren-match . '(bold intense))
+     (modus-themes-org-blocks . 'gray-background)
+     (modus-themes-mode-line . '(borderless accented))
+     (modus-themes-vivendi-color-overrides  . '((bg-main . "gray20")))
+     (modus-themes-operandi-color-overrides . '((bg-main . "#F6F6EF")))
+     )
+    :config
+    (modus-themes-load-themes)
+    (if window-system
+        (modus-themes-load-operandi)
+      (modus-themes-load-vivendi))
+    )
   )
 (leaf markdown-mode
   :straight t
@@ -2547,7 +2547,7 @@ See `org-capture-templates' for more information."
 (leaf *lsp
   :config
   (elpaca (lsp-mode :ref "dfda673")
-  (leaf lsp-mode
+    (leaf lsp-mode
     :require 'lsp
     :commands (lsp lsp-deferred)
     :custom ((lsp-auto-execute-action . nil)
