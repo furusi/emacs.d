@@ -143,14 +143,13 @@
    ("k" . previous-line)
    ("v" . scroll-up-command)
    ("V" . scroll-down-command)))
-
-(leaf helpful
+(elpaca helpful
+  (leaf helpful
   :doc "A better *help* buffer"
   :req "emacs-25" "dash-2.18.0" "s-1.11.0" "f-0.20.0" "elisp-refs-1.2"
   :tag "lisp" "help" "emacs>=25"
   :url "https://github.com/Wilfred/helpful"
   :emacs>= 25
-  :straight t
   :bind
   ((:help-map
     :package help
@@ -163,7 +162,7 @@
     :package embark
     ("h" . helpful-symbol)))
   )
-
+  )
 (leaf diff-mode
   :bind
   (:diff-mode-map
@@ -399,8 +398,9 @@
         '(holiday nil nil nil nil nil japanese-holiday-saturday))
   (add-hook 'calendar-today-visible-hook 'japanese-holiday-mark-weekend)
   (add-hook 'calendar-today-invisible-hook 'japanese-holiday-mark-weekend))
-
-(leaf magit
+(elpaca magit
+  (leaf magit
+    :require t
   :bind (("C-x g" . magit-status)
          (:magit-diff-mode-map
           ("=" . magit-diff-more-context)))
@@ -449,17 +449,19 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   (with-eval-after-load 'org-fold
     (add-hook 'ediff-prepare-buffer-hook #'my-ediff-prepare-buffer-function))
   )
+)
 
 
 (elpaca magit-svn)
 
-(leaf projectile
+(elpaca projectile
+  (leaf projectile
+    :require t
   :bind `((:projectile-mode-map
            ("C-c p" . projectile-command-map))
           ,(when (string> emacs-version "28")
              '(:projectile-command-map
                ("v" . my-projectile-vc-in-new-tab))))
-  :straight t
   :custom
   `((projectile-cache-file . ,(locate-user-emacs-file
                                (format "projectile/%s/projectile.cache" emacs-version)))
@@ -506,6 +508,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (def-projectile-commander-method ?v "Open project root in vc-dir or magit."
     (my-projectile-vc-in-new-tab)))
   )
+  )
 
 (leaf projectile-for-eglot
   :url "https://glassonion.hatenablog.com/entry/2019/05/11/134135"
@@ -520,102 +523,101 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (add-to-list 'project-find-functions #'my-projectile-project-find-function)))
 
 ;; ddskk
-(elpaca-use-package (ddskk :host github :repo "skk-dev/ddskk" :depth 10))
-(with-eval-after-load 'ddskk
+(elpaca (ddskk :host github :repo "skk-dev/ddskk" :depth 10)
   (leaf ddskk
-  :commands skk-mode
-  :bind (("C-x C-j" . skk-mode)
-         (:minibuffer-local-map
-          ("C-j" . skk-kakutei)))
-  :hook ((skk-load-hook . (lambda () (require 'context-skk))) ;自動的に英字モードになる
-         (skk-jisyo-edit-mode-hook . (lambda () (read-only-mode t)))
-         ;; isearch
-         (isearch-mode-hook . skk-isearch-mode-setup) ; isearch で skk のセットアップ
-         (isearch-mode-end-hook . skk-isearch-mode-cleanup) ; isearch で skk のクリーンアップ
-         )
-  :custom
-  `((default-input-method . "japanese-skk")
-    (skk-auto-insert-paren . t)
-    (skk-dcomp-activate . t)         ;動的補完
-    (skk-delete-implies-kakutei . nil) ; ▼モードで BS を押したときには確定しないで前候補を表示する
-    (skk-egg-like-newline . t)           ;non-nilにするとEnterでの確定時に改行しない
-    (skk-get-jisyo-directory . ,(expand-file-name (locate-user-emacs-file "skk-get-jisyo")))
-    (skk-henkan-show-candidates-keys . '(?a ?o ?e ?u ?h ?t ?n ?s))
-    (skk-henkan-strict-okuri-precedence . t)
-    (skk-isearch-start-mode . 'latin); isearch で skk の初期状態
-    (skk-kutouten-type . 'en)
-    (skk-rom-kana-rule-list . '(("tni" nil ("ティ" . "てぃ")) ("dni" nil ("ディ" . "でぃ"))))
-    (skk-save-jisyo-instantly . t)
-    (skk-search-katakana . 'jisx0201-kana)
-    (skk-search-sagyo-henkaku . t)   ;サ行変格活用の動詞も送りあり変換出来るようにする
-    (skk-share-private-jisyo . t)
-    (skk-sticky-key . '(117 101))
-    (skk-use-act . t)                ;全角・半角カタカナを変換候補にする
-    (skk-use-jisx0201-input-method . t)
-    (skk-user-directory . ,(locate-user-emacs-file "ddskk"))
-    (skk-japanese-message-and-error . t)
-    )
-  :init
-  (leaf skk-dropbox
-    :if (file-exists-p "~/Dropbox/.config/ddskk")
+    :commands skk-mode
+    :bind (("C-x C-j" . skk-mode)
+           (:minibuffer-local-map
+            ("C-j" . skk-kakutei)))
+    :hook ((skk-load-hook . (lambda () (require 'context-skk))) ;自動的に英字モードになる
+           (skk-jisyo-edit-mode-hook . (lambda () (read-only-mode t)))
+           ;; isearch
+           (isearch-mode-hook . skk-isearch-mode-setup) ; isearch で skk のセットアップ
+           (isearch-mode-end-hook . skk-isearch-mode-cleanup) ; isearch で skk のクリーンアップ
+           )
     :custom
-    ((skk-jisyo . "~/Dropbox/.config/ddskk/jisyo")
-     (skk-jisyo-code . 'utf-8)))
-  
-  (let ((skk-jisyo-directory
-         (if (file-exists-p "~/Dropbox/.config/ddskk/skkdic-utf8")
-             "~/Dropbox/.config/ddskk/skkdic-utf8"
-           skk-get-jisyo-directory)))
-    (setq skk-large-jisyo (format "%s/SKK-JISYO.L" skk-jisyo-directory))
-    (setq skk-extra-jisyo-file-list
-          (mapcar (lambda (x)
-                    (format "%s/%s" skk-jisyo-directory x))
-                  '("SKK-JISYO.lisp" "SKK-JISYO.station"
-                    "SKK-JISYO.assoc" "SKK-JISYO.edict"
-                    "SKK-JISYO.law" "SKK-JISYO.jinmei"
-                    "SKK-JISYO.fullname" "SKK-JISYO.geo"
-                    "SKK-JISYO.itaiji" "SKK-JISYO.zipcode"
-                    "SKK-JISYO.okinawa" "SKK-JISYO.propernoun"))))
-  (with-eval-after-load 'dired
-                     (load "dired-x")
-                     (global-set-key "\C-x\C-j" 'skk-mode))
-  (leaf skk-study
-    :require t)
-  (leaf skk-hint
-    :require t
-    :custom
-    (skk-hint-start-char . ?=)          ;▼モード中で=漢字の読み方を指定する
-    )
-  (leaf context-skk
-    :config
-    (dolist (mode '(python-mode js-mode rustic-mode))
-      (add-to-list 'context-skk-programming-mode mode))
-    (setq context-skk-mode-off-message "[context-skk] 日本語入力 off")
-    (defun my-context-skk-at-heading-p ()
-      (if (bolp)
-          (cond
-           ((org-at-heading-p) t)
-           ((or (org-at-item-bullet-p) (org-at-item-checkbox-p)) t)
-           ((org-at-block-p) t)
-           (t nil))
-        nil))
-    (add-hook 'org-mode-hook
-              (lambda ()
-                (setq-local
-                 context-skk-context-check-hook
-                 '(my-context-skk-at-heading-p
-                   context-skk-in-read-only-p))))
-    (context-skk-mode)
-    )
-  (defun skk-set-display-table ()
-    (walk-windows (lambda (w)
-                    (let ((disptab (make-display-table)))
-                      (aset disptab ?\▼ (vector (make-glyph-code ?# 'escape-glyph)))
-                      (aset disptab ?\▽ (vector (make-glyph-code ?@ 'escape-glyph)))
-                      (set-window-display-table w disptab)))))
-  (add-hook 'window-configuration-change-hook #'skk-set-display-table)
-  (add-hook 'after-init-hook #'skk-set-display-table))
-)
+    `((default-input-method . "japanese-skk")
+      (skk-auto-insert-paren . t)
+      (skk-dcomp-activate . t)         ;動的補完
+      (skk-delete-implies-kakutei . nil) ; ▼モードで BS を押したときには確定しないで前候補を表示する
+      (skk-egg-like-newline . t)           ;non-nilにするとEnterでの確定時に改行しない
+      (skk-get-jisyo-directory . ,(expand-file-name (locate-user-emacs-file "skk-get-jisyo")))
+      (skk-henkan-show-candidates-keys . '(?a ?o ?e ?u ?h ?t ?n ?s))
+      (skk-henkan-strict-okuri-precedence . t)
+      (skk-isearch-start-mode . 'latin); isearch で skk の初期状態
+      (skk-kutouten-type . 'en)
+      (skk-rom-kana-rule-list . '(("tni" nil ("ティ" . "てぃ")) ("dni" nil ("ディ" . "でぃ"))))
+      (skk-save-jisyo-instantly . t)
+      (skk-search-katakana . 'jisx0201-kana)
+      (skk-search-sagyo-henkaku . t)   ;サ行変格活用の動詞も送りあり変換出来るようにする
+      (skk-share-private-jisyo . t)
+      (skk-sticky-key . '(117 101))
+      (skk-use-act . t)                ;全角・半角カタカナを変換候補にする
+      (skk-use-jisx0201-input-method . t)
+      (skk-user-directory . ,(locate-user-emacs-file "ddskk"))
+      (skk-japanese-message-and-error . t)
+      )
+    :init
+    (leaf skk-dropbox
+      :if (file-exists-p "~/Dropbox/.config/ddskk")
+      :custom
+      ((skk-jisyo . "~/Dropbox/.config/ddskk/jisyo")
+       (skk-jisyo-code . 'utf-8)))
+    
+    (let ((skk-jisyo-directory
+           (if (file-exists-p "~/Dropbox/.config/ddskk/skkdic-utf8")
+               "~/Dropbox/.config/ddskk/skkdic-utf8"
+             skk-get-jisyo-directory)))
+      (setq skk-large-jisyo (format "%s/SKK-JISYO.L" skk-jisyo-directory))
+      (setq skk-extra-jisyo-file-list
+            (mapcar (lambda (x)
+                      (format "%s/%s" skk-jisyo-directory x))
+                    '("SKK-JISYO.lisp" "SKK-JISYO.station"
+                      "SKK-JISYO.assoc" "SKK-JISYO.edict"
+                      "SKK-JISYO.law" "SKK-JISYO.jinmei"
+                      "SKK-JISYO.fullname" "SKK-JISYO.geo"
+                      "SKK-JISYO.itaiji" "SKK-JISYO.zipcode"
+                      "SKK-JISYO.okinawa" "SKK-JISYO.propernoun"))))
+    (with-eval-after-load 'dired
+      (load "dired-x")
+      (global-set-key "\C-x\C-j" 'skk-mode))
+    (leaf skk-study
+      :require t)
+    (leaf skk-hint
+      :require t
+      :custom
+      (skk-hint-start-char . ?=)          ;▼モード中で=漢字の読み方を指定する
+      )
+    (leaf context-skk
+      :config
+      (dolist (mode '(python-mode js-mode rustic-mode))
+        (add-to-list 'context-skk-programming-mode mode))
+      (setq context-skk-mode-off-message "[context-skk] 日本語入力 off")
+      (defun my-context-skk-at-heading-p ()
+        (if (bolp)
+            (cond
+             ((org-at-heading-p) t)
+             ((or (org-at-item-bullet-p) (org-at-item-checkbox-p)) t)
+             ((org-at-block-p) t)
+             (t nil))
+          nil))
+      (add-hook 'org-mode-hook
+                (lambda ()
+                  (setq-local
+                   context-skk-context-check-hook
+                   '(my-context-skk-at-heading-p
+                     context-skk-in-read-only-p))))
+      (context-skk-mode)
+      )
+    (defun skk-set-display-table ()
+      (walk-windows (lambda (w)
+                      (let ((disptab (make-display-table)))
+                        (aset disptab ?\▼ (vector (make-glyph-code ?# 'escape-glyph)))
+                        (aset disptab ?\▽ (vector (make-glyph-code ?@ 'escape-glyph)))
+                        (set-window-display-table w disptab)))))
+    (add-hook 'window-configuration-change-hook #'skk-set-display-table)
+    (add-hook 'after-init-hook #'skk-set-display-table))
+  )
 
 (leaf eww
   :commands (eww)
@@ -640,10 +642,9 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
 
 (leaf *vertico
   :config
+  (elpaca (vertico :host github :repo "minad/vertico" :files (:defaults "extensions/*.el"))
   (leaf vertico
     :emacs>= 27.1
-    :straight (vertico :type git :host github :repo "minad/vertico"
-                       :files (:defaults "extensions/*.el"))
     :bind ((:vertico-map
             ("M-RET" . minibuffer-force-complete-and-exit)
             ("M-TAB" . minibuffer-complete)
@@ -708,23 +709,22 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :custom
     ((vertico-quick1 . "aoeu")
      (vertico-quick2 . "htns")))
-  
+    )
   ;; Use the `orderless' completion style.
   ;; Enable `partial-completion' for files to allow path expansion.
   ;; You may prefer to use `initials' instead of `partial-completion'.
+  (elpaca orderless
   (leaf orderless
-    :straight t
     :init
     (setq completion-styles '(orderless basic)
           completion-category-defaults nil
           completion-category-overrides '((file (styles basic partial-completion))))
-    )
-
+      ))
   ;; Persist history over Emacs restarts. Vertico sorts by history position.
   (leaf savehist
     :init
     (savehist-mode))
-
+  (elpaca consult
   (leaf consult
     :straight t
     :custom
@@ -803,24 +803,18 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
           (consult-line (thing-at-point 'symbol))
         (consult-line)))
     )
-
+    )
+  (elpaca consult-yasnippet
   (leaf consult-yasnippet
     :doc "A consulting-read interface for yasnippet"
     :req "emacs-27.1" "yasnippet-0.14" "consult-0.9"
     :tag "emacs>=27.1"
     :url "https://github.com/mohkale/consult-yasnippet"
     :emacs>= 27.1
-    :straight t
-    :after yasnippet consult)
-  
-  (leaf consult-projectile
-    :after consult projectile
-    :straight (consult-projectile
-               :type git :host gitlab
-               :repo "OlMon/consult-projectile" :branch "master")
-    )
+      :after yasnippet consult))
+  (elpaca consult-projectile)
+  (elpaca affe
   (leaf affe
-    :straight t
     :after consult orderless
     :custom
     ((affe-find-command . "fd -H -E .git --color=never --full-path")
@@ -832,18 +826,17 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
           affe-highlight-function #'orderless--highlight)
 
     ;; Manual preview key for `affe-grep'
-    (consult-customize affe-grep :preview-key (kbd "M-.")))
-  
+      (consult-customize affe-grep :preview-key (kbd "M-."))))
+  (elpaca marginalia
   (leaf marginalia
-    :straight t
     :bind (
            ("M-A" . marginalia-cycle)
            (:minibuffer-local-map
             ("M-A" . marginalia-cycle))
            )
     :init
-    (marginalia-mode))
-
+      (marginalia-mode)))
+  (elpaca embark
   (leaf embark
     :straight (embark :host github :repo "oantolin/embark" :branch "master" :files (:defaults))
     :emacs>= 26.1
@@ -874,8 +867,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                  '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                    nil
                    (window-parameters (mode-line-format . none))))
-    )
-
   ;; Consult users will also want the embark-consult package.
   (leaf embark-consult
     :require t
@@ -884,67 +875,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     ;; :init (with-eval-after-load 'embark
     ;;         (require 'embark-consult))
     )
-  (leaf org-refile
-    :after (org org-agenda)
-    :custom
-    ((org-refile-use-outline-path . t)
-     (org-outline-path-complete-in-steps . nil))
-    :config
-    (setq org-refile-targets
-          `((nil . (:maxlevel . 2))
-            ((,(format "%s/next-actions.org" org-directory)) . (:level . 1))
-            ((,(format "%s/references.org" org-directory)) . (:level . 1))
             ))
-    (leaf org-refile-source-log
-      :url "https://emacs.stackexchange.com/questions/36390/add-original-location-of-refiled-entries-to-logbook-after-org-refile"
-      :config
-      ;; add custom logging instead
-      (add-hook 'org-after-refile-insert-hook #'clavis-org-refile-add-refiled-from-note)
-
-      (advice-add 'org-refile
-                  :before
-                  #'clavis-org-save-source-id-and-header)
-
-      (defvar clavis-org-refile-refiled-from-id nil)
-      (defvar clavis-org-refile-refiled-from-header nil)
-
-      (defun clavis-org-save-source-id-and-header (_)
-        "Saves refile's source entry's id and header name to
-`clavis-org-refile-refiled-from-id' and
-`clavis-org-refile-refiled-from-header'. If refiling entry is
-first level entry then it stores file path and buffer name
-respectively."
-        (interactive)
-        (save-excursion
-          (if (org-up-heading-safe)
-              (progn
-                (setq clavis-org-refile-refiled-from-id (org-id-get nil t))
-                (setq clavis-org-refile-refiled-from-header
-                      (org-get-heading 'no-tags 'no-todo 'no-priority 'no-comment)))
-            (setq clavis-org-refile-refiled-from-id (buffer-file-name))
-            (setq clavis-org-refile-refiled-from-header (buffer-name)))))
-
-      (defun clavis-org-refile-add-refiled-from-note ()
-        "Adds a note to entry at point on where the entry was refiled
-from using the org ID from `clavis-org-refile-refiled-from-id'
-and `clavis-org-refile-refiled-from-header' variables."
-        (interactive)
-        (when (and clavis-org-refile-refiled-from-id
-                   clavis-org-refile-refiled-from-header)
-          (save-excursion
-            (let* ((note-format "- Refiled on [%s] from [[id:%s][%s]]\n")
-                   (time-format (substring (cdr org-time-stamp-formats) 1 -1))
-                   (time-stamp (format-time-string time-format (current-time))))
-              (goto-char (org-log-beginning t))
-              (insert (format note-format
-                              time-stamp
-                              clavis-org-refile-refiled-from-id
-                              clavis-org-refile-refiled-from-header))))
-          (setq clavis-org-refile-refiled-from-id nil)
-          (setq clavis-org-refile-refiled-from-header nil)))
-      )
-    )
-
   (leaf all-the-icons-completion
     :doc "Add icons to completion candidates"
     :req "emacs-26.1" "all-the-icons-5.0"
@@ -1086,12 +1017,9 @@ and `clavis-org-refile-refiled-from-header' variables."
     (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)
     )
   )
-
-
-
-(leaf migemo
+(elpaca migemo
+  (leaf migemo
   :unless (equal (shell-command-to-string "command -v cmigemo") "")
-  :straight t
   :require t
   :custom
   (migemo-options . '("-q" "--emacs"))
@@ -1122,7 +1050,7 @@ and `clavis-org-refile-refiled-from-header' variables."
   (setq migemo-options '("--quiet" "--nonewline" "--emacs"))
   (setq consult--regexp-compiler #'consult--migemo-regexp-compiler)
   (migemo-init))
-
+  )
 ;; SLIMEのロード
 (leaf undo-tree
   :straight (undo-tree :type git :host gitlab :repo "tsc25/undo-tree")
@@ -1153,20 +1081,20 @@ and `clavis-org-refile-refiled-from-header' variables."
   (undo-fu-session-incompatible-files . '("/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'"))
   :config
   (global-undo-fu-session-mode))
-
-(leaf rust-mode
+(elpaca rust-mode
+  (leaf rust-mode
   :doc "A major-mode for editing Rust source code"
   :req "emacs-25.1"
   :tag "languages" "emacs>=25.1"
   :url "https://github.com/rust-lang/rust-mode"
   :emacs>= 25.1
-  :straight t
   :hook (rust-mode-hook . (lambda () (prettify-symbols-mode)))
   :config
   (push '(".add" . ?∔) rust-prettify-symbols-alist)
   )
-
-(leaf rustic   :straight t
+  )
+(elpaca rustic
+  (leaf rustic
   :doc "Rust development environment"
   :req "emacs-26.1" "rust-mode-1.0.3" "dash-2.13.0" "f-0.18.2" "let-alist-1.0.4" "markdown-mode-2.3" "project-0.3.0" "s-1.10.0" "seq-2.3" "spinner-1.7.3" "xterm-color-1.6"
   :tag "languages" "emacs>=26.1"
@@ -1192,7 +1120,7 @@ and `clavis-org-refile-refiled-from-header' variables."
   ;; (when (eq rustic-lsp-client 'eglot)
   ;;   (add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1))))
   )
-
+  )
 (leaf lsp-haskell
   :doc "Haskell support for lsp-mode"
   :req "emacs-24.3" "lsp-mode-3.0"
@@ -1350,14 +1278,9 @@ and `clavis-org-refile-refiled-from-header' variables."
 ;; Org-mode
 (leaf org*
   :config
+  (elpaca (org :depth 10)
   (leaf org
     :mode (("\\.org$" . org-mode))
-    :straight
-    (org :type git :repo "https://git.savannah.gnu.org/git/emacs/org-mode.git"
-         :local-repo "org" :depth 300 :branch "main"
-         :pre-build
-         (straight-recipes-org-elpa--build) :build (:not autoloads)
-         :files (:defaults "lisp/*.el" ("etc/styles" "etc/styles/*")))
     :custom
     ((org-export-allow-bind-keywords . t)
      (org-export-backends . '(ascii html icalendar latex md odt taskjuggler asciidoc pandoc gfm))
@@ -1665,8 +1588,6 @@ and `clavis-org-refile-refiled-from-header' variables."
                    (concat "mkdictionaries:///?text=" label)
                    (or description label))
          (or description label))))
-    )
-
   (leaf org-image
     :url "https://misohena.jp/blog/2020-05-26-limit-maximum-inline-image-size-in-org-mode.html"
     :config
@@ -1719,46 +1640,70 @@ and `clavis-org-refile-refiled-from-header' variables."
       (interactive)
       (advice-remove #'create-image #'org-limit-image-size--create-image)
       (advice-remove #'org-display-inline-images #'org-limit-image-size--org-display-inline-images)))
-
   (leaf org-agenda
     :after org
     :custom
     ((org-agenda-span . 'fortnight)))
+      (leaf org-refile
+        :after (org org-agenda)
+        :custom
+        ((org-refile-use-outline-path . t)
+         (org-outline-path-complete-in-steps . nil))
+        :config
+        (setq org-refile-targets
+              `((nil . (:maxlevel . 2))
+                ((,(format "%s/next-actions.org" org-directory)) . (:level . 1))
+                ((,(format "%s/references.org" org-directory)) . (:level . 1))
+                ))
+        (leaf org-refile-source-log
+          :url "https://emacs.stackexchange.com/questions/36390/add-original-location-of-refiled-entries-to-logbook-after-org-refile"
+          :config
+          ;; add custom logging instead
+          (add-hook 'org-after-refile-insert-hook #'clavis-org-refile-add-refiled-from-note)
 
-  (leaf ob-php
-    :doc "Execute PHP within org-mode source blocks."
-    :req "org-8"
-    :tag "php" "babel" "org"
-    :url "https://repo.or.cz/ob-php.git"
-    :straight t
-    :after org)
+          (advice-add 'org-refile
+                      :before
+                      #'clavis-org-save-source-id-and-header)
 
-  (leaf org-contrib
-    :require t
-    :after org
-    :straight (org-contrib :type git :repo "https://git.sr.ht/~bzg/org-contrib")
-    :config
-    ;; 有効にする言語 デフォルトでは elisp のみ
-    (org-babel-do-load-languages
-     'org-babel-load-languages '((C          . t)
-                                 (dot        . t)
-                                 (emacs-lisp . t)
-                                 (gnuplot    . t)
-                                 (java       . t)
-                                 (lisp       . t)
-                                 (mermaid    . t)
-                                 (org        . t)
-                                 (perl       . t)
-                                 (php        . t)
-                                 (plantuml   . t)
-                                 (python     . t)
-                                 (ruby       . t)
-                                 (scheme     . t)))
-    ;;ob-plantuml
-    (add-to-list 'org-babel-default-header-args:plantuml
-                 '(:cmdline . "-charset utf-8"))
-    )
+          (defvar clavis-org-refile-refiled-from-id nil)
+          (defvar clavis-org-refile-refiled-from-header nil)
 
+          (defun clavis-org-save-source-id-and-header (_)
+            "Saves refile's source entry's id and header name to
+`clavis-org-refile-refiled-from-id' and
+`clavis-org-refile-refiled-from-header'. If refiling entry is
+first level entry then it stores file path and buffer name
+respectively."
+            (interactive)
+            (save-excursion
+              (if (org-up-heading-safe)
+                  (progn
+                    (setq clavis-org-refile-refiled-from-id (org-id-get nil t))
+                    (setq clavis-org-refile-refiled-from-header
+                          (org-get-heading 'no-tags 'no-todo 'no-priority 'no-comment)))
+                (setq clavis-org-refile-refiled-from-id (buffer-file-name))
+                (setq clavis-org-refile-refiled-from-header (buffer-name)))))
+
+          (defun clavis-org-refile-add-refiled-from-note ()
+            "Adds a note to entry at point on where the entry was refiled
+from using the org ID from `clavis-org-refile-refiled-from-id'
+and `clavis-org-refile-refiled-from-header' variables."
+            (interactive)
+            (when (and clavis-org-refile-refiled-from-id
+                       clavis-org-refile-refiled-from-header)
+              (save-excursion
+                (let* ((note-format "- Refiled on [%s] from [[id:%s][%s]]\n")
+                       (time-format (substring (cdr org-time-stamp-formats) 1 -1))
+                       (time-stamp (format-time-string time-format (current-time))))
+                  (goto-char (org-log-beginning t))
+                  (insert (format note-format
+                                  time-stamp
+                                  clavis-org-refile-refiled-from-id
+                                  clavis-org-refile-refiled-from-header))))
+              (setq clavis-org-refile-refiled-from-id nil)
+              (setq clavis-org-refile-refiled-from-header nil)))
+          )
+        )
   (leaf org-mu4e
     :disabled t
     :straight t
@@ -1766,148 +1711,9 @@ and `clavis-org-refile-refiled-from-header' variables."
     :config
     ;;store link to message if in header view, not to header query
     (setq org-mu4e-link-query-in-headers-mode nil))
-  (leaf ox-rst
-    :straight t
-    :after (org)
-    :custom
-    ((org-rst-headline-underline-characters . '(45 126 94 58 39 32 95))))
-  (leaf ob-browser
-    :straight t
-    :after org)
   (leaf ob-java
     :custom
     ((org-babel-java-compiler . "javac -encoding UTF-8")))
-  (leaf ox-epub
-    :straight t
-    :after org)
-  (leaf ox*
-    :after org
-    :custom
-    (org-export-allow-bind-keywords . t)
-    :config
-    (defvar org-export-directory nil
-      "org-exportの出力先を指定する変数。buffer-local変数として指定する。")
-    (defun org-export-output-file-name--set-directory (orig-fn extension &optional subtreep pub-dir)
-      (setq pub-dir (or pub-dir org-export-directory))
-      (funcall orig-fn extension subtreep pub-dir))
-    (advice-add 'org-export-output-file-name :around 'org-export-output-file-name--set-directory)
-    (leaf ox-pandoc
-      :after org
-      :straight t
-      :require t
-      :if (or (file-exists-p "/usr/bin/pandoc")
-              (file-exists-p "/usr/local/bin/pandoc")
-              (file-exists-p "/opt/local/bin/pandoc")
-              (file-exists-p "/opt/homebrew/bin/pandoc")))
-    (leaf ox-slimhtml
-      :straight t
-      :require t)
-
-      (leaf ox-tailwind
-        :straight '(ox-tailwind :type git :host github :repo "vascoferreira25/ox-tailwind")
-        :require t)
-      )
-  (leaf org-brain
-    :straight t
-    :after org
-    :require t
-    :bind
-    ((:org-mode-map
-      ("C-c b" . org-brain-prefix-map)))
-    )
-
-  (leaf org-roam
-    :req "emacs-26.1" "dash-2.13" "f-0.17.2" "org-9.4" "emacsql-3.0.0" "emacsql-sqlite-1.0.0" "magit-section-3.0.0"
-    :emacs>= 26.1
-    :straight (org-roam :type git :flavor melpa :files (:defaults "extensions/*" "org-roam-pkg.el") :host github :repo "org-roam/org-roam")
-    :commands (org-roam-node-find)
-    :custom
-    ((org-roam-title-to-slug-function . (lambda (text) text))
-     (org-roam-v2-ack . t)
-     (org-roam-completion-everywhere . t))
-    :bind
-    (("C-c n l" . org-roam-buffer-toggle)
-     ("C-c n f" . org-roam-node-find)
-     ("C-c n g" . org-roam-graph)
-     ("C-c n i" . org-roam-node-insert)
-     ("C-c n c" . org-roam-capture)
-     ;; Dailies
-     ("C-c n j" . org-roam-dailies-capture-today)
-     ;; (:org-roam-mode-map
-     ;;  ("C-c n l" . org-roam)
-     ;;  ("C-c n f" . org-roam-find-file)
-     ;;  ("C-c n g" . org-roam-graph)
-     ;;  ("C-c n t a" . org-roam-tag-add)
-     ;;  ("C-c n t d" . org-roam-tag-delete))
-     ;; (:org-mode-map
-     ;;  ("C-c n i" . org-roam-insert)
-     ;;  ("C-c n I" . org-roam-insert-immediate))
-     )
-    :config
-    (setq org-roam-directory (format "%s/roam" org-directory))
-    (org-roam-db-autosync-mode)
-    (when (eq system-type 'darwin)
-      (setq org-roam-graph-viewer "open"))
-    (add-to-list 'org-roam-capture-templates
-                 '("n" "note(default + headline)"
-                   plain #'org-roam-capture--get-point
-                   "%?"
-                   :file-name "%<%Y%m%d%H%M%S>-${slug}.org"
-                   :head "#+title: ${title}\n* Overview\n"
-                   :unnarrowed t)
-                 )
-    (setq org-roam-dailies-capture-templates
-          '(("d" "default" entry
-             "* %?"
-             :target
-             (file+head+olp "%<%Y-%m>.org" "#+TITLE: %<%Y-%m>\n\n\n" ("%<%Y-%m-%d>"))
-             )))
-    (leaf org-roam-protocol
-      :require t
-      :after org
-      )
-    )
-  (leaf org-roam-ui
-    :req "emacs-27.1" "org-roam-2.0.0" "simple-httpd-20191103.1446" "websocket-1.13"
-    :emacs>= 27.1
-    :after org
-    :straight
-    (org-roam-ui :host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
-    :custom ((org-roam-ui-sync-theme . t)
-             (org-roam-ui-follow . t)
-             (org-roam-ui-update-on-save . t)))
-
-  (leaf org-journal
-    :straight t
-    :require t
-    :after org
-    ;; :commands org-journal-new-entry
-    :custom
-    `((org-journal-file-type . 'monthly)
-      (org-journal-date-format . "%F (%a)")
-      (org-journal-time-format . "<%Y-%m-%d %R> ")
-      (org-journal-file-format . "%Y%m.org")
-      (org-journal-file-header . "# -*- mode: org-journal; -*-
-#+STARTUP: showall")
-      )
-    :preface
-    (defvar my-org-journal-repeat-map
-      (let ((map (make-sparse-keymap)))
-        (define-key map (kbd "C-f")   #'org-journal-next-entry)
-        (define-key map (kbd "f")   #'org-journal-next-entry)
-        (define-key map (kbd "n")   #'org-journal-next-entry)
-        (define-key map (kbd "C-b")   #'org-journal-previous-entry)
-        (define-key map (kbd "b")   #'org-journal-previous-entry)
-        (define-key map (kbd "p")   #'org-journal-previous-entry)
-        map
-        ))
-    :config
-    (put 'org-journal-next-entry 'repeat-map 'my-org-journal-repeat-map)
-    (put 'org-journal-previous-entry 'repeat-map 'my-org-journal-repeat-map)
-    (setq org-journal-dir (concat org-directory "/journal/")))
-
-  ;; Org Mode LaTeX Export
-
   (leaf org-eldoc
     :after org
     :require t
@@ -1993,10 +1799,6 @@ and `clavis-org-refile-refiled-from-header' variables."
   (leaf ox-taskjuggler
     :custom
     ((org-taskjuggler-process-command . "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")))
-  (leaf ox-gfm
-    :straight (ox-gfm :type git :host github :repo "conao3/ox-gfm")
-    :require t
-    :after org)
   (setq org-ditaa-jar-path
         "/usr/local/opt/ditaa/libexec/ditaa-0.11.0-standalone.jar")
 
@@ -2009,18 +1811,7 @@ and `clavis-org-refile-refiled-from-header' variables."
   (leaf ob-kotlin
     :after (org))
 
-  (leaf ob-mermaid
-    :doc "org-babel support for mermaid evaluation"
-    :tag "lisp"
-    :after org
-    :url "https://github.com/arnm/ob-mermaid"
-    :straight t
-    :custom (ob-mermaid-cli-path . "~/.npm/bin/mmdc"))
   
-  (leaf ox-asciidoc
-    :straight t
-    :require t
-    :after (org))
   (leaf ox-hugo
     :disabled t
     :straight (ox-hugo :type git :host github :repo "kaushalmodi/ox-hugo" :branch "main")
@@ -2049,52 +1840,13 @@ See `org-capture-templates' for more information."
                    (file+olp "all-posts.org" "Blog Ideas")
                    (function org-hugo-new-subtree-post-capture-template))))
 
-  (leaf org-download
-    :straight t
-    :after org
-    :require t
-    :hook ((org-mode-hook . org-download-enable)))
-  (leaf org-seek
-    :commands (org-seek-string org-seek-regexp org-seek-headlines)
-    ;;  :ensure-system-package (rg . ripgrep)
-    :custom
-    ((org-seek-search-tool . 'ripgrep)))
-
-  (leaf org-pdf*
-    :config
-    (leaf org-pdftools
-      :after org
-      :straight (org-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
-      :custom
-      `((org-pdftools-root-dir . ,(concat (getenv "HOME") "/GoogleDrive/Books")))
-      :hook (org-mode-hook . org-pdftools-setup-link)
-      )
-    (leaf org-noter
-      :after (org))
-    (leaf org-noter-pdftools
-      :straight (org-noter-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
-      :after (org-noter)
-      :require t)
-    (leaf pdf-tools
-      :straight t
-      ;; https://github.com/politza/pdf-tools#installation
-      :mode (("\\.pdf\\'" . pdf-view-mode))
-      :hook (pdf-view-mode-hook . (lambda ()
-                                    (display-line-numbers-mode 0)))
-      :custom ((pdf-view-use-scaling . t))
-      :config
-      ;; (setenv "PKG_CONFIG_PATH"
-      ;;         (string-trim (shell-command-to-string "echo \"$(brew --prefix poppler)/lib/pkgconfig:$(brew --prefix libffi)/lib/pkgconfig:$(brew --prefix zlib)/lib/pkgconfig:$(brew --prefix)/lib/pkgconfig:/opt/X11/lib/pkgconfig\"")))
-      (pdf-tools-install)
-      (display-line-numbers-mode -1)
-      (setq pdf-annot-activate-created-annotations t)
-      (setq pdf-view-resize-factor 1.1)))
-
   (leaf org-re-reveal
+        :disabled t
     :straight t
     :after org)
 
   (leaf org-gcal
+        :disabled t
     :if (file-exists-p "~/Dropbox/org/googlecalendar/org-gcal-config.el")
     :straight t
     :after org
@@ -2104,24 +1856,8 @@ See `org-capture-templates' for more information."
      (org-gcal-up-days . 180))
     :config
     (load "~/Dropbox/org/googlecalendar/org-gcal-config.el"))
-
-  (leaf org-modern
-    :doc "Modern looks for Org"
-    :req "emacs-27.1"
-    :tag "emacs>=27.1"
-    :url "https://github.com/minad/org-modern"
-    :require t
-    :emacs>= 27.1
-    :after org
-    :straight (org-modern
-               :type git :host github :repo "minad/org-modern")
-    :config
-    (add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
-    (dolist (face '(org-modern-date-active org-modern-date-inactive))
-      (set-face-attribute face nil
-                        :family "UDEV Gothic JPDOC"))
+      )
     )
-
   (leaf anki-editor
     :doc "Minor mode for making Anki cards with Org"
     :req "emacs-25" "request-0.3.0" "dash-2.12.0"
@@ -2146,8 +1882,239 @@ See `org-capture-templates' for more information."
          (interactive "NNumber: \nsHint (optional): ")
          (anki-editor-cloze-region arg hint))))
     )
-  )
+  (elpaca org-brain
+    (leaf org-brain
+        :after org
+        :require t
+        :bind
+        ((:org-mode-map
+          ("C-c b" . org-brain-prefix-map)))
+        ))
+  (leaf org-pdf*
+    :config
+    (elpaca org-pdftools
+      (leaf org-pdftools
+      :after org
+      :custom
+      `((org-pdftools-root-dir . ,(concat (getenv "HOME") "/GoogleDrive/Books")))
+      :hook (org-mode-hook . org-pdftools-setup-link)
+      ))
+    (elpaca org-noter
+      (leaf org-noter
+      :after (org)))
+    (elpaca org-noter-pdftools
+      (leaf org-noter-pdftools
+      :after (org-noter)
+      :require t))
+    (elpaca pdf-tools
+      (leaf pdf-tools
+      ;; https://github.com/politza/pdf-tools#installation
+      :mode (("\\.pdf\\'" . pdf-view-mode))
+      :hook (pdf-view-mode-hook . (lambda ()
+                                    (display-line-numbers-mode 0)))
+      :custom ((pdf-view-use-scaling . t))
+      :config
+      ;; (setenv "PKG_CONFIG_PATH"
+      ;;         (string-trim (shell-command-to-string "echo \"$(brew --prefix poppler)/lib/pkgconfig:$(brew --prefix libffi)/lib/pkgconfig:$(brew --prefix zlib)/lib/pkgconfig:$(brew --prefix)/lib/pkgconfig:/opt/X11/lib/pkgconfig\"")))
+      (pdf-tools-install)
+      (display-line-numbers-mode -1)
+      (setq pdf-annot-activate-created-annotations t)
+      (setq pdf-view-resize-factor 1.1)))
+    )
+  (elpaca org-download
+    (leaf org-download
+        :after org
+        :require t
+        :hook ((org-mode-hook . org-download-enable))))
+  (leaf org-roam*
+    :config
+    (elpaca org-roam
+      (leaf org-roam
+        :disabled t
+        :req "emacs-26.1" "dash-2.13" "f-0.17.2" "org-9.4" "emacsql-3.0.0" "emacsql-sqlite-1.0.0" "magit-section-3.0.0"
+        :emacs>= 26.1
+        :straight (org-roam :type git :flavor melpa :files (:defaults "extensions/*" "org-roam-pkg.el") :host github :repo "org-roam/org-roam")
+        :commands (org-roam-node-find)
+        :custom
+        ((org-roam-title-to-slug-function . (lambda (text) text))
+         (org-roam-v2-ack . t)
+         (org-roam-completion-everywhere . t))
+        :bind
+        (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n g" . org-roam-graph)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n c" . org-roam-capture)
+         ;; Dailies
+         ("C-c n j" . org-roam-dailies-capture-today)
+         ;; (:org-roam-mode-map
+         ;;  ("C-c n l" . org-roam)
+         ;;  ("C-c n f" . org-roam-find-file)
+         ;;  ("C-c n g" . org-roam-graph)
+         ;;  ("C-c n t a" . org-roam-tag-add)
+         ;;  ("C-c n t d" . org-roam-tag-delete))
+         ;; (:org-mode-map
+         ;;  ("C-c n i" . org-roam-insert)
+         ;;  ("C-c n I" . org-roam-insert-immediate))
+         )
+        :config
+        (setq org-roam-directory (format "%s/roam" org-directory))
+        (org-roam-db-autosync-mode)
+        (when (eq system-type 'darwin)
+          (setq org-roam-graph-viewer "open"))
+        (add-to-list 'org-roam-capture-templates
+                     '("n" "note(default + headline)"
+                       plain #'org-roam-capture--get-point
+                       "%?"
+                       :file-name "%<%Y%m%d%H%M%S>-${slug}.org"
+                       :head "#+title: ${title}\n* Overview\n"
+                       :unnarrowed t)
+                     )
+        (setq org-roam-dailies-capture-templates
+              '(("d" "default" entry
+                 "* %?"
+                 :target
+                 (file+head+olp "%<%Y-%m>.org" "#+TITLE: %<%Y-%m>\n\n\n" ("%<%Y-%m-%d>"))
+                 )))
+        (leaf org-roam-protocol
+          :require t
+          :after org
+          )
+        ))
+    (elpaca org-roam-ui
+      (leaf org-roam-ui
+        :req "emacs-27.1" "org-roam-2.0.0" "simple-httpd-20191103.1446" "websocket-1.13"
+        :emacs>= 27.1
+        :after org
+        :custom ((org-roam-ui-sync-theme . t)
+                 (org-roam-ui-follow . t)
+                 (org-roam-ui-update-on-save . t))))
+    )
+  (leaf ox*
+        :custom
+        (org-export-allow-bind-keywords . t)
+        :config
+        (defvar org-export-directory nil
+          "org-exportの出力先を指定する変数。buffer-local変数として指定する。")
+        (defun org-export-output-file-name--set-directory (orig-fn extension &optional subtreep pub-dir)
+          (setq pub-dir (or pub-dir org-export-directory))
+          (funcall orig-fn extension subtreep pub-dir))
+        (advice-add 'org-export-output-file-name :around 'org-export-output-file-name--set-directory)
+        (leaf ox-slimhtml
+          :disabled t
+          :straight t
+          :require t)
 
+        (leaf ox-tailwind
+          :disabled t
+          :straight '(ox-tailwind :type git :host github :repo "vascoferreira25/ox-tailwind")
+          :require t)
+        )
+  (elpaca ox-pandoc
+      (leaf ox-pandoc
+        :after org
+        :require t
+        :if (or (file-exists-p "/usr/bin/pandoc")
+                (file-exists-p "/usr/local/bin/pandoc")
+                (file-exists-p "/opt/local/bin/pandoc")
+                (file-exists-p "/opt/homebrew/bin/pandoc"))))
+  (elpaca ox-asciidoc)
+  (elpaca ox-gfm
+    (leaf ox-gfm
+      :require t
+      :after org))
+  (elpaca ox-rst
+    (leaf ox-rst
+      :after (org)
+      :custom
+      ((org-rst-headline-underline-characters . '(45 126 94 58 39 32 95)))))
+  (elpaca ob-mermaid
+    (leaf ob-mermaid
+      :doc "org-babel support for mermaid evaluation"
+      :tag "lisp"
+      :after org
+      :url "https://github.com/arnm/ob-mermaid"
+      :custom (ob-mermaid-cli-path . "~/.npm/bin/mmdc")))
+  (elpaca org-journal
+    (leaf org-journal
+      :require t
+      :after org
+      ;; :commands org-journal-new-entry
+      :custom
+      `((org-journal-file-type . 'monthly)
+        (org-journal-date-format . "%F (%a)")
+        (org-journal-time-format . "<%Y-%m-%d %R> ")
+        (org-journal-file-format . "%Y%m.org")
+        (org-journal-file-header . "# -*- mode: org-journal; -*-
+#+STARTUP: showall")
+        )
+      :preface
+      (defvar my-org-journal-repeat-map
+        (let ((map (make-sparse-keymap)))
+          (define-key map (kbd "C-f")   #'org-journal-next-entry)
+          (define-key map (kbd "f")   #'org-journal-next-entry)
+          (define-key map (kbd "n")   #'org-journal-next-entry)
+          (define-key map (kbd "C-b")   #'org-journal-previous-entry)
+          (define-key map (kbd "b")   #'org-journal-previous-entry)
+          (define-key map (kbd "p")   #'org-journal-previous-entry)
+          map
+    ))
+      :config
+      (put 'org-journal-next-entry 'repeat-map 'my-org-journal-repeat-map)
+      (put 'org-journal-previous-entry 'repeat-map 'my-org-journal-repeat-map)
+      (setq org-journal-dir (concat org-directory "/journal/"))))
+  (elpaca org-modern
+      (leaf org-modern
+        :doc "Modern looks for Org"
+        :req "emacs-27.1"
+        :tag "emacs>=27.1"
+        :url "https://github.com/minad/org-modern"
+        :require t
+        :emacs>= 27.1
+        :after org
+        :config
+        (add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
+        (dolist (face '(org-modern-date-active org-modern-date-inactive))
+          (set-face-attribute face nil
+                              :family "UDEV Gothic JPDOC"))
+        ))
+
+  (elpaca ob-browser)
+  (elpaca ox-epub)
+  (elpaca ob-php
+    (leaf ob-php
+    :doc "Execute PHP within org-mode source blocks."
+    :req "org-8"
+    :tag "php" "babel" "org"
+    :url "https://repo.or.cz/ob-php.git"
+    :after org))
+
+(elpaca org-contrib
+    (leaf org-contrib
+    :require t
+    :after org
+    :config
+    ;; 有効にする言語 デフォルトでは elisp のみ
+    (org-babel-do-load-languages
+     'org-babel-load-languages '((C          . t)
+                                 (dot        . t)
+                                 (emacs-lisp . t)
+                                 (gnuplot    . t)
+                                 (java       . t)
+                                 (lisp       . t)
+                                 (mermaid    . t)
+                                 (org        . t)
+                                 (perl       . t)
+                                 (php        . t)
+                                 (plantuml   . t)
+                                 (python     . t)
+                                 (ruby       . t)
+                                 (scheme     . t)))
+    ;;ob-plantuml
+    (add-to-list 'org-babel-default-header-args:plantuml
+                 '(:cmdline . "-charset utf-8"))
+    ))
+  )
 (leaf anki-editor-org-src
   :after org
   ;; :leaf-defer nil
@@ -2298,21 +2265,9 @@ See `org-capture-templates' for more information."
                                 '((company-ac-php-backend company-dabbrev-code)
                                   company-capf company-files)))))
 
-(leaf typescript-mode
-  :doc "Major mode for editing typescript"
-  :req "emacs-24.3"
-  :tag "languages" "typescript" "emacs>=24.3"
-  :url "http://github.com/ananthakumaran/typescript.el"
-  :emacs>= 24.3
-  :straight t)
-
-(leaf rainbow-mode
-  :straight t)
-
-(leaf poetry
-  :straight t
-  :require t)
-
+(elpaca typescript-mode)
+(elpaca rainbow-mode)
+(elpaca poetry)
 (leaf pipenv
   :disabled t
   :hook (python-mode-hook . pipenv-mode)
@@ -2320,14 +2275,12 @@ See `org-capture-templates' for more information."
   (setq
    pipenv-projectile-after-switch-function
    #'pipenv-projectile-after-switch-extended))
-
-(leaf hydra :straight t)
-
-(leaf go-mode
-  :straight t
+(elpaca hydra)
+(elpaca go-mode
+  (leaf go-mode
   :after lsp-mode
   :hook (go-mode-hook . lsp-deferred))
-
+  )
 (leaf csharp-mode
   :doc "C# mode derived mode"
   :req "emacs-26.1"
@@ -2416,11 +2369,12 @@ See `org-capture-templates' for more information."
    ("C-c C-p" . outline-previous-visible-heading)))
 (leaf pandoc :straight t)
 (leaf graphviz-dot-mode :straight t)
-(leaf editorconfig
-  :straight t
+(elpaca editorconfig
+  (leaf editorconfig
   :diminish editorconfig-mode
   :config
   (editorconfig-mode 1))
+  )
 (leaf easy-hugo
   :disabled t
   :custom
@@ -2443,8 +2397,8 @@ See `org-capture-templates' for more information."
   ;; (load-theme 'solarized-dark t)
   ;; (load-theme 'solarized-iceberg-dark t)
   )
-(leaf modus-themes
-  :straight t
+(elpaca modus-themes
+  (leaf modus-themes
   :require t
   :custom
   ((modus-themes-italic-constructs . t)
@@ -2461,7 +2415,7 @@ See `org-capture-templates' for more information."
       (modus-themes-load-operandi)
     (modus-themes-load-vivendi))
   )
-
+  )
 (leaf markdown-mode
   :straight t
   :mode (("README\\.md\\'" . gfm-mode)
@@ -2592,9 +2546,8 @@ See `org-capture-templates' for more information."
 
 (leaf *lsp
   :config
-  
+  (elpaca (lsp-mode :ref "dfda673")
   (leaf lsp-mode
-    :straight t
     :require 'lsp
     :commands (lsp lsp-deferred)
     :custom ((lsp-auto-execute-action . nil)
@@ -2611,8 +2564,7 @@ See `org-capture-templates' for more information."
     (setq read-process-output-max (* 1024 1024))
     (defun my-lsp-mode-setup-completion ()
       (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-            '(orderless))))
-  
+            '(orderless)))))
   (leaf lsp-python-ms
     :disabled t
     :straight t
@@ -2800,47 +2752,48 @@ See `org-capture-templates' for more information."
   :after eglot consult)
 
 (elpaca vterm)
-
-(leaf elfeed
-  :doc "an Emacs Atom/RSS feed reader"
-  :req "emacs-24.3"
-  :tag "emacs>=24.3"
-  :url "https://github.com/skeeto/elfeed"
-  :emacs>= 24.3
-  :straight t
-  :require t
-  :bind (:elfeed-search-mode-map
-         ("j" . next-line)
-         ("k" . previous-line)
-         ("e" . (lambda () (interactive)(eww (my-elfeed-yank-entry-url))))
-         ;;osascript -e 'tell application "Safari" to add reading list item "http://totl.net/"'
-         ("a" .(lambda ()
-                 (interactive)
-                 (if (and (eq system-type 'darwin)
-                          (equal (shell-command-to-string "command -v osascript") ""))
-                     (error "not found 'osascript' command"))
-                 (let ((url (car (mapcar #'elfeed-entry-link (elfeed-search-selected)))))
-                   (call-process-shell-command
-                    (format "osascript -e 'tell application \"Safari\" to add reading list item \"%s\"'" (my-elfeed-yank-entry-url)))
-                   (message "The selected entry added to Safari's reading list.")
-                   (elfeed-search-untag-all-unread))))
-         )
-  :custom
-  (elfeed-search-date-format . '("%Y-%m-%d %H:%M" 16 :left))
-  :config
-  (defun my-elfeed-yank-entry-url ()
+(elpaca (elfeed :files (:defaults ("web/*.el")))
+  (leaf elfeed
+    :doc "an Emacs Atom/RSS feed reader"
+    :req "emacs-24.3"
+    :tag "emacs>=24.3"
+    :url "https://github.com/skeeto/elfeed"
+    :emacs>= 24.3
+    :require elfeed
+    :bind (:elfeed-search-mode-map
+           ("j" . next-line)
+           ("k" . previous-line)
+           ("e" . (lambda () (interactive)(eww (my-elfeed-yank-entry-url))))
+           ;;osascript -e 'tell application "Safari" to add reading list item "http://totl.net/"'
+           ("a" .(lambda ()
+                   (interactive)
+                   (if (and (eq system-type 'darwin)
+                            (equal (shell-command-to-string "command -v osascript") ""))
+                       (error "not found 'osascript' command"))
+                   (let ((url (car (mapcar #'elfeed-entry-link (elfeed-search-selected)))))
+                     (call-process-shell-command
+                      (format "osascript -e 'tell application \"Safari\" to add reading list item \"%s\"'" (my-elfeed-yank-entry-url)))
+                     (message "The selected entry added to Safari's reading list.")
+                     (elfeed-search-untag-all-unread))))
+           )
+    :custom
+    (elfeed-search-date-format . '("%Y-%m-%d %H:%M" 16 :left))
+    :config
+    (defun my-elfeed-yank-entry-url ()
       (interactive)
-    (let ((url (car (mapcar #'elfeed-entry-link (elfeed-search-selected)))))
-      (if (equal url "")
-          (error "Selected entry's url is empty.")
-        url
-        )))
-  )
-(leaf elfeed-goodies
+      (let ((url (car (mapcar #'elfeed-entry-link (elfeed-search-selected)))))
+        (if (equal url "")
+            (error "Selected entry's url is empty.")
+          url
+          )))
+    ;; (require 'elfeed-web)
+    )
+)
+(elpaca elfeed-goodies
+  (leaf elfeed-goodies
   :doc "Elfeed goodies"
   :req "popwin-1.0.0" "powerline-2.2" "elfeed-2.0.0" "cl-lib-0.5" "link-hint-0.1"
   :url "https://github.com/algernon/elfeed-goodies"
-  :straight t
   :require elfeed-goodies popwin
   :after elfeed
   :bind (:elfeed-search-mode-map
@@ -2851,15 +2804,7 @@ See `org-capture-templates' for more information."
   :config
   (elfeed-goodies/setup)
   )
-(leaf elfeed-web
-  :doc "web interface to Elfeed"
-  :req "simple-httpd-1.5.1" "elfeed-3.2.0" "emacs-24.3"
-  :tag "emacs>=24.3"
-  :url "https://github.com/skeeto/elfeed"
-  :emacs>= 24.3
-  :straight t
-  :require t
-  :after elfeed)
+)
 
 (elpaca powershell)
 
@@ -2941,14 +2886,13 @@ See `org-capture-templates' for more information."
   (global-tree-sitter-mode))
 
 (elpaca dirvish)
-
-(leaf shrface
+(elpaca shrface
+  (leaf shrface
   :doc "Extend shr/eww with org features and analysis capability"
   :req "emacs-25.1" "org-9.0" "language-detection-0.1.0"
   :tag "faces" "emacs>=25.1"
   :url "https://github.com/chenyanming/shrface"
   :emacs>= 25.1
-  :straight t
   :require t
   :hook (eww-after-render-hook . shrface-mode)
   :config
@@ -2970,6 +2914,7 @@ See `org-capture-templates' for more information."
     (define-key nov-mode-map (kbd "s") 'org-toggle-narrow-to-subtree)
     (define-key nov-mode-map (kbd "u") 'outline-up-heading))
   )
+)
 
 (leaf nov
   :doc "Featureful EPUB reader mode"
