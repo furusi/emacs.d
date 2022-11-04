@@ -524,9 +524,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
             ("C-j" . skk-kakutei)))
     :hook ((skk-load-hook . (lambda () (require 'context-skk))) ;自動的に英字モードになる
            (skk-jisyo-edit-mode-hook . (lambda () (read-only-mode t)))
-           ;; isearch
-           (isearch-mode-hook . skk-isearch-mode-setup) ; isearch で skk のセットアップ
-           (isearch-mode-end-hook . skk-isearch-mode-cleanup) ; isearch で skk のクリーンアップ
            )
     :custom
     `((default-input-method . "japanese-skk")
@@ -539,7 +536,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (skk-henkan-strict-okuri-precedence . t)
       (skk-isearch-start-mode . 'latin); isearch で skk の初期状態
       (skk-kutouten-type . 'en)
-      (skk-rom-kana-rule-list . '(("tni" nil ("ティ" . "てぃ")) ("dni" nil ("ディ" . "でぃ"))))
       (skk-save-jisyo-instantly . t)
       (skk-search-katakana . 'jisx0201-kana)
       (skk-search-sagyo-henkaku . t)   ;サ行変格活用の動詞も送りあり変換出来るようにする
@@ -1180,39 +1176,39 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :require t
     :mode (("\\.gradle$" . gradle-mode)))
   )
-(leaf slime
-  :if (file-exists-p "~/.roswell/helper.el")
-  :straight t
-  :after macrostep
-  :custom
-  ((slime-auto-start . 'ask)
-   )
-  :hook ((lisp-mode-hook . slime-mode)
-         )
-  :config
-  ;; (slime-setup '(slime-fancy slime-company))
-  
-  
-  (setq slime-net-coding-system 'utf-8-unix)
-  (slime-setup '(slime-fancy slime-company slime-indentation))
-  (defun slime-space\\skk-insert (origfun &rest arglist)
-    "skkの変換(スペース)がslime-spaceに食われてしまうのを回避"
-    (apply (cond (skk-henkan-mode
-                  ;; skk-henkan-mode中であれば(▽▼の時)skk-insertへ処理を投げる
-                  #'skk-insert)
-                 (t
-                  ;; それ以外は通常のslime-space
-                  origfun))
-           arglist))
-  ;; (advice-add 'slime-space :around #'slime-space\\skk-insert)
-  (advice-add 'slime-autodoc-space :around #'slime-space\\skk-insert)
-  ;; (let ((path "/usr/local/share/doc/hyperspec/HyperSpec/"))
-  ;;   (when (file-exists-p path)
-  ;;   (setq common-lisp-hyperspec-root  path)
-  ;;   (setq common-lisp-hyperspec-symbol-table
-  ;;         (concat common-lisp-hyperspec-root "Data/Map_Sym.txt")
-  ;;         common-lisp-hyperspec-issuex-table
-  ;;         (concat common-lisp-hyperspec-root "Data/Map_IssX.txt"))))
+(elpaca slime
+  (leaf slime
+    :if (file-exists-p "~/.roswell/helper.el")
+    :custom
+    ((slime-auto-start . 'ask)
+     )
+    :hook ((lisp-mode-hook . slime-mode)
+           )
+    :config
+    ;; (slime-setup '(slime-fancy slime-company))
+    
+    
+    (setq slime-net-coding-system 'utf-8-unix)
+    (slime-setup '(slime-fancy slime-company slime-indentation))
+    (defun slime-space\\skk-insert (origfun &rest arglist)
+      "skkの変換(スペース)がslime-spaceに食われてしまうのを回避"
+      (apply (cond (skk-henkan-mode
+                    ;; skk-henkan-mode中であれば(▽▼の時)skk-insertへ処理を投げる
+                    #'skk-insert)
+                   (t
+                    ;; それ以外は通常のslime-space
+                    origfun))
+             arglist))
+    ;; (advice-add 'slime-space :around #'slime-space\\skk-insert)
+    (advice-add 'slime-autodoc-space :around #'slime-space\\skk-insert)
+    ;; (let ((path "/usr/local/share/doc/hyperspec/HyperSpec/"))
+    ;;   (when (file-exists-p path)
+    ;;   (setq common-lisp-hyperspec-root  path)
+    ;;   (setq common-lisp-hyperspec-symbol-table
+    ;;         (concat common-lisp-hyperspec-root "Data/Map_Sym.txt")
+    ;;         common-lisp-hyperspec-issuex-table
+    ;;         (concat common-lisp-hyperspec-root "Data/Map_IssX.txt"))))
+    )
   )
 (elpaca slime-company
   (leaf slime-company
@@ -1813,29 +1809,30 @@ See `org-capture-templates' for more information."
        (org-gcal-up-days . 180))
       :config
       (load "~/Dropbox/org/googlecalendar/org-gcal-config.el")))
-  (leaf anki-editor
-    :doc "Minor mode for making Anki cards with Org"
-    :req "emacs-25" "request-0.3.0" "dash-2.12.0"
-    :tag "emacs>=25"
-    :url "https://github.com/louietan/anki-editor"
-    :emacs>= 25
-    :after embark
-    :straight (anki-editor :type git :host github :repo "louietan/anki-editor"
-                           :fork
-                           (:host github :repo "furusi/anki-editor" :branch "master"))
-    :hook
-    (anki-editor-mode-hook . (lambda ()
-                               (let* ((keymap (copy-keymap embark-region-map)))
-                                 (define-key keymap (kbd "c")
-                                   'my-anki-editor-cloze-region)
-                                 (setq-local embark-region-map keymap))
-                               ))
-    :init
-    (defun my-anki-editor-cloze-region (_text)
-      (call-interactively
-       (lambda (&optional arg hint)
-         (interactive "NNumber: \nsHint (optional): ")
-         (anki-editor-cloze-region arg hint))))
+  (elpaca (anki-editor :host github :repo "louietan/anki-editor"
+                       :remotes ("origin"
+                                 ("fork" :host github :repo "furusi/anki-editor" :branch "master")))
+    (leaf anki-editor
+      :doc "Minor mode for making Anki cards with Org"
+      :req "emacs-25" "request-0.3.0" "dash-2.12.0"
+      :tag "emacs>=25"
+      :url "https://github.com/louietan/anki-editor"
+      :emacs>= 25
+      :after embark
+      :hook
+      (anki-editor-mode-hook . (lambda ()
+                                 (let* ((keymap (copy-keymap embark-region-map)))
+                                   (define-key keymap (kbd "c")
+                                     'my-anki-editor-cloze-region)
+                                   (setq-local embark-region-map keymap))
+                                 ))
+      :init
+      (defun my-anki-editor-cloze-region (_text)
+        (call-interactively
+         (lambda (&optional arg hint)
+           (interactive "NNumber: \nsHint (optional): ")
+           (anki-editor-cloze-region arg hint))))
+      )
     )
   (elpaca org-brain
     (leaf org-brain
@@ -2075,7 +2072,6 @@ See `org-capture-templates' for more information."
 (elpaca mermaid-mode)
 (leaf mu4e
   :disabled t
-  :straight t
   :load-path "/opt/homebrew/opt/mu/share/emacs/site-lisp/mu/mu4e"
   :commands (mu4e)
   :config
@@ -2762,7 +2758,7 @@ See `org-capture-templates' for more information."
 (leaf grip-mode
   :bind ((:markdown-mode-command-map
           ("g" . grip-mode))))
-(elpaca tree-sitter
+(elpaca tree-sitter-langs
   (leaf tree-sitter
     :disabled t
     :doc "Incremental parsing system"
@@ -2770,13 +2766,10 @@ See `org-capture-templates' for more information."
     :tag "tree-sitter" "parsers" "tools" "languages" "emacs>=25.1"
     :url "https://github.com/emacs-tree-sitter/elisp-tree-sitter"
     :emacs>= 25.1
-    :straight tree-sitter tree-sitter-langs
     :require tree-sitter-langs
     :hook (tree-sitter-after-on-hook . tree-sitter-hl-mode)
     :config
-    (global-tree-sitter-mode))
-  )
-
+    (global-tree-sitter-mode)))
 (elpaca dirvish)
 (elpaca shrface
   (leaf shrface
