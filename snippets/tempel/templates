@@ -74,7 +74,7 @@ rustic-mode
 (strc "struct " (p "NAME") "{" n> r n> "}")
 (doce "/// Errors" n "/// " p)
 (blockdoc "/**" n> p n> "*/")
-(generalresult "Result<(), Box<dyn std::error::Error>>")
+(generalresult "Result<" p ", Box<dyn std::error::Error + Send + Sync + 'static>>" q)
 
 
 text-mode

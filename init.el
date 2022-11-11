@@ -1089,6 +1089,9 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :config
     ;; (when (eq rustic-lsp-client 'eglot)
     ;;   (add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1))))
+    (leaf rustic-color
+      :after modus-themes
+      :custom (rustic-ansi-faces . ["black" "red3" "green3" "yellow3" "deep sky blue" "magenta3" "cyan3" "white"]))
     )
   )
 (elpaca lsp-haskell
@@ -2059,6 +2062,10 @@ See `org-capture-templates' for more information."
       (add-to-list 'org-babel-default-header-args:plantuml
                    '(:cmdline . "-charset utf-8"))
       ))
+  (elpaca (org-fc :host github :repo "l3kn/org-fc" :files(:defaults "awk" "demo.org"))
+    (leaf org-fc
+      :after org
+      :require t))
   )
 (leaf anki-editor-org-src
   :after org
@@ -2331,9 +2338,10 @@ See `org-capture-templates' for more information."
      )
     :config
     (modus-themes-load-themes)
-    (if window-system
-        (modus-themes-load-operandi)
-      (modus-themes-load-vivendi))
+    ;; (if window-system
+    ;;     (modus-themes-load-operandi)
+    ;;   (modus-themes-load-vivendi))
+    (modus-themes-load-vivendi)
     )
   )
 (elpaca markdown-mode
