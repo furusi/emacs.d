@@ -714,6 +714,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (savehist-mode))
   (elpaca consult
     (leaf consult
+      :require consult consult-xref consult-org
       :custom
       ((consult-narrow-key . ">")
        (consult-find-command
