@@ -2329,7 +2329,7 @@ See `org-capture-templates' for more information."
     :require t
     :custom
     ((modus-themes-italic-constructs . t)
-     (modus-themes-region . '(bg-only no-extend))
+     (modus-themes-region . '(accented bg-only no-extend))
      (modus-themes-paren-match . '(bold intense))
      (modus-themes-org-blocks . 'gray-background)
      (modus-themes-mode-line . '(borderless accented))
