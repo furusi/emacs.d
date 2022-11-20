@@ -633,6 +633,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   (elpaca (vertico :host github :repo "minad/vertico" :files (:defaults "extensions/*.el"))
     (leaf vertico
       :emacs>= 27.1
+      :require t
       :bind ((:vertico-map
               ("M-RET" . minibuffer-force-complete-and-exit)
               ("M-TAB" . minibuffer-complete)
@@ -651,6 +652,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
         (cons (concat "[CRM] " (car args)) (cdr args)))
       (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
       (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+      :config
       (vertico-mode)
       )
     (leaf vertico-multiform
@@ -714,7 +716,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (savehist-mode))
   (elpaca consult
     (leaf consult
-      :require consult consult-xref consult-org
+      :require consult consult-xref consult-org consult-imenu consult-register
       :custom
       ((consult-narrow-key . ">")
        (consult-find-command
@@ -762,6 +764,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                   :highlight hl))))
 
       (defun consult-fd (&optional dir initial)
+        "Search with fd for files in DIR matching input regexp given INITIAL input."
         (interactive "P")
         (let* ((prompt-dir (consult--directory-prompt "Fd" dir))
                (default-directory (cdr prompt-dir)))
