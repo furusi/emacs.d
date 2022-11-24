@@ -714,7 +714,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   (leaf savehist
     :init
     (savehist-mode))
-  (elpaca consult
+  (elpaca (consult :host github :repo "minad/consult")
     (leaf consult
       :require consult consult-xref consult-org consult-imenu consult-register
       :custom
@@ -1074,9 +1074,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :emacs>= 26.1
     :require t
     :custom `((rustic-lsp-server . 'rust-analyzer)
-              ,(if (string> emacs-version "29")
-                   '(rustic-lsp-client . 'eglot)
-                 '(rustic-lsp-client . 'lsp-mode)))
+              (rustic-lsp-client . 'lsp-mode))
     :bind
     ((:rustic-mode-map
       ("C-<return>" . default-indent-new-line)))
@@ -1890,7 +1888,6 @@ See `org-capture-templates' for more information."
     :config
     (elpaca org-roam
       (leaf org-roam
-        :disabled t
         :req "emacs-26.1" "dash-2.13" "f-0.17.2" "org-9.4" "emacsql-3.0.0" "emacsql-sqlite-1.0.0" "magit-section-3.0.0"
         :emacs>= 26.1
         :commands (org-roam-node-find)
@@ -2316,6 +2313,7 @@ See `org-capture-templates' for more information."
 (elpaca graphviz-dot-mode)
 (elpaca editorconfig
   (leaf editorconfig
+    :require t
     :diminish editorconfig-mode
     :config
     (editorconfig-mode 1))
