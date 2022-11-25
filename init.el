@@ -878,11 +878,11 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       :after all-the-icons
       :config
       (all-the-icons-completion-mode t)))
-  (elpaca corfu
+  (elpaca (corfu :host github :repo "minad/corfu" :depth 10 :files (:defaults "extensions/*.el"))
     (leaf corfu
       :url "https://github.com/minad/corfu"
       :emacs>= 27.1
-      :require t
+      :require (corfu corfu-popupinfo)
       :bind
       (:corfu-map
        ("M-SPC" . corfu-insert-separator)
@@ -903,17 +903,10 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
               completion-cycle-threshold completion-cycling)
           (apply #'consult-completion-in-region completion-in-region--data)))
       :config
-      (global-corfu-mode)))
-  (elpaca corfu-doc
-    (leaf corfu-doc
-      :doc "Documentation popup for Corfu"
-      :req "emacs-27.1" "corfu-0.25"
-      :tag "convenience" "documentation" "popup" "corfu" "emacs>=27.1"
-      :url "https://github.com/galeo/corfu-doc"
-      :emacs>= 27.1
-      :after corfu
-      :hook
-      (corfu-mode-hook . corfu-doc-mode)))
+      (global-corfu-mode)
+      (corfu-popupinfo-mode t)
+      ))
+  
   (elpaca popon
     (leaf popon
       :init
