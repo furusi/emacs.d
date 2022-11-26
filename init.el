@@ -88,6 +88,21 @@
 (leaf recentf
   :custom `(recentf-save-file . ,(locate-user-emacs-file (format "recentf-%s" emacs-version))))
 
+(leaf xref
+  :defvar auto-read-only-dirs
+  :hook (xref-after-jump-hook .
+                              (lambda ()
+                                (dolist (f auto-read-only-dirs)
+                                  (when (string-match-p (expand-file-name f) buffer-file-name)
+                                    (read-only-mode))))
+                              )
+  :config
+  (defvar auto-read-only-dirs
+    '("/opt/homebrew/Cellar/"
+      "~/.cargo/registry/"
+      "~/.emacs.d/packages/"
+      "~/.rustup/toolchains/")))
+
 (leaf deepl-translate
   :url "https://uwabami.github.io/cc-env/Emacs.html"
   :commands my-deepl-translate
