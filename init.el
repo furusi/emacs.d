@@ -94,7 +94,7 @@
                               (lambda ()
                                 (dolist (f auto-read-only-dirs)
                                   (when (string-match-p (expand-file-name f) buffer-file-name)
-                                    (read-only-mode))))
+                                    (view-mode))))
                               )
   :config
   (defvar auto-read-only-dirs
@@ -102,6 +102,14 @@
       "~/.cargo/registry/"
       "~/.emacs.d/packages/"
       "~/.rustup/toolchains/")))
+(leaf view-mode
+  :bind
+  (:view-mode-map
+   ("j" . next-line)
+   ("k" . previous-line)
+   ;; ("SPC". scroll-up-command)
+   ;; ("S-SPC". scroll-down-command)
+   ))
 
 (leaf deepl-translate
   :url "https://uwabami.github.io/cc-env/Emacs.html"
