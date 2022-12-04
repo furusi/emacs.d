@@ -2688,8 +2688,8 @@ See `org-capture-templates' for more information."
     :bind ((:elfeed-show-mode-map
             ("S-SPC" . scroll-down-command))
            (:elfeed-search-mode-map
-            ("j" . next-line)
-            ("k" . previous-line)
+            ("j" . forward-line)
+            ("k" . (lambda () (interactive)(forward-line -1)))
             ("e" . (lambda () (interactive)(eww (my-elfeed-yank-entry-url))))
             ;;osascript -e 'tell application "Safari" to add reading list item "http://totl.net/"'
             ("a" .(lambda ()
