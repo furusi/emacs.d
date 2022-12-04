@@ -362,7 +362,8 @@
 (leaf dired
   :custom
   ((dired-dwim-target . t)
-   (dired-recursive-copies . 'always))
+   (dired-recursive-copies . 'always)
+   (dired-listing-switches . "-alFh"))
   :config
   (when (eq system-type 'darwin)
     (setq dired-use-ls-dired nil)))
