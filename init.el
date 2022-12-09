@@ -851,7 +851,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
              )
       :init
       (marginalia-mode)))
-  (elpaca embark
+  (elpaca (embark :files (:defaults ("embark-org.el")))
     (leaf embark
       :emacs>= 26.1
       :require t
@@ -1261,8 +1261,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
 ;; Org-mode
 (leaf org*
   :config
-  (elpaca (org :depth 10)
-    (leaf org
+  (leaf org
       :mode (("\\.org$" . org-mode))
       :custom
       ((org-export-allow-bind-keywords . t)
@@ -1786,10 +1785,7 @@ and `clavis-org-refile-refiled-from-header' variables."
         (ox-extras-activate '(latex-header-blocks ignore-headlines)))
       (leaf ob-kotlin
         :after (org))
-
-      
       )
-    )
   (elpaca ox-hugo
     (leaf ox-hugo
       :disabled t
