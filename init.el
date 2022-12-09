@@ -23,7 +23,9 @@
   :tag "builtin" "faces" "help"
   :custom `((custom-file . ,(locate-user-emacs-file "custom.el")))
   :config
-  (load-file (locate-user-emacs-file "custom.el")))
+  (when (file-exists-p (locate-user-emacs-file "custom.el"))
+    (load-file (locate-user-emacs-file "custom.el")))
+  )
 
 (leaf custom-variables
   :doc "set custom variables"
