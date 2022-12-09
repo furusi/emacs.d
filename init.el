@@ -64,6 +64,11 @@
     (vc-handled-backends . '(Git))
     ))
 
+(leaf yes-or-no
+  :emacs>= 28.1
+  :custom
+  (use-short-answers . t))
+
 (leaf custom-darwin
   :if (eq system-type 'darwin)
   :custom
