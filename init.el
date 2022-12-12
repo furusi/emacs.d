@@ -928,7 +928,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       :custom
       ((completion-cycle-threshold . 3)
        (corfu-auto . t)
-       (corfu-cycle . t))
+       (corfu-cycle . t)
+       (corfu-excluded-modes . '(rustic-mode rust-mode)))
       :hook
       (eshell-mode-hook . (lambda ()
                             (setq-local corfu-auto t
@@ -1103,13 +1104,15 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :emacs>= 26.1
     :require t
     :custom `((rustic-lsp-server . 'rust-analyzer)
-              (rustic-lsp-client . 'lsp-mode))
+              (rustic-lsp-client . nil))
     :bind
     ((:rustic-mode-map
       ("C-<return>" . default-indent-new-line)))
     :hook
     (rustic-mode-hook . (lambda ()
                           (electric-pair-mode 1)
+                          (when (and (eq rustic-lsp-client 'nil) (featurep 'lsp-bridge))
+                            (lsp-bridge-mode))
                           (when (featurep 'embark)
                             (setq-local embark-target-finders
                                         (append (remove
@@ -2503,6 +2506,10 @@ See `org-capture-templates' for more information."
     :require t
     :mode
     ("\\.vim\\(rc\\)?\\'" . vimrc-mode)))
+(elpaca (lsp-bridge :host github :repo "manateelazycat/lsp-bridge"
+                    :files (:defaults "lsp_bridge.py" "acm/*" "core" "langserver" "multiserver" "resources"))
+  (leaf lsp-bridge
+    :require t))
 (leaf *lsp
   :config
   (elpaca (lsp-mode ;; :ref "dfda673"
