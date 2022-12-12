@@ -1011,7 +1011,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (add-to-list 'completion-at-point-functions #'cape-file)
       (add-to-list 'completion-at-point-functions #'cape-dabbrev)
       (add-to-list 'completion-at-point-functions #'cape-keyword)
-      
       :config
       (if (memq system-type '(darwin gnu/linux))
           (customize-set-variable 'cape-dict-file "/usr/share/dict/words"))))
@@ -1275,7 +1274,9 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
 (leaf org*
   :config
   (leaf org
-      :mode (("\\.org$" . org-mode))
+    :mode (("\\.org$" . org-mode))
+    :hook ((org-mode-hook . (lambda () (prettify-symbols-mode)))
+           (org-mode-hook . (lambda () (setq prettify-symbols-alist org-prettify-symbols-alist))))
       :custom
       ((org-export-allow-bind-keywords . t)
        (org-export-backends . '(ascii html icalendar latex md odt taskjuggler asciidoc pandoc gfm))
@@ -1376,6 +1377,9 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                  (when(not (file-exists-p "~/org"))
                    (mkdir "~/org"))
                  "~/org"))))
+      (defvar org-prettify-symbols-alist
+        '(("#+begin_src" . "🖥️")
+          ("#+end_src". "🖥️")))
       :config
       
       ;; org-habitモジュールを有効化
