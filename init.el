@@ -69,6 +69,12 @@
   :custom
   (use-short-answers . t))
 
+(leaf emacs29
+  :emacs>= 29
+  :config
+  (when window-system
+    (pixel-scroll-precision-mode)))
+
 (leaf custom-darwin
   :if (eq system-type 'darwin)
   :custom
@@ -2680,7 +2686,9 @@ See `org-capture-templates' for more information."
     :emacs>= 27.1
     :after eglot consult)
   )
-(elpaca vterm)
+(elpaca vterm
+  (leaf vterm
+    :require t))
 (elpaca (elfeed :files (:defaults ("web/*.el")))
   (leaf elfeed
     :doc "an Emacs Atom/RSS feed reader"
