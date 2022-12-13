@@ -1326,6 +1326,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
        (org-clock-persist . t)
        (org-enforce-todo-dependencies . t)
        (org-enforce-todo-checkbox-dependencies . t)
+       (org-use-sub-superscripts . '{})
+       (org-export-with-sub-superscripts . '{})
        )
       :bind (("C-c c" . org-capture)
              ("C-c l" . org-store-link)
