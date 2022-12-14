@@ -616,7 +616,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       )
     (leaf context-skk
       :config
-      (dolist (mode '(python-mode js-mode rustic-mode))
+      (dolist (mode '(python-mode js-mode rustic-mode dart-mode))
         (add-to-list 'context-skk-programming-mode mode))
       (setq context-skk-mode-off-message "[context-skk] 日本語入力 off")
       (defun my-context-skk-at-heading-p ()
@@ -1103,8 +1103,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :tag "languages" "emacs>=26.1"
     :emacs>= 26.1
     :require t
-    :custom `((rustic-lsp-server . 'rust-analyzer)
-              (rustic-lsp-client . nil))
+    :custom `((rustic-lsp-client . 'lsp-mode))
     :bind
     ((:rustic-mode-map
       ("C-<return>" . default-indent-new-line)))
@@ -1150,6 +1149,9 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   )
 (elpaca moody
   (leaf moody
+    :doc "Tabs and ribbons for the mode line"
+    :req "emacs-25.3" "compat-28.1.1.0"
+    :url "https://github.com/tarsius/moody"
     :custom
     ((x-underline-at-descent-line . t))
     :config
@@ -2306,6 +2308,24 @@ See `org-capture-templates' for more information."
   (leaf kotlin-mode
     :mode (("\\.kt\\'" . kotlin-mode)))
   )
+(elpaca (dart-mode :host github :repo "bradyt/dart-mode")
+  (leaf dart-mode
+    :doc "Major mode for editing Dart files"
+    :req "emacs-24.3"
+    :tag "languages" "emacs>=24.3"
+    :url "https://github.com/bradyt/dart-mode"
+    :require t
+    :mode (("\\.dart\\'" . dart-mode))
+    :hook ((dart-mode-hook . lsp-deferred)
+           (dart-mode-hook . (lambda ()
+                               (electric-pair-mode 1)
+                               (when (featurep 'embark)
+                                 (setq-local embark-target-finders
+                                             (append (remove
+                                                      'embark-target-file-at-point
+                                                      embark-target-finders)
+                                                     '(embark-target-file-at-point)))
+                                 ))))))
 (elpaca fsharp-mode)
 (leaf whitespace
   :require t
