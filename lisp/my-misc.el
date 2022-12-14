@@ -165,4 +165,4 @@
   (("C-x C-{" . my-shrink-frame-horizontally)
    ("C-x C-}" . my-enlarge-frame-horizontally)))
 
-(provide 'misc)
+(provide 'my-misc)

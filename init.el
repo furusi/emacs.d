@@ -2912,7 +2912,7 @@ See `org-capture-templates' for more information."
     ))
 
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
-(require 'misc)
+(require 'my-misc)
 (require 'my-window)
 
 (let ((f "~/Dropbox/.config/emacs/config.el"))
