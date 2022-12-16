@@ -1110,8 +1110,9 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :hook
     (rustic-mode-hook . (lambda ()
                           (electric-pair-mode 1)
-                          (when (and (eq rustic-lsp-client 'nil) (featurep 'lsp-bridge))
-                            (lsp-bridge-mode))
+                          (if (and (eq rustic-lsp-client 'nil) (featurep 'lsp-bridge))
+                              (lsp-bridge-mode)
+                            (corfu-mode))
                           (when (featurep 'embark)
                             (setq-local embark-target-finders
                                         (append (remove
@@ -1584,7 +1585,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
          (call-process
           "open" nil 0 nil
           (concat "mkdictionaries:///?text=" label)))
-       :export 
+       :export
        (lambda (label description backend)
          (if (memq backend '(html latex))
              (format (pcase backend
@@ -2480,7 +2481,8 @@ See `org-capture-templates' for more information."
 
 ;;from https://uwabami.github.io/cc-env/Emacs.html
 (defun my-make-scratch (&optional arg)
-  "SCRATCHバッファを作成する."
+  "SCRATCHバッファを作成する.
+Optional argument ARG hoge."
   (interactive)
   (progn
     ;; "*scratch*" を作成して buffer-list に放り込む
@@ -2531,7 +2533,10 @@ See `org-capture-templates' for more information."
 (elpaca (lsp-bridge :host github :repo "manateelazycat/lsp-bridge"
                     :files (:defaults "lsp_bridge.py" "acm/*" "core" "langserver" "multiserver" "resources"))
   (leaf lsp-bridge
-    :require t))
+    :require t
+    :bind
+    (:lsp-bridge-mode-map
+     ("C-c C-l a a" . lsp-bridge-code-action))))
 (leaf *lsp
   :config
   (elpaca (lsp-mode ;; :ref "dfda673"
@@ -2758,7 +2763,7 @@ See `org-capture-templates' for more information."
       (interactive)
       (let ((url (car (mapcar #'elfeed-entry-link (elfeed-search-selected)))))
         (if (equal url "")
-            (error "Selected entry's url is empty.")
+            (error "Selected entry's url is empty")
           url
           )))
     ;; (require 'elfeed-web)
@@ -2902,6 +2907,7 @@ See `org-capture-templates' for more information."
     :tag "games" "emacs>=25.1"
     :url "https://github.com/parkouss/speed-type"
     :emacs>= 25.1
+    :require t
     :config
     (with-eval-after-load 'speed-type
       (add-hook 'speed-type-mode-hook
