@@ -641,6 +641,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                         (aset disptab ?\▼ (vector (make-glyph-code ?# 'escape-glyph)))
                         (aset disptab ?\▽ (vector (make-glyph-code ?@ 'escape-glyph)))
                         (set-window-display-table w disptab)))))
+    (require 'ccc)
     (add-hook 'window-configuration-change-hook #'skk-set-display-table)
     (add-hook 'after-init-hook #'skk-set-display-table))
   )
@@ -1285,6 +1286,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
            (org-mode-hook . (lambda () (setq prettify-symbols-alist org-prettify-symbols-alist))))
       :custom
       ((org-export-allow-bind-keywords . t)
+       (org-babel-python-command . "python3")
        (org-export-backends . '(ascii html icalendar latex md odt taskjuggler asciidoc pandoc gfm))
        (org-id-link-to-org-use-id . t)
        (org-icalendar-use-scheduled . '(event-if-todo todo-start))
@@ -1983,6 +1985,14 @@ See `org-capture-templates' for more information."
         :custom ((org-roam-ui-sync-theme . t)
                  (org-roam-ui-follow . t)
                  (org-roam-ui-update-on-save . t))))
+    (elpaca consult-org-roam
+      (leaf consult-org-roam
+        :doc "Consult integration for org-roam"
+        :req "emacs-27.1" "org-roam-2.2.0" "consult-0.16"
+        :tag "emacs>=27.1"
+        :url "https://github.com/jgru/consult-org-roam"
+        :emacs>= 27.1
+        :after org-roam consult))
     )
   (leaf ox*
     :custom
