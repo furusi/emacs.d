@@ -2105,6 +2105,18 @@ See `org-capture-templates' for more information."
     (leaf org-fc
       :after org
       :require t))
+  (elpaca org-latex-impatient
+    (leaf org-latex-impatient
+      :doc "Preview org-latex Fragments Instantly via MathJax"
+      :req "emacs-26" "s-1.8.0" "posframe-0.8.0" "org-9.3" "dash-2.17.0"
+      :tag "tools" "tex" "emacs>=26"
+      :url "https://github.com/yangsheng6810/org-latex-instant-preview"
+      :emacs>= 26
+      :hook (org-mode-hook . org-latex-impatient-mode)
+      :config
+      (when (eq system-type 'darwin)
+        (setq org-latex-impatient-tex2svg-bin "/opt/homebrew/lib/node_modules/mathjax-node-cli/bin/tex2svg"))
+      ))
   )
 (leaf anki-editor-org-src
   :after org
