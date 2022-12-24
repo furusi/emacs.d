@@ -10,7 +10,6 @@
 (column-number-mode)
 
 (defvar my-dropbox-dir  (expand-file-name "~/Dropbox"))
-
 ;; 絵文字のフォント設定
 (when window-system
   (set-fontset-font t 'symbol "Apple Color Emoji")
@@ -982,7 +981,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
         ("C-i" . tempel-next)
         ))
       :custom
-      `((tempel-path . ,(format "%ssnippets/tempel/templates" user-emacs-directory)))
+      `((tempel-path . ,(format "%ssnippets/tempel/templates/*" user-emacs-directory)))
       :config
       (defun tempel-setup-capf ()
         ;; Add the Tempel Capf to `completion-at-point-functions'. `tempel-expand'
