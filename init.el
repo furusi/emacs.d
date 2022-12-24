@@ -486,6 +486,14 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     )
   )
 (elpaca magit-svn)
+(elpaca blamer
+  (leaf blamer
+    :doc "Show git blame info about current line"
+    :req "emacs-27.1" "posframe-1.1.7"
+    :tag "emacs>=27.1"
+    :url "https://github.com/artawower/blamer.el"
+    :emacs>= 27.1
+    ))
 (elpaca projectile
   (leaf projectile
     :require t
@@ -966,6 +974,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       :tag "emacs>=27.1"
       :url "https://github.com/minad/tempel"
       :emacs>= 27.1
+      :require t
       :bind
       ((("M-+" . tempel-complete) ;; Alternative tempel-expand
         ("M-*" . tempel-insert))
