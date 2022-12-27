@@ -2132,9 +2132,13 @@ See `org-capture-templates' for more information."
       :emacs>= 26
       :hook (org-mode-hook . org-latex-impatient-mode)
       :config
-      (when (eq system-type 'darwin)
-        (setq org-latex-impatient-tex2svg-bin "/opt/homebrew/lib/node_modules/mathjax-node-cli/bin/tex2svg"))
-      ))
+      (setq org-latex-impatient-tex2svg-bin
+            (cond
+             ((eq system-type 'darwin)
+              "/opt/homebrew/lib/node_modules/mathjax-node-cli/bin/tex2svg")
+             (t
+              "/usr/bin/tex2svg")
+             ))))
   )
 (leaf anki-editor-org-src
   :after org
