@@ -2421,15 +2421,11 @@ See `org-capture-templates' for more information."
      (modus-themes-paren-match . '(bold intense))
      (modus-themes-org-blocks . 'gray-background)
      (modus-themes-mode-line . '(borderless accented))
-     (modus-themes-vivendi-color-overrides  . '((bg-main . "gray20")))
-     (modus-themes-operandi-color-overrides . '((bg-main . "#F6F6EF")))
+     (modus-vivendi-palette-overrides  . '((bg-main "gray20")))
+     (modus-operandi-palette-overrides  . '((bg-main "#F6F6EF")))
      )
     :config
-    (modus-themes-load-themes)
-    ;; (if window-system
-    ;;     (modus-themes-load-operandi)
-    ;;   (modus-themes-load-vivendi))
-    (modus-themes-load-vivendi)
+    (load-theme 'modus-vivendi :no-confim)
     )
   )
 (elpaca markdown-mode
