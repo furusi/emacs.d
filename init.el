@@ -1007,6 +1007,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (("C-c f p" . completion-at-point) ;; capf
        ("C-c f t" . complete-tag)        ;; etags
        ("C-c f d" . cape-dabbrev)        ;; or dabbrev-completion
+       ("C-c f h" . cape-history)
        ("C-c f f" . cape-file)
        ("C-c f k" . cape-keyword)
        ("C-c f s" . cape-symbol)
@@ -1016,11 +1017,14 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
        ("C-c f w" . cape-dict)
        ("C-c f \\" . cape-tex)
        ("C-c f _" . cape-tex)
-       ("C-c f ^" . cape-tex))
+       ("C-c f ^" . cape-tex)
+       ("C-c f &" . cape-sgml)
+       ("C-c f r" . cape-rfc1345))
       :init
-      (add-to-list 'completion-at-point-functions #'cape-file)
       (add-to-list 'completion-at-point-functions #'cape-dabbrev)
       (add-to-list 'completion-at-point-functions #'cape-keyword)
+      (add-to-list 'completion-at-point-functions #'cape-tex)
+      (add-to-list 'completion-at-point-functions #'cape-file)
       :config
       (if (memq system-type '(darwin gnu/linux))
           (customize-set-variable 'cape-dict-file "/usr/share/dict/words"))))
@@ -1111,7 +1115,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :req "emacs-26.1" "rust-mode-1.0.3" "dash-2.13.0" "f-0.18.2" "let-alist-1.0.4" "markdown-mode-2.3" "project-0.3.0" "s-1.10.0" "seq-2.3" "spinner-1.7.3" "xterm-color-1.6"
     :tag "languages" "emacs>=26.1"
     :emacs>= 26.1
-    :require t
+    :require rustic
     :custom `((rustic-lsp-client . 'lsp-mode))
     :bind
     ((:rustic-mode-map
@@ -1374,6 +1378,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
           ("Clock Commands")
           ("I" . org-clock-in)
           ("O" . org-clock-out)
+          ("Help")
           ("?" . my-org-item-speed-command-help)))
       (defun my-org-item-speed-command-activate (keys)
         (when (and (bolp)
