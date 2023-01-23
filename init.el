@@ -1092,6 +1092,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :tag "convenience" "emacs>=28.1"
     :url "https://codeberg.org/ideasman42/emacs-undo-fu-session"
     :emacs>= 28.1
+    :require t
     :custom
     (undo-fu-session-incompatible-files . '("/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'"))
     :config
