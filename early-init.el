@@ -53,11 +53,9 @@
            (build (expand-file-name "elpaca/" elpaca-builds-directory))
            (order (cdr elpaca-order))
            ((add-to-list 'load-path (if (file-exists-p build) build repo)))
-           ((not (file-exists-p repo)))
-           (buffer (get-buffer-create "*elpaca-bootstrap*")))
+           ((not (file-exists-p repo))))
   (condition-case-unless-debug err
-      (if-let (((pop-to-buffer buffer '((display-buffer-reuse-window
-                                         display-buffer-same-window))))
+      (if-let ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
                ((zerop (call-process "git" nil buffer t "clone"
                                      (plist-get order :repo) repo)))
                (default-directory repo)
