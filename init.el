@@ -763,13 +763,14 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (leaf consult
       :require consult consult-xref consult-org consult-imenu consult-register
       :custom
-      ((consult-narrow-key . ">")
+      ((consult-async-min-input . 2)
        (consult-find-command
         . "fd -H -E .git --color=never --full-path ARG OPTS")
+       (consult-narrow-key . ">")
        (consult-ripgrep-args
         . "rg --hidden --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number .")
-       (xref-show-xrefs-function . #'consult-xref)
-       (xref-show-definitions-function . #'consult-xref))
+       (xref-show-definitions-function . #'consult-xref)
+       (xref-show-xrefs-function . #'consult-xref))
       :bind (("C-c h" . consult-history)
              ("C-c m" . consult-mode-command)
              ("C-x C-SPC" . consult-global-mark)
