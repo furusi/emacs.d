@@ -1118,7 +1118,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :tag "languages" "emacs>=26.1"
     :emacs>= 26.1
     :require rustic
-    :custom `((rustic-lsp-client . 'lsp-mode))
+    ;; :custom `((rustic-lsp-client . 'lsp-mode))
     :bind
     ((:rustic-mode-map
       ("C-<return>" . default-indent-new-line)))
