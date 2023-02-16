@@ -518,7 +518,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (let ((tab-name-list (mapcar #'cdadr (tab-bar-tabs)))
             (tab-name (format "=p:%s"
                               (replace-regexp-in-string
-                               "\.emacs\.d/packages/.*/straight/.*repos" "REPO"
+                               "\.emacs\.d/packages/.*/.*repos" "REPO"
                                (replace-regexp-in-string
                                 (format "^%s" (getenv "HOME")) "~"
                                 (projectile-acquire-root)))))
