@@ -825,7 +825,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
        consult-bookmark consult-recent-file consult-xref
        consult--source-recent-file consult--source-project-recent-file consult--source-bookmark
        consult-find consult-org-agenda
-       :preview-key (kbd (if window-system "C-," "M-,")))
+       :preview-key (if window-system "C-," "M-,"))
       (autoload 'projectile-project-root "projectile")
       (setq consult-project-function #'projectile-project-root)
       (setq completion-in-region-function
@@ -863,7 +863,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
             affe-highlight-function #'orderless--highlight)
 
       ;; Manual preview key for `affe-grep'
-      (consult-customize affe-grep :preview-key (kbd "M-."))))
+      (consult-customize affe-grep :preview-key "M-.")))
   (elpaca marginalia
     (leaf marginalia
       :bind (
