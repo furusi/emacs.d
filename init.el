@@ -478,10 +478,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (require 'magit-extras)
     ;; ediff時にorgファイルを全て表示する
     (defun my-ediff-prepare-buffer-function ()
-      (org-fold-show-all))
-    
-    (with-eval-after-load 'org-fold
-      (add-hook 'ediff-prepare-buffer-hook #'my-ediff-prepare-buffer-function))
+      (org-show-all))
+    (add-hook 'ediff-prepare-buffer-hook #'my-ediff-prepare-buffer-function)
     )
   )
 (elpaca magit-svn)
