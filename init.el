@@ -766,7 +766,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
         . "fd -H -E .git --color=never --full-path ARG OPTS")
        (consult-narrow-key . ">")
        (consult-ripgrep-args
-        . "rg --hidden --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number .")
+        . "rg --hidden --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --with-filename --line-number --search-zip")
        (xref-show-definitions-function . #'consult-xref)
        (xref-show-xrefs-function . #'consult-xref))
       :bind (("C-c h" . consult-history)
