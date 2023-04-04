@@ -1870,7 +1870,7 @@ See `org-capture-templates' for more information."
        (org-gcal-up-days . 180))
       :config
       (load "~/Dropbox/org/googlecalendar/org-gcal-config.el")))
-  (elpaca (anki-editor :host github :repo "louietan/anki-editor"
+  (elpaca (anki-editor :host github :repo "orgtre/anki-editor"
                        :remotes ("origin"
                                  ("fork" :host github :repo "furusi/anki-editor" :branch "master")))
     (leaf anki-editor
