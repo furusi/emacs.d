@@ -94,8 +94,10 @@
       (setq
        browse-url-generic-program  "/mnt/c/Windows/System32/cmd.exe"
        browse-url-generic-args     '("/c" "start")
-       browse-url-browser-function #'browse-url-generic))
-     )))
+       browse-url-browser-function #'browse-url-generic))))
+  (when (eq system-type 'darwin)
+    (setq browse-url-chrome-program "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"))
+  )
 
 (leaf recentf
   :custom `(recentf-save-file . ,(locate-user-emacs-file (format "recentf-%s" emacs-version))))
