@@ -2315,7 +2315,8 @@ See `org-capture-templates' for more information."
     :after lsp-mode
     :hook (go-mode-hook . lsp-deferred))
   )
-(elpaca csharp-mode)
+(when (version< emacs-version "29")
+  (elpaca csharp-mode))
 (elpaca android-mode)
 (elpaca ccls
   (leaf ccls
@@ -2725,16 +2726,14 @@ Optional argument ARG hoge."
       ))
   )
 (elpaca flymake)
-(elpaca eglot
-  (leaf eglot
-    :after corfu flymake
-    :bind
-    ((:eglot-mode-map
-      ("C-c C-l a a" . eglot-code-actions)))
-    :config
-    ;; (add-hook 'rustic-mode-hook 'eglot-ensure)
-    ;; (add-to-list 'eglot-stay-out-of 'flymake)
-    )
+(leaf eglot
+  :after corfu flymake
+  :bind
+  ((:eglot-mode-map
+    ("C-c C-l a a" . eglot-code-actions)))
+  :config
+  ;; (add-hook 'rustic-mode-hook 'eglot-ensure)
+  ;; (add-to-list 'eglot-stay-out-of 'flymake)
   )
 (elpaca eglot-java
   (leaf eglot-java
