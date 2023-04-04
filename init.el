@@ -2147,6 +2147,16 @@ See `org-capture-templates' for more information."
               "/usr/bin/tex2svg")
              ))))
   )
+(elpaca org-tag-beautify
+  (leaf org-tag-beautify
+    :doc "Beautify Org mode tags"
+    :req "emacs-26.1" "org-pretty-tags-0.2.2" "all-the-icons-5.0.0"
+    :url "https://repo.or.cz/org-tag-beautify.git"
+    :emacs>= 26.1
+    :require t
+    :custom
+    `(org-tag-beautify-data-dir . ,(format "%sorg-tag-beautify/data/" elpaca-repos-directory))
+    ))
 (leaf anki-editor-org-src
   :after org
   ;; :leaf-defer nil
