@@ -1942,9 +1942,10 @@ See `org-capture-templates' for more information."
       :hook ((org-mode-hook . org-download-enable))))
   (leaf org-roam*
     :config
+    (elpaca (emacsql-sqlite :protocol https :inherit t :depth 1 :repo github :repo "magit/emacsql" :files (:defaults "emacsql-sqlite.el" "emacsql-sqlite-common.el" "sqlite")))
     (elpaca org-roam
       (leaf org-roam
-        :req "emacs-26.1" "dash-2.13" "f-0.17.2" "org-9.4" "emacsql-3.0.0" "emacsql-sqlite-1.0.0" "magit-section-3.0.0"
+        :req "emacs-26.1" "dash-2.13" "org-9.4" "emacsql-20230228" "magit-section-3.0.0"
         :emacs>= 26.1
         :commands (org-roam-node-find)
         :custom
