@@ -782,6 +782,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
              ("M-y" . consult-yank-pop)
              ("C-x 4 b" . consult-buffer-other-window)
              ("C-x 5 b" . consult-buffer-other-frame)
+             ("C-x r SPC" . consult-register-store)
              ([remap goto-line] . consult-goto-line)
              (:isearch-mode-map
               ("C-i" . my-consult-line)
