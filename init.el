@@ -2314,7 +2314,9 @@ See `org-capture-templates' for more information."
                                   '((company-ac-php-backend company-dabbrev-code)
                                     company-capf company-files)))))
   )
-(elpaca typescript-mode)
+(elpaca typescript-mode
+  (elpaca typescript-mode
+    :hook (typescript-mode-hook . #'lsp)))
 (elpaca rainbow-mode)
 (elpaca poetry)
 (leaf pipenv
