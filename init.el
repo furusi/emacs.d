@@ -2335,6 +2335,16 @@ See `org-capture-templates' for more information."
 (when (version< emacs-version "29")
   (elpaca csharp-mode))
 (elpaca android-mode)
+(when (eq system-type 'darwin)
+  (elpaca swift-mode
+    (leaf swift-mode))
+  (elpaca (lsp-sourcekit :host github :repo "emacs-lsp/lsp-sourcekit" :files (:defaults "lsp-sourcekit.el"))
+    (leaf lsp-sourcekit
+      :require t
+      :after lsp
+      :custom
+      `(lsp-sourcekit-executable . ,(string-trim (shell-command-to-string "xcrun --find sourcekit-lsp")))))
+  )
 (elpaca ccls
   (leaf ccls
     :after lsp-mode
