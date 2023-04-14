@@ -56,7 +56,7 @@
     (show-paren-style . 'mixed)
     (tramp-ssh-controlmaster-options . "-4") ; ssh接続時にipv4アドレスを利用する
     (tool-bar-mode . nil)
-    (truncate-lines . t)         ;文字列を折り返さない
+    ;; (truncate-lines . t)         ;文字列を折り返さない
     (use-dialog-box . nil)
     (use-file-dialog . nil)
     (vc-follow-symlinks . t)
@@ -1116,14 +1116,13 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
 (elpaca rustic
   (leaf rustic
     :doc "Rust development environment"
-    :req "emacs-26.1" "rust-mode-1.0.3" "dash-2.13.0" "f-0.18.2" "let-alist-1.0.4" "markdown-mode-2.3" "project-0.3.0" "s-1.10.0" "seq-2.3" "spinner-1.7.3" "xterm-color-1.6"
+    :req "emacs-26.1" "rust-mode-1.0.3" "dash-2.13.0" "f-0.18.2"
+    "let-alist-1.0.4" "markdown-mode-2.3" "project-0.3.0" "s-1.10.0"
+    "seq-2.3" "spinner-1.7.3" "xterm-color-1.6"
     :tag "languages" "emacs>=26.1"
     :emacs>= 26.1
     :require rustic
     ;; :custom `((rustic-lsp-client . 'lsp-mode))
-    :bind
-    ((:rustic-mode-map
-      ("C-<return>" . default-indent-new-line)))
     :hook
     (rustic-mode-hook . (lambda ()
                           (electric-pair-mode 1)
@@ -1142,7 +1141,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     ;;   (add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1))))
     (leaf rustic-color
       :after modus-themes
-      :custom (rustic-ansi-faces . ["black" "red3" "green3" "yellow3" "deep sky blue" "magenta3" "cyan3" "white"]))
+      :custom (rustic-ansi-faces . ["black" "red3" "green3" "yellow3"
+      "deep sky blue" "magenta3" "cyan3" "white"]))
     )
   )
 (elpaca lsp-haskell
