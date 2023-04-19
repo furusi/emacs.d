@@ -38,10 +38,23 @@
         width)
     (error "Error: window system only")))
 
-(defun factoral (n)
+(defun factorial (n)
   (if (> n 0)
       (* n (factoral (- n 1)))
     1))
+
+(defvar factorial-memo (make-hash-table :test 'equal))
+
+(defun factorial-memo (n)
+  "Return factorial of N"
+  (cond ((= n 0) 1)
+        ((= n 1) 1)
+        ((gethash n factorial-memo)
+         (gethash n factorial-memo))
+        (t (let ((result (* n (factorial (- n 1)))))
+             (puthash n result factorial-memo)
+             result
+             ))))
 
 (defun combination (n r)
   (/ (factoral n) (* (factoral r) (factoral (- n r)))))
