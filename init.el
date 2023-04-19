@@ -2462,7 +2462,14 @@ See `org-capture-templates' for more information."
      (modus-operandi-palette-overrides  . '((bg-main "#F6F6EF")))
      )
     :config
-    (load-theme 'modus-vivendi :no-confim)
+    (defcustom my-current-modus-theme 'modus-operandi
+      "my selected theme"
+      :type '(choice (const :tag "modus-vivendi(黒)" modus-vivendi)
+                     (const :tag "modus-operandi(白)" modus-operandi))
+      :initialize #'custom-initialize-default
+      :group 'my-group
+      )
+    (load-theme my-current-modus-theme :no-confim)
     )
   )
 (elpaca markdown-mode
