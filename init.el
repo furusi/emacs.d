@@ -764,8 +764,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       :require consult consult-xref consult-org consult-imenu consult-register
       :custom
       ((consult-async-min-input . 2)
-       (consult-find-command
-        . "fd -H -E .git --color=never --full-path ARG OPTS")
        (consult-narrow-key . ">")
        (consult-ripgrep-args
         . "rg --hidden --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --with-filename --line-number --search-zip")
@@ -804,20 +802,19 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                      (`(,re . ,hl) (funcall consult--regexp-compiler
                                             arg 'extended t)))
           (when re
-            (list :command (append
+      (cons (append
                             (list consult--fd-command
                                   "--color=never" "--full-path"
                                   (consult--join-regexps re 'extended))
                             opts)
-                  :highlight hl))))
+            hl))))
 
       (defun consult-fd (&optional dir initial)
         "Search with fd for files in DIR matching input regexp given INITIAL input."
         (interactive "P")
-        (let* ((prompt-dir (consult--directory-prompt "Fd" dir))
-               (default-directory (cdr prompt-dir)))
-          (find-file (consult--find (car prompt-dir) #'consult--fd-builder initial))))
-
+  (pcase-let* ((`(,prompt ,paths ,dir) (consult--directory-prompt "Fd" dir))
+               (default-directory dir))
+    (find-file (consult--find prompt #'consult--fd-builder initial))))
       (consult-customize
        consult-theme
        :preview-key (list :debounce 1.0 'any)
@@ -1943,7 +1940,9 @@ See `org-capture-templates' for more information."
       :hook ((org-mode-hook . org-download-enable))))
   (leaf org-roam*
     :config
-    (elpaca (emacsql-sqlite :protocol https :inherit t :depth 1 :repo github :repo "magit/emacsql" :files (:defaults "emacsql-sqlite.el" "emacsql-sqlite-common.el" "sqlite")))
+    (elpaca (emacsql-sqlite :protocol https :inherit t :depth 1
+                            :repo github :repo "magit/emacsql"
+                            :files (:defaults "emacsql-sqlite.el" "emacsql-sqlite-common.el" "sqlite")))
     (elpaca org-roam
       (leaf org-roam
         :req "emacs-26.1" "dash-2.13" "org-9.4" "emacsql-20230228" "magit-section-3.0.0"
