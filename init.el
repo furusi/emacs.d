@@ -2314,7 +2314,7 @@ See `org-capture-templates' for more information."
                                     company-capf company-files)))))
   )
 (elpaca typescript-mode
-  (elpaca typescript-mode
+  (leaf typescript-mode
     :hook (typescript-mode-hook . #'lsp)))
 (elpaca rainbow-mode)
 (elpaca poetry)
@@ -2453,10 +2453,9 @@ See `org-capture-templates' for more information."
     :require t
     :custom
     ((modus-themes-italic-constructs . t)
-     (modus-themes-region . '(accented bg-only no-extend))
-     (modus-themes-paren-match . '(bold intense))
      (modus-themes-org-blocks . 'gray-background)
-     (modus-themes-mode-line . '(borderless accented))
+     (modus-themes-custom-auto-reload . t)
+     (modus-themes-disable-other-themes . t)
      (modus-vivendi-palette-overrides  . '((bg-main "gray20")))
      (modus-operandi-palette-overrides  . '((bg-main "#F6F6EF")))
      )
@@ -2468,7 +2467,7 @@ See `org-capture-templates' for more information."
       :initialize #'custom-initialize-default
       :group 'my-group
       )
-    (load-theme my-current-modus-theme :no-confim)
+    (load-theme 'modus-operandi-tinted :no-confim)
     )
   )
 (elpaca markdown-mode
