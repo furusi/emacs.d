@@ -2794,14 +2794,13 @@ Optional argument ARG hoge."
 (elpaca vterm
   (leaf vterm
     :require t))
-(elpaca (elfeed :files (:defaults ("web/*.el")))
+(elpaca (elfeed :files (:defaults "web/*"))
   (leaf elfeed
     :doc "an Emacs Atom/RSS feed reader"
     :req "emacs-24.3"
     :tag "emacs>=24.3"
     :url "https://github.com/skeeto/elfeed"
     :emacs>= 24.3
-    :require elfeed
     :bind ((:elfeed-show-mode-map
             ("S-SPC" . scroll-down-command))
            (:elfeed-search-mode-map
@@ -2833,7 +2832,7 @@ Optional argument ARG hoge."
             (error "Selected entry's url is empty")
           url
           )))
-    ;; (require 'elfeed-web)
+    (require 'elfeed-web)
     )
   )
 (elpaca elfeed-goodies
