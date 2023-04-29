@@ -2086,11 +2086,15 @@ See `org-capture-templates' for more information."
       :require t
       :emacs>= 27.1
       :after org
+      :custom
+      (org-modern-star . nil)
       :config
       (add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
       (dolist (face '(org-modern-date-active org-modern-date-inactive))
         (set-face-attribute face nil
                             :family "UDEV Gothic JPDOC"))
+      (set-face-attribute 'org-modern-symbol nil :family "Iosevka")
+      (global-org-modern-mode)
       ))
 
   (elpaca ob-browser)
