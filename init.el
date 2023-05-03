@@ -823,7 +823,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
        consult-ripgrep consult-git-grep consult-grep
        consult-bookmark consult-recent-file consult-xref
        consult--source-recent-file consult--source-project-recent-file consult--source-bookmark
-       consult-find consult-org-agenda
+       consult-find consult-fd consult-org-agenda
        :preview-key (if window-system "C-," "M-,"))
       (autoload 'projectile-project-root "projectile")
       (setq consult-project-function #'projectile-project-root)
@@ -1028,11 +1028,11 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       :config
       (if (memq system-type '(darwin gnu/linux))
           (customize-set-variable 'cape-dict-file "/usr/share/dict/words"))))
-  (elpaca kind-icon
+  (elpaca (kind-icon :host github :repo "jdtsmith/kind-icon")
     (leaf kind-icon
       :emacs>= 27.1
       :require t
-      :after (corfu svg-lib)
+      :after corfu
       :custom
       (kind-icon-default-face . 'corfu-default)
       :config
