@@ -937,7 +937,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       ((completion-cycle-threshold . 3)
        (corfu-auto . t)
        (corfu-cycle . t)
-       (corfu-excluded-modes . '(rustic-mode rust-mode)))
+       (corfu-exclude-modes . '(rustic-mode rust-mode)))
       :hook
       (eshell-mode-hook . (lambda ()
                             (setq-local corfu-auto t
@@ -1941,7 +1941,7 @@ See `org-capture-templates' for more information."
   (leaf org-roam*
     :config
     (elpaca (emacsql-sqlite :protocol https :inherit t :depth 1
-                            :repo github :repo "magit/emacsql"
+                            :host github :repo "magit/emacsql"
                             :files (:defaults "emacsql-sqlite.el" "emacsql-sqlite-common.el" "sqlite")))
     (elpaca org-roam
       (leaf org-roam
