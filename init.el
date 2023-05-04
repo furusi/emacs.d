@@ -2762,38 +2762,40 @@ Optional argument ARG hoge."
       ))
   )
 (elpaca flymake)
-(leaf eglot
-  :after corfu flymake
-  :bind
-  ((:eglot-mode-map
-    ("C-c C-l a a" . eglot-code-actions)))
-  :config
-  ;; (add-hook 'rustic-mode-hook 'eglot-ensure)
-  ;; (add-to-list 'eglot-stay-out-of 'flymake)
-  )
-(elpaca eglot-java
-  (leaf eglot-java
-    :doc "Java extension for the eglot LSP client"
-    :req "emacs-26.1" "eglot-1.0" "jsonrpc-1.0.0"
-    :tag "languages" "convenience" "emacs>=26.1"
-    :url "https://github.com/yveszoundi/eglot-java"
-    :emacs>= 26.1
-    :require t
-    :custom
-    ((eglot-java-prefix-key . "C-c C-l"))
+(elpaca (eglot :host github :repo "joaotavora/eglot")
+  (leaf eglot
+    :after corfu flymake
+    :bind
+    ((:eglot-mode-map
+      ("C-c C-l a a" . eglot-code-actions)))
     :config
-    ;; (eglot-java-init)
+    ;; (add-hook 'rustic-mode-hook 'eglot-ensure)
+    ;; (add-to-list 'eglot-stay-out-of 'flymake)
+    ))
+(elpaca eglot-java
+    (leaf eglot-java
+      :doc "Java extension for the eglot LSP client"
+      :req "emacs-26.1" "eglot-1.0" "jsonrpc-1.0.0"
+      :tag "languages" "convenience" "emacs>=26.1"
+      :url "https://github.com/yveszoundi/eglot-java"
+      :emacs>= 26.1
+      :require t
+      :custom
+      ((eglot-java-prefix-key . "C-c C-l"))
+      :config
+      ;; (eglot-java-init)
+      )
     )
-  )
 (elpaca consult-eglot
-  (leaf consult-eglot
-    :doc "A consulting-read interface for eglot"
-    :req "emacs-27.1" "eglot-1.7" "consult-0.9"
-    :tag "lsp" "completion" "tools" "emacs>=27.1"
-    :url "https://github.com/mohkale/consult-eglot"
-    :emacs>= 27.1
-    :after eglot consult)
-  )
+    (leaf consult-eglot
+      :doc "A consulting-read interface for eglot"
+      :req "emacs-27.1" "eglot-1.7" "consult-0.9"
+      :tag "lsp" "completion" "tools" "emacs>=27.1"
+      :url "https://github.com/mohkale/consult-eglot"
+      :emacs>= 27.1
+      :after eglot consult)
+    )
+
 (elpaca vterm
   (leaf vterm
     :require t))
