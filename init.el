@@ -950,7 +950,9 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
           (apply #'consult-completion-in-region completion-in-region--data)))
       :config
       (global-corfu-mode)
-      (corfu-popupinfo-mode t)
+      (corfu-popupinfo-mode)
+      (corfu-history-mode)
+      (add-to-list 'savehist-additional-variables 'corfu-history)
       ))
   
   (elpaca popon
