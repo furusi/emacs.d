@@ -2462,8 +2462,8 @@ See `org-capture-templates' for more information."
      (modus-themes-org-blocks . 'gray-background)
      (modus-themes-custom-auto-reload . t)
      (modus-themes-disable-other-themes . t)
-     (modus-vivendi-palette-overrides  . '((bg-main "gray20")))
-     (modus-operandi-palette-overrides  . '((bg-main "#F6F6EF")))
+     ;; (modus-vivendi-palette-overrides  . '((bg-main "gray20")))
+     ;; (modus-operandi-palette-overrides  . '((bg-main "#F6F6EF")))
      )
     :config
     (defcustom my-current-modus-theme 'modus-operandi
@@ -2607,6 +2607,7 @@ Optional argument ARG hoge."
 (elpaca (lsp-bridge :host github :repo "manateelazycat/lsp-bridge"
                     :files (:defaults "lsp_bridge.py" "acm/*" "core" "langserver" "multiserver" "resources"))
   (leaf lsp-bridge
+    :disabled t
     :require t
     :bind
     (:lsp-bridge-mode-map
