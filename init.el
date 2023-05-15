@@ -484,6 +484,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (add-hook 'ediff-prepare-buffer-hook #'my-ediff-prepare-buffer-function)
     )
   )
+(elpaca (libgit2 :repo "https://github.com/magit/libegit2.git"))
 (elpaca magit-svn)
 (elpaca blamer
   (leaf blamer
