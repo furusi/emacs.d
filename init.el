@@ -108,8 +108,7 @@
                               (lambda ()
                                 (dolist (f auto-read-only-dirs)
                                   (when (string-match-p (expand-file-name f) buffer-file-name)
-                                    (view-mode))))
-                              )
+                                    (view-mode)))))
   :config
   (defvar auto-read-only-dirs
     '("/opt/homebrew/Cellar/"
@@ -346,18 +345,19 @@
                   (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
            (headline           `(:inherit default :weight bold)))
 
-      (custom-theme-set-faces
-       'user
-       `(org-level-8 ((t (,@headline ,@variable-tuple))))
-       `(org-level-7 ((t (,@headline ,@variable-tuple))))
-       `(org-level-6 ((t (,@headline ,@variable-tuple))))
-       `(org-level-5 ((t (,@headline ,@variable-tuple))))
-       `(org-level-4 ((t (,@headline ,@variable-tuple))))
-       `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.1))))
-       `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.25))))
-       `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.5))))
-       `(org-table ((t (,@headline ,@variable-tuple))))
-       `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil))))))
+      ;; (custom-theme-set-faces
+      ;;  'user
+      ;;  `(org-level-8 ((t (,@headline ,@variable-tuple))))
+      ;;  `(org-level-7 ((t (,@headline ,@variable-tuple))))
+      ;;  `(org-level-6 ((t (,@headline ,@variable-tuple))))
+      ;;  `(org-level-5 ((t (,@headline ,@variable-tuple))))
+      ;;  `(org-level-4 ((t (,@headline ,@variable-tuple))))
+      ;;  `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.1))))
+      ;;  `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.25))))
+      ;;  `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.5))))
+      ;;  `(org-table ((t (,@headline ,@variable-tuple))))
+      ;;  `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil)))))
+      )
     )
   )
 (when (equal system-type 'gnu/linux)
@@ -654,6 +654,10 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   )
 (leaf eww
   :commands (eww)
+  :bind
+  (:eww-mode-map
+   ("j" . next-line)
+   ("k" . previous-line))
   :custom
   (eww-search-prefix . "https://www.google.co.jp/search?q=")
   :config
@@ -2909,11 +2913,11 @@ Optional argument ARG hoge."
   :config
   (repeat-mode t))
 
-;; Instant GitHub-flavored Markdown/Org preview using grip.
-(elpaca grip-mode)
-(leaf grip-mode
-  :bind ((:markdown-mode-command-map
-          ("g" . grip-mode))))
+(elpaca grip-mode
+  (leaf grip-mode
+    :doc "Instant GitHub-flavored Markdown/Org preview using grip."
+    :bind ((:markdown-mode-command-map
+            ("g" . grip-mode)))))
 (elpaca tree-sitter-langs
   (leaf tree-sitter
     :disabled t
