@@ -2487,6 +2487,9 @@ See `org-capture-templates' for more information."
            ("\\.md\\'" . markdown-mode)
            ("\\.markdown\\'" . markdown-mode))
     :custom ((markdown-command . "multimarkdown"))
+    :hook (markdown-mode-hook . (lambda ()
+                                  (setq-local imenu-create-index-function
+                                              'markdown-imenu-create-flat-index)))
     :config
     (when (eq window-system 'ns)
       (set-face-attribute 'markdown-table-face nil
@@ -2829,6 +2832,8 @@ Optional argument ARG hoge."
                              (equal (shell-command-to-string "command -v osascript") ""))
                         (error "not found 'osascript' command"))
                     (let ((url (car (mapcar #'elfeed-entry-link (elfeed-search-selected)))))
+                      (when (equal url nil)
+                        (error "url is empty"))
                       (call-process-shell-command
                        (format "osascript -e 'tell application \"Safari\" to add reading list item \"%s\"'" (my-elfeed-yank-entry-url)))
                       (message "The selected entry added to Safari's reading list.")
