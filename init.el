@@ -225,6 +225,22 @@
    ("<" . shrink-window-horizontally))
   )
 
+(leaf simple
+  :config
+  (defcustom my-read-only-dirs nil
+    "List of directories where files should be opened in read-only.
+
+Each element in the list is a string, representing a directory path.
+When a file is opened and its path starts with one of the directory paths in this list,
+read-only-mode will be activated for that file.")
+
+  (defun my-read-only-find-file-hook ()
+    (when (cl-some (lambda (dir) (string-prefix-p (expand-file-name dir) buffer-file-name) ) my-read-only-dirs )
+      (read-only-mode 1)))
+
+  (add-hook 'find-file-hook 'my-read-only-find-file-hook)
+  )
+
 (elpaca (initchart :host github :repo "yuttie/initchart")
   (leaf initchart
     :disabled t
@@ -746,9 +762,10 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (rfn-eshadow-update-overlay-hook . vertico-directory-tidy))
     (leaf vertico-quick
       :after vertico
+      :require t
       :custom
-      ((vertico-quick1 . "aoeu")
-       (vertico-quick2 . "htns")))
+      ((vertico-quick1 . "aoeuhtns")
+       (vertico-quick2 . "aoeuhtns")))
     )
   ;; Use the `orderless' completion style.
   ;; Enable `partial-completion' for files to allow path expansion.
@@ -2478,7 +2495,7 @@ See `org-capture-templates' for more information."
       :initialize #'custom-initialize-default
       :group 'my-group
       )
-    (load-theme 'modus-operandi-tinted :no-confim)
+    (load-theme 'modus-operandi-deuteranopia :no-confim)
     )
   )
 (elpaca markdown-mode
