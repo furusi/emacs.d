@@ -1146,7 +1146,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     ;; :custom `((rustic-lsp-client . 'lsp-mode))
     :hook
     (rustic-mode-hook . (lambda ()
-                          (electric-pair-mode 1)
+                          (electric-pair-local-mode 1)
                           (if (and (eq rustic-lsp-client 'nil) (featurep 'lsp-bridge))
                               (lsp-bridge-mode)
                             (corfu-mode))
@@ -2377,7 +2377,11 @@ See `org-capture-templates' for more information."
     :after lsp-mode
     ;; :ensure-system-package ccls
     :hook ((c-mode-hook c++-mode-hook objc-mode-hook) .
-           (lambda () (require 'ccls) (lsp-deferred)))
+           (lambda ()
+             (require 'ccls)
+             (lsp-deferred)
+             (electric-pair-local-mode 1)
+             (smartparens-mode -1)))
     :config
     (when (eq system-type 'darwin)
       (when (executable-find  "/usr/local/opt/ccls/bin/ccls")
@@ -2413,7 +2417,7 @@ See `org-capture-templates' for more information."
     :mode (("\\.dart\\'" . dart-mode))
     :hook ((dart-mode-hook . lsp-deferred)
            (dart-mode-hook . (lambda ()
-                               (electric-pair-mode 1)
+                               (electric-pair-local-mode 1)
                                (when (featurep 'embark)
                                  (setq-local embark-target-finders
                                              (append (remove
