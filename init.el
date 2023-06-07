@@ -232,7 +232,8 @@
 
 Each element in the list is a string, representing a directory path.
 When a file is opened and its path starts with one of the directory paths in this list,
-read-only-mode will be activated for that file.")
+read-only-mode will be activated for that file."
+    :type '(repeat string))
 
   (defun my-read-only-find-file-hook ()
     (when (cl-some (lambda (dir) (string-prefix-p (expand-file-name dir) buffer-file-name) ) my-read-only-dirs )
@@ -347,7 +348,7 @@ read-only-mode will be activated for that file.")
     ;; 游教科書体
     ;; (set-face-attribute 'default nil
     ;;                     :family "YuKyokasho Yoko")
-    ;; 源ノ角ゴシック
+    ;; UDEV Gothic
     (set-face-attribute 'default nil
                         :family "UDEV Gothic JPDOC")
     (set-fontset-font nil '(#x30000 . #x3134F) (font-spec :family "Source Han Sans SC"))
@@ -415,7 +416,7 @@ read-only-mode will be activated for that file.")
     :config
     (when (eq window-system 'ns)
       (setq pomodoro-sound-player "afplay"))
-    
+
     (let ((sound (cond
                   ((or (string-match "Ubuntu" my-lsb-distribution-name)
                        (string-match "debian" my-lsb-distribution-name))
@@ -613,7 +614,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       :custom
       ((skk-jisyo . "~/Dropbox/.config/ddskk/jisyo")
        (skk-jisyo-code . 'utf-8)))
-    
+
     (let ((skk-jisyo-directory
            (if (file-exists-p "~/Dropbox/.config/ddskk/skkdic-utf8")
                "~/Dropbox/.config/ddskk/skkdic-utf8"
@@ -726,7 +727,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       :after consult vertico
       :config
       (vertico-multiform-mode)
-      
+
       (setq vertico-multiform-commands
             `((consult-imenu buffer ,(lambda (_) (text-scale-set -1)))
               (consult-outline buffer ,(lambda (_) (text-scale-set -1)))))
@@ -976,7 +977,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (corfu-history-mode)
       (add-to-list 'savehist-additional-variables 'corfu-history)
       ))
-  
+
   (elpaca popon
     (leaf popon
       :init
@@ -1265,8 +1266,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
            )
     :config
     ;; (slime-setup '(slime-fancy slime-company))
-    
-    
+
+
     (setq slime-net-coding-system 'utf-8-unix)
     (slime-setup '(slime-fancy slime-company slime-indentation))
     (defun slime-space\\skk-insert (origfun &rest arglist)
@@ -1409,7 +1410,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
         (when (and (bolp)
                    (org-at-item-p))
           (cdr (assoc keys my-org-item-key-bindings))))
-      
+
       (defun insert-zero-width-space()
         (interactive)
         (insert-char #x200b))
@@ -1429,7 +1430,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
         '(("#+begin_src" . "🖥️")
           ("#+end_src". "🖥️")))
       :config
-      
+
       ;; org-habitモジュールを有効化
       (add-to-list 'org-modules 'org-habit)
       (add-to-list 'org-modules 'org-id)
@@ -1459,7 +1460,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (when (equal system-type 'darwin)
         (setq org-plantuml-jar-path
               "/usr/local/opt/plantuml/libexec/plantuml.jar"))
-      
+
       (setq org-tag-alist
             '(("ignore" . ?i) ("@OFFICE" . ?o) ("@HOME" . ?h) ("SHOPPING" . ?s)
               ("MAIL" . ?m) ("PROJECT" . ?p) ("備忘録" . ?b)))
@@ -1751,7 +1752,7 @@ and `clavis-org-refile-refiled-from-header' variables."
               (setq clavis-org-refile-refiled-from-header nil)))
           )
         )
-      
+
       (leaf ob-java
         :custom
         ((org-babel-java-compiler . "javac -encoding UTF-8")))
@@ -2707,7 +2708,7 @@ Optional argument ARG hoge."
                                                      t))))))
                                      (message "lsp-pyright-extra-paths `%s'" lsp-pyright-extra-paths))
                                    (lsp-deferred))))
-      
+
       :config
       (dolist (dir '(
                      "[/\\\\]\\.venv$"
@@ -2722,7 +2723,7 @@ Optional argument ARG hoge."
       :after lsp-mode
       :custom
       (lsp-ui-doc-show-with-cursor . t)
-      
+
       (lsp-ui-doc-enable                  . t)
       (lsp-ui-doc-header                  . t)
       (lsp-ui-doc-include-signature       . t)
