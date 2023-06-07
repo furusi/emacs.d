@@ -2810,7 +2810,7 @@ Optional argument ARG hoge."
       ))
   )
 (elpaca flymake)
-(elpaca (eglot :host github :repo "joaotavora/eglot")
+(elpaca eglot
   (leaf eglot
     :after corfu flymake
     :bind
