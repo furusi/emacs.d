@@ -708,17 +708,32 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
               ("C-s" . vertico-next)))
       :custom
       ((vertico-count . 20)
-       (enable-recursive-minibuffers . t)
        (vertico-cycle . t)
        (vertico-resize . t)
-       (minibuffer-prompt-properties
-        . '(read-only t cursor-intangible t face minibuffer-prompt))
        )
       :init
       (defun crm-indicator (args)
-        (cons (concat "[CRM] " (car args)) (cdr args)))
+      (cons (format "[CRM%s] %s"
+                    (replace-regexp-in-string
+                     "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
+                     crm-separator)
+                    (car args))
+            (cdr args)))
       (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+
+    ;; Do not allow the cursor in the minibuffer prompt
+    (setq minibuffer-prompt-properties
+          '(read-only t cursor-intangible t face minibuffer-prompt))
       (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+
+    ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
+    ;; Vertico commands are hidden in normal buffers.
+    ;; (setq read-extended-command-predicate
+    ;;       #'command-completion-default-include-p)
+
+    ;; Enable recursive minibuffers
+    (setq enable-recursive-minibuffers t)
+
       :config
       (vertico-mode)
       )
@@ -2860,10 +2875,11 @@ Optional argument ARG hoge."
                        (format "osascript -e 'tell application \"Safari\" to add reading list item \"%s\"'" (my-elfeed-yank-entry-url)))
                       (message "The selected entry added to Safari's reading list.")
                       (elfeed-search-untag-all-unread))))
+            ("s" . my-elfeed-search-set-filter)
             ))
     :custom
     ((elfeed-search-date-format . '("%Y-%m-%d %H:%M" 16 :left))
-     (elfeed-search-filter . "@6-months-ago +unread +"))
+     )
     :config
     (defun my-elfeed-yank-entry-url ()
       (interactive)
@@ -2872,6 +2888,15 @@ Optional argument ARG hoge."
             (error "Selected entry's url is empty")
           url
           )))
+    (defun my-elfeed-search-set-filter ()
+      (interactive)
+      (unwind-protect
+          (let* ((elfeed-search-filter-active :live)
+                 (elfeed-db-tags (elfeed-db-get-all-tags))
+                 (input (mapconcat 'identity (completing-read-multiple "Filter: " elfeed-db-tags nil nil elfeed-search-filter) " +")))
+            (setq elfeed-search-filter input))
+        (elfeed-search-update :force)))
+
     (require 'elfeed-web)
     )
   )
