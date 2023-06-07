@@ -1336,7 +1336,13 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   (leaf org
     :mode (("\\.org$" . org-mode))
     :hook ((org-mode-hook . (lambda () (prettify-symbols-mode)))
-           (org-mode-hook . (lambda () (setq prettify-symbols-alist org-prettify-symbols-alist))))
+           (org-mode-hook . (lambda () (setq prettify-symbols-alist org-prettify-symbols-alist)))
+           (org-mode-hook . (lambda ()
+                              ;; org-modeの固定幅フォントを設定
+                              (dolist (face '(org-table
+                                                org-formula
+                                                org-date))
+                                  (set-face-attribute face nil :family "UDEV Gothic JPDOC")))))
       :custom
       ((org-export-allow-bind-keywords . t)
        (org-babel-python-command . "python3")
@@ -1460,14 +1466,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
 
       (setq org-format-latex-options
             (plist-put org-format-latex-options :scale 2.0))
-      ;; org-modeの固定幅フォントを設定
-      (let ((fontset (cond
-                      ((eq window-system 'ns) "UDEV Gothic JPDOC")
-                      ((eq window-system 'x) "UDEV Gothic JPDOC"))))
-        (dolist (face '(org-table
-                        org-formula
-                        org-date))
-          (set-face-attribute face nil :family fontset)))
 
       (add-to-list 'face-font-rescale-alist
                    '(".*IPAゴシック.*" . 0.85))
