@@ -1059,7 +1059,9 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
        ("C-c f ^" . cape-tex)
        ("C-c f &" . cape-sgml)
        ("C-c f r" . cape-rfc1345))
-      :init
+      :config
+      (if (memq system-type '(darwin gnu/linux))
+          (customize-set-variable 'cape-dict-file "/usr/share/dict/words"))
       (add-to-list 'completion-at-point-functions #'cape-dabbrev)
       (add-to-list 'completion-at-point-functions #'cape-keyword)
       (add-to-list 'completion-at-point-functions #'cape-tex)
@@ -1588,6 +1590,24 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (org-babel-do-load-languages
        'org-babel-load-languages org-babel-load-languages)
       (add-hook 'org-mode-hook #'my-org-mode-hook)
+
+      (defun my-org-choose-src-language ()
+        (let ((lang (completing-read
+                     "Choose language: "
+                     (mapcar (lambda (x)
+                               (car x))
+                             org-src-lang-modes)
+                     nil nil)))
+          (format "src %s" lang)))
+
+      (defun my-org-insert-structure-template (orig-fun &rest args)
+        (if (equal (car args) "src")
+            (apply orig-fun (list (my-org-choose-src-language)))
+          (apply orig-fun args)))
+
+      (advice-add 'org-insert-structure-template :around #'my-org-insert-structure-template)
+
+
       (setq org-publish-project-alist
             '(("aip3"
                :base-directory "~/git/advancedinformationprocessing3/org"
