@@ -2199,7 +2199,8 @@ See `org-capture-templates' for more information."
     :require t
     :custom
     `(org-tag-beautify-data-dir . ,(format "%sorg-tag-beautify/data/" elpaca-repos-directory))
-    ))
+    :config
+    (org-tag-beautify-mode 1)))
 (leaf anki-editor-org-src
   :after org
   ;; :leaf-defer nil
@@ -2870,7 +2871,7 @@ Optional argument ARG hoge."
                         (error "url is empty"))
                       (call-process-shell-command
                        (format "osascript -e 'tell application \"Safari\" to add reading list item \"%s\"'" (my-elfeed-yank-entry-url)))
-                      (message "The selected entry added to Safari's reading list.")
+                      (message "The selected entry is added to Safari's reading list.")
                       (elfeed-search-untag-all-unread))))
             ("s" . my-elfeed-search-set-filter)
             ))
