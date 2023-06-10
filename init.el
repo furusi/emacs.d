@@ -427,7 +427,9 @@ read-only-mode will be activated for that file."
                    "/System/Library/Sounds/Glass.aiff"))))
       (setq pomodoro-work-start-sound sound
             pomodoro-break-start-sound sound))
-    (pomodoro-add-to-mode-line))
+    (when (not (member '(pomodoro-mode-line-string pomodoro-mode-line-string)  mode-line-format))
+      (pomodoro-add-to-mode-line))
+    )
   )
 (elpaca sudo-edit)
 (elpaca so-long)
