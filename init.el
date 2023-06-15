@@ -715,26 +715,26 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
        )
       :init
       (defun crm-indicator (args)
-      (cons (format "[CRM%s] %s"
-                    (replace-regexp-in-string
-                     "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
-                     crm-separator)
-                    (car args))
-            (cdr args)))
+        (cons (format "[CRM%s] %s"
+                      (replace-regexp-in-string
+                       "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
+                       crm-separator)
+                      (car args))
+              (cdr args)))
       (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
 
-    ;; Do not allow the cursor in the minibuffer prompt
-    (setq minibuffer-prompt-properties
-          '(read-only t cursor-intangible t face minibuffer-prompt))
+      ;; Do not allow the cursor in the minibuffer prompt
+      (setq minibuffer-prompt-properties
+            '(read-only t cursor-intangible t face minibuffer-prompt))
       (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
-    ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
-    ;; Vertico commands are hidden in normal buffers.
-    ;; (setq read-extended-command-predicate
-    ;;       #'command-completion-default-include-p)
+      ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
+      ;; Vertico commands are hidden in normal buffers.
+      ;; (setq read-extended-command-predicate
+      ;;       #'command-completion-default-include-p)
 
-    ;; Enable recursive minibuffers
-    (setq enable-recursive-minibuffers t)
+      ;; Enable recursive minibuffers
+      (setq enable-recursive-minibuffers t)
 
       :config
       (vertico-mode)
@@ -1336,13 +1336,14 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
 ;; Org-mode
 (leaf org*
   :config
-  (leaf org
-    :mode (("\\.org$" . org-mode))
-    :hook ((org-mode-hook . (lambda () (prettify-symbols-mode)))
-           (org-mode-hook . (lambda () (setq prettify-symbols-alist org-prettify-symbols-alist)))
-           (org-mode-hook . (lambda ()
-                              ;; org-modeの固定幅フォントを設定
-                              (dolist (face '(org-table
+  (elpaca org
+    (leaf org
+      :mode (("\\.org$" . org-mode))
+      :hook ((org-mode-hook . (lambda () (prettify-symbols-mode)))
+             (org-mode-hook . (lambda () (setq prettify-symbols-alist org-prettify-symbols-alist)))
+             (org-mode-hook . (lambda ()
+                                ;; org-modeの固定幅フォントを設定
+                                (dolist (face '(org-table
                                                 org-formula
                                                 org-date))
                                   (set-face-attribute face nil :family "UDEV Gothic JPDOC")))))
@@ -1886,6 +1887,36 @@ and `clavis-org-refile-refiled-from-header' variables."
       (leaf ob-kotlin
         :after (org))
       )
+    )
+
+  (elpaca org-contrib
+    (leaf org-contrib
+      :require t
+      :after org
+      :config
+      ;; 有効にする言語 デフォルトでは elisp のみ
+      (org-babel-do-load-languages
+       'org-babel-load-languages '((C          . t)
+                                   (dot        . t)
+                                   (emacs-lisp . t)
+                                   (gnuplot    . t)
+                                   (java       . t)
+                                   (lisp       . t)
+                                   (mermaid    . t)
+                                   (org        . t)
+                                   (perl       . t)
+                                   (php        . t)
+                                   (plantuml   . t)
+                                   (python     . t)
+                                   (ruby       . t)
+                                   (scheme     . t)))
+      ;;ob-plantuml
+      (add-to-list 'org-babel-default-header-args:plantuml
+                   '(:cmdline . "-charset utf-8"))
+      ))
+
+
+
   (elpaca ox-hugo
     (leaf ox-hugo
       :disabled t
@@ -1942,7 +1973,7 @@ See `org-capture-templates' for more information."
       (anki-editor-mode-hook . (lambda ()
                                  (let* ((keymap (copy-keymap embark-region-map)))
                                    (define-key keymap (kbd "c")
-                                     'my-anki-editor-cloze-region)
+                                               'my-anki-editor-cloze-region)
                                    (setq-local embark-region-map keymap))
                                  ))
       :init
@@ -2019,32 +2050,15 @@ See `org-capture-templates' for more information."
          ("C-c n c" . org-roam-capture)
          ;; Dailies
          ("C-c n j" . org-roam-dailies-capture-today)
-         ;; (:org-roam-mode-map
-         ;;  ("C-c n l" . org-roam)
-         ;;  ("C-c n f" . org-roam-find-file)
-         ;;  ("C-c n g" . org-roam-graph)
-         ;;  ("C-c n t a" . org-roam-tag-add)
-         ;;  ("C-c n t d" . org-roam-tag-delete))
-         ;; (:org-mode-map
-         ;;  ("C-c n i" . org-roam-insert)
-         ;;  ("C-c n I" . org-roam-insert-immediate))
          )
         :config
         (setq org-roam-directory (format "%s/roam" org-directory))
         (org-roam-db-autosync-mode)
         (when (eq system-type 'darwin)
           (setq org-roam-graph-viewer "open"))
-        (add-to-list 'org-roam-capture-templates
-                     '("n" "note(default + headline)"
-                       plain #'org-roam-capture--get-point
-                       "%?"
-                       :file-name "%<%Y%m%d%H%M%S>-${slug}.org"
-                       :head "#+title: ${title}\n* Overview\n"
-                       :unnarrowed t)
-                     )
         (setq org-roam-dailies-capture-templates
               '(("d" "default" entry
-                 "* %?"
+                 "* %?\n%U\n"
                  :target
                  (file+head+olp "%<%Y-%m>.org" "#+TITLE: %<%Y-%m>\n\n\n" ("%<%Y-%m-%d>"))
                  )))
@@ -2166,31 +2180,6 @@ See `org-capture-templates' for more information."
       :url "https://repo.or.cz/ob-php.git"
       :after org))
 
-  (elpaca org-contrib
-    (leaf org-contrib
-      :require t
-      :after org
-      :config
-      ;; 有効にする言語 デフォルトでは elisp のみ
-      (org-babel-do-load-languages
-       'org-babel-load-languages '((C          . t)
-                                   (dot        . t)
-                                   (emacs-lisp . t)
-                                   (gnuplot    . t)
-                                   (java       . t)
-                                   (lisp       . t)
-                                   (mermaid    . t)
-                                   (org        . t)
-                                   (perl       . t)
-                                   (php        . t)
-                                   (plantuml   . t)
-                                   (python     . t)
-                                   (ruby       . t)
-                                   (scheme     . t)))
-      ;;ob-plantuml
-      (add-to-list 'org-babel-default-header-args:plantuml
-                   '(:cmdline . "-charset utf-8"))
-      ))
   (elpaca (org-fc :host github :repo "l3kn/org-fc" :files(:defaults "awk" "demo.org"))
     (leaf org-fc
       :after org
@@ -2212,6 +2201,7 @@ See `org-capture-templates' for more information."
               "/usr/bin/tex2svg")
              ))))
   )
+
 (elpaca org-tag-beautify
   (leaf org-tag-beautify
     :doc "Beautify Org mode tags"
