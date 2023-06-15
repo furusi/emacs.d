@@ -1843,13 +1843,6 @@ and `clavis-org-refile-refiled-from-header' variables."
               '(latex script entities))
         ;;(setq org-latex-pdf-process '("latexmk -e '$lualatex=q/lualatex %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex -o %D %S/' -norc -gg -pdflua %f"))
         ;;(setq org-export-in-background t)
-        (when (equal system-type 'darwin)
-          (setq org-file-apps
-                '(("pdf" . "open -a Skim %s")
-                  ("php". emacs))))
-        (when (equal system-type 'gnu/linux)
-          (setq org-file-apps
-                '(("pdf" . "evince %s"))))
         (let ((template-dir (file-name-as-directory
                              (locate-user-emacs-file "lisp/org/ox-latex/templates")))
               (section-list '(("\\section{%s}" . "\\section*{%s}")
