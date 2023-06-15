@@ -1175,7 +1175,9 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                                                  'embark-target-file-at-point
                                                  embark-target-finders)
                                                 '(embark-target-file-at-point)))
-                            )))
+                            )
+                          (when (eq corfu-mode t)
+                            (setq-local corfu-auto-prefix 2))))
     :config
     ;; (when (eq rustic-lsp-client 'eglot)
     ;;   (add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1))))
@@ -2569,9 +2571,6 @@ See `org-capture-templates' for more information."
     (make-backup-files .t))
   )
 
-(leaf asm-mode
-  :hook ((asm-mode-set-comment-hook . (lambda ()
-                                        (setq asm-comment-char ?#)))))
 (elpaca ssh-config-mode)
 
 (elpaca fish-mode)
