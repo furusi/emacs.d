@@ -884,14 +884,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
           (consult-line)))
       )
     )
-  (elpaca consult-yasnippet
-    (leaf consult-yasnippet
-      :doc "A consulting-read interface for yasnippet"
-      :req "emacs-27.1" "yasnippet-0.14" "consult-0.9"
-      :tag "emacs>=27.1"
-      :url "https://github.com/mohkale/consult-yasnippet"
-      :emacs>= 27.1
-      :after yasnippet consult))
+  
   (elpaca consult-projectile)
   (elpaca affe
     (leaf affe
@@ -1253,21 +1246,33 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     ;; (which-key-setup-side-window-right-bottom) ;両方使う
     (which-key-mode 1))
   )
+
 ;;;yasnippet
-(elpaca yasnippet
-  (leaf yasnippet
-    :require t
-    :diminish yas-minor-mode
-    :config
-    (yas-global-mode 1)
-    (add-to-list 'yas-snippet-dirs (locate-user-emacs-file "snippets/yasnippet"))
+(leaf yasnippet*
+  :config
+  (elpaca yasnippet
+    (leaf yasnippet
+      :require t
+      :diminish yas-minor-mode
+      :config
+      (yas-global-mode 1)
+      (add-to-list 'yas-snippet-dirs (locate-user-emacs-file "snippets/yasnippet"))
+      )
     )
-  )
-(elpaca yasnippet-snippets
-  (leaf yasnippet-snippets
-    :after yasnippet)
-  )
+  (elpaca yasnippet-snippets)
+  (elpaca consult-yasnippet
+    (leaf consult-yasnippet
+      :doc "A consulting-read interface for yasnippet"
+      :req "emacs-27.1" "yasnippet-0.14" "consult-0.9"
+      :tag "emacs>=27.1"
+      :url "https://github.com/mohkale/consult-yasnippet"
+      :emacs>= 27.1
+      :after yasnippet consult)))
+
+
+
 (elpaca gitignore-templates)
+
 (leaf rst
   :bind ((:rst-mode-map
           ("M-RET" . rst-insert-list)))
@@ -1458,8 +1463,10 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                    (mkdir "~/org"))
                  "~/org"))))
       (defvar org-prettify-symbols-alist
-        '(("#+begin_src" . "🖥️")
-          ("#+end_src". "🖥️")))
+        nil
+        ;; '(("#+begin_src" . "🖥️")
+        ;;   ("#+end_src". "🖥️"))
+        )
       :config
 
       ;; org-habitモジュールを有効化
@@ -1615,28 +1622,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
           (apply orig-fun args)))
 
       (advice-add 'org-insert-structure-template :around #'my-org-insert-structure-template)
-
-
-      (setq org-publish-project-alist
-            '(("aip3"
-               :base-directory "~/git/advancedinformationprocessing3/org"
-               :publishing-directory "~/git/advancedinformationprocessing3/pub"
-               :base-extension "org"
-               :publishing-function org-html-publish-to-html
-               :html-postamble "<a href=\"index.html\">サイトのトップへ戻る</a>"
-               :language "ja"
-               :with-tags nil
-               ;; :auto-sitemap t
-               :htmlized-source t
-               :with-tags nil
-               :makeindex t
-               :recursive t)
-              ("aip3-image"
-               :base-directory "~/git/advancedinformationprocessing3/image"
-               :publishing-directory "~/git/advancedinformationprocessing3/pub/image"
-               :base-extension "jpg\\|png\\|pdf"
-               :publishing-function org-publish-attachment
-               :recursive t)))
 
       (leaf org-screenshot
         :url "https://dev.classmethod.jp/articles/org-mode-paste-show-clipboard-image/"
