@@ -40,7 +40,7 @@
 
 (defun factorial (n)
   (if (> n 0)
-      (* n (factoral (- n 1)))
+      (* n (factorial (- n 1)))
     1))
 
 (defvar factorial-memo (make-hash-table :test 'equal))
@@ -57,7 +57,7 @@
              ))))
 
 (defun combination (n r)
-  (/ (factoral n) (* (factoral r) (factoral (- n r)))))
+  (/ (factorial n) (* (factorial r) (factorial (- n r)))))
 
 (defvar my-resize-window-map
   (let ((map (make-sparse-keymap)))

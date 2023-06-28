@@ -63,6 +63,10 @@
     (vc-handled-backends . '(Git))
     ))
 
+(leaf conf-mode
+  :config
+  (push '("\\.toml\\'" . conf-toml-mode) auto-mode-alist))
+
 (leaf yes-or-no
   :emacs>= 28.1
   :custom
