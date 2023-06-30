@@ -2023,6 +2023,7 @@ See `org-capture-templates' for more information."
                  :target
                  (file+head+olp "%<%Y-%m>.org" "#+TITLE: %<%Y-%m>\n\n\n" ("%<%Y-%m-%d>"))
                  )))
+        (add-to-list 'org-default-properties "ROAM_EXCLUDE")
         (leaf org-roam-protocol
           :require t
           :after org
