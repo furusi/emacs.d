@@ -647,7 +647,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       )
     (leaf context-skk
       :config
-      (dolist (mode '(python-mode js-mode rustic-mode dart-mode))
+      (dolist (mode '(python-mode js-mode rustic-mode dart-mode go-mode))
         (add-to-list 'context-skk-programming-mode mode))
       (setq context-skk-mode-off-message "[context-skk] 日本語入力 off")
       (defun my-context-skk-at-heading-p ()
@@ -1707,6 +1707,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                 ((,(format "%s/references.org" org-directory)) . (:level . 1))
                 ))
         (leaf org-refile-source-log
+          :disabled t
           :url "https://emacs.stackexchange.com/questions/36390/add-original-location-of-refiled-entries-to-logbook-after-org-refile"
           :config
           ;; add custom logging instead
@@ -1860,6 +1861,7 @@ and `clavis-org-refile-refiled-from-header' variables."
        'org-babel-load-languages '((C          . t)
                                    (dot        . t)
                                    (emacs-lisp . t)
+                                   (go         . t)
                                    (gnuplot    . t)
                                    (java       . t)
                                    (lisp       . t)
@@ -2345,8 +2347,8 @@ See `org-capture-templates' for more information."
 (elpaca go-mode
   (leaf go-mode
     :after lsp-mode
-    :hook (go-mode-hook . lsp-deferred))
-  )
+    :hook (go-mode-hook . lsp-deferred)))
+(elpaca ob-go)
 (when (version< emacs-version "29")
   (elpaca csharp-mode))
 (elpaca android-mode)
