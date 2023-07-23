@@ -436,7 +436,6 @@ read-only-mode will be activated for that file."
     )
   )
 (elpaca sudo-edit)
-(elpaca so-long)
 (elpaca japanese-holidays
   (leaf japanese-holidays
     :doc "Calendar functions for the Japanese calendar"
@@ -2780,7 +2779,6 @@ Optional argument ARG hoge."
        :preview-key (kbd "C-,"))
       ))
   )
-(elpaca flymake)
 (elpaca eglot
   (leaf eglot
     :after corfu flymake
