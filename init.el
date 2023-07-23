@@ -2144,18 +2144,14 @@ See `org-capture-templates' for more information."
 #+STARTUP: showall")
         )
       :config
-      (defvar my-org-journal-repeat-map
-        (let ((map (make-sparse-keymap)))
-          (define-key map (kbd "C-f")   #'org-journal-next-entry)
-          (define-key map (kbd "f")   #'org-journal-next-entry)
-          (define-key map (kbd "n")   #'org-journal-next-entry)
-          (define-key map (kbd "C-b")   #'org-journal-previous-entry)
-          (define-key map (kbd "b")   #'org-journal-previous-entry)
-          (define-key map (kbd "p")   #'org-journal-previous-entry)
-          map
-          ))
-      (put 'org-journal-next-entry 'repeat-map 'my-org-journal-repeat-map)
-      (put 'org-journal-previous-entry 'repeat-map 'my-org-journal-repeat-map)
+      (defvar-keymap my-org-journal-repeat-map
+        :repeat t
+        "C-f" #'org-journal-next-entry
+        "f"   #'org-journal-next-entry
+        "n"   #'org-journal-next-entry
+        "C-b" #'org-journal-previous-entry
+        "b"   #'org-journal-previous-entry
+        "p"   #'org-journal-previous-entry)
       (setq org-journal-dir (concat org-directory "/journal/"))))
   (elpaca org-modern
     (leaf org-modern
