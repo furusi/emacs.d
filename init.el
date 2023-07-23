@@ -465,7 +465,8 @@ read-only-mode will be activated for that file."
     (ediff-keymap-setup-hook . add-d-to-ediff-mode-map)
     :custom
     ((magit-display-buffer-function . 'magit-display-buffer-fullframe-status-v1)
-     (magit-diff-refine-hunk . 'all))
+     (magit-diff-refine-hunk . 'all)
+     (magit-refresh-status-buffer . nil))
     :init
     (defun my-magit-mode-bury-buffer ()
       (interactive)
