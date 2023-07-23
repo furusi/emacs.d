@@ -233,8 +233,7 @@
       ("v" . helpful-variable)
       ("f" . helpful-callable)
       ("o" . helpful-symbol)
-      ("k" . helpful-key)
-      )
+      ("k" . helpful-key))
      (:embark-symbol-map
       :package embark
       ("h" . helpful-symbol)))
@@ -246,13 +245,11 @@
    ("v" . scroll-up-command)
    ("V" . scroll-down-command))
   :hook
-  (diff-mode-hook . (lambda () (read-only-mode t)))
-  )
+  (diff-mode-hook . (lambda () (read-only-mode t))))
 
 (leaf autorevert
   :hook
-  (emacs-startup-hook . global-auto-revert-mode)
-  )
+  (emacs-startup-hook . global-auto-revert-mode))
 
 (leaf window
   :emacs>= 28
@@ -263,8 +260,7 @@
    ("-" . shrink-window)
    ("_" . shrink-window)
    (">" . enlarge-window-horizontally)
-   ("<" . shrink-window-horizontally))
-  )
+   ("<" . shrink-window-horizontally)))
 
 (leaf simple
   :config
@@ -289,8 +285,7 @@ read-only-mode will be activated for that file."
     :require t
     :config
     (initchart-record-execution-time-of load file)
-    (initchart-record-execution-time-of require feature))
-  )
+    (initchart-record-execution-time-of require feature)))
 
 (defun which-linux-distribution ()
   "Return string which obtains from 'lsb_release' command."
@@ -469,9 +464,7 @@ read-only-mode will be activated for that file."
       (setq pomodoro-work-start-sound sound
             pomodoro-break-start-sound sound))
     (when (not (member '(pomodoro-mode-line-string pomodoro-mode-line-string)  mode-line-format))
-      (pomodoro-add-to-mode-line))
-    )
-  )
+      (pomodoro-add-to-mode-line))))
 (elpaca sudo-edit)
 (elpaca japanese-holidays
   (leaf japanese-holidays
@@ -541,9 +534,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     ;; ediff時にorgファイルを全て表示する
     (defun my-ediff-prepare-buffer-function ()
       (org-show-all))
-    (add-hook 'ediff-prepare-buffer-hook #'my-ediff-prepare-buffer-function)
-    )
-  )
+    (add-hook 'ediff-prepare-buffer-hook #'my-ediff-prepare-buffer-function)))
 (elpaca (libgit2 :repo "https://github.com/magit/libegit2.git"))
 (elpaca magit-svn)
 (elpaca blamer
@@ -552,8 +543,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :req "emacs-27.1" "posframe-1.1.7"
     :tag "emacs>=27.1"
     :url "https://github.com/artawower/blamer.el"
-    :emacs>= 27.1
-    ))
+    :emacs>= 27.1))
 (elpaca projectile
   (leaf projectile
     :require t
@@ -572,8 +562,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :init
     (let ((dir (locate-user-emacs-file (format "projectile/%s" emacs-version))))
       (unless (file-directory-p dir)
-        (make-directory dir t))
-      )
+        (make-directory dir t)))
     (defun my-projectile-vc-in-new-tab ()
       (interactive)
       (let ((tab-name-list (mapcar #'cdadr (tab-bar-tabs)))
@@ -597,8 +586,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
           (projectile-vc)
           (tab-rename tab-name))
          (t
-          (projectile-vc))))
-      )
+          (projectile-vc)))))
     :config
     (projectile-mode +1)
     (dolist
@@ -606,9 +594,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (add-to-list 'projectile-globally-ignored-directories d))
     (when (string> emacs-version "28")
       (def-projectile-commander-method ?v "Open project root in vc-dir or magit."
-        (my-projectile-vc-in-new-tab)))
-    )
-  )
+        (my-projectile-vc-in-new-tab)))))
 (leaf projectile-for-eglot
   :url "https://glassonion.hatenablog.com/entry/2019/05/11/134135"
   :after projectile
@@ -628,8 +614,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
            (:minibuffer-local-map
             ("C-j" . skk-kakutei)))
     :hook ((skk-load-hook . (lambda () (require 'context-skk))) ;自動的に英字モードになる
-           (skk-jisyo-edit-mode-hook . (lambda () (read-only-mode t)))
-           )
+           (skk-jisyo-edit-mode-hook . (lambda () (read-only-mode t))))
     :custom
     `((default-input-method . "japanese-skk")
       (skk-auto-insert-paren . t)
@@ -649,8 +634,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (skk-use-act . t)                ;全角・半角カタカナを変換候補にする
       (skk-use-jisx0201-input-method . t)
       (skk-user-directory . ,(locate-user-emacs-file "ddskk"))
-      (skk-japanese-message-and-error . t)
-      )
+      (skk-japanese-message-and-error . t))
     :init
     (leaf skk-dropbox
       :if (file-exists-p "~/Dropbox/.config/ddskk")
@@ -701,8 +685,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                    context-skk-context-check-hook
                    '(my-context-skk-at-heading-p
                      context-skk-in-read-only-p))))
-      (context-skk-mode)
-      )
+      (context-skk-mode))
     (defun skk-set-display-table ()
       (walk-windows (lambda (w)
                       (let ((disptab (make-display-table)))
@@ -711,8 +694,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                         (set-window-display-table w disptab)))))
     (require 'ccc)
     (add-hook 'window-configuration-change-hook #'skk-set-display-table)
-    (add-hook 'after-init-hook #'skk-set-display-table))
-  )
+    (add-hook 'after-init-hook #'skk-set-display-table)))
 (leaf eww
   :commands (eww)
   :bind
@@ -752,8 +734,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       :custom
       ((vertico-count . 20)
        (vertico-cycle . t)
-       (vertico-resize . t)
-       )
+       (vertico-resize . t))
       :init
       (defun crm-indicator (args)
         (cons (format "[CRM%s] %s"
@@ -798,8 +779,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
 
       ;; Disable preview for consult-grep commands
       (consult-customize consult-ripgrep consult-git-grep consult-grep
-                         :preview-key nil)
-      )
+                         :preview-key nil))
 
     (leaf vertico-repeat
       :after vertico
@@ -814,8 +794,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
               ("RET"    . vertico-directory-enter)
               ("DEL"    . vertico-directory-delete-char)
               ("M-DEL"  . vertico-directory-delete-word)
-              ("C-l"    . vertico-directory-up))
-             )
+              ("C-l"    . vertico-directory-up)))
       ;; Tidy shadowed file names
       :hook
       (rfn-eshadow-update-overlay-hook . vertico-directory-tidy))
@@ -824,8 +803,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       :require t
       :custom
       ((vertico-quick1 . "aoeuhtns")
-       (vertico-quick2 . "aoeuhtns")))
-    )
+       (vertico-quick2 . "aoeuhtns"))))
   ;; Use the `orderless' completion style.
   ;; Enable `partial-completion' for files to allow path expansion.
   ;; You may prefer to use `initials' instead of `partial-completion'.
@@ -866,8 +844,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
              ([remap goto-line] . consult-goto-line)
              (:isearch-mode-map
               ("C-i" . my-consult-line)
-              ("M-e" . consult-isearch-history))
-             )
+              ("M-e" . consult-isearch-history)))
       :hook
       (completion-list-mode-hook . consult-preview-at-point-mode)
       :config
@@ -918,9 +895,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
         (interactive "P")
         (if at-point
             (consult-line (thing-at-point 'symbol))
-          (consult-line)))
-      )
-    )
+          (consult-line)))))
   
   (elpaca consult-projectile)
   (elpaca affe
@@ -975,8 +950,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (add-to-list 'display-buffer-alist
                    '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                      nil
-                     (window-parameters (mode-line-format . none))))
-      ))
+                     (window-parameters (mode-line-format . none))))))
   ;; Consult users will also want the embark-consult package.
   (elpaca embark-consult
     (leaf embark-consult
@@ -1005,8 +979,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       :bind
       (:corfu-map
        ("M-SPC" . corfu-insert-separator)
-       ("M-m" . corfu-move-to-minibuffer)
-       )
+       ("M-m" . corfu-move-to-minibuffer))
       :custom
       ((completion-cycle-threshold . 3)
        (corfu-auto . t)
@@ -1026,8 +999,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (global-corfu-mode)
       (corfu-popupinfo-mode)
       (corfu-history-mode)
-      (add-to-list 'savehist-additional-variables 'corfu-history)
-      ))
+      (add-to-list 'savehist-additional-variables 'corfu-history)))
 
   (elpaca popon
     (leaf popon
@@ -2070,11 +2042,7 @@ See `org-capture-templates' for more information."
                  (file+head+olp "%<%Y-%m>.org" "#+TITLE: %<%Y-%m>\n\n\n" ("%<%Y-%m-%d>"))
                  )))
         (add-to-list 'org-default-properties "ROAM_EXCLUDE")
-        (leaf org-roam-protocol
-          :require t
-          :after org
-          )
-        ))
+        (leaf org-roam-protocol :require t)))
     (elpaca org-roam-ui
       (leaf org-roam-ui
         :req "emacs-27.1" "org-roam-2.0.0" "simple-httpd-20191103.1446" "websocket-1.13"
@@ -2884,19 +2852,16 @@ Optional argument ARG hoge."
                        (format "osascript -e 'tell application \"Safari\" to add reading list item \"%s\"'" (my-elfeed-yank-entry-url)))
                       (message "The selected entry is added to Safari's reading list.")
                       (elfeed-search-untag-all-unread))))
-            ("s" . my-elfeed-search-set-filter)
-            ))
+            ("s" . my-elfeed-search-set-filter)))
     :custom
-    ((elfeed-search-date-format . '("%Y-%m-%d %H:%M" 16 :left))
-     )
+    ((elfeed-search-date-format . '("%Y-%m-%d %H:%M" 16 :left)))
     :config
     (defun my-elfeed-yank-entry-url ()
       (interactive)
       (let ((url (car (mapcar #'elfeed-entry-link (elfeed-search-selected)))))
         (if (equal url "")
             (error "Selected entry's url is empty")
-          url
-          )))
+          url)))
     (defun my-elfeed-search-set-filter ()
       (interactive)
       (unwind-protect
@@ -2906,9 +2871,7 @@ Optional argument ARG hoge."
             (setq elfeed-search-filter input))
         (elfeed-search-update :force)))
 
-    (require 'elfeed-web)
-    )
-  )
+    (require 'elfeed-web)))
 (elpaca elfeed-goodies
   (leaf elfeed-goodies
     :doc "Elfeed goodies"
@@ -2922,9 +2885,7 @@ Optional argument ARG hoge."
     :custom
     ((elfeed-goodies/entry-pane-position . 'bottom))
     :config
-    (elfeed-goodies/setup)
-    )
-  )
+    (elfeed-goodies/setup)))
 
 (elpaca powershell)
 
