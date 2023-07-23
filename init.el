@@ -1180,8 +1180,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                                         (append (remove
                                                  'embark-target-file-at-point
                                                  embark-target-finders)
-                                                '(embark-target-file-at-point)))
-                            )
+                                                '(embark-target-file-at-point))))
                           (when (eq corfu-mode t)
                             (setq-local corfu-auto-prefix 2))))
     :config
@@ -1190,9 +1189,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (leaf rustic-color
       :after modus-themes
       :custom (rustic-ansi-faces . ["black" "red3" "green3" "yellow3"
-      "deep sky blue" "magenta3" "cyan3" "white"]))
-    )
-  )
+      "deep sky blue" "magenta3" "cyan3" "white"]))))
 (elpaca lsp-haskell
   (leaf lsp-haskell
     :doc "Haskell support for lsp-mode"
@@ -1232,9 +1229,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :require t
     :custom
     ((wgrep-enable-key . "e")
-     (wgrep-auto-save-buffer . t))
-    )
-  )
+     (wgrep-auto-save-buffer . t))))
 (elpaca highlight-symbol)
 (elpaca expand-region)
 (leaf expand-region
@@ -1855,8 +1850,6 @@ and `clavis-org-refile-refiled-from-header' variables."
         :config
         ;; ignoreタグで見出しを非表示にしつつ内容を表示する
         (ox-extras-activate '(latex-header-blocks ignore-headlines)))
-      (leaf ob-kotlin
-        :after (org))
       (leaf org-src-block
         :config
         (defvar-keymap my-org-block-repeat-map
@@ -2404,6 +2397,7 @@ See `org-capture-templates' for more information."
   (leaf kotlin-mode
     :mode (("\\.kt\\'" . kotlin-mode)))
   )
+(elpaca ob-kotlin)
 (elpaca (dart-mode :host github :repo "bradyt/dart-mode")
   (leaf dart-mode
     :doc "Major mode for editing Dart files"
@@ -2637,8 +2631,7 @@ Optional argument ARG hoge."
      ("C-c C-l a a" . lsp-bridge-code-action))))
 (leaf *lsp
   :config
-  (elpaca (lsp-mode ;; :ref "dfda673"
-           )
+  (elpaca lsp-mode
     (leaf lsp-mode
       :require 'lsp
       :commands (lsp lsp-deferred)
