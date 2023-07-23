@@ -3,6 +3,8 @@
 ;;; Commentary:
 
 ;;; Code:
+;; (require 'profiler)
+;; (profiler-start 'cpu)
 
 (require 'cl-lib)
 
@@ -2008,7 +2010,7 @@ See `org-capture-templates' for more information."
       (leaf org-roam-ui
         :req "emacs-27.1" "org-roam-2.0.0" "simple-httpd-20191103.1446" "websocket-1.13"
         :emacs>= 27.1
-        :after org
+        :after org-roam
         :custom ((org-roam-ui-sync-theme . t)
                  (org-roam-ui-follow . t)
                  (org-roam-ui-update-on-save . t))))
@@ -2775,6 +2777,7 @@ Optional argument ARG hoge."
     :req "emacs-24.3"
     :tag "emacs>=24.3"
     :url "https://github.com/skeeto/elfeed"
+    :commands (elfeed)
     :emacs>= 24.3
     :bind ((:elfeed-show-mode-map
             ("S-SPC" . scroll-down-command))
@@ -2967,6 +2970,9 @@ Optional argument ARG hoge."
 (let ((f "~/Dropbox/.config/emacs/config.el"))
   (when (file-exists-p f)
     (load-file f)))
+
+;; (profiler-report)
+;; (profiler-stop)
 
 (provide 'init)
 ;;; init.el ends here
