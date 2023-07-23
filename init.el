@@ -1847,8 +1847,15 @@ and `clavis-org-refile-refiled-from-header' variables."
         (ox-extras-activate '(latex-header-blocks ignore-headlines)))
       (leaf ob-kotlin
         :after (org))
-      )
-    )
+      (leaf org-src-block
+        :config
+        (defvar-keymap my-org-block-repeat-map
+          :repeat t
+          "C-n" #'org-babel-next-src-block
+          "n"   #'org-babel-next-src-block
+          "p"   #'org-babel-previous-src-block
+          "C-p" #'org-babel-previous-src-block
+          ))))
 
   (elpaca org-contrib
     (leaf org-contrib
@@ -2098,7 +2105,7 @@ See `org-capture-templates' for more information."
         (org-journal-file-header . "# -*- mode: org-journal; -*-
 #+STARTUP: showall")
         )
-      :preface
+      :config
       (defvar my-org-journal-repeat-map
         (let ((map (make-sparse-keymap)))
           (define-key map (kbd "C-f")   #'org-journal-next-entry)
@@ -2109,7 +2116,6 @@ See `org-capture-templates' for more information."
           (define-key map (kbd "p")   #'org-journal-previous-entry)
           map
           ))
-      :config
       (put 'org-journal-next-entry 'repeat-map 'my-org-journal-repeat-map)
       (put 'org-journal-previous-entry 'repeat-map 'my-org-journal-repeat-map)
       (setq org-journal-dir (concat org-directory "/journal/"))))
