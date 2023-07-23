@@ -6,6 +6,44 @@
 
 (require 'cl-lib)
 
+;; <leaf-install-code>
+(eval-and-compile
+  (use-package package
+    :config
+    (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+    (package-initialize))
+
+  (use-package leaf :ensure t)
+
+  (leaf leaf-keywords
+    :ensure t
+    :config
+    ;; initialize leaf-keywords.el
+    (leaf-keywords-init))
+
+  (leaf leaf-convert
+    :doc "Convert many format to leaf format"
+    :req "emacs-26.1" "leaf-3.6.0" "leaf-keywords-1.1.0" "ppp-2.1"
+    :tag "tools" "emacs>=26.1"
+    :url "https://github.com/conao3/leaf-convert.el"
+    :emacs>= 26.1
+    :ensure t
+    :after leaf leaf-keywords ppp)
+  )
+
+(leaf diminish
+  :ensure t
+  :require t
+  :diminish (show-paren-mode))
+
+(leaf feather
+  :ensure t
+  :diminish feather-mode
+  :config (feather-mode))
+
+;; </leaf-install-code>
+
+
 (show-paren-mode t)
 (column-number-mode)
 

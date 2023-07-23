@@ -68,43 +68,4 @@
 (set-language-environment 'Japanese)
 (prefer-coding-system 'utf-8)
 
-;; <leaf-install-code>
-(eval-and-compile
-  (customize-set-variable
-   'package-archives '(("elpa" . "https://elpa.gnu.org/packages/")
-                       ("elpa-devel" . "https://elpa.gnu.org/devel/")
-                       ("melpa" . "https://melpa.org/packages/")
-                       ))
-  (package-initialize)
-  (unless (package-installed-p 'leaf)
-    (package-refresh-contents)
-    (package-install 'leaf))
-
-  (leaf leaf-keywords
-    :ensure t
-    :config
-    ;; initialize leaf-keywords.el
-    (leaf-keywords-init))
-  
-  (leaf leaf-convert
-    :doc "Convert many format to leaf format"
-    :req "emacs-26.1" "leaf-3.6.0" "leaf-keywords-1.1.0" "ppp-2.1"
-    :tag "tools" "emacs>=26.1"
-    :url "https://github.com/conao3/leaf-convert.el"
-    :emacs>= 26.1
-    :ensure t
-    :after leaf leaf-keywords ppp)
-  )
-
-(leaf diminish
-  :ensure t
-  :require t
-  :diminish (show-paren-mode))
-
-(leaf feather
-  :ensure t
-  :diminish feather-mode
-  :config (feather-mode))
-
-;; </leaf-install-code>
 (push '(tool-bar-lines . 0) default-frame-alist)
