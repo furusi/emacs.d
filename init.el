@@ -55,7 +55,6 @@
     (set-mark-command-repeat-pop . t)    ;; C-u C-SPCの後C-SPCだけでマークを遡れる
     (show-paren-style . 'mixed)
     (tramp-ssh-controlmaster-options . "-4") ; ssh接続時にipv4アドレスを利用する
-    (tool-bar-mode . nil)
     ;; (truncate-lines . t)         ;文字列を折り返さない
     (use-dialog-box . nil)
     (use-file-dialog . nil)

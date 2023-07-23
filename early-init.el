@@ -107,3 +107,4 @@
   :config (feather-mode))
 
 ;; </leaf-install-code>
+(push '(tool-bar-lines . 0) default-frame-alist)
