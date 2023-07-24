@@ -1026,6 +1026,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (add-hook 'prog-mode-hook 'tempel-setup-capf)
       (add-hook 'text-mode-hook 'tempel-setup-capf)
       ))
+  (elpaca tempel-collection)
   (elpaca cape
     (leaf cape
       :doc "Completion At Point Extensions"
