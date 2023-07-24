@@ -478,11 +478,11 @@ read-only-mode will be activated for that file."
     :config
     (setq calendar-holidays ; 他の国の祝日も表示させたい場合は適当に調整
           (append japanese-holidays holiday-local-holidays holiday-other-holidays))
-    (setq calendar-mark-holidays-flag t)	; 祝日をカレンダーに表示
+    (setq calendar-mark-holidays-flag t) ;祝日をカレンダーに表示
     ;; 土曜日・日曜日を祝日として表示する場合、以下の設定を追加します。
     ;; デフォルトで設定済み
-    (setq japanese-holiday-weekend '(0 6)	   ; 土日を祝日として表示
-          japanese-holiday-weekend-marker	   ; 土曜日を水色で表示
+    (setq japanese-holiday-weekend '(0 6) ; 土日を祝日として表示
+          japanese-holiday-weekend-marker ; 土曜日を水色で表示
           '(holiday nil nil nil nil nil japanese-holiday-saturday))
     (add-hook 'calendar-today-visible-hook 'japanese-holiday-mark-weekend)
     (add-hook 'calendar-today-invisible-hook 'japanese-holiday-mark-weekend))
@@ -2376,18 +2376,8 @@ See `org-capture-templates' for more information."
 (leaf whitespace
   :diminish global-whitespace-mode
   :config
-  (set-face-foreground 'whitespace-space nil)
-  (set-face-background 'whitespace-space "gray33")
-  (setq whitespace-style '(face
-                           ;; trailing
-                           ;; tabs
-                           spaces
-                           ;; empty
-                           ;; space-mark
-                           ;; tab-mark
-                           ))
-  (setq whitespace-space-regexp "\\(\u3000+\\)")
-  (global-whitespace-mode 1))
+  (global-whitespace-mode 1)
+  (setq whitespace-space-regexp "\\(\u3000+\\)"))
 (elpaca plantuml-mode
   (leaf plantuml-mode
     :custom
@@ -2715,7 +2705,7 @@ Optional argument ARG hoge."
                                    (list :type "gdb"
                                          :request "launch"
                                          :name "GDB::Run"
-                		         :gdbpath "rust-gdb"
+                                         :gdbpath "rust-gdb"
                                          :target nil
                                          :cwd nil))
       (leaf dap-java
