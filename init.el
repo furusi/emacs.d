@@ -1929,14 +1929,6 @@ See `org-capture-templates' for more information."
            (anki-editor-cloze-region arg hint))))
       )
     )
-  (elpaca org-brain
-    (leaf org-brain
-      :after org
-      :require t
-      :bind
-      ((:org-mode-map
-        ("C-c b" . org-brain-prefix-map)))
-      ))
   (leaf org-pdf*
     :config
     (elpaca org-pdftools
