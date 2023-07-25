@@ -2373,11 +2373,6 @@ See `org-capture-templates' for more information."
                                                      '(embark-target-file-at-point)))
                                  ))))))
 (elpaca fsharp-mode)
-(leaf whitespace
-  :diminish global-whitespace-mode
-  :config
-  (global-whitespace-mode 1)
-  (setq whitespace-space-regexp "\\(\u3000+\\)"))
 (elpaca plantuml-mode
   (leaf plantuml-mode
     :custom
