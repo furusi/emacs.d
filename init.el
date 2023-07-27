@@ -2768,7 +2768,7 @@ Optional argument ARG hoge."
                        (format "osascript -e 'tell application \"Safari\" to add reading list item \"%s\"'" (my-elfeed-yank-entry-url)))
                       (message "The selected entry is added to Safari's reading list.")
                       (elfeed-search-untag-all-unread))))
-            ("s" . my-elfeed-search-set-filter)))
+            ("s" . my-elfeed-search-live-filter)))
     :custom
     ((elfeed-search-date-format . '("%Y-%m-%d %H:%M" 16 :left)))
     :config
@@ -2778,7 +2778,7 @@ Optional argument ARG hoge."
         (if (equal url "")
             (error "Selected entry's url is empty")
           url)))
-    (defun my-elfeed-search-set-filter ()
+    (defun my-elfeed-search-live-filter ()
       (interactive)
       (unwind-protect
           (let* ((elfeed-search-filter-active :live)
