@@ -545,12 +545,11 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :emacs>= 27.1))
 (elpaca projectile
   (leaf projectile
-    :require t
-    :bind `((:projectile-mode-map
-             ("C-c p" . projectile-command-map))
-            ,(when (string> emacs-version "28")
+    :bind `(,(when (string> emacs-version "28")
                '(:projectile-command-map
                  ("v" . my-projectile-vc-in-new-tab))))
+    :bind-keymap ((:projectile-mode-map
+                   ("C-c p" . projectile-command-map)))
     :custom
     `((projectile-cache-file . ,(locate-user-emacs-file
                                  (format "projectile/%s/projectile.cache" emacs-version)))
@@ -593,7 +592,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (add-to-list 'projectile-globally-ignored-directories d))
     (when (string> emacs-version "28")
       (def-projectile-commander-method ?v "Open project root in vc-dir or magit."
-        (my-projectile-vc-in-new-tab)))))
+                                       (my-projectile-vc-in-new-tab)))))
 (leaf projectile-for-eglot
   :url "https://glassonion.hatenablog.com/entry/2019/05/11/134135"
   :after projectile
@@ -831,11 +830,17 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
              ("C-x r SPC" . consult-register-store)
              ("C-h i" . consult-info)
              ([remap goto-line] . consult-goto-line)
-             (:isearch-mode-map
+             (:isearch-mode-map :package isearch
               ("C-i" . my-consult-line)
               ("M-e" . consult-isearch-history)))
       :hook
       (completion-list-mode-hook . consult-preview-at-point-mode)
+      :init
+      (defun my-consult-line (&optional at-point)
+        (interactive "P")
+        (if at-point
+            (consult-line (thing-at-point 'symbol))
+          (consult-line)))
       :config
       ;; https://github.com/minad/consult/wiki#find-files-using-fd
       (defvar consult--fd-command nil)
@@ -880,11 +885,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                          #'consult-completion-in-region
                        #'completion--in-region)
                      args)))
-      (defun my-consult-line (&optional at-point)
-        (interactive "P")
-        (if at-point
-            (consult-line (thing-at-point 'symbol))
-          (consult-line)))))
+      ))
   
   (elpaca consult-projectile)
   (elpaca affe
@@ -1075,32 +1076,26 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :unless (equal (shell-command-to-string "command -v cmigemo") "")
     :require t
     :custom
-    (migemo-options . '("-q" "--emacs"))
-    (migemo-coding-system . 'utf-8-unix)
-    (migemo-user-dictionary . nil)
-    (migemo-regex-dictionary . nil)
+    `((migemo-options . '("-q" "--emacs"))
+      (migemo-coding-system . 'utf-8-unix)
+      (migemo-user-dictionary . nil)
+      (migemo-regex-dictionary . nil)
+      (migemo-options . '("--quiet" "--nonewline" "--emacs"))
+      (migemo-dictionary . 
+                         ,(cond ((eq system-type 'darwin)
+                                "/opt/homebrew/opt/cmigemo/share/migemo/utf-8/migemo-dict")
+                               ((eq system-type 'windows-nt)
+                                "~/opt/cmigemo-default-win64/dict/utf-8")
+                               ((string-match-p "arch" operating-system-release)
+                                "/usr/share/migemo/utf-8/migemo-dict")
+                               (t "/usr/share/cmigemo/utf-8/migemo-dict"))))
     :config
-    ;; Set your installed path
-    (setq migemo-command
-          (cond ((eq system-type 'darwin)    "cmigemo")
-                ((eq system-type 'windows-nt)    "cmigemo")
-                ((eq system-type 'gnu/linux) "/usr/bin/cmigemo")))
-    (setq migemo-dictionary
-          (cond ((eq system-type 'darwin)
-                 "/opt/homebrew/opt/cmigemo/share/migemo/utf-8/migemo-dict")
-                ((eq system-type 'windows-nt)
-                 "~/opt/cmigemo-default-win64/dict/utf-8")
-                ((string-match-p "arch" operating-system-release)
-                 "/usr/share/migemo/utf-8/migemo-dict")
-                (t "/usr/share/cmigemo/utf-8/migemo-dict")))
-    (load-library "migemo")
     ;; https://www.yewton.net/2022/02/07/consult-ripgrep-migemo/
     (defun consult--migemo-regexp-compiler (input type ignore-case)
       (setq input (mapcar #'migemo-get-pattern (consult--split-escaped input)))
       (cons (mapcar (lambda (x) (consult--convert-regexp x type)) input)
             (when-let (regexps (seq-filter #'consult--valid-regexp-p input))
               (apply-partially #'consult--highlight-regexps regexps ignore-case))))
-    (setq migemo-options '("--quiet" "--nonewline" "--emacs"))
     (setq consult--regexp-compiler #'consult--migemo-regexp-compiler)
     (migemo-init))
   )
@@ -1108,7 +1103,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
 (elpaca undo-tree
   (leaf undo-tree
     :diminish (global-undo-tree-mode undo-tree-mode)
-    :require t
     :global-minor-mode global-undo-tree-mode
     :custom
     ((undo-tree-history-directory-alist . '(("." . "~/.emacs.d/undo-tree")))
@@ -1123,12 +1117,9 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :tag "convenience" "emacs>=28.1"
     :url "https://codeberg.org/ideasman42/emacs-undo-fu-session"
     :emacs>= 28.1
-    :require t
     :custom
     (undo-fu-session-incompatible-files . '("/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'"))
-    :config
-    (global-undo-fu-session-mode))
-  )
+    :global-minor-mode undo-fu-session-global-mode))
 (elpaca rust-mode
   (leaf rust-mode
     :doc "A major-mode for editing Rust source code"
@@ -1337,7 +1328,14 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                                                 org-date))
                                   (set-face-attribute face nil :family "UDEV Gothic JPDOC")))))
       :custom
-      ((org-export-allow-bind-keywords . t)
+      `((org-directory . ,(expand-file-name
+                           (if (file-exists-p "~/git/notes")
+                               "~/git/notes"
+                             (progn
+                               (when(not (file-exists-p "~/org"))
+                                 (mkdir "~/org"))
+                               "~/org"))))
+       (org-export-allow-bind-keywords . t)
        (org-babel-python-command . "python3")
        (org-export-backends . '(ascii html icalendar latex md odt taskjuggler asciidoc pandoc gfm))
        (org-id-link-to-org-use-id . t)
@@ -1409,14 +1407,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
         (interactive)
         (insert-zero-width-space)
         (insert-zero-width-space))
-      (setq org-directory
-            (expand-file-name
-             (if (file-exists-p "~/git/notes")
-                 "~/git/notes"
-               (progn
-                 (when(not (file-exists-p "~/org"))
-                   (mkdir "~/org"))
-                 "~/org"))))
       (defvar org-prettify-symbols-alist
         nil
         ;; '(("#+begin_src" . "🖥️")
@@ -2867,28 +2857,25 @@ Optional argument ARG hoge."
     :tag "faces" "emacs>=25.1"
     :url "https://github.com/chenyanming/shrface"
     :emacs>= 25.1
-    :require t
-    :hook (eww-after-render-hook . shrface-mode)
+    :hook ((eww-after-render-hook . shrface-mode)
+           (nov-mode-hook . shrface-mode))
+    :bind
+    (:nov-mode-map
+     :package nov
+     ("n" . org-next-visible-heading)
+     ("p" . org-previous-visible-heading)
+     ("s" . org-toggle-narrow-to-subtree)
+     ("u" . outline-up-heading))
+
     :config
     (shrface-basic)
     (shrface-trial)
     (shrface-default-keybindings) ; setup default keybindings
     (setq shrface-href-versatile t)
 
-    (leaf shrface-nov
-      :after nov
-      :init (add-hook 'nov-mode-hook #'shrface-mode)
-      :config
-      (setq nov-shr-rendering-functions '((img . nov-render-img)
-                                          (title . nov-render-title)))
-      (setq nov-shr-rendering-functions (append nov-shr-rendering-functions
-                                                shr-external-rendering-functions))
-      (define-key nov-mode-map (kbd "n") 'org-next-visible-heading)
-      (define-key nov-mode-map (kbd "p") 'org-previous-visible-heading)
-      (define-key nov-mode-map (kbd "s") 'org-toggle-narrow-to-subtree)
-      (define-key nov-mode-map (kbd "u") 'outline-up-heading))
-    )
-  )
+    (setq nov-shr-rendering-functions (append '((img . nov-render-img)
+                                                 (title . nov-render-title))
+                                               shr-external-rendering-functions))))
 (elpaca nov
   (leaf nov
     :doc "Featureful EPUB reader mode"
@@ -2896,16 +2883,16 @@ Optional argument ARG hoge."
     :tag "epub" "multimedia" "hypermedia" "emacs>=25.1"
     :url "https://depp.brause.cc/nov.el"
     :emacs>= 25.1
-    :mode ("\\.epub\\'" . nov-mode))
-  )
+    :mode ("\\.epub\\'" . nov-mode)))
 (elpaca (nov-xwidget :host github :repo "chenyanming/nov-xwidget")
   (leaf nov-xwidget
     :after nov
-    :require t
-    :config
-    (define-key nov-mode-map (kbd "o") 'nov-xwidget-view)
-    (add-hook 'nov-mode-hook 'nov-xwidget-inject-all-files))
-  )
+    :commands nov-xwidget-inject-all-files
+    :bind
+    (:nov-mode-map
+     ("o" . nov-xwidget-view))
+    :hook
+    (nov-mode-hook . nov-xwidget-inject-all-files)))
 
 (elpaca speed-type
   (leaf speed-type
@@ -2920,8 +2907,7 @@ Optional argument ARG hoge."
                 (lambda ()
                   (when (and (featurep 'corfu)
                              global-corfu-mode)
-                    (corfu-mode -1)))))
-    ))
+                    (corfu-mode -1)))))))
 
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
 (require 'my-misc)
