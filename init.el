@@ -684,7 +684,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                    context-skk-context-check-hook
                    '(my-context-skk-at-heading-p
                      context-skk-in-read-only-p))))
-      (context-skk-mode))
+      (context-skk-mode 1))
     (defun skk-set-display-table ()
       (walk-windows (lambda (w)
                       (let ((disptab (make-display-table)))
@@ -2839,19 +2839,13 @@ Optional argument ARG hoge."
     (regex-tool-backend . 'perl)
     :bind
     (:regex-tool-mode-map
-     ("C-c C-q" . regex-tool-quit)))
-  )
+     ("C-c C-q" . regex-tool-quit))))
 (elpaca visual-regexp-steroids
   (leaf visual-regexp-steroids
     :doc "Extends visual-regexp to support other regexp engines"
     :req "visual-regexp-1.1"
     :tag "feedback" "visual" "python" "replace" "regexp" "foreign" "external"
-    :url "https://github.com/benma/visual-regexp-steroids.el/"
-    :require t
-    :config
-    (setq vr/command-python (replace-regexp-in-string "^python "  "python3 " vr--command-python-default))
-    )
-  )
+    :url "https://github.com/benma/visual-regexp-steroids.el/"))
 
 (leaf repeat-mode
   :emacs>= 28
@@ -2865,18 +2859,6 @@ Optional argument ARG hoge."
     :doc "Instant GitHub-flavored Markdown/Org preview using grip."
     :bind ((:markdown-mode-command-map
             ("g" . grip-mode)))))
-(elpaca tree-sitter-langs
-  (leaf tree-sitter
-    :disabled t
-    :doc "Incremental parsing system"
-    :req "emacs-25.1" "tsc-0.18.0"
-    :tag "tree-sitter" "parsers" "tools" "languages" "emacs>=25.1"
-    :url "https://github.com/emacs-tree-sitter/elisp-tree-sitter"
-    :emacs>= 25.1
-    :require '(tree-sitter tree-sitter-langs)
-    :hook (tree-sitter-after-on-hook . tree-sitter-hl-mode)
-    :config
-    (global-tree-sitter-mode)))
 (elpaca dirvish)
 (elpaca shrface
   (leaf shrface
