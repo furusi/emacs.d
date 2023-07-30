@@ -1140,6 +1140,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     "seq-2.3" "spinner-1.7.3" "xterm-color-1.6"
     :tag "languages" "emacs>=26.1"
     :emacs>= 26.1
+    :custom (rustic-ansi-faces . ["black" "red3" "green3" "yellow3"
+                                  "deep sky blue" "magenta3" "cyan3" "white"])
     :hook
     (rustic-mode-hook . (lambda ()
                           (electric-pair-local-mode 1)
@@ -1154,13 +1156,10 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                                                 '(embark-target-file-at-point))))
                           (when (eq corfu-mode t)
                             (setq-local corfu-auto-prefix 2))))
-    :config
-    ;; (when (eq rustic-lsp-client 'eglot)
-    ;;   (add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1))))
-    (leaf rustic-color
-      :after modus-themes
-      :custom (rustic-ansi-faces . ["black" "red3" "green3" "yellow3"
-      "deep sky blue" "magenta3" "cyan3" "white"]))))
+    :init
+    (leaf rustic-babel
+      :after org
+      :require t)))
 (elpaca lsp-haskell
   (leaf lsp-haskell
     :doc "Haskell support for lsp-mode"
