@@ -2320,14 +2320,11 @@ See `org-capture-templates' for more information."
              (smartparens-mode -1)))
     :config
     (when (eq system-type 'darwin)
-      (when (executable-find  "/usr/local/opt/ccls/bin/ccls")
-        (setq ccls-executable "/usr/local/opt/ccls/bin/ccls"))
-      (when (executable-find  "/opt/homebrew/opt/ccls/bin/ccls")
-        (setq ccls-executable "/opt/homebrew/opt/ccls/bin/ccls"))
-      (when (executable-find  "/opt/local/bin/ccls-clang-11")
-        (setq ccls-executable "/opt/local/bin/ccls-clang-11"))
-      ))
-  )
+      (setq ccls-executable (cond ((executable-find  "/opt/homebrew/opt/ccls/bin/ccls"))
+                                  ((executable-find  "/usr/local/opt/ccls/bin/ccls"))
+                                  ((executable-find  "/opt/local/bin/ccls-clang-11"))
+                                  (t "ccls"))))
+    ))
 (elpaca smartparens
   (leaf smartparens
     :diminish t
@@ -2337,7 +2334,15 @@ See `org-capture-templates' for more information."
     (:emacs-lisp-mode-map
      ("C-c C-u" . sp-backward-up-sexp)
      ("C-c C-n" . sp-next-sexp)
-     ("C-c C-p" . sp-previous-sexp)))
+     ("C-c C-p" . sp-previous-sexp))
+    :config
+    (defvar-keymap my-sp-move-repeat-map
+      :repeat t
+      "u"   #'sp-backward-up-sexp
+      "n"   #'sp-next-sexp
+      "p"   #'sp-previous-sexp
+      "@"   #'sp-mark-sexp
+      ))
   )
 (elpaca kotlin-mode
   (leaf kotlin-mode
@@ -2359,8 +2364,7 @@ See `org-capture-templates' for more information."
                                              (append (remove
                                                       'embark-target-file-at-point
                                                       embark-target-finders)
-                                                     '(embark-target-file-at-point)))
-                                 ))))))
+                                                     '(embark-target-file-at-point)))))))))
 (elpaca fsharp-mode)
 (elpaca plantuml-mode
   (leaf plantuml-mode
@@ -2373,24 +2377,21 @@ See `org-capture-templates' for more information."
                  "/usr/local/opt/plantuml/libexec/plantuml.jar")
                 ((string-match "ndeavour" my-lsb-distribution-name)
                  "/usr/share/java/plantuml/plantuml.jar")
-                (t ""))))
-  )
+                (t "")))))
 (elpaca htmlize)
 (elpaca adoc-mode
   (leaf adoc-mode
     :bind
     (:adoc-mode-map
      ("C-c C-n" . outline-next-visible-heading)
-     ("C-c C-p" . outline-previous-visible-heading)))
-  )
+     ("C-c C-p" . outline-previous-visible-heading))))
 (elpaca pandoc)
 (elpaca graphviz-dot-mode)
 (elpaca editorconfig
   (leaf editorconfig
     :diminish editorconfig-mode
     :config
-    (editorconfig-mode 1))
-  )
+    (editorconfig-mode 1)))
 (leaf easy-hugo
   :disabled t
   :custom
