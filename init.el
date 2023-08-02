@@ -2756,19 +2756,7 @@ Optional argument ARG hoge."
             ("k" . (lambda () (interactive)(forward-line -1)))
             ("p" . (lambda () (interactive)(forward-line -1)))
             ("e" . (lambda () (interactive)(eww (my-elfeed-yank-entry-url))))
-            ;;osascript -e 'tell application "Safari" to add reading list item "http://totl.net/"'
-            ("a" .(lambda ()
-                    (interactive)
-                    (if (and (eq system-type 'darwin)
-                             (equal (shell-command-to-string "command -v osascript") ""))
-                        (error "not found 'osascript' command"))
-                    (let ((url (car (mapcar #'elfeed-entry-link (elfeed-search-selected)))))
-                      (when (equal url nil)
-                        (error "url is empty"))
-                      (call-process-shell-command
-                       (format "osascript -e 'tell application \"Safari\" to add reading list item \"%s\"'" (my-elfeed-yank-entry-url)))
-                      (message "The selected entry is added to Safari's reading list.")
-                      (elfeed-search-untag-all-unread))))
+            ("a" . my-elfeed-safari-add-reading-item)
             ("s" . my-elfeed-search-live-filter)))
     :init
     (defvar-keymap my-elfeed-yank-map
@@ -2778,6 +2766,19 @@ Optional argument ARG hoge."
     :custom
     ((elfeed-search-date-format . '("%Y-%m-%d %H:%M" 16 :left)))
     :config
+    ;;osascript -e 'tell application "Safari" to add reading list item "http://totl.net/"'
+    (defun my-elfeed-safari-add-reading-item ()
+      (interactive)
+      (if (and (eq system-type 'darwin)
+               (equal (shell-command-to-string "command -v osascript") ""))
+          (error "not found 'osascript' command"))
+      (let ((url (car (mapcar #'elfeed-entry-link (elfeed-search-selected)))))
+        (when (equal url nil)
+          (error "url is empty"))
+        (call-process-shell-command
+         (format "osascript -e 'tell application \"Safari\" to add reading list item \"%s\"'" (my-elfeed-yank-entry-url)))
+        (message "The selected entry is added to Safari's reading list.")
+        (elfeed-search-untag-all-unread)))
     (defun my-elfeed-yank-entry-url ()
       (interactive)
       (let ((url (car (mapcar #'elfeed-entry-link (elfeed-search-selected)))))
