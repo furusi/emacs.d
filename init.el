@@ -2770,6 +2770,11 @@ Optional argument ARG hoge."
                       (message "The selected entry is added to Safari's reading list.")
                       (elfeed-search-untag-all-unread))))
             ("s" . my-elfeed-search-live-filter)))
+    :init
+    (defvar-keymap my-elfeed-yank-map
+        "y" #'elfeed-search-yank
+        "m" #'my-elfeed-search-yank-markdown
+        "o" #'my-elfeed-search-yank-org)
     :custom
     ((elfeed-search-date-format . '("%Y-%m-%d %H:%M" 16 :left)))
     :config
@@ -2786,7 +2791,29 @@ Optional argument ARG hoge."
                  (elfeed-db-tags (elfeed-db-get-all-tags))
                  (input (mapconcat 'identity (completing-read-multiple "Filter: " elfeed-db-tags nil nil elfeed-search-filter) " +")))
             (setq elfeed-search-filter input))
-        (elfeed-search-update :force)))))
+        (elfeed-search-update :force)))
+    (defun my-elfeed-search-yank-markdown ()
+      (interactive)
+      (my-elfeed-search-yank 'my-markdown--generate-link))
+    (defun my-elfeed-search-yank-org ()
+      (interactive)
+      (my-elfeed-search-yank 'my-org--generate-link))
+    (defun my-elfeed-search-yank (yank-function)
+      (interactive)
+      (let* ((entries (elfeed-search-selected))
+             (links (mapcar #'elfeed-entry-link entries))
+             (titles (mapcar #'elfeed-entry-title entries))
+             (markdowns (mapconcat
+                         #'identity
+                         (cl-mapcar
+                          yank-function
+                          titles links) "\n")))
+        (kill-new markdowns)
+        (message "Copied:%s" markdowns)))
+    (leaf-keys-bind-keymap
+     ((elfeed-search-mode-map :package elfeed
+                              ("y" . my-elfeed-yank-map))))
+    ))
 (elpaca elfeed-goodies
   (leaf elfeed-goodies
     :doc "Elfeed goodies"

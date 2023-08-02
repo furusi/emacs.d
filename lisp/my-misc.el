@@ -178,4 +178,9 @@
   (("C-x C-{" . my-shrink-frame-horizontally)
    ("C-x C-}" . my-enlarge-frame-horizontally)))
 
+(defun my-markdown--generate-link (text url &optional title)
+  (format "[%s](%s)" text (if (eq title nil) url (format "%s \"%s\"" url title))))
+(defun my-org--generate-link (text url)
+  (format "[[%s][%s]]" url text))
+
 (provide 'my-misc)
