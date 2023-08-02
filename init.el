@@ -921,7 +921,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
         (:embark-package-map
          ("b" . embark-browse-package-url))
         (:embark-region-map
-         ("C-l" . my-lookup-mkdict))
+         ("C-l" . my-lookup-mkdict)
+         ("j" . join-line))
         (:embark-symbol-map
          ("C-l" . my-lookup-mkdict)))
       :init
