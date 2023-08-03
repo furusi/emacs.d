@@ -2939,7 +2939,7 @@ Optional argument ARG hoge."
                     (corfu-mode -1)))))))
 
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
-(require 'my-misc)
+(require 'my-lisp)
 (require 'my-window)
 
 (let ((f "~/Dropbox/.config/emacs/config.el"))

@@ -183,4 +183,18 @@
 (defun my-org--generate-link (text url)
   (format "[[%s][%s]]" url text))
 
-(provide 'my-misc)
+(defun my-org--get-dedicated-targets-in-buffer ()
+  "Return a list of dedicated targets in the current buffer."
+  (save-excursion
+    (let (targets)
+      (goto-char (point-min))
+      (while (re-search-forward "<<\\([^>]+\\\)>>" nil t)
+        (let ((target (match-string 1)))
+          (push target targets)))
+      (nreverse targets))))
+
+(defvar-local my-org-dedicated-targets-in-buffer nil
+  "Lists of dedicated targets in a current buffer")
+
+
+(provide 'my-lisp)
