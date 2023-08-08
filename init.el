@@ -2696,8 +2696,7 @@ Optional argument ARG hoge."
        :preview-key (kbd "C-,"))
       ))
   )
-(elpaca eglot
-  (leaf eglot
+(leaf eglot
     :after corfu flymake
     :bind
     ((:eglot-mode-map
@@ -2705,7 +2704,7 @@ Optional argument ARG hoge."
     :config
     ;; (add-hook 'rustic-mode-hook 'eglot-ensure)
     ;; (add-to-list 'eglot-stay-out-of 'flymake)
-    ))
+    )
 (elpaca eglot-java
     (leaf eglot-java
       :doc "Java extension for the eglot LSP client"
