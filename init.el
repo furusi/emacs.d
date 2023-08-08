@@ -1822,7 +1822,9 @@ and `clavis-org-refile-refiled-from-header' variables."
           "n"   #'org-babel-next-src-block
           "p"   #'org-babel-previous-src-block
           "C-p" #'org-babel-previous-src-block
-          ))))
+          )
+        (add-to-list 'org-src-lang-modes '("json" . js-json))
+        )))
 
   (elpaca org-contrib
     (leaf org-contrib
