@@ -1059,9 +1059,14 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (add-to-list 'completion-at-point-functions #'cape-keyword)
       (add-to-list 'completion-at-point-functions #'cape-tex)
       (add-to-list 'completion-at-point-functions #'cape-file)
-      :config
-      (if (memq system-type '(darwin gnu/linux))
-          (customize-set-variable 'cape-dict-file "/usr/share/dict/words"))))
+
+      (when (file-exists-p "~/Dropbox/.config/emacs/cape/words")
+        (customize-set-variable 'cape-dict-file
+                                (let ((wordfile (expand-file-name "~/Dropbox/.config/emacs/cape/words")))
+                                  (if (stringp cape-dict-file)
+                                      (list wordfile cape-dict-file)
+                                    (add-to-list 'cape-dict-file wordfile)))))
+      ))
   (elpaca (kind-icon :host github :repo "jdtsmith/kind-icon")
     (leaf kind-icon
       :emacs>= 27.1
