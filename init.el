@@ -1146,8 +1146,9 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     "seq-2.3" "spinner-1.7.3" "xterm-color-1.6"
     :tag "languages" "emacs>=26.1"
     :emacs>= 26.1
-    :custom (rustic-ansi-faces . ["black" "red3" "green3" "yellow3"
-                                  "deep sky blue" "magenta3" "cyan3" "white"])
+    :custom ((rustic-treesitter-derive . t)
+             (rustic-ansi-faces . ["black" "red3" "green3" "yellow3"
+                                   "deep sky blue" "magenta3" "cyan3" "white"]))
     :hook
     (rustic-mode-hook . (lambda ()
                           (electric-pair-local-mode 1)
