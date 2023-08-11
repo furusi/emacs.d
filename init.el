@@ -2877,6 +2877,8 @@ Optional argument ARG hoge."
     :emacs>= 25.1
     :hook ((eww-after-render-hook . shrface-mode)
            (nov-mode-hook . shrface-mode))
+    :require t
+    :after eww
     :bind
     (:nov-mode-map
      :package nov
