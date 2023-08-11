@@ -165,6 +165,11 @@
    ;; ("SPC". scroll-up-command)
    ;; ("S-SPC". scroll-down-command)
    ))
+(leaf info
+  :bind
+  (:Info-mode-map
+   ("j" . next-line)
+   ("k" . previous-line)))
 
 (leaf deepl-translate
   :url "https://uwabami.github.io/cc-env/Emacs.html"
