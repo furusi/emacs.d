@@ -279,11 +279,13 @@ read-only-mode will be activated for that file."
     :type '(repeat string))
 
   (defun my-read-only-find-file-hook ()
-    (when (cl-some (lambda (dir) (string-prefix-p (expand-file-name dir) buffer-file-name) ) my-read-only-dirs )
+    (when (cl-some
+           (lambda (dir)
+             (string-prefix-p (expand-file-name dir) buffer-file-name))
+           my-read-only-dirs)
       (read-only-mode 1)))
 
-  (add-hook 'find-file-hook 'my-read-only-find-file-hook)
-  )
+  (add-hook 'find-file-hook 'my-read-only-find-file-hook))
 
 (elpaca (initchart :host github :repo "yuttie/initchart")
   (leaf initchart
@@ -891,7 +893,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                        #'completion--in-region)
                      args)))
       ))
-  
+
   (elpaca consult-projectile)
   (elpaca affe
     (leaf affe
@@ -1803,7 +1805,6 @@ and `clavis-org-refile-refiled-from-header' variables."
                                   section-list)))
            (cddr (directory-files
                   (locate-user-emacs-file "lisp/org/ox-latex/templates"))))))
-        
 
         ;; org-export-latex-no-toc
         (defun org-export-latex-no-toc (depth)
@@ -1948,6 +1949,7 @@ See `org-capture-templates' for more information."
       (leaf org-noter-pdftools
         :after (org-noter)
         :require t))
+
     (elpaca pdf-tools
       (leaf pdf-tools
         ;; https://github.com/politza/pdf-tools#installation
@@ -1966,59 +1968,6 @@ See `org-capture-templates' for more information."
     (leaf org-download
       :after org
       :hook ((org-mode-hook . org-download-enable))))
-  (leaf org-roam*
-    :config
-    (elpaca (emacsql-sqlite :protocol https :inherit t :depth 1
-                            :host github :repo "magit/emacsql"
-                            :files (:defaults "emacsql-sqlite.el" "emacsql-sqlite-common.el" "sqlite")))
-    (elpaca org-roam
-      (leaf org-roam
-        :req "emacs-26.1" "dash-2.13" "org-9.4" "emacsql-20230228" "magit-section-3.0.0"
-        :emacs>= 26.1
-        :commands (org-roam-node-find)
-        :custom
-        ((org-roam-title-to-slug-function . (lambda (text) text))
-         (org-roam-v2-ack . t)
-         (org-roam-completion-everywhere . t))
-        :bind
-        (("C-c n l" . org-roam-buffer-toggle)
-         ("C-c n f" . org-roam-node-find)
-         ("C-c n g" . org-roam-graph)
-         ("C-c n i" . org-roam-node-insert)
-         ("C-c n c" . org-roam-capture)
-         ;; Dailies
-         ("C-c n j" . org-roam-dailies-capture-today)
-         )
-        :config
-        (setq org-roam-directory (format "%s/roam" org-directory))
-        (org-roam-db-autosync-mode)
-        (when (eq system-type 'darwin)
-          (setq org-roam-graph-viewer "open"))
-        (setq org-roam-dailies-capture-templates
-              '(("d" "default" entry
-                 "* %?\n%U\n"
-                 :target
-                 (file+head+olp "%<%Y-%m>.org" "#+TITLE: %<%Y-%m>\n\n\n" ("%<%Y-%m-%d>"))
-                 )))
-        (add-to-list 'org-default-properties "ROAM_EXCLUDE")
-        (leaf org-roam-protocol :require t)))
-    (elpaca org-roam-ui
-      (leaf org-roam-ui
-        :req "emacs-27.1" "org-roam-2.0.0" "simple-httpd-20191103.1446" "websocket-1.13"
-        :emacs>= 27.1
-        :after org-roam
-        :custom ((org-roam-ui-sync-theme . t)
-                 (org-roam-ui-follow . t)
-                 (org-roam-ui-update-on-save . t))))
-    (elpaca consult-org-roam
-      (leaf consult-org-roam
-        :doc "Consult integration for org-roam"
-        :req "emacs-27.1" "org-roam-2.2.0" "consult-0.16"
-        :tag "emacs>=27.1"
-        :url "https://github.com/jgru/consult-org-roam"
-        :emacs>= 27.1
-        :after org-roam consult))
-    )
   (leaf ox*
     :custom
     (org-export-allow-bind-keywords . t)
@@ -2078,6 +2027,59 @@ See `org-capture-templates' for more information."
         "b"   #'org-journal-previous-entry
         "p"   #'org-journal-previous-entry)
       (setq org-journal-dir (concat org-directory "/journal/"))))
+  (leaf org-roam*
+    :config
+    (elpaca (emacsql-sqlite :protocol https :inherit t :depth 1
+                            :host github :repo "magit/emacsql"
+                            :files (:defaults "emacsql-sqlite.el" "emacsql-sqlite-common.el" "sqlite")))
+    (elpaca org-roam
+      (leaf org-roam
+        :req "emacs-26.1" "dash-2.13" "org-9.4" "emacsql-20230228" "magit-section-3.0.0"
+        :emacs>= 26.1
+        :commands (org-roam-node-find)
+        :custom
+        ((org-roam-title-to-slug-function . (lambda (text) text))
+         (org-roam-v2-ack . t)
+         (org-roam-completion-everywhere . t))
+        :bind
+        (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n g" . org-roam-graph)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n c" . org-roam-capture)
+         ;; Dailies
+         ("C-c n j" . org-roam-dailies-capture-today)
+         )
+        :config
+        (setq org-roam-directory (format "%s/roam" org-directory))
+        (org-roam-db-autosync-mode)
+        (when (eq system-type 'darwin)
+          (setq org-roam-graph-viewer "open"))
+        (setq org-roam-dailies-capture-templates
+              '(("d" "default" entry
+                 "* %?\n%U\n"
+                 :target
+                 (file+head+olp "%<%Y-%m>.org" "#+TITLE: %<%Y-%m>\n\n\n" ("%<%Y-%m-%d>"))
+                 )))
+        (add-to-list 'org-default-properties "ROAM_EXCLUDE")
+        (leaf org-roam-protocol :require t)))
+    (elpaca org-roam-ui
+      (leaf org-roam-ui
+        :req "emacs-27.1" "org-roam-2.0.0" "simple-httpd-20191103.1446" "websocket-1.13"
+        :emacs>= 27.1
+        :after org-roam
+        :custom ((org-roam-ui-sync-theme . t)
+                 (org-roam-ui-follow . t)
+                 (org-roam-ui-update-on-save . t))))
+    (elpaca consult-org-roam
+      (leaf consult-org-roam
+        :doc "Consult integration for org-roam"
+        :req "emacs-27.1" "org-roam-2.2.0" "consult-0.16"
+        :tag "emacs>=27.1"
+        :url "https://github.com/jgru/consult-org-roam"
+        :emacs>= 27.1
+        :after org-roam consult))
+    )
   (elpaca org-modern
     (leaf org-modern
       :doc "Modern looks for Org"
@@ -2099,6 +2101,7 @@ See `org-capture-templates' for more information."
 
   (elpaca ob-browser)
   (elpaca ox-epub)
+  (elpaca ob-go)
   (elpaca ob-php
     (leaf ob-php
       :doc "Execute PHP within org-mode source blocks."
@@ -2309,7 +2312,6 @@ See `org-capture-templates' for more information."
   (leaf go-mode
     :after lsp-mode
     :hook (go-mode-hook . lsp-deferred)))
-(elpaca ob-go)
 (when (version< emacs-version "29")
   (elpaca csharp-mode))
 (elpaca android-mode)
@@ -2703,27 +2705,27 @@ Optional argument ARG hoge."
       ))
   )
 (leaf eglot
-    :after corfu flymake
-    :bind
-    ((:eglot-mode-map
-      ("C-c C-l a a" . eglot-code-actions)))
-    :config
-    ;; (add-hook 'rustic-mode-hook 'eglot-ensure)
-    ;; (add-to-list 'eglot-stay-out-of 'flymake)
-    )
+  :after corfu flymake
+  :bind
+  ((:eglot-mode-map
+    ("C-c C-l a a" . eglot-code-actions)))
+  :config
+  ;; (add-hook 'rustic-mode-hook 'eglot-ensure)
+  ;; (add-to-list 'eglot-stay-out-of 'flymake)
+  )
 (elpaca eglot-java
-    (leaf eglot-java
-      :doc "Java extension for the eglot LSP client"
-      :req "emacs-26.1" "eglot-1.0" "jsonrpc-1.0.0"
-      :tag "languages" "convenience" "emacs>=26.1"
-      :url "https://github.com/yveszoundi/eglot-java"
-      :emacs>= 26.1
-      :custom
-      ((eglot-java-prefix-key . "C-c C-l"))
-      :config
-      ;; (eglot-java-init)
-      )
+  (leaf eglot-java
+    :doc "Java extension for the eglot LSP client"
+    :req "emacs-26.1" "eglot-1.0" "jsonrpc-1.0.0"
+    :tag "languages" "convenience" "emacs>=26.1"
+    :url "https://github.com/yveszoundi/eglot-java"
+    :emacs>= 26.1
+    :custom
+    ((eglot-java-prefix-key . "C-c C-l"))
+    :config
+    ;; (eglot-java-init)
     )
+  )
 (elpaca consult-eglot
     (leaf consult-eglot
       :doc "A consulting-read interface for eglot"
@@ -2755,9 +2757,9 @@ Optional argument ARG hoge."
             ("s" . my-elfeed-search-live-filter)))
     :init
     (defvar-keymap my-elfeed-yank-map
-        "y" #'elfeed-search-yank
-        "m" #'my-elfeed-search-yank-markdown
-        "o" #'my-elfeed-search-yank-org)
+      "y" #'elfeed-search-yank
+      "m" #'my-elfeed-search-yank-markdown
+      "o" #'my-elfeed-search-yank-org)
     :custom
     ((elfeed-search-date-format . '("%Y-%m-%d %H:%M" 16 :left)))
     :config
@@ -2784,10 +2786,22 @@ Optional argument ARG hoge."
       (interactive)
       (unwind-protect
           (let* ((elfeed-search-filter-active :live)
-                 (elfeed-db-tags (elfeed-db-get-all-tags))
-                 (input (mapconcat 'identity (completing-read-multiple "Filter: " elfeed-db-tags nil nil elfeed-search-filter) " +")))
+                 (input (my-elfeed--tag-completing-multi)))
             (setq elfeed-search-filter input))
         (elfeed-search-update :force)))
+    (defun my-elfeed--tag-completing-multi ()
+      (require 'elfeed)
+      (let ((elfeed-db-tags (elfeed-db-get-all-tags)))
+        (mapconcat 'identity (completing-read-multiple "Filter: "
+                                                       elfeed-db-tags
+                                                       nil nil
+                                                       elfeed-search-filter)
+                   " +")))
+
+    (defun my-elfeed-search-set-filter (old-fn &rest args)
+      (interactive)
+      (funcall old-fn (my-elfeed--tag-completing-multi)))
+    (advice-add 'elfeed-search-set-filter :around #'my-elfeed-search-set-filter)
     (defun my-elfeed-search-yank-markdown ()
       (interactive)
       (my-elfeed-search-yank 'my-markdown--generate-link))
