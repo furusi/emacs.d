@@ -664,6 +664,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (with-eval-after-load 'dired
       (load "dired-x")
       (global-set-key "\C-x\C-j" 'skk-mode))
+    (with-eval-after-load 'dabbrev
+      (push 'skk-jisyo-mode dabbrev-ignored-buffer-modes))
     (leaf skk-study
       :require t)
     (leaf skk-hint
