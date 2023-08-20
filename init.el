@@ -1952,18 +1952,16 @@ See `org-capture-templates' for more information."
 
     (elpaca pdf-tools
       (leaf pdf-tools
-        ;; https://github.com/politza/pdf-tools#installation
+        ;; https://github.com/vedang/pdf-tools#installing-pdf-tools
         :mode (("\\.pdf\\'" . pdf-view-mode))
         :hook (pdf-view-mode-hook . (lambda ()
                                       (display-line-numbers-mode 0)))
-        :custom ((pdf-view-use-scaling . t))
+        :custom ((pdf-view-use-scaling . t)
+                 (pdf-annot-activate-created-annotations . t)
+                 (pdf-view-resize-factor . 1.1))
+        :require t
         :config
-        ;; (setenv "PKG_CONFIG_PATH"
-        ;;         (string-trim (shell-command-to-string "echo \"$(brew --prefix poppler)/lib/pkgconfig:$(brew --prefix libffi)/lib/pkgconfig:$(brew --prefix zlib)/lib/pkgconfig:$(brew --prefix)/lib/pkgconfig:/opt/X11/lib/pkgconfig\"")))
-        (pdf-tools-install)
-        (display-line-numbers-mode -1)
-        (setq pdf-annot-activate-created-annotations t)
-        (setq pdf-view-resize-factor 1.1))))
+        (pdf-tools-install))))
   (elpaca org-download
     (leaf org-download
       :after org
