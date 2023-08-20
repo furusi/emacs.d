@@ -364,6 +364,14 @@ read-only-mode will be activated for that file."
     :package re-builder
     ("C-c C-k". reb-quit))))
 
+(leaf outline-repeat
+  :after outline
+  :config
+  (defvar-keymap my-outline-navigation-repeat-map
+    :parent outline-navigation-repeat-map
+    :repeat t
+    "TAB" #'outline-cycle))
+
 (leaf special-characer-mode
   :url "https://github.com/madanh/special-characer-mode"
   :config
@@ -1096,7 +1104,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (migemo-user-dictionary . nil)
       (migemo-regex-dictionary . nil)
       (migemo-options . '("--quiet" "--nonewline" "--emacs"))
-      (migemo-dictionary . 
+      (migemo-dictionary .
                          ,(cond ((eq system-type 'darwin)
                                 "/opt/homebrew/opt/cmigemo/share/migemo/utf-8/migemo-dict")
                                ((eq system-type 'windows-nt)
@@ -2450,7 +2458,16 @@ See `org-capture-templates' for more information."
     :config
     (when (eq window-system 'ns)
       (set-face-attribute 'markdown-table-face nil
-                          :family "IPAGothic"))))
+                          :family "IPAGothic"))
+
+    (defvar-keymap my-markdown-navigation-repeat-map
+      :repeat t
+      "C-n" #'markdown-outline-next
+      "n" #'markdown-outline-next
+      "C-p" #'markdown-outline-previous
+      "p" #'markdown-outline-previous
+      "TAB" #'markdown-cycle
+      "u" #'markdown-up-heading)))
 
 (elpaca docker)
 
