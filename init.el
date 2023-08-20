@@ -2438,12 +2438,11 @@ See `org-capture-templates' for more information."
     :config
     (defcustom my-current-modus-theme 'modus-operandi
       "my selected theme"
-      :type '(choice (const :tag "modus-vivendi(黒)" modus-vivendi)
-                     (const :tag "modus-operandi(白)" modus-operandi))
-      :initialize #'custom-initialize-default
-      :group 'my-group
-      )
-    (load-theme 'modus-operandi-deuteranopia :no-confim)
+      :type `(choice ,@(mapcar (lambda (item)
+                                 (list 'const item))
+                               modus-themes-items))
+      :group 'my-group)
+    (load-theme my-current-modus-theme :no-confim)
     )
   )
 (elpaca markdown-mode
