@@ -266,7 +266,16 @@
    ("-" . shrink-window)
    ("_" . shrink-window)
    (">" . enlarge-window-horizontally)
-   ("<" . shrink-window-horizontally)))
+   ("<" . shrink-window-horizontally))
+  :config
+  (defvar-keymap my-scroll-other-window-repeat-map
+    :repeat t
+    "v" #'scroll-other-window
+    "n" #'scroll-other-window
+    "V" #'scroll-other-window-down
+    "p" #'scroll-other-window-down
+    )
+  )
 
 (leaf simple
   :config
