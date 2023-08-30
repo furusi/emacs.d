@@ -1969,6 +1969,10 @@ See `org-capture-templates' for more information."
         :custom ((pdf-view-use-scaling . t)
                  (pdf-annot-activate-created-annotations . t)
                  (pdf-view-resize-factor . 1.1))
+        :bind ((:pdf-view-mode-map
+                ("j" . pdf-view-next-line-or-next-page)
+                ("k" . pdf-view-previous-line-or-previous-page))
+               )
         :require t
         :config
         (pdf-tools-install))))
@@ -2442,7 +2446,7 @@ See `org-capture-templates' for more information."
                                  (list 'const item))
                                modus-themes-items))
       :group 'my-group)
-    (load-theme my-current-modus-theme :no-confim)
+    (load-theme (intern (car modus-themes--select-theme-history))  :no-confim)
     )
   )
 (elpaca markdown-mode
@@ -2461,9 +2465,7 @@ See `org-capture-templates' for more information."
 
     (defvar-keymap my-markdown-navigation-repeat-map
       :repeat t
-      "C-n" #'markdown-outline-next
       "n" #'markdown-outline-next
-      "C-p" #'markdown-outline-previous
       "p" #'markdown-outline-previous
       "TAB" #'markdown-cycle
       "u" #'markdown-up-heading)))
