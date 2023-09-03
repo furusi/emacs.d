@@ -2158,6 +2158,7 @@ See `org-capture-templates' for more information."
     :req "emacs-26.1" "org-pretty-tags-0.2.2" "all-the-icons-5.0.0"
     :url "https://repo.or.cz/org-tag-beautify.git"
     :emacs>= 26.1
+    :after org
     :custom
     `(org-tag-beautify-data-dir . ,(format "%sorg-tag-beautify/data/" elpaca-repos-directory))
     :config
