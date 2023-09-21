@@ -2742,16 +2742,21 @@ Optional argument ARG hoge."
       (consult-customize
        consult-lsp-symbols
        :preview-key (kbd "C-,")))))
-(leaf eglot
-  :after corfu flymake
-  :bind
-  ((:eglot-mode-map
-    ("C-c C-l a a" . eglot-code-actions)))
-  :config
-  ;; (add-hook 'rustic-mode-hook 'eglot-ensure)
-  ;; (add-to-list 'eglot-stay-out-of 'flymake)
-  )
-(elpaca tree-sitter-langs)
+(elpaca eglot
+    (leaf eglot
+      :after corfu flymake
+      :bind
+      ((:eglot-mode-map
+        ("C-c C-l a a" . eglot-code-actions)))))
+(elpaca sideline
+  (leaf sideline
+    :init
+    (setq sideline-flymake-display-mode 'point) ; 'point to show errors only on point
+                                              ; 'line to show errors on the current line
+    (setq sideline-backends-right '((sideline-lsp      . up)
+                                    (sideline-flymake . down)))))
+(elpaca sideline-flymake)
+(elpaca sideline-lsp)
 (elpaca eglot-java
   (leaf eglot-java
     :doc "Java extension for the eglot LSP client"
