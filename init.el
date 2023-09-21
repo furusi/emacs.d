@@ -2335,6 +2335,14 @@ See `org-capture-templates' for more information."
   (leaf go-mode
     :after lsp-mode
     :hook (go-mode-hook . lsp-deferred)))
+(leaf go-ts-mode
+  :hook (go-ts-mode-hook . lsp-deferred)
+  :init
+  (push '(go-mode . go-ts-mode) major-mode-remap-alist))
+(leaf js-ts-mode
+  :hook (js-ts-mode-hook . lsp-deferred)
+  :init
+  (push '(javascript-mode . js-ts-mode) major-mode-remap-alist))
 (when (version< emacs-version "29")
   (elpaca csharp-mode))
 (elpaca android-mode)
