@@ -1073,6 +1073,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
        ("C-c f a" . cape-abbrev)
        ("C-c f l" . cape-line)
        ("C-c f w" . cape-dict)
+       ("C-c f :" . cape-emoji)
        ("C-c f \\" . cape-tex)
        ("C-c f _" . cape-tex)
        ("C-c f ^" . cape-tex)
