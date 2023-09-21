@@ -270,12 +270,10 @@
   :config
   (defvar-keymap my-scroll-other-window-repeat-map
     :repeat t
-    "v" #'scroll-other-window
-    "n" #'scroll-other-window
-    "V" #'scroll-other-window-down
-    "p" #'scroll-other-window-down
-    )
-  )
+    "v"   #'scroll-other-window
+    "C-v" #'scroll-other-window
+    "M-v" #'scroll-other-window-down
+    "V" #'scroll-other-window-down))
 
 (leaf simple
   :config
