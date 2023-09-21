@@ -301,6 +301,8 @@ read-only-mode will be activated for that file."
     :config
     (initchart-record-execution-time-of load file)
     (initchart-record-execution-time-of require feature)))
+(elpaca esup
+  (leaf esup :require t))
 
 (defun which-linux-distribution ()
   "Return string which obtains from 'lsb_release' command."
