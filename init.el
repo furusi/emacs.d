@@ -2465,7 +2465,8 @@ See `org-capture-templates' for more information."
                                  (list 'const item))
                                modus-themes-items))
       :group 'my-group)
-    (load-theme (intern (car modus-themes--select-theme-history))  :no-confim)
+    ;; (load-theme (intern (car modus-themes--select-theme-history))  :no-confim)
+    (modus-themes-toggle)
     )
   )
 (elpaca markdown-mode
