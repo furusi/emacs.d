@@ -328,8 +328,7 @@ read-only-mode will be activated for that file."
     :config
     (exec-path-from-shell-initialize)
     (add-to-list 'exec-path-from-shell-variables "PYTHONPATH")
-    (add-to-list 'exec-path-from-shell-variables "JAVA_HOME")
-    ))
+    (add-to-list 'exec-path-from-shell-variables "JAVA_HOME")))
 (elpaca system-packages
   (leaf system-packages
     :config
@@ -359,10 +358,7 @@ read-only-mode will be activated for that file."
                           (list-dependencies-of . "yay -Qi")
                           (noconfirm . "--noconfirm"))))
       (setq system-packages-use-sudo nil
-            system-packages-package-manager 'yay)
-      )
-    )
-  )
+            system-packages-package-manager 'yay))))
 
 (leaf bind-key
   :bind
@@ -400,8 +396,7 @@ read-only-mode will be activated for that file."
       (,(kbd "7") . ,(ins-val "&")) (,(kbd "&") . ,(ins-val "7")) (,[kp-7] . ,(ins-val "7"))
       (,(kbd "8") . ,(ins-val "*")) (,(kbd "*") . ,(ins-val "8")) (,[kp-8] . ,(ins-val "8")) (,[kp-multiply] . ,(ins-val "*"))
       (,(kbd "9") . ,(ins-val "(")) (,(kbd "(") . ,(ins-val "9")) (,[kp-9] . ,(ins-val "9"))
-      (,(kbd "0") . ,(ins-val ")")) (,(kbd ")") . ,(ins-val "0")) (,[kp-0] . ,(ins-val "0")))
-    ))
+      (,(kbd "0") . ,(ins-val ")")) (,(kbd ")") . ,(ins-val "0")) (,[kp-0] . ,(ins-val "0")))))
 
 (when (equal system-type 'darwin)
   (setq ns-command-modifier 'meta)
@@ -435,9 +430,7 @@ read-only-mode will be activated for that file."
       ;;  `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.5))))
       ;;  `(org-table ((t (,@headline ,@variable-tuple))))
       ;;  `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil)))))
-      )
-    )
-  )
+      )))
 (when (equal system-type 'gnu/linux)
   (add-to-list 'load-path "~/opt/mu-1.0/mu4e")
   ;;曖昧な文字幅を指定する
@@ -615,8 +608,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :config
     (projectile-mode +1)
     (dolist
-        (d '(".ccls-cache"))
-      (add-to-list 'projectile-globally-ignored-directories d))
+        (d '("^\\.ccls-cache$"))
+      (push d projectile-globally-ignored-directories))
     (when (string> emacs-version "28")
       (def-projectile-commander-method ?v "Open project root in vc-dir or magit."
                                        (my-projectile-vc-in-new-tab)))))
@@ -2768,11 +2761,7 @@ Optional argument ARG hoge."
     :url "https://github.com/yveszoundi/eglot-java"
     :emacs>= 26.1
     :custom
-    ((eglot-java-prefix-key . "C-c C-l"))
-    :config
-    ;; (eglot-java-init)
-    )
-  )
+    ((eglot-java-prefix-key . "C-c C-l"))))
 (elpaca consult-eglot
     (leaf consult-eglot
       :doc "A consulting-read interface for eglot"
@@ -2780,8 +2769,7 @@ Optional argument ARG hoge."
       :tag "lsp" "completion" "tools" "emacs>=27.1"
       :url "https://github.com/mohkale/consult-eglot"
       :emacs>= 27.1
-      :after eglot consult)
-    )
+      :after eglot consult))
 
 (elpaca vterm)
 (elpaca (elfeed :files (:defaults "web/*"))
@@ -2869,8 +2857,7 @@ Optional argument ARG hoge."
         (message "Copied:%s" markdowns)))
     (leaf-keys-bind-keymap
      ((elfeed-search-mode-map :package elfeed
-                              ("y" . my-elfeed-yank-map))))
-    ))
+                              ("y" . my-elfeed-yank-map))))))
 (elpaca elfeed-goodies
   (leaf elfeed-goodies
     :doc "Elfeed goodies"
@@ -2903,8 +2890,7 @@ Optional argument ARG hoge."
     :bind
     (:reb-mode-map
      ("C-r" . reb-prev-match)
-     ("C-s" . reb-next-match)))
-  )
+     ("C-s" . reb-next-match))))
 (elpaca regex-tool
   (leaf regex-tool
     :doc "A regular expression evaluation tool for programmers"
