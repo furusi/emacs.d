@@ -557,7 +557,9 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :config
     ;; ediff時にorgファイルを全て表示する
     (defun my-ediff-prepare-buffer-function ()
-      (org-show-all))
+      (if (version<= "9.6" (org-version))
+          (org-fold-show-all)
+          (org-show-all)))
     (add-hook 'ediff-prepare-buffer-hook #'my-ediff-prepare-buffer-function)))
 (elpaca (libgit2 :repo "https://github.com/magit/libegit2.git"))
 (elpaca magit-svn)
