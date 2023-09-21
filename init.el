@@ -2730,9 +2730,7 @@ Optional argument ARG hoge."
       :config
       (consult-customize
        consult-lsp-symbols
-       :preview-key (kbd "C-,"))
-      ))
-  )
+       :preview-key (kbd "C-,")))))
 (leaf eglot
   :after corfu flymake
   :bind
@@ -2742,6 +2740,7 @@ Optional argument ARG hoge."
   ;; (add-hook 'rustic-mode-hook 'eglot-ensure)
   ;; (add-to-list 'eglot-stay-out-of 'flymake)
   )
+(elpaca tree-sitter-langs)
 (elpaca eglot-java
   (leaf eglot-java
     :doc "Java extension for the eglot LSP client"
