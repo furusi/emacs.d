@@ -1191,6 +1191,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                           (when (eq corfu-mode t)
                             (setq-local corfu-auto-prefix 2))))
     :init
+    (with-eval-after-load 'smartparens
+      (push 'rustic-mode sp-ignore-modes-list))
     (leaf rustic-babel
       :after org
       :require t)))
