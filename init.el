@@ -228,6 +228,7 @@
    ("V" . scroll-down-command)))
 (elpaca helpful
   (leaf helpful
+    :disabled t
     :doc "A better *help* buffer"
     :req "emacs-25" "dash-2.18.0" "s-1.11.0" "f-0.20.0" "elisp-refs-1.2"
     :tag "lisp" "help" "emacs>=25"
