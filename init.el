@@ -933,9 +933,11 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
              )
       :init
       (marginalia-mode)))
-  (elpaca (embark :files (:defaults ("embark-org.el")))
+  (elpaca (embark :files (:defaults ("embark-org.el" "embark-consult.el")))
     (leaf embark
       :emacs>= 26.1
+      :hook
+      (embark-collect-mode-hook . consult-preview-at-point-mode)
       :bind
       `((,(if window-system "C-." "M-.") . embark-act)         ;; pick some comfortable binding
         ("C-;" . embark-dwim)        ;; good alternative: M-.
@@ -963,14 +965,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                    '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                      nil
                      (window-parameters (mode-line-format . none))))))
-  ;; Consult users will also want the embark-consult package.
-  (elpaca embark-consult
-    (leaf embark-consult
-      :hook
-      (embark-collect-mode-hook . consult-preview-at-point-mode)
-      ;; :init (with-eval-after-load 'embark
-      ;;         (require 'embark-consult))
-      ))
   (elpaca all-the-icons-completion
     (leaf all-the-icons-completion
       :doc "Add icons to completion candidates"
@@ -2744,6 +2738,7 @@ Optional argument ARG hoge."
       :bind
       ((:eglot-mode-map
         ("C-c C-l a a" . eglot-code-actions)))))
+(elpaca tree-sitter-langs)
 (elpaca sideline
   (leaf sideline
     :init
