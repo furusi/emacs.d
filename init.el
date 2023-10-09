@@ -48,7 +48,10 @@
 (show-paren-mode t)
 (column-number-mode)
 
-(defvar my-dropbox-dir  (expand-file-name "~/Dropbox"))
+(defcustom my-dropbox-dir (expand-file-name "~/Dropbox")
+  "Dropbox directory"
+  :type 'directory
+  :set (lambda (symbol value) (set symbol (expand-file-name value))))
 ;; 絵文字のフォント設定
 (when window-system
   (set-fontset-font t 'symbol "Apple Color Emoji")
