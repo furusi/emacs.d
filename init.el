@@ -1174,22 +1174,22 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
              (rustic-ansi-faces . ["black" "red3" "green3" "yellow3"
                                    "deep sky blue" "magenta3" "cyan3" "white"]))
     :hook
-    (rustic-mode-hook . (lambda ()
-                          (electric-pair-local-mode 1)
-                          (if (and (eq rustic-lsp-client 'nil) (featurep 'lsp-bridge))
-                              (lsp-bridge-mode)
-                            (corfu-mode))
-                          (when (featurep 'embark)
-                            (setq-local embark-target-finders
-                                        (append (remove
-                                                 'embark-target-file-at-point
-                                                 embark-target-finders)
-                                                '(embark-target-file-at-point))))
-                          (when (eq corfu-mode t)
-                            (setq-local corfu-auto-prefix 2))))
+    ((rustic-mode-hook . my-rustic-init)
+     (rustic-mode-hook . lsp-deferred))
     :init
     (with-eval-after-load 'smartparens
       (push 'rustic-mode sp-ignore-modes-list))
+    (defun my-rustic-init ()
+      (electric-pair-local-mode 1)
+      (corfu-mode)
+      (when (featurep 'embark)
+        (setq-local embark-target-finders
+                    (append (remove
+                             'embark-target-file-at-point
+                             embark-target-finders)
+                            '(embark-target-file-at-point))))
+      (when (eq corfu-mode t)
+        (setq-local corfu-auto-prefix 2)))
     (leaf rustic-babel
       :after org
       :require t)))
