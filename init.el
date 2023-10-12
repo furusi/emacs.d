@@ -721,9 +721,12 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
 (leaf eww
   :commands (eww)
   :bind
-  (:eww-mode-map
-   ("j" . next-line)
-   ("k" . previous-line))
+  ((:eww-mode-map
+    ("j" . next-line)
+    ("k" . previous-line))
+   (:embark-url-map
+    :package embark
+    ("x" . browse-url-default-browser)))
   :custom
   (eww-search-prefix . "https://www.google.co.jp/search?q=")
   :config
