@@ -2746,6 +2746,9 @@ Optional argument ARG hoge."
       ((:eglot-mode-map
         ("C-c C-l a a" . eglot-code-actions)))))
 (elpaca tree-sitter-langs)
+(elpaca treesit-auto
+  (leaf treesit-auto
+    :global-minor-mode global-treesit-auto-mode))
 (elpaca sideline
   (leaf sideline
     :init
@@ -2983,6 +2986,7 @@ Optional argument ARG hoge."
                   (when (and (featurep 'corfu)
                              global-corfu-mode)
                     (corfu-mode -1)))))))
+(elpaca suggest)
 
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
 (require 'my-lisp)
