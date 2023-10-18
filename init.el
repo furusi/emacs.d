@@ -658,14 +658,14 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (skk-japanese-message-and-error . t))
     :init
     (leaf skk-dropbox
-      :if (file-exists-p "~/Dropbox/.config/ddskk")
+      :if (file-exists-p (expand-file-name ".config/ddskk" my-dropbox-dir))
       :custom
-      ((skk-jisyo . "~/Dropbox/.config/ddskk/jisyo")
+      `((skk-jisyo . ,(expand-file-name ".config/ddskk/jisyo" my-dropbox-dir))
        (skk-jisyo-code . 'utf-8)))
 
     (let ((skk-jisyo-directory
-           (if (file-exists-p "~/Dropbox/.config/ddskk/skkdic-utf8")
-               "~/Dropbox/.config/ddskk/skkdic-utf8"
+           (if (file-exists-p (expand-file-name ".config/ddskk/skkdic-utf8" my-dropbox-dir))
+               (expand-file-name ".config/ddskk/skkdic-utf8" my-dropbox-dir)
              skk-get-jisyo-directory)))
       (setq skk-large-jisyo (format "%s/SKK-JISYO.L" skk-jisyo-directory))
       (setq skk-extra-jisyo-file-list
@@ -1084,9 +1084,9 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (add-to-list 'completion-at-point-functions #'cape-tex)
       (add-to-list 'completion-at-point-functions #'cape-file)
 
-      (when (file-exists-p "~/Dropbox/.config/emacs/cape/words")
+      (when (file-exists-p (expand-file-name ".config/emacs/cape/words" my-dropbox-dir))
         (customize-set-variable 'cape-dict-file
-                                (let ((wordfile (expand-file-name "~/Dropbox/.config/emacs/cape/words")))
+                                (let ((wordfile (expand-file-name ".config/emacs/cape/words" my-dropbox-dir)))
                                   (if (stringp cape-dict-file)
                                       (list wordfile cape-dict-file)
                                     (add-to-list 'cape-dict-file wordfile)))))
@@ -1919,14 +1919,14 @@ See `org-capture-templates' for more information."
   (elpaca org-gcal
     (leaf org-gcal
       :disabled t
-      :if (file-exists-p "~/Dropbox/org/googlecalendar/org-gcal-config.el")
+      :if (file-exists-p (expand-file-name "org/googlecalendar/org-gcal-config.el" my-dropbox-dir))
       :after org
       :require t
       :custom
       ((org-gcal-down-days . 180)
        (org-gcal-up-days . 180))
       :config
-      (load "~/Dropbox/org/googlecalendar/org-gcal-config.el")))
+      (load (expand-file-name "org/googlecalendar/org-gcal-config.el" my-dropbox-dir))))
   (elpaca (anki-editor :host github :repo "orgtre/anki-editor"
                        :remotes ("origin"
                                  ("fork" :host github :repo "furusi/anki-editor" :branch "master")))
@@ -2992,7 +2992,7 @@ Optional argument ARG hoge."
 (require 'my-lisp)
 (require 'my-window)
 
-(let ((f "~/Dropbox/.config/emacs/config.el"))
+(let ((f (expand-file-name ".config/emacs/config.el" my-dropbox-dir)))
   (when (file-exists-p f)
     (load-file f)))
 
