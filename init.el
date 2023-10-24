@@ -2933,7 +2933,7 @@ Optional argument ARG hoge."
     :tag "faces" "emacs>=25.1"
     :url "https://github.com/chenyanming/shrface"
     :emacs>= 25.1
-    :hook ((eww-after-render-hook . shrface-mode)
+    :hook (;; (eww-after-render-hook . shrface-mode)
            (nov-mode-hook . shrface-mode))
     :require t
     :after eww
