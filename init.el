@@ -2454,9 +2454,17 @@ See `org-capture-templates' for more information."
      (modus-themes-org-blocks . 'gray-background)
      (modus-themes-custom-auto-reload . t)
      (modus-themes-disable-other-themes . t)
-     ;; (modus-vivendi-palette-overrides  . '((bg-main "gray20")))
-     ;; (modus-operandi-palette-overrides  . '((bg-main "#F6F6EF")))
-     )
+     (modus-themes-to-toggle . '(modus-operandi-deuteranopia
+                                 modus-vivendi-deuteranopia)))
+    :hook
+    (ns-system-appearance-change-functions .(lambda (appearance)
+                                                    (if (string-match-p "modus-"
+                                                                        (symbol-name (car custom-enabled-themes)))
+                                                        (my-modus-theme-change-appearance-based-on-macos appearance))))
+    :init
+    (defun my-modus-theme-change-appearance-based-on-macos (appearance)
+      (modus-themes-load-theme
+           (nth (if (eq appearance 'light) 0 1) modus-themes-to-toggle)))
     :config
     (defcustom my-current-modus-theme 'modus-operandi
       "my selected theme"
@@ -2464,10 +2472,7 @@ See `org-capture-templates' for more information."
                                  (list 'const item))
                                modus-themes-items))
       :group 'my-group)
-    ;; (load-theme (intern (car modus-themes--select-theme-history))  :no-confim)
-    (modus-themes-toggle)
-    )
-  )
+    (my-modus-theme-change-appearance-based-on-macos ns-system-appearance)))
 (elpaca markdown-mode
   (leaf markdown-mode
     :mode (("README\\.md\\'" . gfm-mode)
