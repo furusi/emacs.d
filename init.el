@@ -508,6 +508,7 @@ read-only-mode will be activated for that file."
     (add-hook 'calendar-today-visible-hook 'japanese-holiday-mark-weekend)
     (add-hook 'calendar-today-invisible-hook 'japanese-holiday-mark-weekend))
   )
+(elpaca transient)
 (elpaca magit
   (leaf magit
     :bind (("C-x g" . magit-status)
@@ -819,8 +820,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (rfn-eshadow-update-overlay-hook . vertico-directory-tidy))
     (leaf vertico-quick
       :custom
-      ((vertico-quick1 . "aoeuhtns")
-       (vertico-quick2 . "aoeuhtns"))))
+      ((vertico-quick1 . "aoeu")
+       (vertico-quick2 . "htns"))))
   ;; Use the `orderless' completion style.
   ;; Enable `partial-completion' for files to allow path expansion.
   ;; You may prefer to use `initials' instead of `partial-completion'.
