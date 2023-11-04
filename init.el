@@ -156,9 +156,9 @@
                                     (view-mode)))))
   :config
   (defvar auto-read-only-dirs
-    '("/opt/homebrew/Cellar/"
+    `("/opt/homebrew/Cellar/"
       "~/.cargo/registry/"
-      "~/.emacs.d/packages/"
+      ,(concat user-emacs-directory "packages/")
       "~/.rustup/toolchains/")))
 (leaf view-mode
   :bind
@@ -172,7 +172,17 @@
   :bind
   (:Info-mode-map
    ("j" . next-line)
-   ("k" . previous-line)))
+   ("k" . previous-line))
+  :config
+  (defun Info-find-node--info-ja (orig-fn filename &rest args)
+    (apply orig-fn
+           (pcase filename
+             ("emacs" "emacs-ja")
+             ("elisp" "elisp-ja")
+             (t filename))
+           args))
+  (if (file-exists-p "~/.local/share/emacs")
+      (advice-add 'Info-find-node :around 'Info-find-node--info-ja)))
 
 (leaf deepl-translate
   :url "https://uwabami.github.io/cc-env/Emacs.html"
@@ -445,7 +455,8 @@ read-only-mode will be activated for that file."
 ;; 記号をデフォルトのフォントにしない。(for Emacs 25.2)
 (setq use-default-font-for-symbols nil)
 
-(elpaca restart-emacs)
+(when (version< emacs-version "29")
+  (elpaca restart-emacs))
 
 (leaf dired
   :custom
