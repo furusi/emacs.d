@@ -2350,6 +2350,10 @@ See `org-capture-templates' for more information."
   :hook (go-ts-mode-hook . lsp-deferred)
   :init
   (push '(go-mode . go-ts-mode) major-mode-remap-alist))
+(leaf csharp-ts-mode
+  :hook (csharp-ts-mode-hook . lsp-deferred)
+  :init
+  (push '(csharp-mode . csharp-ts-mode) major-mode-remap-alist))
 (leaf js-ts-mode
   :hook (js-ts-mode-hook . lsp-deferred)
   :init
@@ -2476,7 +2480,7 @@ See `org-capture-templates' for more information."
     :init
     (defun my-modus-theme-change-appearance-based-on-macos (appearance)
       (modus-themes-load-theme
-           (nth (if (eq appearance 'light) 0 1) modus-themes-to-toggle)))
+           (nth (if (eq appearance 'dark) 1 0) modus-themes-to-toggle)))
     :config
     (defcustom my-current-modus-theme 'modus-operandi
       "my selected theme"
@@ -2484,7 +2488,9 @@ See `org-capture-templates' for more information."
                                  (list 'const item))
                                modus-themes-items))
       :group 'my-group)
-    (my-modus-theme-change-appearance-based-on-macos ns-system-appearance)))
+    (my-modus-theme-change-appearance-based-on-macos (if (eq system-type 'darwin)
+                                                         ns-system-appearance
+                                                       'light))))
 (elpaca markdown-mode
   (leaf markdown-mode
     :mode (("README\\.md\\'" . gfm-mode)
