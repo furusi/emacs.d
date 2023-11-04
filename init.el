@@ -345,12 +345,12 @@ read-only-mode will be activated for that file."
 (elpaca system-packages
   (leaf system-packages
     :config
-    (when (eq system-type 'darwin)
-      (setq system-packages-use-sudo nil
-            system-packages-package-manager 'brew))
-    (when (or (string-match-p "arch" operating-system-release)
-              (string-match-p "manjaro" operating-system-release)
-              (string-match-p "endeavouros" my-lsb-distribution-name))
+    (cond
+     ((eq system-type 'darwin)
+      (setq system-packages-package-manager 'brew))
+     ((string-match-p "asahi" operating-system-release)
+      (setq system-packages-package-manager 'dnf))
+     ((string-match-p "manjaro\\|endeavouros" operating-system-release)
       (add-to-list 'system-packages-supported-package-managers
                    '(yay .
                          ((default-sudo . nil)
@@ -371,7 +371,7 @@ read-only-mode will be activated for that file."
                           (list-dependencies-of . "yay -Qi")
                           (noconfirm . "--noconfirm"))))
       (setq system-packages-use-sudo nil
-            system-packages-package-manager 'yay))))
+            system-packages-package-manager 'yay)))))
 
 (leaf bind-key
   :bind
