@@ -502,7 +502,7 @@ read-only-mode will be activated for that file."
 
 (leaf dired
   :custom
-  ((dired-dwim-target . t)
+  ((dired-dwim-target . (lambda () (unless current-prefix-arg (dired-dwim-target-next))))
    (dired-recursive-copies . 'always)
    (dired-listing-switches . "-alFh"))
   :config
@@ -1008,17 +1008,17 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
          ("C-l" . my-lookup-mkdict)
          ("j" . join-line))
         (:embark-symbol-map
+         ("C-l" . my-lookup-mkdict))
+        (:embark-identifier-map
          ("C-l" . my-lookup-mkdict)))
       :init
       ;; Optionally replace the key help with a completing-read interface
       ;; (setq prefix-help-command #'embark-prefix-help-command)
-      (defun my-lookup-mkdict ()
-        (interactive)
-        (let ((str (read-from-minibuffer "Input: ")))
-          (call-process
+      (defun my-lookup-mkdict (str)
+        (interactive "sInput: ")
+        (call-process
            "open" nil 0 nil
            (concat "mkdictionaries:///?text=" str)))
-        )
       :config
       ;; Hide the mode line of the Embark live/completions buffers
       (add-to-list 'display-buffer-alist
