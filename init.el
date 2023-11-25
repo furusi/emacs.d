@@ -749,13 +749,11 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
         (add-to-list 'context-skk-programming-mode mode))
       (setq context-skk-mode-off-message "[context-skk] 日本語入力 off")
       (defun my-context-skk-at-heading-p ()
-        (if (bolp)
-            (cond
-             ((org-at-heading-p) t)
-             ((or (org-at-item-bullet-p) (org-at-item-checkbox-p)) t)
-             ((org-at-block-p) t)
-             (t nil))
-          nil))
+        (and (bolp)
+             (or (org-at-heading-p)
+                 (org-at-item-bullet-p)
+                 (org-at-block-p)
+                 (org-at-item-checkbox-p))))
       (add-hook 'org-mode-hook
                 (lambda ()
                   (setq-local
