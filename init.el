@@ -2857,7 +2857,9 @@ Optional argument ARG hoge."
             ("p" . (lambda () (interactive)(forward-line -1)))
             ("e" . (lambda () (interactive)(eww (my-elfeed-yank-entry-url))))
             ("a" . my-elfeed-safari-add-reading-item)
-            ("s" . my-elfeed-search-live-filter)))
+            ("s" . my-elfeed-search-live-filter))
+           (:elfeed-show-mode-map
+            ("a" . my-elfeed-safari-add-reading-item)))
     :init
     (defvar-keymap my-elfeed-yank-map
       "y" #'elfeed-search-yank
