@@ -44,10 +44,9 @@
 (add-hook 'after-init-hook #'elpaca-process-queues)
 (elpaca `(,@elpaca-order))
 
-(elpaca use-package (require 'use-package))
 ;;elpaca end
-
-
+(if (version< emacs-version "29")
+    (elpaca use-package (require 'use-package)))
 
 ;; <leaf-install-code>
 (eval-and-compile
@@ -2871,9 +2870,9 @@ Optional argument ARG hoge."
     ;;osascript -e 'tell application "Safari" to add reading list item "http://totl.net/"'
     (defun my-elfeed-safari-add-reading-item ()
       (interactive)
-      (if (and (eq system-type 'darwin)
-               (equal (shell-command-to-string "command -v osascript") ""))
-          (error "not found 'osascript' command"))
+      (unless (and (eq system-type 'darwin)
+                   (not (equal (shell-command-to-string "command -v osascript") "")))
+        (error "not found 'osascript' command"))
       (let ((url (car (mapcar #'elfeed-entry-link (elfeed-search-selected)))))
         (when (equal url nil)
           (error "url is empty"))
