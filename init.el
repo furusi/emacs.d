@@ -220,7 +220,7 @@
            (pcase filename
              ("emacs" "emacs-ja")
              ("elisp" "elisp-ja")
-             (t filename))
+             (_ filename))
            args))
   (if (file-exists-p "~/.local/share/emacs")
       (advice-add 'Info-find-node :around 'Info-find-node--info-ja)))
@@ -1127,7 +1127,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
        ("C-c f ^" . cape-tex)
        ("C-c f &" . cape-sgml)
        ("C-c f r" . cape-rfc1345))
-      :config
+      :init
       (if (memq system-type '(darwin gnu/linux))
           (customize-set-variable 'cape-dict-file "/usr/share/dict/words"))
       (add-to-list 'completion-at-point-functions #'cape-dabbrev)

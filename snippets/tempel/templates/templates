@@ -2,20 +2,20 @@
 
 emacs-lisp-mode
 
-(alphanumeric_0-9A-Za-z     "[:alnum:]")
-(alphabetic_A-Za-z          "[:alpha:]")
-(ascii_\x00-\x7F            "[:ascii:]")
-(blank_\tspace              "[:blank:]")
-(control_\x00-\x1F\x7F      "[:cntrl:]")
-(digits_0-9                 "[:digit:]")
-(graphical_!-~              "[:graph:]")
-(lower_case_a-z             "[:lower:]")
-(printable_ -~              "[:print:]")
-(punctuation_!-/:-@etc.     "[:punct:]")
-(whitespace_\t\n\v\f\r      "[:space:]")
-(upper_case_A-Z             "[:upper:]")
-(word_characters_0-9A-Za-z_ "[:word:]")
-(hex_digit_0-9A-Fa-f        "[:xdigit:]")
+(charclass_alphabetic_A-Za-z             "[:alpha:]")
+(charclass_alphanumeric_alnum_0-9A-Za-z  "[:alnum:]")
+(charclass_ascii_\x00-\x7F               "[:ascii:]")
+(charclass_blank_\tspace                 "[:blank:]")
+(charclass_control_\x00-\x1F\x7F         "[:cntrl:]")
+(charclass_digits_0-9                    "[:digit:]")
+(charclass_graphical_!-~                 "[:graph:]")
+(charclass_hex_digit_0-9A-Fa-f           "[:xdigit:]")
+(charclass_lower_case_a-z                "[:lower:]")
+(charclass_printable_ -~                 "[:print:]")
+(charclass_punctuation_!-/:-@etc.        "[:punct:]")
+(charclass_upper_case_A-Z                "[:upper:]")
+(charclass_whitespace_\t\n\v\f\r         "[:space:]")
+(charclass_word_characters_0-9A-Za-z_    "[:word:]")
 
 emacs-lisp-mode
 
@@ -60,9 +60,9 @@ latex-mode yatex-mode org-mode
 (cancel "\\cancel{" r "}")
 (SI単位 "\\SI{" p "}{" p "}")
 (sum "\\sum_{" p "}^{" p "}")
-(∩ "\\cap")
-(∪ "\\cup")
-(× "\\times")
+(∩_cap "\\cap")
+(∪_cup "\\cup")
+(×_times "\\times")
 (以下である-less "\\leq")
 (∈ "\\in")
 (自然数Z "\\mathbb{Z}")
@@ -70,8 +70,8 @@ latex-mode yatex-mode org-mode
 
 rustic-mode
 
-(deri "#[derive(" (p "TRAIT") ")]")
-(strc "struct " (p "NAME") "{" n> r n> "}")
+(derive "#[derive(" (p "TRAIT") ")]")
+(struct "struct " (p "NAME") "{" n> r n> "}")
 (doce "/// Errors" n "/// " p)
 (blockdoc "/**" n> p n> "*/")
 (generalresult "Result<" p ", Box<dyn std::error::Error + Send + Sync + 'static>>" q)
