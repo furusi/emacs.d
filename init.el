@@ -222,7 +222,7 @@
              ("elisp" "elisp-ja")
              (_ filename))
            args))
-  (if (file-exists-p "~/.local/share/emacs")
+  (if (string-match-p ".local/share/emacs" (getenv "INFOPATH"))
       (advice-add 'Info-find-node :around 'Info-find-node--info-ja)))
 
 (leaf deepl-translate
@@ -2527,7 +2527,7 @@ See `org-capture-templates' for more information."
                                  (list 'const item))
                                modus-themes-items))
       :group 'my-group)
-    (my-modus-theme-change-appearance-based-on-macos (if (eq system-type 'darwin)
+    (my-modus-theme-change-appearance-based-on-macos (if (boundp 'ns-systexm-appearance)
                                                          ns-system-appearance
                                                        'light))))
 (elpaca markdown-mode
