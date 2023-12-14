@@ -1465,10 +1465,10 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
           ("n" . org-next-item)
           ("U" . org-metaup)
           ("D" . org-metadown)
-          ("r" .   org-metaright)
-          ("l" .   org-metaleft)
-          ("R" .   org-shiftmetaright)
-          ("L" .   org-shiftmetaleft)
+          ("r" . org-metaright)
+          ("l" . org-metaleft)
+          ("R" . org-shiftmetaright)
+          ("L" . org-shiftmetaleft)
           ("t" . org-toggle-checkbox)
           ("i" . (lambda () (org-insert-item) (org-move-item-down) (org-beginning-of-line)))
           ("c" . (lambda ()  (org-insert-item t) (org-move-item-down) (org-beginning-of-line)))
@@ -2203,7 +2203,7 @@ See `org-capture-templates' for more information."
              ))))
   )
 
-(elpaca org-tag-beautify
+(elpaca (org-tag-beautify :host github :repo "emacsmirror/org-tag-beautify" :branch "master")
   (leaf org-tag-beautify
     :doc "Beautify Org mode tags"
     :req "emacs-26.1" "org-pretty-tags-0.2.2" "all-the-icons-5.0.0"
