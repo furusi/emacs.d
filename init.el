@@ -750,7 +750,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (defun my-context-skk-at-heading-p ()
         (and (bolp)
              (or (org-at-heading-p)
-                 (org-at-item-bullet-p)
+                 (org-at-item-p)
                  (org-at-block-p)
                  (org-at-item-checkbox-p))))
       (add-hook 'org-mode-hook
