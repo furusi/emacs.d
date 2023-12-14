@@ -3059,6 +3059,8 @@ Optional argument ARG hoge."
                            ("terminfo/65" "terminfo/65/*")
                            ("integration" "integration/*")
                            (:exclude ".dir-locals.el" "*-tests.el"))))
+(elpaca jinx)
+(elpaca chatgpt-shell)
 
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
 (require 'my-lisp)
