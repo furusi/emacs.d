@@ -2469,7 +2469,7 @@ See `org-capture-templates' for more information."
                                  (list 'const item))
                                modus-themes-items))
       :group 'my-group)
-    (my-modus-theme-change-appearance-based-on-macos (if (boundp 'ns-systexm-appearance)
+    (my-modus-theme-change-appearance-based-on-macos (if (boundp 'ns-system-appearance)
                                                          ns-system-appearance
                                                        'light))))
 (elpaca markdown-mode
