@@ -600,7 +600,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
           (org-fold-show-all)
         (org-show-all)))
     (add-hook 'ediff-prepare-buffer-hook #'my-ediff-prepare-buffer-function)))
-(elpaca (libgit2 :repo "https://github.com/magit/libegit2.git"))
+(elpaca (libgit2 :repo "https://github.com/magit/libegit2.git"
+                 :main "libgit.el"))
 (elpaca magit-svn)
 (elpaca blamer
   (leaf blamer
@@ -2989,6 +2990,7 @@ Optional argument ARG hoge."
 (elpaca (emacs-eat :type git
                    :host codeberg
                    :repo "akib/emacs-eat"
+                   :main "eat.el"
                    :files ("*.el" ("term" "term/*.el") "*.texi"
                            "*.ti" ("terminfo/e" "terminfo/e/*")
                            ("terminfo/65" "terminfo/65/*")
