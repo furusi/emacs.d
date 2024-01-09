@@ -2737,12 +2737,11 @@ Optional argument ARG hoge."
       (consult-customize
        consult-lsp-symbols
        :preview-key (kbd "C-,")))))
-(elpaca eglot
-  (leaf eglot
+(leaf eglot
     :after corfu flymake
     :bind
     ((:eglot-mode-map
-      ("C-c C-l a a" . eglot-code-actions)))))
+      ("C-c C-l a a" . eglot-code-actions))))
 (elpaca tree-sitter-langs)
 (elpaca treesit-auto
   (leaf treesit-auto
