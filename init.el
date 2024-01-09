@@ -672,7 +672,10 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   (with-eval-after-load 'project
     (add-to-list 'project-find-functions #'my-projectile-project-find-function)))
 ;; ddskk
-(elpaca (ddskk :host github :repo "skk-dev/ddskk" :depth 10)
+(elpaca (ddskk :host github :repo "skk-dev/ddskk" :depth 10
+               :files ("context-skk.el" "ddskk*.el" "skk*.el" "tar-util.el"
+                       "doc/skk.texi" "etc/skk.xpm" "ccc.el"
+                       (:exclude "skk-xemacs.el" "skk-lookup.el")))
   (leaf ddskk
     :commands skk-mode
     :bind (("C-x C-j" . skk-mode)
@@ -2704,12 +2707,11 @@ Optional argument ARG hoge."
                                 (setq lsp-managed-mode t)))
       :bind ((:lsp-mode-map
               ("M-." . lsp-find-definition)))))
-  (elpaca lsp-metals
-    (leaf lsp-metals
-      :custom
-      ((lsp-metals-server-args . '("-J-Dmetals.allow-multiline-string-formatting=off")))
-      :hook (scala-mode-hook . lsp-deferred)
-      ))
+  ;; (elpaca lsp-metals
+  ;;   (leaf lsp-metals
+  ;;     :custom
+  ;;     ((lsp-metals-server-args . '("-J-Dmetals.allow-multiline-string-formatting=off")))
+  ;;     :hook (scala-mode-hook . lsp-deferred)))
   (elpaca lsp-dart)
   (elpaca lsp-tailwindcss)
   (elpaca dap-mode
