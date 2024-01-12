@@ -217,8 +217,10 @@
              ("elisp" "elisp-ja")
              (_ filename))
            args))
-  (if (string-match-p ".local/share/emacs" (getenv "INFOPATH"))
-      (advice-add 'Info-find-node :around 'Info-find-node--info-ja)))
+  (let ((infopath (getenv "INFOPATH")))
+    (if (and (stringp infopath)
+             (string-match-p ".local/share/emacs" infopath))
+      (advice-add 'Info-find-node :around 'Info-find-node--info-ja))))
 
 (leaf deepl-translate
   :url "https://uwabami.github.io/cc-env/Emacs.html"
