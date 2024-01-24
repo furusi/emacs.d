@@ -1367,9 +1367,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
           '(("php" . (("print" . "print(\"|\")")))))))
 ;; Org-mode
 (leaf org*
-  :config
-  (elpaca org
-    (leaf org
+      :config
+      (leaf org
       :mode (("\\.org$" . org-mode))
       :hook ((org-mode-hook . (lambda () (prettify-symbols-mode)))
              (org-mode-hook . (lambda () (setq prettify-symbols-alist org-prettify-symbols-alist)))
@@ -1874,7 +1873,7 @@ and `clavis-org-refile-refiled-from-header' variables."
           "p"   #'org-babel-previous-src-block
           "C-p" #'org-babel-previous-src-block
           )
-        (add-to-list 'org-src-lang-modes '("json" . js-json)))))
+        (add-to-list 'org-src-lang-modes '("json" . js-json))))
 
   (elpaca org-contrib
     (leaf org-contrib
