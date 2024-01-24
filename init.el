@@ -1945,9 +1945,7 @@ See `org-capture-templates' for more information."
        (org-gcal-up-days . 180))
       :config
       (load (expand-file-name "org/googlecalendar/org-gcal-config.el" my-dropbox-dir))))
-  (elpaca (anki-editor :host github :repo "orgtre/anki-editor"
-                       :remotes ("origin"
-                                 ("fork" :host github :repo "furusi/anki-editor" :branch "master")))
+  (elpaca (anki-editor :host github :repo "orgtre/anki-editor")
     (leaf anki-editor
       :doc "Minor mode for making Anki cards with Org"
       :req "emacs-25" "request-0.3.0" "dash-2.12.0"
