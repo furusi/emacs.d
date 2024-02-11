@@ -487,7 +487,7 @@ read-only-mode will be activated for that file."
   ;;曖昧な文字幅を指定する
   (aset char-width-table ?→ 2)
 
-  (when (eq window-system 'x)
+  (when (memq window-system '(x pgtk))
     (set-face-attribute 'default nil :family "UDEV Gothic JPDOC")))
 
 ;; 記号をデフォルトのフォントにしない。(for Emacs 25.2)
@@ -2887,7 +2887,7 @@ Optional argument ARG hoge."
 ;; Major mode for Twitter http://twmode.sf.net/
 (elpaca twittering-mode)
 (elpaca lua-mode)
-(elpaca protobuf-mode)
+(elpaca (protobuf-mode :main "editors/protobuf-mode.el"))
 (elpaca pcre2el
   (leaf pcre2el
     :doc "regexp syntax converter"
