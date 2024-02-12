@@ -1371,8 +1371,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
           '(("php" . (("print" . "print(\"|\")")))))))
 ;; Org-mode
 (leaf org*
-      :config
-      (leaf org
+  :config
+  (leaf org
       :mode (("\\.org$" . org-mode))
       :hook ((org-mode-hook . (lambda () (prettify-symbols-mode)))
              (org-mode-hook . (lambda () (setq prettify-symbols-alist org-prettify-symbols-alist)))
@@ -2152,13 +2152,10 @@ See `org-capture-templates' for more information."
       :emacs>= 26
       :hook (org-mode-hook . org-latex-impatient-mode)
       :config
-      (setq org-latex-impatient-tex2svg-bin
-            (cond
-             ((eq system-type 'darwin)
-              "/opt/homebrew/lib/node_modules/mathjax-node-cli/bin/tex2svg")
-             (t
-              "/usr/bin/tex2svg")
-             )))))
+      (setq org-latex-impatient-tex2svg-bin (if (eq system-type 'darwin)
+                                                "/opt/homebrew/lib/node_modules/mathjax-node-cli/bin/tex2svg"
+                                              "tex2svg"))))
+  )
 
 (elpaca (org-tag-beautify :host github :repo "emacsmirror/org-tag-beautify" :branch "master")
   (leaf org-tag-beautify
