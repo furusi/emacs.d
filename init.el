@@ -1384,12 +1384,13 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                                   (set-face-attribute face nil :family "UDEV Gothic JPDOC")))))
       :custom
       `((org-directory . ,(expand-file-name
-                           (if (file-exists-p "~/git/notes")
-                               "~/git/notes"
-                             (progn
-                               (when(not (file-exists-p "~/org"))
-                                 (mkdir "~/org"))
-                               "~/org"))))
+                           (cond
+                            ((file-exists-p (concat my-dropbox-dir "/org")) (concat my-dropbox-dir "/org"))
+                            ((file-exists-p "~/git/notes") "~/git/notes")
+                            (t (progn
+                                 (when (not (file-exists-p "~/org"))
+                                   (mkdir "~/org"))
+                                 "~/org")))))
         (org-export-allow-bind-keywords . t)
         (org-babel-python-command . "python3")
         (org-export-backends . '(ascii html icalendar latex md odt taskjuggler asciidoc pandoc gfm))
