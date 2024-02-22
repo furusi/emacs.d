@@ -1038,6 +1038,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
        ("M-m" . corfu-move-to-minibuffer))
       :custom
       ((completion-cycle-threshold . 3)
+       (corfu-preselect . 'prompt)
        (corfu-auto . t)
        (corfu-cycle . t)
        (corfu-exclude-modes . '(rustic-mode rust-mode)))
@@ -1402,7 +1403,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                                             (root (if proj (project-current) default-directory)))
                                        (if (string-prefix-p (expand-file-name (pcase (project-current)
                                                                                 (`(projectile . ,dir) dir)
-                                                                                (t root)))
+                                                                                (_ root)))
                                                             truepath)
                                            (file-relative-name truepath)
                                          (abbreviate-file-name path)))))
@@ -1895,7 +1896,6 @@ and `clavis-org-refile-refiled-from-header' variables."
                                    (java       . t)
                                    (lisp       . t)
                                    (mermaid    . t)
-                                   (org        . t)
                                    (perl       . t)
                                    (php        . t)
                                    (plantuml   . t)
@@ -2365,10 +2365,10 @@ See `org-capture-templates' for more information."
     ;; :ensure-system-package ccls
     :hook ((c-mode-hook c++-mode-hook objc-mode-hook) .
            (lambda ()
+             (smartparens-mode -1)
              (require 'ccls)
              (lsp-deferred)
-             (electric-pair-local-mode 1)
-             (smartparens-mode -1)))
+             (electric-pair-local-mode 1)))
     :config
     (when (eq system-type 'darwin)
       (setq ccls-executable (cond ((executable-find  "/opt/homebrew/opt/ccls/bin/ccls"))
@@ -2379,7 +2379,7 @@ See `org-capture-templates' for more information."
   (leaf smartparens
     :diminish t
     :require smartparens-config
-    :hook (elpaca-after-init-hook . smartparens-global-mode)
+    :hook (emacs-lisp-mode-hook . smartparens-mode)
     :bind
     (:emacs-lisp-mode-map
      ("C-c C-u" . sp-backward-up-sexp)
@@ -2746,10 +2746,9 @@ Optional argument ARG hoge."
     :bind
     ((:eglot-mode-map
       ("C-c C-l a a" . eglot-code-actions))))
+(elpaca flycheck-eglot)
 (elpaca tree-sitter-langs)
-(elpaca treesit-auto
-  (leaf treesit-auto
-    :global-minor-mode global-treesit-auto-mode))
+(elpaca treesit-auto)
 (elpaca sideline
   (leaf sideline
     :init
@@ -2804,7 +2803,8 @@ Optional argument ARG hoge."
       "m" #'my-elfeed-search-yank-markdown
       "o" #'my-elfeed-search-yank-org)
     :custom
-    ((elfeed-search-date-format . '("%Y-%m-%d %H:%M" 16 :left)))
+    ((elfeed-search-date-format . '("%Y-%m-%d %H:%M" 16 :left))
+     (elfeed-search-filter . "@24-hours-ago +unread"))
     :config
     ;;osascript -e 'tell application "Safari" to add reading list item "http://totl.net/"'
     (defun my-elfeed-safari-add-reading-item ()
