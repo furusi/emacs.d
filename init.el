@@ -92,7 +92,7 @@
 (require 'cl-lib)
 
 (defcustom my-dropbox-dir (expand-file-name "~/Dropbox")
-  "Dropbox directory"
+  "Dropbox directory."
   :type 'directory
   :set (lambda (symbol value) (set symbol (expand-file-name value))))
 ;; 絵文字のフォント設定
@@ -265,11 +265,9 @@
              (browse-url-generic url))
             (t
              (browse-url-firefox url))))))
-
 (leaf image-mode
   :bind (:image-mode-map
          ("=" . image-increase-size)))
-
 (leaf help-mode
   :bind
   (:help-mode-map
@@ -304,11 +302,9 @@
    ("V" . scroll-down-command))
   :hook
   (diff-mode-hook . (lambda () (read-only-mode t))))
-
 (leaf autorevert
   :hook
   (emacs-startup-hook . global-auto-revert-mode))
-
 (leaf window
   :emacs>= 28
   :bind
@@ -326,26 +322,21 @@
     "C-v" #'scroll-other-window
     "M-v" #'scroll-other-window-down
     "V" #'scroll-other-window-down))
-
 (leaf simple
   :config
   (defcustom my-read-only-dirs nil
     "List of directories where files should be opened in read-only.
-
 Each element in the list is a string, representing a directory path.
 When a file is opened and its path starts with one of the directory paths in this list,
 read-only-mode will be activated for that file."
     :type '(repeat string))
-
   (defun my-read-only-find-file-hook ()
     (when (cl-some
            (lambda (dir)
              (string-prefix-p (expand-file-name dir) buffer-file-name))
            my-read-only-dirs)
       (read-only-mode 1)))
-
   (add-hook 'find-file-hook 'my-read-only-find-file-hook))
-
 (elpaca (initchart :host github :repo "yuttie/initchart")
   (leaf initchart
     :disabled t
@@ -355,7 +346,6 @@ read-only-mode will be activated for that file."
     (initchart-record-execution-time-of require feature)))
 (elpaca esup
   (leaf esup :require t))
-
 (defun which-linux-distribution ()
   "Return string which obtains from 'lsb_release' command."
   (interactive)
@@ -367,7 +357,6 @@ read-only-mode will be activated for that file."
       (which-linux-distribution))
 
 (recentf-mode 1)
-
 ;;行番号を表示
 (if (version<= "26.0.50" emacs-version)
     (progn
@@ -410,7 +399,6 @@ read-only-mode will be activated for that file."
                           (noconfirm . "--noconfirm"))))
       (setq system-packages-use-sudo nil
             system-packages-package-manager 'yay)))))
-
 (leaf bind-key
   :bind
   (("M-<f1>" . other-frame)  ;Macのショートカットに合わせる
@@ -420,7 +408,6 @@ read-only-mode will be activated for that file."
    (:reb-mode-map
     :package re-builder
     ("C-c C-k". reb-quit))))
-
 (leaf outline-repeat
   :after outline
   :config
@@ -428,7 +415,6 @@ read-only-mode will be activated for that file."
     :parent outline-navigation-repeat-map
     :repeat t
     "TAB" #'outline-cycle))
-
 (leaf special-characer-mode
   :url "https://github.com/madanh/special-characer-mode"
   :config
@@ -448,7 +434,6 @@ read-only-mode will be activated for that file."
       (,(kbd "8") . ,(ins-val "*")) (,(kbd "*") . ,(ins-val "8")) (,[kp-8] . ,(ins-val "8")) (,[kp-multiply] . ,(ins-val "*"))
       (,(kbd "9") . ,(ins-val "(")) (,(kbd "(") . ,(ins-val "9")) (,[kp-9] . ,(ins-val "9"))
       (,(kbd "0") . ,(ins-val ")")) (,(kbd ")") . ,(ins-val "0")) (,[kp-0] . ,(ins-val "0")))))
-
 (when (equal system-type 'darwin)
   (setq ns-command-modifier 'meta)
   (when (memq window-system '(ns mac))
@@ -468,7 +453,6 @@ read-only-mode will be activated for that file."
                   ((x-family-fonts "Sans Serif")          '(:family "Sans Serif"))
                   (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
            (headline           `(:inherit default :weight bold)))
-
       ;; (custom-theme-set-faces
       ;;  'user
       ;;  `(org-level-8 ((t (,@headline ,@variable-tuple))))
@@ -486,13 +470,10 @@ read-only-mode will be activated for that file."
   (add-to-list 'load-path "~/opt/mu-1.0/mu4e")
   ;;曖昧な文字幅を指定する
   (aset char-width-table ?→ 2)
-
   (when (memq window-system '(x pgtk))
     (set-face-attribute 'default nil :family "UDEV Gothic JPDOC")))
-
 ;; 記号をデフォルトのフォントにしない。(for Emacs 25.2)
 (setq use-default-font-for-symbols nil)
-
 (when (version< emacs-version "29")
   (elpaca restart-emacs))
 
@@ -622,8 +603,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :bind `(,(when (string> emacs-version "28")
                '(:projectile-command-map
                  ("v" . my-projectile-vc-in-new-tab))))
-    :bind-keymap ((:projectile-mode-map
-                   ("C-c p" . projectile-command-map)))
+    :bind-keymap (("C-c p" . projectile-command-map))
     :custom
     `((projectile-cache-file . ,(locate-user-emacs-file
                                  (format "projectile/%s/projectile.cache" emacs-version)))
@@ -1041,7 +1021,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
        (corfu-preselect . 'prompt)
        (corfu-auto . t)
        (corfu-cycle . t)
-       (corfu-exclude-modes . '(rustic-mode rust-mode)))
+       (corfu-exclude-modes . '(rustic-mode rust-mode))
+       (tab-always-indent . 'complete))
       :hook
       (eshell-mode-hook . (lambda ()
                             (setq-local corfu-auto t
@@ -1056,18 +1037,17 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (corfu-popupinfo-mode)
       (corfu-history-mode)
       (add-to-list 'savehist-additional-variables 'corfu-history)))
-
-  (elpaca popon
-    (leaf popon
-      :init
-      (unless (display-graphic-p)
-        (require 'popon))))
   (elpaca corfu-terminal
     (leaf corfu-terminal
       :after corfu popon
       :config
       (unless (display-graphic-p)
         (corfu-terminal-mode +1))))
+  (elpaca popon
+    (leaf popon
+      :init
+      (unless (display-graphic-p)
+        (require 'popon))))
   (elpaca tempel
     (leaf tempel
       :doc "Tempo templates/snippets with in-buffer field editing"
@@ -1881,7 +1861,6 @@ and `clavis-org-refile-refiled-from-header' variables."
           "C-p" #'org-babel-previous-src-block
           )
         (add-to-list 'org-src-lang-modes '("json" . js-json))))
-
   (elpaca org-contrib
     (leaf org-contrib
       :after org
@@ -2491,7 +2470,6 @@ See `org-capture-templates' for more information."
     (when (eq window-system 'ns)
       (set-face-attribute 'markdown-table-face nil
                           :family "IPAGothic"))
-
     (defvar-keymap my-markdown-navigation-repeat-map
       :repeat t
       "n" #'markdown-outline-next
@@ -2814,7 +2792,7 @@ Optional argument ARG hoge."
         (error "not found 'osascript' command"))
       (let ((url (car (mapcar #'elfeed-entry-link (elfeed-search-selected)))))
         (when (equal url nil)
-          (error "url is empty"))
+          (error "Url is empty"))
         (call-process-shell-command
          (format "osascript -e 'tell application \"Safari\" to add reading list item \"%s\"'" (my-elfeed-yank-entry-url)))
         (message "The selected entry is added to Safari's reading list.")
