@@ -2442,9 +2442,9 @@ See `org-capture-templates' for more information."
     (ns-system-appearance-change-functions .(lambda (appearance)
                                               (if (string-match-p "modus-"
                                                                   (symbol-name (car custom-enabled-themes)))
-                                                  (my-modus-theme-change-appearance-based-on-macos appearance))))
+                                                  (my-modus-themes--change-appearance appearance))))
     :init
-    (defun my-modus-theme-change-appearance-based-on-macos (appearance)
+    (defun my-modus-themes--change-appearance (appearance)
       (modus-themes-load-theme
        (nth (if (eq appearance 'dark) 1 0) modus-themes-to-toggle)))
     :config
@@ -2454,9 +2454,10 @@ See `org-capture-templates' for more information."
                                  (list 'const item))
                                modus-themes-items))
       :group 'my-group)
-    (my-modus-theme-change-appearance-based-on-macos (if (boundp 'ns-system-appearance)
-                                                         ns-system-appearance
-                                                       'light))))
+    (my-modus-themes--change-appearance  (cond
+                                          ((boundp 'ns-system-appearance) ns-system-appearance)
+                                          ((string-match-p "vivendi" (car modus-themes--select-theme-history)) 'dark)
+                                          (t 'light)))))
 (elpaca markdown-mode
   (leaf markdown-mode
     :mode (("README\\.md\\'" . gfm-mode)
