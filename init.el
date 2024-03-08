@@ -2450,16 +2450,16 @@ See `org-capture-templates' for more information."
       (modus-themes-load-theme
        (nth (if (eq appearance 'dark) 1 0) modus-themes-to-toggle)))
     :config
-    (defcustom my-current-modus-theme 'modus-operandi
-      "my selected theme"
-      :type `(choice ,@(mapcar (lambda (item)
-                                 (list 'const item))
-                               modus-themes-items))
-      :group 'my-group)
     (my-modus-themes--change-appearance  (cond
                                           ((boundp 'ns-system-appearance) ns-system-appearance)
                                           ((string-match-p "vivendi" (car modus-themes--select-theme-history)) 'dark)
-                                          (t 'light)))))
+                                          (t 'light)))
+    (defun my-modus-themes--save ()
+        "save current modus-theme's variant to `modus-themes--select-theme-history'"
+        (let ((theme (symbol-name (car custom-enabled-themes))))
+          (when (string-match-p "^modus-" theme)
+            (add-to-history 'modus-themes--select-theme-history theme))))
+    (advice-add 'modus-themes-toggle :after #'my-modus-themes--save)))
 (elpaca markdown-mode
   (leaf markdown-mode
     :mode (("README\\.md\\'" . gfm-mode)
