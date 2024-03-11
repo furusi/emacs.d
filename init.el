@@ -236,6 +236,17 @@
    ("T" . my-deepl-translate))
   :preface
   (require 'url-util)
+  (defun my-translate--sanitize-string (string)
+    "docstring"
+    (replace-regexp-in-string
+                    "|" (regexp-quote "\x005c\x007c")
+                    (replace-regexp-in-string
+                     "/"
+                     (regexp-quote "\x005c\x002f")
+                     string)))
+  (defvar my-translate-url  "https://miraitranslate.com/trial/#en/ja/"
+    ;; "https://www.deepl.com/translator#en/ja/%s"
+    )
   (defun my-deepl-translate (&optional string)
     (interactive)
     (setq string
@@ -252,15 +263,9 @@
                      (forward-sentence)
                      (buffer-substring s (point)))))))
     (run-at-time 0.1 nil 'deactivate-mark)
-    (let* ((string (replace-regexp-in-string
-                    "|" (regexp-quote "\x005c\x007c")
-                    (replace-regexp-in-string
-                     "/"
-                     (regexp-quote "\x005c\x002f")
-                     string))
-                   )
-           (url (format "https://www.deepl.com/translator#en/ja/%s"
-                        (url-hexify-string string))))
+    (let* ((string (my-translate--sanitize-string string))
+           (url (format "%s%s"
+                        my-translate-url (url-hexify-string string))))
       (cond ((eq system-type 'darwin)
              (browse-url-default-macosx-browser url))
             ((string-match ".*-microsoft-standard-WSL2.*" operating-system-release)
