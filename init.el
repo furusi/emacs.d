@@ -999,7 +999,14 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (add-to-list 'display-buffer-alist
                    '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                      nil
-                     (window-parameters (mode-line-format . none))))))
+                     (window-parameters (mode-line-format . none))))
+      (defun my-advice--fixup-whitespace (old-fn &rest args)
+        "Skip function execution when cursor is between Japanese characters"
+        (if (and (looking-at-p " *\\cj")
+                 (looking-back "\\cj *" (point-beginning-of-line)))
+            (cycle-spacing 0)
+          (apply old-fn args)))
+      (advice-add 'fixup-whitespace :around #'my-advice--fixup-whitespace)))
   (elpaca all-the-icons-completion
     (leaf all-the-icons-completion
       :doc "Add icons to completion candidates"
