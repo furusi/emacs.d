@@ -2146,10 +2146,8 @@ See `org-capture-templates' for more information."
       :url "https://github.com/yangsheng6810/org-latex-instant-preview"
       :emacs>= 26
       :hook (org-mode-hook . org-latex-impatient-mode)
-      :config
-      (setq org-latex-impatient-tex2svg-bin (if (eq system-type 'darwin)
-                                                "/opt/homebrew/lib/node_modules/mathjax-node-cli/bin/tex2svg"
-                                              "tex2svg"))))
+      :custom
+      (org-latex-impatient-tex2svg-bin . "tex2svg")))
   )
 
 (elpaca (org-tag-beautify :host github :repo "emacsmirror/org-tag-beautify" :branch "master")
