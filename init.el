@@ -6,9 +6,6 @@
 ;; (require 'profiler)
 ;; (profiler-start 'cpu)
 
-;; transient requires `seq' >= 2.24. see 5ec9ae91 in magit repository
-(setq package-install-upgrade-built-in t)
-
 ;;elpaca
 (defvar elpaca-installer-version 0.7)
 (defvar elpaca-directory (expand-file-name "elpaca/" (format "%spackages/%s" user-emacs-directory emacs-version)))
