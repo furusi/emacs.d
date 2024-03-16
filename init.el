@@ -2449,8 +2449,9 @@ See `org-capture-templates' for more information."
                                  modus-vivendi-deuteranopia)))
     :hook
     (ns-system-appearance-change-functions .(lambda (appearance)
-                                              (if (string-match-p "modus-"
-                                                                  (symbol-name (car custom-enabled-themes)))
+                                              (if (and custom-enabled-themes
+                                                       (string-match-p "modus-"
+                                                                       (symbol-name (car custom-enabled-themes))))
                                                   (my-modus-themes--change-appearance appearance))))
     :init
     (defun my-modus-themes--change-appearance (appearance)
@@ -2459,7 +2460,8 @@ See `org-capture-templates' for more information."
     :config
     (my-modus-themes--change-appearance  (cond
                                           ((boundp 'ns-system-appearance) ns-system-appearance)
-                                          ((string-match-p "vivendi" (car modus-themes--select-theme-history)) 'dark)
+                                          (and modus-themes--select-theme-history
+                                               (string-match-p "vivendi" (car modus-themes--select-theme-history)) 'dark)
                                           (t 'light)))
     (defun my-modus-themes--save ()
         "save current modus-theme's variant to `modus-themes--select-theme-history'"
