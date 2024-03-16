@@ -2461,8 +2461,9 @@ See `org-capture-templates' for more information."
     :config
     (my-modus-themes--change-appearance  (cond
                                           ((boundp 'ns-system-appearance) ns-system-appearance)
-                                          (and modus-themes--select-theme-history
-                                               (string-match-p "vivendi" (car modus-themes--select-theme-history)) 'dark)
+                                          ((and modus-themes--select-theme-history
+                                                (string-match-p "vivendi" (car modus-themes--select-theme-history)))
+                                           'dark)
                                           (t 'light)))
     (defun my-modus-themes--save ()
         "save current modus-theme's variant to `modus-themes--select-theme-history'"
