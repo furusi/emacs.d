@@ -2073,7 +2073,8 @@ See `org-capture-templates' for more information."
          ("C-c n i" . org-roam-node-insert)
          ("C-c n c" . org-roam-capture)
          ;; Dailies
-         ("C-c n j" . org-roam-dailies-capture-today))
+         ("C-c n j" . org-roam-dailies-capture-today)
+         ("C-c n t" . org-roam-dailies-goto-today))
         :config
         (setq org-roam-directory (format "%s/roam" org-directory))
         (org-roam-db-autosync-mode)
