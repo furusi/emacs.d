@@ -729,7 +729,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (skk-hint-start-char . ?=))
     (leaf context-skk
       :config
-      (dolist (mode '(python-mode js-mode rustic-mode dart-mode go-mode))
+      (dolist (mode '(python-mode js-mode rustic-mode dart-mode go-mode typescript-mode))
         (add-to-list 'context-skk-programming-mode mode))
       (setq context-skk-mode-off-message "[context-skk] 日本語入力 off")
       (defun my-context-skk-at-heading-p ()
@@ -1416,6 +1416,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
         (org-enforce-todo-dependencies . t)
         (org-enforce-todo-checkbox-dependencies . t)
         (org-use-sub-superscripts . '{})
+        (org-export-with-toc . nil)
         (org-export-with-sub-superscripts . '{}))
       :bind (("C-c c" . org-capture)
              ("C-c l" . org-store-link)
@@ -2310,7 +2311,7 @@ See `org-capture-templates' for more information."
                                     company-capf company-files))))))
 (elpaca typescript-mode
   (leaf typescript-mode
-    :hook (typescript-mode-hook . #'lsp)))
+    :hook (typescript-mode-hook . #'lsp-deferred)))
 (elpaca rainbow-mode)
 (elpaca poetry)
 (leaf pipenv
@@ -2993,6 +2994,9 @@ Optional argument ARG hoge."
                            (:exclude ".dir-locals.el" "*-tests.el"))))
 (elpaca jinx)
 (elpaca chatgpt-shell)
+(elpaca dmacro
+  (leaf dmacro
+    :global-minor-mode global-dmacro-mode))
 
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
 (require 'my-lisp)
