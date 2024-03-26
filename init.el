@@ -77,12 +77,6 @@
 (leaf diminish
   :ensure t
   :diminish (show-paren-mode))
-
-(leaf feather
-  :ensure t
-  :diminish feather-mode
-  :config (feather-mode))
-
 ;; </leaf-install-code>
 
 
@@ -3014,3 +3008,4 @@ Optional argument ARG hoge."
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 (put 'magit-diff-edit-hunk-commit 'disabled nil)
+(put 'set-goal-column 'disabled nil)
