@@ -712,8 +712,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (with-eval-after-load 'dired
       (load "dired-x")
       (global-set-key "\C-x\C-j" 'skk-mode))
-    (with-eval-after-load 'dabbrev
-      (push 'skk-jisyo-mode dabbrev-ignored-buffer-modes))
     (leaf skk-study
       :require t)
     (leaf skk-hint
@@ -1041,7 +1039,10 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (global-corfu-mode)
       (corfu-popupinfo-mode)
       (corfu-history-mode)
-      (add-to-list 'savehist-additional-variables 'corfu-history)))
+      (add-to-list 'savehist-additional-variables 'corfu-history)
+      (with-eval-after-load 'dabbrev
+        (dolist (mode '(tags-table-mode skk-jisyo-mode))
+          (push mode dabbrev-ignored-buffer-modes)))))
   (elpaca corfu-terminal
     (leaf corfu-terminal
       :after corfu popon
@@ -2305,7 +2306,7 @@ See `org-capture-templates' for more information."
                                     company-capf company-files))))))
 (elpaca typescript-mode
   (leaf typescript-mode
-    :hook (typescript-mode-hook . #'lsp-deferred)))
+    :hook (typescript-mode-hook . lsp-deferred)))
 (elpaca rainbow-mode)
 (elpaca poetry)
 (leaf pipenv
