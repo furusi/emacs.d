@@ -1196,8 +1196,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
              (rustic-ansi-faces . ["black" "red3" "green3" "yellow3"
                                    "deep sky blue" "magenta3" "cyan3" "white"]))
     :hook
-    ((rustic-mode-hook . my-rustic-init)
-     (rustic-mode-hook . lsp-deferred))
+    ((rustic-mode-hook . my-rustic-init))
     :init
     (with-eval-after-load 'smartparens
       (push 'rustic-mode sp-ignore-modes-list))
