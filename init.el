@@ -1376,7 +1376,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
         (org-export-allow-bind-keywords . t)
         (org-babel-python-command . "python3")
         (org-export-backends . '(ascii html icalendar latex md odt taskjuggler asciidoc pandoc gfm))
-        (org-id-link-to-org-use-id . t)
+        (org-id-link-to-org-use-id . 'create-if-interactive)
         (org-icalendar-use-scheduled . '(event-if-todo todo-start))
         (org-link-file-path-type . (lambda (path)
                                      (let* ((truepath (file-truename path))
@@ -2077,7 +2077,8 @@ See `org-capture-templates' for more information."
                  :target
                  (file+head+olp "%<%Y-%m>.org" "#+TITLE: %<%Y-%m>\n\n\n" ("%<%Y-%m-%d>")))))
         (add-to-list 'org-default-properties "ROAM_EXCLUDE")
-        (leaf org-roam-protocol :require t)))
+        (leaf org-roam-protocol :require t)
+        (advice-add 'org-roam-node-open :after (lambda (&rest _) (view-mode)))))
     (elpaca org-roam-ui
       (leaf org-roam-ui
         :req "emacs-27.1" "org-roam-2.0.0" "simple-httpd-20191103.1446" "websocket-1.13"
