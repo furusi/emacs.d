@@ -2325,6 +2325,7 @@ See `org-capture-templates' for more information."
   :init
   (push '(csharp-mode . csharp-ts-mode) major-mode-remap-alist))
 (leaf js-ts-mode
+  :disabled t
   :hook (js-ts-mode-hook . lsp-deferred)
   :init
   (push '(javascript-mode . js-ts-mode) major-mode-remap-alist))
@@ -2948,9 +2949,13 @@ Optional argument ARG hoge."
     :tag "epub" "multimedia" "hypermedia" "emacs>=25.1"
     :url "https://depp.brause.cc/nov.el"
     :emacs>= 25.1
-    :mode ("\\.epub\\'" . nov-mode)))
+    :custom
+    ((nov-text-width . t))
+    :mode ("\\.epub\\'" . nov-mode)
+    :hook (nov-mode-hook . (lambda () (visual-line-mode 1)))))
 (elpaca (nov-xwidget :host github :repo "chenyanming/nov-xwidget")
   (leaf nov-xwidget
+    :disabled t
     :after nov
     :commands nov-xwidget-inject-all-files
     :bind
