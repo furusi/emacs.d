@@ -123,7 +123,6 @@
     (indent-tabs-mode . nil)
     (inhibit-startup-screen . t)
     (mark-ring-max . 128)
-    (menu-bar-mode . t)
     (package-user-dir . ,(locate-user-emacs-file (format "elpa/%s" emacs-version)))
     (recentf-auto-cleanup . 'never)
     (recentf-max-menu-items . 30)
@@ -1181,9 +1180,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :tag "languages" "emacs>=25.1"
     :url "https://github.com/rust-lang/rust-mode"
     :emacs>= 25.1
-    :hook (rust-mode-hook . (lambda () (prettify-symbols-mode)))
-    :config
-    (push '(".add" . ?∔) rust-prettify-symbols-alist)))
+    :hook (rust-mode-hook . prettify-symbols-mode)))
 (elpaca rustic
   (leaf rustic
     :doc "Rust development environment"
@@ -2465,6 +2462,7 @@ See `org-capture-templates' for more information."
           (when (string-match-p "^modus-" theme)
             (add-to-history 'modus-themes--select-theme-history theme))))
     (advice-add 'modus-themes-toggle :after #'my-modus-themes--save)))
+(elpaca doom-themes)
 (elpaca markdown-mode
   (leaf markdown-mode
     :mode (("README\\.md\\'" . gfm-mode)
@@ -2990,6 +2988,9 @@ Optional argument ARG hoge."
 (elpaca dmacro
   (leaf dmacro
     :global-minor-mode global-dmacro-mode))
+(elpaca puni)
+(elpaca rg)
+(elpaca mistty)
 
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
 (require 'my-lisp)
