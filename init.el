@@ -690,8 +690,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (leaf skk-dropbox
       :if (file-exists-p (expand-file-name ".config/ddskk" my-dropbox-dir))
       :custom
-      `((skk-jisyo . ,(expand-file-name ".config/ddskk/jisyo" my-dropbox-dir))
-        (skk-jisyo-code . 'utf-8)))
+      (skk-jisyo-code . 'utf-8))
 
     (let ((skk-jisyo-directory
            (if (file-exists-p (expand-file-name ".config/ddskk/skkdic-utf8" my-dropbox-dir))
@@ -2452,12 +2451,12 @@ See `org-capture-templates' for more information."
       (modus-themes-load-theme
        (nth (if (eq appearance 'dark) 1 0) modus-themes-to-toggle)))
     :config
-    (my-modus-themes--change-appearance  (cond
-                                          ((boundp 'ns-system-appearance) ns-system-appearance)
-                                          ((and modus-themes--select-theme-history
-                                                (string-match-p "vivendi" (car modus-themes--select-theme-history)))
-                                           'dark)
-                                          (t 'light)))
+    (let ((a (cond ((boundp 'ns-system-appearance) ns-system-appearance)
+                            ((and modus-themes--select-theme-history
+                             (string-match-p "vivendi" (car modus-themes--select-theme-history)))
+                             'dark)
+                            (t 'light))))
+      (my-modus-themes--change-appearance a))
     (defun my-modus-themes--save ()
         "save current modus-theme's variant to `modus-themes--select-theme-history'"
         (let ((theme (symbol-name (car custom-enabled-themes))))
@@ -2997,6 +2996,7 @@ Optional argument ARG hoge."
 (elpaca puni)
 (elpaca rg)
 (elpaca mistty)
+(elpaca syncthing)
 
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
 (require 'my-lisp)
