@@ -606,7 +606,10 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (projectile-known-projects-file . ,(locate-user-emacs-file
                                           (format "projectile/%s/projectile-bookmarks.eld" emacs-version)))
       (projectile-sort-order . 'recently-active)
-      (projectile-switch-project-action . 'projectile-commander))
+      (projectile-switch-project-action . 'projectile-commander)
+      (projectile-ignored-projects . `(,(format "%spackages/" user-emacs-directory)
+                                       "/mnt/[a-z]/Users/[^/]+/$")
+                                   ))
     :init
     (let ((dir (locate-user-emacs-file (format "projectile/%s" emacs-version))))
       (unless (file-directory-p dir)
@@ -642,7 +645,11 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (push d projectile-globally-ignored-directories))
     (when (string> emacs-version "28")
       (def-projectile-commander-method ?v "Open project root in vc-dir or magit."
-                                       (my-projectile-vc-in-new-tab)))))
+                                       (my-projectile-vc-in-new-tab)))
+    (setq projectile-ignored-project-function (lambda (project-root)
+                                               (seq-some (lambda (p)
+                                                           (string-match-p p project-root))
+                                                         projectile-ignored-projects)))))
 (leaf projectile-for-eglot
   :url "https://glassonion.hatenablog.com/entry/2019/05/11/134135"
   :after projectile
@@ -718,15 +725,17 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (skk-hint-start-char . ?=))
     (leaf context-skk
       :config
-      (dolist (mode '(python-mode js-mode rustic-mode dart-mode go-mode typescript-mode))
+      (dolist (mode '(python-mode js-mode rustic-mode dart-mode
+                                  go-mode typescript-mode))
         (add-to-list 'context-skk-programming-mode mode))
       (setq context-skk-mode-off-message "[context-skk] 日本語入力 off")
       (defun my-context-skk-at-heading-p ()
         (and (bolp)
-             (or (org-at-heading-p)
-                 (org-at-item-p)
-                 (org-at-block-p)
-                 (org-at-item-checkbox-p))))
+             (and (memq 'org-mode (list major-mode (get-mode-local-parent major-mode)))
+                  (or (org-at-heading-p)
+                      (org-at-item-p)
+                      (org-at-block-p)
+                      (org-at-item-checkbox-p)))))
       (add-hook 'org-mode-hook
                 (lambda ()
                   (setq-local
