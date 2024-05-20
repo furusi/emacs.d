@@ -1107,9 +1107,9 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       :init
       (if (memq system-type '(darwin gnu/linux))
           (customize-set-variable 'cape-dict-file "/usr/share/dict/words"))
-      (add-to-list 'completion-at-point-functions #'cape-keyword)
-      (add-to-list 'completion-at-point-functions #'cape-tex)
-      (add-to-list 'completion-at-point-functions #'cape-file)
+      (add-hook 'completion-at-point-functions #'cape-keyword)
+      (add-hook 'completion-at-point-functions #'cape-tex)
+      (add-hook 'completion-at-point-functions #'cape-file)
 
       (when (file-exists-p (expand-file-name ".config/emacs/cape/words" my-dropbox-dir))
         (customize-set-variable 'cape-dict-file
