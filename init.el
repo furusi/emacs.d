@@ -1031,7 +1031,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
        (corfu-auto . t)
        (corfu-cycle . t)
        (corfu-exclude-modes . '(rustic-mode rust-mode))
-       (tab-always-indent . 'complete))
+       (tab-always-indent . 'complete)
+       (corfu-on-exact-match . nil))
       :hook
       (eshell-mode-hook . (lambda ()
                             (setq-local corfu-auto t
