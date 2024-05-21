@@ -1126,7 +1126,17 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                                 (let ((wordfile (expand-file-name ".config/emacs/cape/words" my-dropbox-dir)))
                                   (if (stringp cape-dict-file)
                                       (list wordfile cape-dict-file)
-                                    (add-to-list 'cape-dict-file wordfile)))))))
+                                    (add-to-list 'cape-dict-file wordfile)))))
+      (defun my-cape-wrap-with-annotation (oldfn &optional annotstr)
+          (when (eq nil annotstr)
+            (setq annotstr (symbol-name )))
+          (cape-wrap-properties oldfn :annotation-function (lambda (_) (format " %s" annotstr))))
+      :config
+      (advice-add 'pcomplete-completions-at-point
+            :around
+            (lambda (oldfn &rest _)
+              (my-cape-wrap-with-annotation oldfn (symbol-name 'pcomplete-completions-at-point))))
+      ))
   (elpaca (kind-icon :host github :repo "jdtsmith/kind-icon")
     (leaf kind-icon
       :emacs>= 27.1
@@ -2086,7 +2096,13 @@ See `org-capture-templates' for more information."
                  (file+head+olp "%<%Y-%m>.org" "#+TITLE: %<%Y-%m>\n\n\n" ("%<%Y-%m-%d>")))))
         (push "ROAM_EXCLUDE" org-default-properties)
         (leaf org-roam-protocol :require t)
-        (advice-add 'org-roam-node-open :after (lambda (&rest _) (view-mode)))))
+        ;; (advice-add 'org-roam-node-open :after (lambda (&rest _) (view-mode)))
+        (dolist (f org-roam-completion-functions)
+            (advice-add f
+                        :around
+                        (lambda (oldfn &rest _)
+                          (my-cape-wrap-with-annotation oldfn (symbol-name f)))))
+        ))
     (elpaca org-roam-ui
       (leaf org-roam-ui
         :req "emacs-27.1" "org-roam-2.0.0" "simple-httpd-20191103.1446" "websocket-1.13"
