@@ -1363,7 +1363,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
 ;; Org-mode
 (leaf org*
   :config
-  (leaf org
+  (elpaca org
+    (leaf org
       :mode (("\\.org$" . org-mode))
       :hook ((org-mode-hook . (lambda () (prettify-symbols-mode)))
              (org-mode-hook . (lambda () (setq prettify-symbols-alist org-prettify-symbols-alist)))
@@ -1724,9 +1725,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
          (org-outline-path-complete-in-steps . nil))
         :config
         (setq org-refile-targets
-              `((nil . (:maxlevel . 2))
-                ((,(format "%s/next-actions.org" org-directory)) . (:level . 1))
-                ((,(format "%s/references.org"   org-directory)) . (:level . 1))))
+              `((nil . (:maxlevel . 10))))
         (leaf org-refile-source-log
           :disabled t
           :url "https://emacs.stackexchange.com/questions/36390/add-original-location-of-refiled-entries-to-logbook-after-org-refile"
@@ -1871,7 +1870,7 @@ and `clavis-org-refile-refiled-from-header' variables."
           "p"   #'org-babel-previous-src-block
           "C-p" #'org-babel-previous-src-block
           )
-        (add-to-list 'org-src-lang-modes '("json" . js-json))))
+        (add-to-list 'org-src-lang-modes '("json" . js-json)))))
   (elpaca org-contrib
     (leaf org-contrib
       :after org
@@ -2085,7 +2084,7 @@ See `org-capture-templates' for more information."
                  "* %?\n%U\n"
                  :target
                  (file+head+olp "%<%Y-%m>.org" "#+TITLE: %<%Y-%m>\n\n\n" ("%<%Y-%m-%d>")))))
-        (add-to-list 'org-default-properties "ROAM_EXCLUDE")
+        (push "ROAM_EXCLUDE" org-default-properties)
         (leaf org-roam-protocol :require t)
         (advice-add 'org-roam-node-open :after (lambda (&rest _) (view-mode)))))
     (elpaca org-roam-ui
