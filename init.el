@@ -608,8 +608,10 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (projectile-sort-order . 'recently-active)
       (projectile-switch-project-action . 'projectile-commander)
       (projectile-ignored-projects . `(,(format "%spackages/" user-emacs-directory)
-                                       "/mnt/[a-z]/Users/[^/]+/$")
-                                   ))
+                                       "/mnt/[a-z]/Users/[^/]+/$"
+                                       "~/.cargo/"
+                                       "~/.rustup/"
+                                       "^~/$")))
     :init
     (let ((dir (locate-user-emacs-file (format "projectile/%s" emacs-version))))
       (unless (file-directory-p dir)
@@ -2401,8 +2403,10 @@ See `org-capture-templates' for more information."
       )))
 (elpaca kotlin-mode
   (leaf kotlin-mode
-    :mode (("\\.kt\\'" . kotlin-mode)))
-  )
+    :mode (("\\.kt\\'" . kotlin-mode))
+    :config
+    (with-eval-after-load 'org
+      (push '("kotlin" . kotlin) org-src-lang-modes))))
 (elpaca ob-kotlin)
 (elpaca (dart-mode :host github :repo "bradyt/dart-mode")
   (leaf dart-mode
@@ -2537,7 +2541,11 @@ See `org-capture-templates' for more information."
 
 (elpaca ssh-config-mode)
 
-(elpaca fish-mode)
+(elpaca fish-mode
+  (leaf fish-mode
+    :config
+    (with-eval-after-load 'org
+      (push '("fish" . fish) org-src-lang-modes))))
 
 (elpaca dockerfile-mode
   (leaf dockerfile-mode
