@@ -2899,7 +2899,12 @@ Optional argument ARG hoge."
     :init
     (elfeed-goodies/setup)))
 
-(elpaca powershell)
+(elpaca powershell
+  (leaf powershell
+    :config
+    (with-eval-after-load 'org
+      (push '("pwsh" . powershell) org-src-lang-modes)
+      (push '("powershell" . powershell) org-src-lang-modes))))
 
 ;; Major mode for Twitter http://twmode.sf.net/
 (elpaca twittering-mode)
@@ -3030,6 +3035,8 @@ Optional argument ARG hoge."
 (elpaca rg)
 (elpaca mistty)
 (elpaca syncthing)
+(elpaca bnf-mode)
+(elpaca (ts-fold :type git :host github :repo "emacs-tree-sitter/ts-fold"))
 
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
 (require 'my-lisp)

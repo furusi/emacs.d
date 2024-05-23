@@ -28,5 +28,4 @@
 (set-language-environment 'Japanese)
 (prefer-coding-system 'utf-8)
 
-(push '(tool-bar-lines . 0) default-frame-alist)
 (setq default-frame-alist '((width . 180) (height . 40) (top . 1) (left . 1) (tool-bar-lines . 0) (menu-bar-lines . 0)))
