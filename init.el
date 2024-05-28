@@ -685,7 +685,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (skk-henkan-show-candidates-keys . '(?a ?o ?e ?u ?h ?t ?n ?s))
       (skk-henkan-strict-okuri-precedence . t)
       (skk-isearch-start-mode . 'latin); isearch で skk の初期状態
-      (skk-kutouten-type . 'en)
+      (skk-kutouten-type . 'jp)
       (skk-save-jisyo-instantly . t)
       (skk-search-katakana . 'jisx0201-kana)
       (skk-search-sagyo-henkaku . t)   ;サ行変格活用の動詞も送りあり変換出来るようにする
@@ -2040,8 +2040,7 @@ See `org-capture-templates' for more information."
       :doc "org-babel support for mermaid evaluation"
       :tag "lisp"
       :after org
-      :url "https://github.com/arnm/ob-mermaid"
-      :custom (ob-mermaid-cli-path . "~/.npm/bin/mmdc")))
+      :url "https://github.com/arnm/ob-mermaid"))
   (elpaca org-journal
     (leaf org-journal
       :commands (org-journal-new-entry org-journal-open-current-journal-file)
@@ -2188,7 +2187,11 @@ See `org-capture-templates' for more information."
   :init
   (add-to-list 'org-src-lang-modes '("anki-editor" . org)))
 
-(elpaca mermaid-mode)
+(elpaca mermaid-mode
+  (leaf mermaid-mode
+    :config
+    (with-eval-after-load 'org
+      (push '("mermaid" . mermaid) org-src-lang-modes))))
 (leaf mu4e
   :disabled t
   :load-path "/opt/homebrew/opt/mu/share/emacs/site-lisp/mu/mu4e"
