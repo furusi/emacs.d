@@ -1123,12 +1123,11 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (add-hook 'completion-at-point-functions #'cape-tex)
       (add-hook 'completion-at-point-functions #'cape-file)
 
-      (when (file-exists-p (expand-file-name ".config/emacs/cape/words" my-dropbox-dir))
+      (when-let ((wordfile (expand-file-name ".config/emacs/cape/words" my-dropbox-dir)))
         (customize-set-variable 'cape-dict-file
-                                (let ((wordfile (expand-file-name ".config/emacs/cape/words" my-dropbox-dir)))
                                   (if (stringp cape-dict-file)
                                       (list wordfile cape-dict-file)
-                                    (add-to-list 'cape-dict-file wordfile)))))
+                                    (add-to-list 'cape-dict-file wordfile))))
       (defun my-cape-wrap-with-annotation (oldfn &optional annotstr)
           (when (eq nil annotstr)
             (setq annotstr (symbol-name )))
