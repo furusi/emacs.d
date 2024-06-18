@@ -214,7 +214,7 @@
   (let ((infopath (getenv "INFOPATH")))
     (if (and (stringp infopath)
              (string-match-p ".local/share/emacs" infopath))
-      (advice-add 'Info-find-node :around 'Info-find-node--info-ja))))
+        (advice-add 'Info-find-node :around 'Info-find-node--info-ja))))
 
 (leaf deepl-translate
   :url "https://uwabami.github.io/cc-env/Emacs.html"
@@ -228,11 +228,11 @@
   (defun my-translate--sanitize-string (string)
     "docstring"
     (replace-regexp-in-string
-                    "|" (regexp-quote "\x005c\x007c")
-                    (replace-regexp-in-string
-                     "/"
-                     (regexp-quote "\x005c\x002f")
-                     string)))
+     "|" (regexp-quote "\x005c\x007c")
+     (replace-regexp-in-string
+      "/"
+      (regexp-quote "\x005c\x002f")
+      string)))
   (defvar my-translate-url  "https://miraitranslate.com/trial/#en/ja/"
     ;; "https://www.deepl.com/translator#en/ja/%s"
     )
@@ -273,24 +273,24 @@
    ("k" . previous-line)
    ("v" . scroll-up-command)
    ("V" . scroll-down-command)))
-(elpaca helpful
-  (leaf helpful
-    :disabled t
-    :doc "A better *help* buffer"
-    :req "emacs-25" "dash-2.18.0" "s-1.11.0" "f-0.20.0" "elisp-refs-1.2"
-    :tag "lisp" "help" "emacs>=25"
-    :url "https://github.com/Wilfred/helpful"
-    :emacs>= 25
-    :bind
-    ((:help-map
-      :package help
-      ("v" . helpful-variable)
-      ("f" . helpful-callable)
-      ("o" . helpful-symbol)
-      ("k" . helpful-key))
-     (:embark-symbol-map
-      :package embark
-      ("h" . helpful-symbol)))))
+(leaf helpful
+  :disabled t
+  :doc "A better *help* buffer"
+  :req "emacs-25" "dash-2.18.0" "s-1.11.0" "f-0.20.0" "elisp-refs-1.2"
+  :tag "lisp" "help" "emacs>=25"
+  :url "https://github.com/Wilfred/helpful"
+  :elpaca t
+  :emacs>= 25
+  :bind
+  ((:help-map
+    :package help
+    ("v" . helpful-variable)
+    ("f" . helpful-callable)
+    ("o" . helpful-symbol)
+    ("k" . helpful-key))
+   (:embark-symbol-map
+    :package embark
+    ("h" . helpful-symbol))))
 (leaf diff-mode
   :bind
   (:diff-mode-map
@@ -333,15 +333,16 @@ read-only-mode will be activated for that file."
            my-read-only-dirs)
       (read-only-mode 1)))
   (add-hook 'find-file-hook 'my-read-only-find-file-hook))
-(elpaca (initchart :host github :repo "yuttie/initchart")
-  (leaf initchart
-    :disabled t
-    :require t
-    :config
-    (initchart-record-execution-time-of load file)
-    (initchart-record-execution-time-of require feature)))
-(elpaca esup
-  (leaf esup :require t))
+(leaf initchart
+  :elpaca (initchart :host github :repo "yuttie/initchart")
+  :disabled t
+  :require t
+  :config
+  (initchart-record-execution-time-of load file)
+  (initchart-record-execution-time-of require feature))
+(leaf esup
+  :elpaca t
+  :require t)
 (defun which-linux-distribution ()
   "Return string which obtains from 'lsb_release' command."
   (interactive)
@@ -354,47 +355,47 @@ read-only-mode will be activated for that file."
 
 (recentf-mode 1)
 ;;行番号を表示
-(if (version<= "26.0.50" emacs-version)
+(if (version< "26" emacs-version)
     (progn
       ;; (global-display-line-numbers-mode)
       (setq-default indicate-empty-lines t)
       (setq-default indicate-buffer-boundaries 'left)))
-(elpaca exec-path-from-shell
-  (leaf exec-path-from-shell
-    :config
-    (exec-path-from-shell-initialize)
-    (add-to-list 'exec-path-from-shell-variables "PYTHONPATH")
-    (add-to-list 'exec-path-from-shell-variables "JAVA_HOME")))
-(elpaca system-packages
-  (leaf system-packages
-    :config
-    (cond
-     ((eq system-type 'darwin)
-      (setq system-packages-package-manager 'brew))
-     ((string-match-p "asahi" operating-system-release)
-      (setq system-packages-package-manager 'dnf))
-     ((string-match-p "manjaro\\|endeavouros" operating-system-release)
-      (add-to-list 'system-packages-supported-package-managers
-                   '(yay .
-                         ((default-sudo . nil)
-                          (install . "yay -S")
-                          (search . "yay -Ss")
-                          (uninstall . "yay -Rs")
-                          (update . "yay -Syu")
-                          (clean-cache . "yay -Sc")
-                          (log . "cat /var/log/pacman.log")
-                          (get-info . "yay -Qi")
-                          (get-info-remote . "yay -Si")
-                          (list-files-provided-by . "yay -Ql")
-                          (verify-all-packages . "yay -Qkk")
-                          (verify-all-dependencies . "yay -Dk")
-                          (remove-orphaned . "yay -Rns $(pacman -Qtdq)")
-                          (list-installed-packages . "yay -Qe")
-                          (list-installed-packages-all . "yay -Q")
-                          (list-dependencies-of . "yay -Qi")
-                          (noconfirm . "--noconfirm"))))
-      (setq system-packages-use-sudo nil
-            system-packages-package-manager 'yay)))))
+(leaf exec-path-from-shell
+  :elpaca t
+  :config
+  (exec-path-from-shell-initialize)
+  (add-to-list 'exec-path-from-shell-variables "PYTHONPATH")
+  (add-to-list 'exec-path-from-shell-variables "JAVA_HOME"))
+(leaf system-packages
+  :elpaca t
+  :config
+  (cond
+   ((eq system-type 'darwin)
+    (setq system-packages-package-manager 'brew))
+   ((string-match-p "asahi" operating-system-release)
+    (setq system-packages-package-manager 'dnf))
+   ((string-match-p "manjaro\\|endeavouros" operating-system-release)
+    (add-to-list 'system-packages-supported-package-managers
+                 '(yay .
+                       ((default-sudo . nil)
+                        (install . "yay -S")
+                        (search . "yay -Ss")
+                        (uninstall . "yay -Rs")
+                        (update . "yay -Syu")
+                        (clean-cache . "yay -Sc")
+                        (log . "cat /var/log/pacman.log")
+                        (get-info . "yay -Qi")
+                        (get-info-remote . "yay -Si")
+                        (list-files-provided-by . "yay -Ql")
+                        (verify-all-packages . "yay -Qkk")
+                        (verify-all-dependencies . "yay -Dk")
+                        (remove-orphaned . "yay -Rns $(pacman -Qtdq)")
+                        (list-installed-packages . "yay -Qe")
+                        (list-installed-packages-all . "yay -Q")
+                        (list-dependencies-of . "yay -Qi")
+                        (noconfirm . "--noconfirm"))))
+    (setq system-packages-use-sudo nil
+          system-packages-package-manager 'yay))))
 (leaf bind-key
   :bind
   (("M-<f1>" . other-frame)  ;Macのショートカットに合わせる
@@ -492,79 +493,79 @@ read-only-mode will be activated for that file."
   :hook
   ((xwidget-webkit-mode-hook . (lambda ()
                                  (display-line-numbers-mode -1)))))
-(elpaca pomodoro
-  (leaf pomodoro
-    :doc "A timer for the Pomodoro Technique"
-    :commands pomodoro-start
-    :config
-    (when (eq window-system 'ns)
-      (setq pomodoro-sound-player "afplay"))
+(leaf pomodoro
+  :doc "A timer for the Pomodoro Technique"
+  :elpaca t
+  :commands pomodoro-start
+  :config
+  (when (eq window-system 'ns)
+    (setq pomodoro-sound-player "afplay"))
 
-    (let ((sound (cond
-                  ((or (string-match "Ubuntu" my-lsb-distribution-name)
-                       (string-match "debian" my-lsb-distribution-name))
-                   "/usr/share/sounds/gnome/default/alerts/glass.ogg")
-                  ((string-match "endeavouros" my-lsb-distribution-name)
-                   "/usr/share/sounds/freedesktop/stereo/service-login.oga")
-                  ((eq window-system 'ns)
-                   "/System/Library/Sounds/Glass.aiff"))))
-      (setq pomodoro-work-start-sound sound
-            pomodoro-break-start-sound sound))
-    (when (not (member '(pomodoro-mode-line-string pomodoro-mode-line-string)  mode-line-format))
-      (pomodoro-add-to-mode-line))))
+  (let ((sound (cond
+                ((or (string-match "Ubuntu" my-lsb-distribution-name)
+                     (string-match "debian" my-lsb-distribution-name))
+                 "/usr/share/sounds/gnome/default/alerts/glass.ogg")
+                ((string-match "endeavouros" my-lsb-distribution-name)
+                 "/usr/share/sounds/freedesktop/stereo/service-login.oga")
+                ((eq window-system 'ns)
+                 "/System/Library/Sounds/Glass.aiff"))))
+    (setq pomodoro-work-start-sound sound
+          pomodoro-break-start-sound sound))
+  (when (not (member '(pomodoro-mode-line-string pomodoro-mode-line-string)  mode-line-format))
+    (pomodoro-add-to-mode-line)))
 (elpaca sudo-edit)
-(elpaca japanese-holidays
-  (leaf japanese-holidays
-    :after calendar
-    :doc "Calendar functions for the Japanese calendar"
-    :req "emacs-24.1" "cl-lib-0.3"
-    :tag "calendar" "emacs>=24.1"
-    :url "https://github.com/emacs-jp/japanese-holidays"
-    :emacs>= 24.1
-    :require t
-    :config
-    (setq calendar-holidays ; 他の国の祝日も表示させたい場合は適当に調整
-          (append japanese-holidays holiday-local-holidays holiday-other-holidays))
-    (setq calendar-mark-holidays-flag t) ;祝日をカレンダーに表示
-    ;; 土曜日・日曜日を祝日として表示する場合、以下の設定を追加します。
-    ;; デフォルトで設定済み
-    (setq japanese-holiday-weekend '(0 6) ; 土日を祝日として表示
-          japanese-holiday-weekend-marker ; 土曜日を水色で表示
-          '(holiday nil nil nil nil nil japanese-holiday-saturday))
-    (add-hook 'calendar-today-visible-hook 'japanese-holiday-mark-weekend)
-    (add-hook 'calendar-today-invisible-hook 'japanese-holiday-mark-weekend)))
-(when (version< emacs-version "29.2")
-  (elpaca seq))
+(leaf japanese-holidays
+  :after calendar
+  :elpaca t
+  :doc "Calendar functions for the Japanese calendar"
+  :req "emacs-24.1" "cl-lib-0.3"
+  :tag "calendar" "emacs>=24.1"
+  :url "https://github.com/emacs-jp/japanese-holidays"
+  :emacs>= 24.1
+  :require t
+  :config
+  (setq calendar-holidays ; 他の国の祝日も表示させたい場合は適当に調整
+        (append japanese-holidays holiday-local-holidays holiday-other-holidays))
+  (setq calendar-mark-holidays-flag t) ;祝日をカレンダーに表示
+  ;; 土曜日・日曜日を祝日として表示する場合、以下の設定を追加します。
+  ;; デフォルトで設定済み
+  (setq japanese-holiday-weekend '(0 6) ; 土日を祝日として表示
+        japanese-holiday-weekend-marker ; 土曜日を水色で表示
+        '(holiday nil nil nil nil nil japanese-holiday-saturday))
+  (add-hook 'calendar-today-visible-hook 'japanese-holiday-mark-weekend)
+  (add-hook 'calendar-today-invisible-hook 'japanese-holiday-mark-weekend))
+;; (when (version< emacs-version "29.2")
+;;   (elpaca seq))
 (elpaca transient)
-(elpaca magit
-  (leaf magit
-    :bind (("C-x g" . magit-status)
-           (:magit-diff-mode-map
-            ("=" . magit-diff-more-context)))
-    :hook
-    (ediff-keymap-setup-hook . add-d-to-ediff-mode-map)
-    :custom
-    ((magit-display-buffer-function . 'magit-display-buffer-fullframe-status-v1)
-     (magit-diff-refine-hunk . 'all)
-     (magit-refresh-status-buffer . nil))
-    :init
-    (defun my-magit-mode-bury-buffer ()
-      (interactive)
-      (call-interactively #'magit-mode-bury-buffer)
-      (when (< 1(length (tab-bar-tabs)))
-        (tab-close)))
-    ;; https://stackoverflow.com/questions/9656311/conflict-resolution-with-emacs-ediff-how-can-i-take-the-changes-of-both-version/29757750#29757750
-    (defun ediff-copy-both-to-C ()
-      (interactive)
-      (ediff-copy-diff ediff-current-difference nil 'C nil
-                       (concat
-                        (ediff-get-region-contents ediff-current-difference 'A ediff-control-buffer)
-                        (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
-    (defun add-d-to-ediff-mode-map ()
-      (when (ediff-merge-job)
-        (define-key ediff-mode-map "d" 'ediff-copy-both-to-C)
-        (setq-local ediff-long-help-message-merge
-                    "
+(leaf magit
+  :elpaca t
+  :bind (("C-x g" . magit-status)
+         (:magit-diff-mode-map
+          ("=" . magit-diff-more-context)))
+  :hook
+  (ediff-keymap-setup-hook . add-d-to-ediff-mode-map)
+  :custom
+  ((magit-display-buffer-function . 'magit-display-buffer-fullframe-status-v1)
+   (magit-diff-refine-hunk . 'all)
+   (magit-refresh-status-buffer . nil))
+  :init
+  (defun my-magit-mode-bury-buffer ()
+    (interactive)
+    (call-interactively #'magit-mode-bury-buffer)
+    (when (< 1(length (tab-bar-tabs)))
+      (tab-close)))
+  ;; https://stackoverflow.com/questions/9656311/conflict-resolution-with-emacs-ediff-how-can-i-take-the-changes-of-both-version/29757750#29757750
+  (defun ediff-copy-both-to-C ()
+    (interactive)
+    (ediff-copy-diff ediff-current-difference nil 'C nil
+                     (concat
+                      (ediff-get-region-contents ediff-current-difference 'A ediff-control-buffer)
+                      (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
+  (defun add-d-to-ediff-mode-map ()
+    (when (ediff-merge-job)
+      (define-key ediff-mode-map "d" 'ediff-copy-both-to-C)
+      (setq-local ediff-long-help-message-merge
+                  "
 p,DEL -previous diff  |     | -vert/horiz split   |  x -copy buf X's region to C
 n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     j -jump to diff   |     @ -auto-refinement    |  r -restore buf C's old diff
@@ -576,82 +577,82 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                       |  $$ -show clashes only    |  / -show/hide ancestor buff
                       |  $* -skip changed regions |  & -merge w/new default
 "
-                    )))
-    :config
-    ;; ediff時にorgファイルを全て表示する
-    (defun my-ediff-prepare-buffer-function ()
-      (if (version<= "9.6" (org-version))
-          (org-fold-show-all)
-        (org-show-all)))
-    (add-hook 'ediff-prepare-buffer-hook #'my-ediff-prepare-buffer-function)))
+                  )))
+  :config
+  ;; ediff時にorgファイルを全て表示する
+  (defun my-ediff-prepare-buffer-function ()
+    (if (version<= "9.6" (org-version))
+        (org-fold-show-all)
+      (org-show-all)))
+  (add-hook 'ediff-prepare-buffer-hook #'my-ediff-prepare-buffer-function))
 (elpaca (libgit2 :repo "https://github.com/magit/libegit2.git"
                  :main "libgit.el"))
 (elpaca magit-svn)
-(elpaca blamer
-  (leaf blamer
-    :doc "Show git blame info about current line"
-    :req "emacs-27.1" "posframe-1.1.7"
-    :tag "emacs>=27.1"
-    :url "https://github.com/artawower/blamer.el"
-    :emacs>= 27.1))
-(elpaca projectile
-  (leaf projectile
-    :bind `(,(when (string> emacs-version "28")
-               '(:projectile-command-map
-                 ("v" . my-projectile-vc-in-new-tab))))
-    :bind-keymap (("C-c p" . projectile-command-map))
-    :custom
-    `((projectile-cache-file . ,(locate-user-emacs-file
-                                 (format "projectile/%s/projectile.cache" emacs-version)))
-      (projectile-known-projects-file . ,(locate-user-emacs-file
-                                          (format "projectile/%s/projectile-bookmarks.eld" emacs-version)))
-      (projectile-sort-order . 'recently-active)
-      (projectile-switch-project-action . 'projectile-commander)
-      (projectile-ignored-projects . `(,(format "%spackages/" user-emacs-directory)
-                                       "/mnt/[a-z]/Users/[^/]+/$"
-                                       "~/.cargo/"
-                                       "~/.rustup/"
-                                       "^~/$")))
-    :init
-    (let ((dir (locate-user-emacs-file (format "projectile/%s" emacs-version))))
-      (unless (file-directory-p dir)
-        (make-directory dir t)))
-    (defun my-projectile-vc-in-new-tab ()
-      (interactive)
-      (let ((tab-name-list (mapcar #'cdadr (tab-bar-tabs)))
-            (tab-name (format "=p:%s"
-                              (replace-regexp-in-string
-                               "\.emacs\.d/packages/.*/.*repos" "REPO"
-                               (replace-regexp-in-string
-                                (format "^%s" (getenv "HOME")) "~"
-                                (projectile-acquire-root)))))
-            (project-root (projectile-acquire-root)))
-        (cond
-         ;; 既に同名のタブがあったらそれを使う
-         ((member tab-name tab-name-list)
-          (tab-switch tab-name)
-          (projectile-vc project-root))
-         ((not (memq major-mode '(magit-diff-mode
-                                  magit-log-mode
-                                  magit-revision-mode
-                                  magit-status-mode)))
-          (other-tab-prefix)
-          (projectile-vc)
-          (tab-rename tab-name))
-         (t
-          (projectile-vc)))))
-    :config
-    (projectile-mode +1)
-    (dolist
-        (d '("^\\.ccls-cache$"))
-      (push d projectile-globally-ignored-directories))
-    (when (string> emacs-version "28")
-      (def-projectile-commander-method ?v "Open project root in vc-dir or magit."
-                                       (my-projectile-vc-in-new-tab)))
-    (setq projectile-ignored-project-function (lambda (project-root)
-                                               (seq-some (lambda (p)
-                                                           (string-match-p p project-root))
-                                                         projectile-ignored-projects)))))
+(leaf blamer
+  :doc "Show git blame info about current line"
+  :req "emacs-27.1" "posframe-1.1.7"
+  :tag "emacs>=27.1"
+  :url "https://github.com/artawower/blamer.el"
+  :emacs>= 27.1
+  :elpaca t)
+(leaf projectile
+  :elpaca t
+  :bind `(,(when (string> emacs-version "28")
+             '(:projectile-command-map
+               ("v" . my-projectile-vc-in-new-tab))))
+  :bind-keymap (("C-c p" . projectile-command-map))
+  :custom
+  `((projectile-cache-file . ,(locate-user-emacs-file
+                               (format "projectile/%s/projectile.cache" emacs-version)))
+    (projectile-known-projects-file . ,(locate-user-emacs-file
+                                        (format "projectile/%s/projectile-bookmarks.eld" emacs-version)))
+    (projectile-sort-order . 'recently-active)
+    (projectile-switch-project-action . 'projectile-commander)
+    (projectile-ignored-projects . `(,(format "%spackages/" user-emacs-directory)
+                                     "/mnt/[a-z]/Users/[^/]+/$"
+                                     "~/.cargo/"
+                                     "~/.rustup/"
+                                     "^~/$")))
+  :init
+  (let ((dir (locate-user-emacs-file (format "projectile/%s" emacs-version))))
+    (unless (file-directory-p dir)
+      (make-directory dir t)))
+  (defun my-projectile-vc-in-new-tab ()
+    (interactive)
+    (let ((tab-name-list (mapcar #'cdadr (tab-bar-tabs)))
+          (tab-name (format "=p:%s"
+                            (replace-regexp-in-string
+                             "\.emacs\.d/packages/.*/.*repos" "REPO"
+                             (replace-regexp-in-string
+                              (format "^%s" (getenv "HOME")) "~"
+                              (projectile-acquire-root)))))
+          (project-root (projectile-acquire-root)))
+      (cond
+       ;; 既に同名のタブがあったらそれを使う
+       ((member tab-name tab-name-list)
+        (tab-switch tab-name)
+        (projectile-vc project-root))
+       ((not (memq major-mode '(magit-diff-mode
+                                magit-log-mode
+                                magit-revision-mode
+                                magit-status-mode)))
+        (other-tab-prefix)
+        (projectile-vc)
+        (tab-rename tab-name))
+       (t
+        (projectile-vc)))))
+  :config
+  (projectile-mode +1)
+  (dolist
+      (d '("^\\.ccls-cache$"))
+    (push d projectile-globally-ignored-directories))
+  (when (string> emacs-version "28")
+    (def-projectile-commander-method ?v "Open project root in vc-dir or magit."
+                                     (my-projectile-vc-in-new-tab)))
+  (setq projectile-ignored-project-function (lambda (project-root)
+                                              (seq-some (lambda (p)
+                                                          (string-match-p p project-root))
+                                                        projectile-ignored-projects))))
 (leaf projectile-for-eglot
   :url "https://glassonion.hatenablog.com/entry/2019/05/11/134135"
   :after projectile
@@ -664,96 +665,96 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   (with-eval-after-load 'project
     (add-to-list 'project-find-functions #'my-projectile-project-find-function)))
 ;; ddskk
-(elpaca (ddskk :host github :repo "skk-dev/ddskk" :depth 10
-               :files ("context-skk.el" "ddskk*.el" "skk*.el" "tar-util.el"
-                       "doc/skk.texi" "etc/skk.xpm" "ccc.el"
-                       (:exclude "skk-xemacs.el" "skk-lookup.el")))
-  (leaf ddskk
-    :commands skk-mode
-    :bind (("C-x C-j" . skk-mode)
-           (:minibuffer-local-map
-            ("C-j" . skk-kakutei)))
-    :hook ((skk-load-hook . (lambda () (require 'context-skk))) ;自動的に英字モードになる
-           (skk-jisyo-edit-mode-hook . (lambda () (read-only-mode t))))
+(leaf ddskk
+  :elpaca (ddskk :host github :repo "skk-dev/ddskk" :depth 10
+                 :files ("context-skk.el" "ddskk*.el" "skk*.el" "tar-util.el"
+                         "doc/skk.texi" "etc/skk.xpm" "ccc.el"
+                         (:exclude "skk-xemacs.el" "skk-lookup.el")))
+  :commands skk-mode
+  :bind (("C-x C-j" . skk-mode)
+         (:minibuffer-local-map
+          ("C-j" . skk-kakutei)))
+  :hook ((skk-load-hook . (lambda () (require 'context-skk))) ;自動的に英字モードになる
+         (skk-jisyo-edit-mode-hook . (lambda () (read-only-mode t))))
+  :custom
+  `((default-input-method . "japanese-skk")
+    (skk-auto-insert-paren . t)
+    (skk-dcomp-activate . t)         ;動的補完
+    (skk-delete-implies-kakutei . nil) ; ▼モードで BS を押したときには確定しないで前候補を表示する
+    (skk-egg-like-newline . t)           ;non-nilにするとEnterでの確定時に改行しない
+    (skk-get-jisyo-directory . ,(expand-file-name (locate-user-emacs-file "skk-get-jisyo")))
+    (skk-henkan-show-candidates-keys . '(?a ?o ?e ?u ?h ?t ?n ?s))
+    (skk-henkan-strict-okuri-precedence . t)
+    (skk-isearch-start-mode . 'latin); isearch で skk の初期状態
+    (skk-kutouten-type . 'jp)
+    (skk-save-jisyo-instantly . t)
+    (skk-search-katakana . 'jisx0201-kana)
+    (skk-search-sagyo-henkaku . t)   ;サ行変格活用の動詞も送りあり変換出来るようにする
+    (skk-share-private-jisyo . t)
+    (skk-sticky-key . '(117 101))
+    (skk-use-act . t)                ;全角・半角カタカナを変換候補にする
+    (skk-use-jisx0201-input-method . t)
+    (skk-user-directory . ,(locate-user-emacs-file "ddskk"))
+    (skk-japanese-message-and-error . t))
+  :init
+  (leaf skk-dropbox
+    :if (file-exists-p (expand-file-name ".config/ddskk" my-dropbox-dir))
     :custom
-    `((default-input-method . "japanese-skk")
-      (skk-auto-insert-paren . t)
-      (skk-dcomp-activate . t)         ;動的補完
-      (skk-delete-implies-kakutei . nil) ; ▼モードで BS を押したときには確定しないで前候補を表示する
-      (skk-egg-like-newline . t)           ;non-nilにするとEnterでの確定時に改行しない
-      (skk-get-jisyo-directory . ,(expand-file-name (locate-user-emacs-file "skk-get-jisyo")))
-      (skk-henkan-show-candidates-keys . '(?a ?o ?e ?u ?h ?t ?n ?s))
-      (skk-henkan-strict-okuri-precedence . t)
-      (skk-isearch-start-mode . 'latin); isearch で skk の初期状態
-      (skk-kutouten-type . 'jp)
-      (skk-save-jisyo-instantly . t)
-      (skk-search-katakana . 'jisx0201-kana)
-      (skk-search-sagyo-henkaku . t)   ;サ行変格活用の動詞も送りあり変換出来るようにする
-      (skk-share-private-jisyo . t)
-      (skk-sticky-key . '(117 101))
-      (skk-use-act . t)                ;全角・半角カタカナを変換候補にする
-      (skk-use-jisx0201-input-method . t)
-      (skk-user-directory . ,(locate-user-emacs-file "ddskk"))
-      (skk-japanese-message-and-error . t))
-    :init
-    (leaf skk-dropbox
-      :if (file-exists-p (expand-file-name ".config/ddskk" my-dropbox-dir))
-      :custom
-      (skk-jisyo-code . 'utf-8))
+    (skk-jisyo-code . 'utf-8))
 
-    (let ((skk-jisyo-directory
-           (if (file-exists-p (expand-file-name ".config/ddskk/skkdic-utf8" my-dropbox-dir))
-               (expand-file-name ".config/ddskk/skkdic-utf8" my-dropbox-dir)
-             skk-get-jisyo-directory)))
-      (setq skk-large-jisyo (format "%s/SKK-JISYO.L" skk-jisyo-directory))
-      (setq skk-extra-jisyo-file-list
-            (mapcar (lambda (x)
-                      (format "%s/%s" skk-jisyo-directory x))
-                    '("SKK-JISYO.lisp" "SKK-JISYO.station"
-                      "SKK-JISYO.assoc" "SKK-JISYO.edict"
-                      "SKK-JISYO.law" "SKK-JISYO.jinmei"
-                      "SKK-JISYO.fullname" "SKK-JISYO.geo"
-                      "SKK-JISYO.itaiji" "SKK-JISYO.zipcode"
-                      "SKK-JISYO.okinawa" "SKK-JISYO.propernoun"))))
-    (with-eval-after-load 'dired
-      (load "dired-x")
-      (global-set-key "\C-x\C-j" 'skk-mode))
-    (leaf skk-study
-      :require t)
-    (leaf skk-hint
-      :require t
-      :custom
-      ;; ▼モード中で=漢字の読み方を指定する
-      (skk-hint-start-char . ?=))
-    (leaf context-skk
-      :config
-      (dolist (mode '(python-mode js-mode rustic-mode dart-mode
-                                  go-mode typescript-mode))
-        (add-to-list 'context-skk-programming-mode mode))
-      (setq context-skk-mode-off-message "[context-skk] 日本語入力 off")
-      (defun my-context-skk-at-heading-p ()
-        (and (bolp)
-             (and (memq 'org-mode (list major-mode (get-mode-local-parent major-mode)))
-                  (or (org-at-heading-p)
-                      (org-at-item-p)
-                      (org-at-block-p)
-                      (org-at-item-checkbox-p)))))
-      (add-hook 'org-mode-hook
-                (lambda ()
-                  (setq-local
-                   context-skk-context-check-hook
-                   '(my-context-skk-at-heading-p
-                     context-skk-in-read-only-p))))
-      (context-skk-mode 1))
-    (defun skk-set-display-table ()
-      (walk-windows (lambda (w)
-                      (let ((disptab (make-display-table)))
-                        (aset disptab ?\▼ (vector (make-glyph-code ?# 'escape-glyph)))
-                        (aset disptab ?\▽ (vector (make-glyph-code ?@ 'escape-glyph)))
-                        (set-window-display-table w disptab)))))
-    (require 'ccc)
-    (add-hook 'window-configuration-change-hook #'skk-set-display-table)
-    (add-hook 'after-init-hook #'skk-set-display-table)))
+  (let ((skk-jisyo-directory
+         (if (file-exists-p (expand-file-name ".config/ddskk/skkdic-utf8" my-dropbox-dir))
+             (expand-file-name ".config/ddskk/skkdic-utf8" my-dropbox-dir)
+           skk-get-jisyo-directory)))
+    (setq skk-large-jisyo (format "%s/SKK-JISYO.L" skk-jisyo-directory))
+    (setq skk-extra-jisyo-file-list
+          (mapcar (lambda (x)
+                    (format "%s/%s" skk-jisyo-directory x))
+                  '("SKK-JISYO.lisp" "SKK-JISYO.station"
+                    "SKK-JISYO.assoc" "SKK-JISYO.edict"
+                    "SKK-JISYO.law" "SKK-JISYO.jinmei"
+                    "SKK-JISYO.fullname" "SKK-JISYO.geo"
+                    "SKK-JISYO.itaiji" "SKK-JISYO.zipcode"
+                    "SKK-JISYO.okinawa" "SKK-JISYO.propernoun"))))
+  (with-eval-after-load 'dired
+    (load "dired-x")
+    (global-set-key "\C-x\C-j" 'skk-mode))
+  (leaf skk-study
+    :require t)
+  (leaf skk-hint
+    :require t
+    :custom
+    ;; ▼モード中で=漢字の読み方を指定する
+    (skk-hint-start-char . ?=))
+  (leaf context-skk
+    :config
+    (dolist (mode '(python-mode js-mode rustic-mode dart-mode
+                                go-mode typescript-mode))
+      (add-to-list 'context-skk-programming-mode mode))
+    (setq context-skk-mode-off-message "[context-skk] 日本語入力 off")
+    (defun my-context-skk-at-heading-p ()
+      (and (bolp)
+           (and (memq 'org-mode (list major-mode (get-mode-local-parent major-mode)))
+                (or (org-at-heading-p)
+                    (org-at-item-p)
+                    (org-at-block-p)
+                    (org-at-item-checkbox-p)))))
+    (add-hook 'org-mode-hook
+              (lambda ()
+                (setq-local
+                 context-skk-context-check-hook
+                 '(my-context-skk-at-heading-p
+                   context-skk-in-read-only-p))))
+    (context-skk-mode 1))
+  (defun skk-set-display-table ()
+    (walk-windows (lambda (w)
+                    (let ((disptab (make-display-table)))
+                      (aset disptab ?\▼ (vector (make-glyph-code ?# 'escape-glyph)))
+                      (aset disptab ?\▽ (vector (make-glyph-code ?@ 'escape-glyph)))
+                      (set-window-display-table w disptab)))))
+  (require 'ccc)
+  (add-hook 'window-configuration-change-hook #'skk-set-display-table)
+  (add-hook 'after-init-hook #'skk-set-display-table))
 (leaf eww
   :commands (eww)
   :bind
@@ -784,505 +785,506 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
 
 (leaf *vertico
   :config
-  (elpaca (vertico :host github :repo "minad/vertico" :files (:defaults "extensions/*.el"))
-    (leaf vertico
-      :emacs>= 27.1
-      :bind ((:vertico-map
-              ("M-RET" . minibuffer-force-complete-and-exit)
-              ("M-TAB" . minibuffer-complete)
-              ("C-r" . vertico-previous)
-              ("C-s" . vertico-next)))
-      :custom
-      ((vertico-count . 20)
-       (vertico-cycle . t)
-       (vertico-resize . t))
-      :init
-      (vertico-mode)
-      (defun crm-indicator (args)
-        (cons (format "[CRM%s] %s"
-                      (replace-regexp-in-string
-                       "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
-                       crm-separator)
-                      (car args))
-              (cdr args)))
-      (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+  (leaf vertico
+    :emacs>= 27.1
+    :elpaca (vertico :host github :repo "minad/vertico"
+                     :files (:defaults "extensions/*.el"))
+    :bind ((:vertico-map
+            ("M-RET" . minibuffer-force-complete-and-exit)
+            ("M-TAB" . minibuffer-complete)
+            ("C-r" . vertico-previous)
+            ("C-s" . vertico-next)))
+    :custom
+    ((vertico-count . 20)
+     (vertico-cycle . t)
+     (vertico-resize . t))
+    :init
+    (vertico-mode)
+    (defun crm-indicator (args)
+      (cons (format "[CRM%s] %s"
+                    (replace-regexp-in-string
+                     "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
+                     crm-separator)
+                    (car args))
+            (cdr args)))
+    (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
 
-      ;; Do not allow the cursor in the minibuffer prompt
-      (setq minibuffer-prompt-properties
-            '(read-only t cursor-intangible t face minibuffer-prompt))
-      (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+    ;; Do not allow the cursor in the minibuffer prompt
+    (setq minibuffer-prompt-properties
+          '(read-only t cursor-intangible t face minibuffer-prompt))
+    (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
-      ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
-      ;; Vertico commands are hidden in normal buffers.
-      ;; (setq read-extended-command-predicate
-      ;;       #'command-completion-default-include-p)
+    ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
+    ;; Vertico commands are hidden in normal buffers.
+    ;; (setq read-extended-command-predicate
+    ;;       #'command-completion-default-include-p)
 
-      ;; Enable recursive minibuffers
-      (setq enable-recursive-minibuffers t))
-    (leaf vertico-multiform
-      :disabled t
-      :after consult vertico
-      :config
-      (vertico-multiform-mode)
+    ;; Enable recursive minibuffers
+    (setq enable-recursive-minibuffers t))
+  (leaf vertico-multiform
+    :disabled t
+    :after consult vertico
+    :config
+    (vertico-multiform-mode)
 
-      (setq vertico-multiform-commands
-            `((consult-imenu buffer ,(lambda (_) (text-scale-set -1)))
-              (consult-outline buffer ,(lambda (_) (text-scale-set -1)))))
+    (setq vertico-multiform-commands
+          `((consult-imenu buffer ,(lambda (_) (text-scale-set -1)))
+            (consult-outline buffer ,(lambda (_) (text-scale-set -1)))))
 
-      ;; Configure the buffer display and the buffer display action
-      (setq vertico-multiform-categories
-            '((consult-grep
-               buffer
-               (vertico-buffer-display-action . (display-buffer-same-window)))))
+    ;; Configure the buffer display and the buffer display action
+    (setq vertico-multiform-categories
+          '((consult-grep
+             buffer
+             (vertico-buffer-display-action . (display-buffer-same-window)))))
 
-      ;; Disable preview for consult-grep commands
-      (consult-customize consult-ripgrep consult-git-grep consult-grep
-                         :preview-key nil))
+    ;; Disable preview for consult-grep commands
+    (consult-customize consult-ripgrep consult-git-grep consult-grep
+                       :preview-key nil))
 
-    (leaf vertico-repeat
-      :bind (("C-x c r" . vertico-repeat-last)
-             ("C-x c R" . vertico-repeat-select))
-      :hook
-      (minibuffer-setup-hook . vertico-repeat-save))
-    (leaf vertico-directory
-      :bind ((:vertico-map
-              ("RET"    . vertico-directory-enter)
-              ("DEL"    . vertico-directory-delete-char)
-              ("M-DEL"  . vertico-directory-delete-word)
-              ("C-l"    . vertico-directory-up)))
-      ;; Tidy shadowed file names
-      :hook
-      (rfn-eshadow-update-overlay-hook . vertico-directory-tidy))
-    (leaf vertico-quick
-      :custom
-      ((vertico-quick1 . "aoeu")
-       (vertico-quick2 . "htns"))))
+  (leaf vertico-repeat
+    :bind (("C-x c r" . vertico-repeat-last)
+           ("C-x c R" . vertico-repeat-select))
+    :hook
+    (minibuffer-setup-hook . vertico-repeat-save))
+  (leaf vertico-directory
+    :bind ((:vertico-map
+            ("RET"    . vertico-directory-enter)
+            ("DEL"    . vertico-directory-delete-char)
+            ("M-DEL"  . vertico-directory-delete-word)
+            ("C-l"    . vertico-directory-up)))
+    ;; Tidy shadowed file names
+    :hook
+    (rfn-eshadow-update-overlay-hook . vertico-directory-tidy))
+  (leaf vertico-quick
+    :custom
+    ((vertico-quick1 . "aoeu")
+     (vertico-quick2 . "htns")))
+  
   ;; Use the `orderless' completion style.
   ;; Enable `partial-completion' for files to allow path expansion.
   ;; You may prefer to use `initials' instead of `partial-completion'.
-  (elpaca orderless
-    (leaf orderless
-      :init
-      (setq completion-styles '(orderless basic)
-            completion-category-defaults nil
-            completion-category-overrides '((file (styles basic partial-completion))))))
+  (leaf orderless
+    :elpaca t
+    :init
+    (setq completion-styles '(orderless basic)
+          completion-category-defaults nil
+          completion-category-overrides '((file (styles basic partial-completion)))))
   ;; Persist history over Emacs restarts. Vertico sorts by history position.
   (leaf savehist
     :init
     (savehist-mode))
-  (elpaca (consult :host github :repo "minad/consult")
-    (leaf consult
-      :custom
-      ((consult-async-min-input . 2)
-       (consult-narrow-key . ">")
-       (consult-ripgrep-args
-        . "rg --hidden --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --with-filename --line-number --search-zip")
-       (xref-show-definitions-function . #'consult-xref)
-       (xref-show-xrefs-function . #'consult-xref))
-      :bind (("C-c h" . consult-history)
-             ("C-c m" . consult-mode-command)
-             ("C-x C-SPC" . consult-global-mark)
-             ("C-x b" . consult-buffer)
-             ("C-x c i" . consult-imenu)
-             ("C-x j" . consult-recent-file)
-             ("C-x r j" . consult-register)
-             ("C-x r l"  . consult-bookmark)
-             ("M-y" . consult-yank-pop)
-             ("C-x 4 b" . consult-buffer-other-window)
-             ("C-x 5 b" . consult-buffer-other-frame)
-             ("C-x r SPC" . consult-register-store)
-             ("C-h i" . consult-info)
-             ([remap goto-line] . consult-goto-line)
-             (:isearch-mode-map :package isearch
-                                ("C-i" . my-consult-line)
-                                ("M-e" . consult-isearch-history)))
-      :hook
-      (completion-list-mode-hook . consult-preview-at-point-mode)
-      :init
-      (defun my-consult-line (&optional at-point)
-        (interactive "P")
-        (if at-point
-            (consult-line (thing-at-point 'symbol))
-          (consult-line)))
-      :config
-      ;; https://github.com/minad/consult/wiki#find-files-using-fd
-      (defvar consult--fd-command nil)
-      (defun consult--fd-builder (input)
-        (unless consult--fd-command
-          (setq consult--fd-command
-                (if (eq 0 (call-process-shell-command "fdfind"))
-                    "fdfind"
-                  "fd")))
-        (pcase-let* ((`(,arg . ,opts) (consult--command-split input))
-                     (`(,re . ,hl) (funcall consult--regexp-compiler
-                                            arg 'extended t)))
-          (when re
-            (cons (append
-                   (list consult--fd-command
-                         "--color=never" "--full-path"
-                         (consult--join-regexps re 'extended))
-                   opts)
-                  hl))))
+  (leaf consult
+    :elpaca (consult :host github :repo "minad/consult")
+    :custom
+    ((consult-async-min-input . 2)
+     (consult-narrow-key . ">")
+     (consult-ripgrep-args
+      . "rg --hidden --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --with-filename --line-number --search-zip")
+     (xref-show-definitions-function . #'consult-xref)
+     (xref-show-xrefs-function . #'consult-xref))
+    :bind (("C-c h" . consult-history)
+           ("C-c m" . consult-mode-command)
+           ("C-x C-SPC" . consult-global-mark)
+           ("C-x b" . consult-buffer)
+           ("C-x c i" . consult-imenu)
+           ("C-x j" . consult-recent-file)
+           ("C-x r j" . consult-register)
+           ("C-x r l"  . consult-bookmark)
+           ("M-y" . consult-yank-pop)
+           ("C-x 4 b" . consult-buffer-other-window)
+           ("C-x 5 b" . consult-buffer-other-frame)
+           ("C-x r SPC" . consult-register-store)
+           ("C-h i" . consult-info)
+           ([remap goto-line] . consult-goto-line)
+           (:isearch-mode-map :package isearch
+                              ("C-i" . my-consult-line)
+                              ("M-e" . consult-isearch-history)))
+    :hook
+    (completion-list-mode-hook . consult-preview-at-point-mode)
+    :init
+    (defun my-consult-line (&optional at-point)
+      (interactive "P")
+      (if at-point
+          (consult-line (thing-at-point 'symbol))
+        (consult-line)))
+    :config
+    ;; https://github.com/minad/consult/wiki#find-files-using-fd
+    (defvar consult--fd-command nil)
+    (defun consult--fd-builder (input)
+      (unless consult--fd-command
+        (setq consult--fd-command
+              (if (eq 0 (call-process-shell-command "fdfind"))
+                  "fdfind"
+                "fd")))
+      (pcase-let* ((`(,arg . ,opts) (consult--command-split input))
+                   (`(,re . ,hl) (funcall consult--regexp-compiler
+                                          arg 'extended t)))
+        (when re
+          (cons (append
+                 (list consult--fd-command
+                       "--color=never" "--full-path"
+                       (consult--join-regexps re 'extended))
+                 opts)
+                hl))))
 
-      (defun consult-fd (&optional dir initial)
-        "Search with fd for files in DIR matching input regexp given INITIAL input."
-        (interactive "P")
-        (pcase-let* ((`(,prompt ,paths ,dir) (consult--directory-prompt "Fd" dir))
-                     (default-directory dir))
-          (find-file (consult--find prompt #'consult--fd-builder initial))))
-      (consult-customize
-       consult-theme
-       :preview-key (list :debounce 1.0 'any)
-       consult-goto-line consult-line
-       :preview-key (list 'any)
-       consult-ripgrep consult-git-grep consult-grep
-       consult-bookmark consult-recent-file consult-xref
-       consult--source-recent-file consult--source-project-recent-file consult--source-bookmark
-       consult-find consult-fd consult-org-agenda
-       :preview-key (if window-system "C-," "M-,"))
-      (autoload 'projectile-project-root "projectile")
-      (setq consult-project-function #'projectile-project-root)
-      (setq completion-in-region-function
-            (lambda (&rest args)
-              (apply (if vertico-mode
-                         #'consult-completion-in-region
-                       #'completion--in-region)
-                     args)))))
+    (defun consult-fd (&optional dir initial)
+      "Search with fd for files in DIR matching input regexp given INITIAL input."
+      (interactive "P")
+      (pcase-let* ((`(,prompt ,paths ,dir) (consult--directory-prompt "Fd" dir))
+                   (default-directory dir))
+        (find-file (consult--find prompt #'consult--fd-builder initial))))
+    (consult-customize
+     consult-theme
+     :preview-key (list :debounce 1.0 'any)
+     consult-goto-line consult-line
+     :preview-key (list 'any)
+     consult-ripgrep consult-git-grep consult-grep
+     consult-bookmark consult-recent-file consult-xref
+     consult--source-recent-file consult--source-project-recent-file consult--source-bookmark
+     consult-find consult-fd consult-org-agenda
+     :preview-key (if window-system "C-," "M-,"))
+    (autoload 'projectile-project-root "projectile")
+    (setq consult-project-function #'projectile-project-root)
+    (setq completion-in-region-function
+          (lambda (&rest args)
+            (apply (if vertico-mode
+                       #'consult-completion-in-region
+                     #'completion--in-region)
+                   args))))
 
   (elpaca consult-projectile)
-  (elpaca affe
-    (leaf affe
-      :after consult orderless
-      :custom
-      ((affe-find-command . "fd -H -E .git --color=never --full-path")
-       (affe-grep-command . "rg --hidden --color=never --max-columns=1000 --no-heading --line-number -v ^$ ."))
-      :config
-      ;; Configure Orderless
-      (setq affe-regexp-function #'orderless-pattern-compiler
-            affe-highlight-function #'orderless--highlight)
-
-      ;; Manual preview key for `affe-grep'
-      (consult-customize affe-grep :preview-key "M-.")))
-  (elpaca marginalia
-    (leaf marginalia
-      :bind (("M-A" . marginalia-cycle)
-             (:minibuffer-local-map
-              ("M-A" . marginalia-cycle)))
-      :init
-      (marginalia-mode)))
-  (elpaca (embark :files (:defaults ("embark-org.el" "embark-consult.el")))
-    (leaf embark
-      :emacs>= 26.1
-      :hook
-      (embark-collect-mode-hook . consult-preview-at-point-mode)
-      :bind
-      `((,(if window-system "C-." "M-.") . embark-act)         ;; pick some comfortable binding
-        ("C-;" . embark-dwim)        ;; good alternative: M-.
-        ("C-h B" . embark-bindings) ;; alternative for `describe-bindings'
-        (:embark-package-map
-         ("b" . embark-browse-package-url))
-        (:embark-region-map
-         ("C-l" . my-lookup-mkdict)
-         ("j" . join-line))
-        (:embark-symbol-map
-         ("C-l" . my-lookup-mkdict))
-        (:embark-identifier-map
-         ("C-l" . my-lookup-mkdict)))
-      :init
-      ;; Optionally replace the key help with a completing-read interface
-      ;; (setq prefix-help-command #'embark-prefix-help-command)
-      (defun my-lookup-mkdict (str)
-        (interactive "sInput: ")
-        (call-process
-         "open" nil 0 nil
-         (concat "mkdictionaries:///?text=" str)))
-      :config
-      ;; Hide the mode line of the Embark live/completions buffers
-      (add-to-list 'display-buffer-alist
-                   '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                     nil
-                     (window-parameters (mode-line-format . none))))
-      (defun my-advice--fixup-whitespace (old-fn &rest args)
-        "Skip function execution when cursor is between Japanese characters"
-        (if (and (looking-at-p " *\\cj")
-                 (looking-back "\\cj *" (point-beginning-of-line)))
-            (cycle-spacing 0)
-          (apply old-fn args)))
-      (advice-add 'fixup-whitespace :around #'my-advice--fixup-whitespace)))
-  (elpaca all-the-icons-completion
-    (leaf all-the-icons-completion
-      :doc "Add icons to completion candidates"
-      :req "emacs-26.1" "all-the-icons-5.0"
-      :tag "lisp" "convenient" "emacs>=26.1"
-      :url "https://github.com/iyefrat/all-the-icons-completion"
-      :emacs>= 26.1
-      :after all-the-icons
-      :config
-      (all-the-icons-completion-mode t)))
-  (elpaca (corfu :host github :repo "minad/corfu" :depth 10 :files (:defaults "extensions/*.el"))
-    (leaf corfu
-      :url "https://github.com/minad/corfu"
-      :emacs>= 27.1
-      :bind
-      (:corfu-map
-       ("M-SPC" . corfu-insert-separator)
-       ("M-m" . corfu-move-to-minibuffer))
-      :custom
-      ((completion-cycle-threshold . 3)
-       (corfu-preselect . 'prompt)
-       (corfu-auto . t)
-       (corfu-cycle . t)
-       (corfu-exclude-modes . '(rustic-mode rust-mode))
-       (tab-always-indent . 'complete)
-       (corfu-on-exact-match . nil))
-      :hook
-      (eshell-mode-hook . (lambda ()
-                            (setq-local corfu-auto t
-                                        corfu-quit-no-match 'separator)))
-      :init
-      (defun corfu-move-to-minibuffer ()
-        (interactive)
-        (let ((completion-extra-properties corfu--extra)
-              completion-cycle-threshold completion-cycling)
-          (apply #'consult-completion-in-region completion-in-region--data)))
-      (global-corfu-mode)
-      (corfu-popupinfo-mode)
-      (corfu-history-mode)
-      (add-to-list 'savehist-additional-variables 'corfu-history)
-      (with-eval-after-load 'dabbrev
-        (dolist (mode '(tags-table-mode skk-jisyo-mode))
-          (push mode dabbrev-ignored-buffer-modes)))))
-  (elpaca corfu-terminal
-    (leaf corfu-terminal
-      :after corfu popon
-      :config
-      (unless (display-graphic-p)
-        (corfu-terminal-mode +1))))
-  (elpaca popon
-    (leaf popon
-      :init
-      (unless (display-graphic-p)
-        (require 'popon))))
-  (elpaca tempel
-    (leaf tempel
-      :doc "Tempo templates/snippets with in-buffer field editing"
-      :req "emacs-27.1"
-      :tag "emacs>=27.1"
-      :url "https://github.com/minad/tempel"
-      :emacs>= 27.1
-      :bind
-      ((("M-+" . tempel-complete) ;; Alternative tempel-expand
-        ("M-*" . tempel-insert))
-       (:tempel-map
-        ("C-i" . tempel-next)))
-      :custom
-      `((tempel-path . ,(format "%ssnippets/tempel/templates/*" user-emacs-directory)))
-      :init
-      (defun tempel-setup-capf ()
-        ;; Add the Tempel Capf to `completion-at-point-functions'. `tempel-expand'
-        ;; only triggers on exact matches. Alternatively use `tempel-complete' if
-        ;; you want to see all matches, but then Tempel will probably trigger too
-        ;; often when you don't expect it.
-        ;; NOTE: We add `tempel-expand' *before* the main programming mode Capf,
-        ;; such that it will be tried first.
-        (setq-local completion-at-point-functions
-                    (cons #'tempel-expand
-                          completion-at-point-functions)))
-      (add-hook 'prog-mode-hook 'tempel-setup-capf)
-      (add-hook 'text-mode-hook 'tempel-setup-capf)))
-  (elpaca tempel-collection)
-  (elpaca cape
-    (leaf cape
-      :doc "Completion At Point Extensions"
-      :req "emacs-27.1"
-      :tag "emacs>=27.1"
-      :url "https://github.com/minad/cape"
-      :emacs>= 27.1
-      :bind
-      (("C-c f p" . completion-at-point) ;; capf
-       ("C-c f t" . complete-tag)        ;; etags
-       ("C-c f d" . cape-dabbrev)        ;; or dabbrev-completion
-       ("C-c f h" . cape-history)
-       ("C-c f f" . cape-file)
-       ("C-c f k" . cape-keyword)
-       ("C-c f s" . cape-elisp-symbol)
-       ("C-c f e" . cape-elisp-block)
-       ("C-c f a" . cape-abbrev)
-       ("C-c f l" . cape-line)
-       ("C-c f w" . cape-dict)
-       ("C-c f :" . cape-emoji)
-       ("C-c f \\" . cape-tex)
-       ("C-c f _" . cape-tex)
-       ("C-c f ^" . cape-tex)
-       ("C-c f &" . cape-sgml)
-       ("C-c f r" . cape-rfc1345))
-      :init
-      (if (memq system-type '(darwin gnu/linux))
-          (customize-set-variable 'cape-dict-file "/usr/share/dict/words"))
-      (add-hook 'completion-at-point-functions #'cape-keyword)
-      (add-hook 'completion-at-point-functions #'cape-tex)
-      (add-hook 'completion-at-point-functions #'cape-file)
-
-      (when-let ((wordfile (expand-file-name ".config/emacs/cape/words" my-dropbox-dir)))
-        (customize-set-variable 'cape-dict-file
-                                  (if (stringp cape-dict-file)
-                                      (list wordfile cape-dict-file)
-                                    (add-to-list 'cape-dict-file wordfile))))
-      (defun my-cape-wrap-with-annotation (oldfn &optional annotstr)
-          (when (eq nil annotstr)
-            (setq annotstr (symbol-name )))
-          (cape-wrap-properties oldfn :annotation-function (lambda (_) (format " %s" annotstr))))
-      :config
-      (advice-add 'pcomplete-completions-at-point
-            :around
-            (lambda (oldfn &rest _)
-              (my-cape-wrap-with-annotation oldfn (symbol-name 'pcomplete-completions-at-point))))
-      ))
-  (elpaca (kind-icon :host github :repo "jdtsmith/kind-icon")
-    (leaf kind-icon
-      :emacs>= 27.1
-      :after corfu
-      :custom
-      (kind-icon-default-face . 'corfu-default)
-      :config
-      (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))))
-(elpaca migemo
-  (leaf migemo
-    :unless (equal (shell-command-to-string "command -v cmigemo") "")
-    :require t
+  (leaf affe
+    :elpaca t
+    :after consult orderless
     :custom
-    `((migemo-options . '("-q" "--emacs"))
-      (migemo-coding-system . 'utf-8-unix)
-      (migemo-user-dictionary . nil)
-      (migemo-regex-dictionary . nil)
-      (migemo-options . '("--quiet" "--nonewline" "--emacs"))
-      (migemo-dictionary .
-                         ,(cond ((eq system-type 'darwin)
-                                 "/opt/homebrew/opt/cmigemo/share/migemo/utf-8/migemo-dict")
-                                ((eq system-type 'windows-nt)
-                                 "~/opt/cmigemo-default-win64/dict/utf-8")
-                                ((string-match-p "arch" operating-system-release)
-                                 "/usr/share/migemo/utf-8/migemo-dict")
-                                (t "/usr/share/cmigemo/utf-8/migemo-dict"))))
+    ((affe-find-command . "fd -H -E .git --color=never --full-path")
+     (affe-grep-command . "rg --hidden --color=never --max-columns=1000 --no-heading --line-number -v ^$ ."))
     :config
-    ;; https://www.yewton.net/2022/02/07/consult-ripgrep-migemo/
-    (defun consult--migemo-regexp-compiler (input type ignore-case)
-      (setq input (mapcar #'migemo-get-pattern (consult--split-escaped input)))
-      (cons (mapcar (lambda (x) (consult--convert-regexp x type)) input)
-            (when-let (regexps (seq-filter #'consult--valid-regexp-p input))
-              (apply-partially #'consult--highlight-regexps regexps ignore-case))))
-    (setq consult--regexp-compiler #'consult--migemo-regexp-compiler)
-    (migemo-init)))
-;; SLIMEのロード
-(elpaca undo-tree
-  (leaf undo-tree
-    :diminish (global-undo-tree-mode undo-tree-mode)
-    :global-minor-mode global-undo-tree-mode
-    :custom
-    ((undo-tree-history-directory-alist . '(("." . "~/.emacs.d/undo-tree")))
-     (undo-tree-incompatible-major-modes . '(term-mode fundamental-mode))
-     (undo-tree-visualizer-diff . t))))
-(elpaca undo-fu)
-(elpaca undo-fu-session
-  (leaf undo-fu-session
-    :doc "Persistent undo, available between sessions"
-    :req "emacs-28.1"
-    :tag "convenience" "emacs>=28.1"
-    :url "https://codeberg.org/ideasman42/emacs-undo-fu-session"
-    :emacs>= 28.1
-    :custom
-    (undo-fu-session-incompatible-files . '("/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'"))
-    :global-minor-mode undo-fu-session-global-mode))
-(elpaca rust-mode
-  (leaf rust-mode
-    :doc "A major-mode for editing Rust source code"
-    :req "emacs-25.1"
-    :tag "languages" "emacs>=25.1"
-    :url "https://github.com/rust-lang/rust-mode"
-    :emacs>= 25.1
-    :hook (rust-mode-hook . prettify-symbols-mode)))
-(elpaca rustic
-  (leaf rustic
-    :doc "Rust development environment"
-    :req "emacs-26.1" "rust-mode-1.0.3" "dash-2.13.0" "f-0.18.2"
-    "let-alist-1.0.4" "markdown-mode-2.3" "project-0.3.0" "s-1.10.0"
-    "seq-2.3" "spinner-1.7.3" "xterm-color-1.6"
-    :tag "languages" "emacs>=26.1"
-    :emacs>= 26.1
-    :custom ((rustic-treesitter-derive . t)
-             (rustic-ansi-faces . ["black" "red3" "green3" "yellow3"
-                                   "deep sky blue" "magenta3" "cyan3" "white"]))
-    :hook
-    ((rustic-mode-hook . my-rustic-init))
+    ;; Configure Orderless
+    (setq affe-regexp-function #'orderless-pattern-compiler
+          affe-highlight-function #'orderless--highlight)
+
+    ;; Manual preview key for `affe-grep'
+    (consult-customize affe-grep :preview-key "M-.")) 
+  (leaf marginalia
+    :elpaca t
+    :bind (("M-A" . marginalia-cycle)
+           (:minibuffer-local-map
+            ("M-A" . marginalia-cycle)))
     :init
-    (with-eval-after-load 'smartparens
-      (push 'rustic-mode sp-ignore-modes-list))
-    (defun my-rustic-init ()
-      (electric-pair-local-mode 1)
-      (corfu-mode)
-      (when (featurep 'embark)
-        (setq-local embark-target-finders
-                    (append (remove
-                             'embark-target-file-at-point
-                             embark-target-finders)
-                            '(embark-target-file-at-point))))
-      (when (eq corfu-mode t)
-        (setq-local corfu-auto-prefix 2)))
-    (leaf rustic-babel
-      :after org
-      :require t)))
-(elpaca lsp-haskell
-  (leaf lsp-haskell
-    :doc "Haskell support for lsp-mode"
-    :req "emacs-24.3" "lsp-mode-3.0"
-    :tag "haskell" "emacs>=24.3"
-    :url "https://github.com/emacs-lsp/lsp-haskell"
-    :emacs>= 24.3
-    :hook (haskell-mode-hook . lsp-deferred)))
-(elpaca ron-mode
-  (leaf ron-mode
-    :doc "Rusty Object Notation mode"
-    :req "emacs-24.5.1"
-    :tag "languages" "emacs>=24.5.1"
-    :url "https://chiselapp.com/user/Hutzdog/repository/ron-mode/home"
-    :emacs>= 24.5
-    :mode (("\\.ron$" . ron-mode))))
-(elpaca moody
-  (leaf moody
-    :doc "Tabs and ribbons for the mode line"
-    :req "emacs-25.3" "compat-28.1.1.0"
-    :url "https://github.com/tarsius/moody"
-    :custom
-    ((x-underline-at-descent-line . t))
+    (marginalia-mode)) 
+  (leaf embark
+    :elpaca (embark :files (:defaults ("embark-org.el" "embark-consult.el")))
+    :emacs>= 26.1
+    :hook
+    (embark-collect-mode-hook . consult-preview-at-point-mode)
+    :bind
+    `((,(if window-system "C-." "M-.") . embark-act)         ;; pick some comfortable binding
+      ("C-;" . embark-dwim)        ;; good alternative: M-.
+      ("C-h B" . embark-bindings) ;; alternative for `describe-bindings'
+      (:embark-package-map
+       ("b" . embark-browse-package-url))
+      (:embark-region-map
+       ("C-l" . my-lookup-mkdict)
+       ("j" . join-line))
+      (:embark-symbol-map
+       ("C-l" . my-lookup-mkdict))
+      (:embark-identifier-map
+       ("C-l" . my-lookup-mkdict)))
+    :init
+    ;; Optionally replace the key help with a completing-read interface
+    ;; (setq prefix-help-command #'embark-prefix-help-command)
+    (defun my-lookup-mkdict (str)
+      (interactive "sInput: ")
+      (call-process
+       "open" nil 0 nil
+       (concat "mkdictionaries:///?text=" str)))
     :config
-    (moody-replace-mode-line-buffer-identification)
-    (moody-replace-vc-mode)))
+    ;; Hide the mode line of the Embark live/completions buffers
+    (add-to-list 'display-buffer-alist
+                 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                   nil
+                   (window-parameters (mode-line-format . none))))
+    (defun my-advice--fixup-whitespace (old-fn &rest args)
+      "Skip function execution when cursor is between Japanese characters"
+      (if (and (looking-at-p " *\\cj")
+               (looking-back "\\cj *" (point-beginning-of-line)))
+          (cycle-spacing 0)
+        (apply old-fn args)))
+    (advice-add 'fixup-whitespace :around #'my-advice--fixup-whitespace))
+  (leaf all-the-icons-completion
+    :elpaca t
+    :doc "Add icons to completion candidates"
+    :req "emacs-26.1" "all-the-icons-5.0"
+    :tag "lisp" "convenient" "emacs>=26.1"
+    :url "https://github.com/iyefrat/all-the-icons-completion"
+    :emacs>= 26.1
+    :after all-the-icons
+    :config
+    (all-the-icons-completion-mode t))
+  (leaf corfu
+    :elpaca (corfu :host github :repo "minad/corfu" :depth 10 :files (:defaults "extensions/*.el"))
+    :url "https://github.com/minad/corfu"
+    :emacs>= 27.1
+    :bind
+    (:corfu-map
+     ("M-SPC" . corfu-insert-separator)
+     ("M-m" . corfu-move-to-minibuffer))
+    :custom
+    ((completion-cycle-threshold . 3)
+     (corfu-preselect . 'prompt)
+     (corfu-auto . t)
+     (corfu-cycle . t)
+     (corfu-exclude-modes . '(rustic-mode rust-mode))
+     (tab-always-indent . 'complete)
+     (corfu-on-exact-match . nil))
+    :hook
+    (eshell-mode-hook . (lambda ()
+                          (setq-local corfu-auto t
+                                      corfu-quit-no-match 'separator)))
+    :init
+    (defun corfu-move-to-minibuffer ()
+      (interactive)
+      (let ((completion-extra-properties corfu--extra)
+            completion-cycle-threshold completion-cycling)
+        (apply #'consult-completion-in-region completion-in-region--data)))
+    (global-corfu-mode)
+    (corfu-popupinfo-mode)
+    (corfu-history-mode)
+    (add-to-list 'savehist-additional-variables 'corfu-history)
+    (with-eval-after-load 'dabbrev
+      (dolist (mode '(tags-table-mode skk-jisyo-mode))
+        (push mode dabbrev-ignored-buffer-modes))))
+  (leaf corfu-terminal
+    :elpaca t
+    :after corfu popon
+    :config
+    (unless (display-graphic-p)
+      (corfu-terminal-mode +1)))
+  (leaf popon
+    :elpaca t
+    :init
+    (unless (display-graphic-p)
+      (require 'popon)))
+  (leaf tempel
+    :elpaca t
+    :doc "Tempo templates/snippets with in-buffer field editing"
+    :req "emacs-27.1"
+    :tag "emacs>=27.1"
+    :url "https://github.com/minad/tempel"
+    :emacs>= 27.1
+    :bind
+    ((("M-+" . tempel-complete) ;; Alternative tempel-expand
+      ("M-*" . tempel-insert))
+     (:tempel-map
+      ("C-i" . tempel-next)))
+    :custom
+    `((tempel-path . ,(format "%ssnippets/tempel/templates/*" user-emacs-directory)))
+    :init
+    (defun tempel-setup-capf ()
+      ;; Add the Tempel Capf to `completion-at-point-functions'. `tempel-expand'
+      ;; only triggers on exact matches. Alternatively use `tempel-complete' if
+      ;; you want to see all matches, but then Tempel will probably trigger too
+      ;; often when you don't expect it.
+      ;; NOTE: We add `tempel-expand' *before* the main programming mode Capf,
+      ;; such that it will be tried first.
+      (setq-local completion-at-point-functions
+                  (cons #'tempel-expand
+                        completion-at-point-functions)))
+    (add-hook 'prog-mode-hook 'tempel-setup-capf)
+    (add-hook 'text-mode-hook 'tempel-setup-capf))
+  (elpaca tempel-collection)
+  (leaf cape
+    :elpaca t
+    :doc "Completion At Point Extensions"
+    :req "emacs-27.1"
+    :tag "emacs>=27.1"
+    :url "https://github.com/minad/cape"
+    :emacs>= 27.1
+    :bind
+    (("C-c f p" . completion-at-point) ;; capf
+     ("C-c f t" . complete-tag)        ;; etags
+     ("C-c f d" . cape-dabbrev)        ;; or dabbrev-completion
+     ("C-c f h" . cape-history)
+     ("C-c f f" . cape-file)
+     ("C-c f k" . cape-keyword)
+     ("C-c f s" . cape-elisp-symbol)
+     ("C-c f e" . cape-elisp-block)
+     ("C-c f a" . cape-abbrev)
+     ("C-c f l" . cape-line)
+     ("C-c f w" . cape-dict)
+     ("C-c f :" . cape-emoji)
+     ("C-c f \\" . cape-tex)
+     ("C-c f _" . cape-tex)
+     ("C-c f ^" . cape-tex)
+     ("C-c f &" . cape-sgml)
+     ("C-c f r" . cape-rfc1345))
+    :init
+    (if (memq system-type '(darwin gnu/linux))
+        (customize-set-variable 'cape-dict-file "/usr/share/dict/words"))
+    (add-hook 'completion-at-point-functions #'cape-keyword)
+    (add-hook 'completion-at-point-functions #'cape-tex)
+    (add-hook 'completion-at-point-functions #'cape-file)
+
+    (when-let ((wordfile (expand-file-name ".config/emacs/cape/words" my-dropbox-dir)))
+      (customize-set-variable 'cape-dict-file
+                              (if (stringp cape-dict-file)
+                                  (list wordfile cape-dict-file)
+                                (add-to-list 'cape-dict-file wordfile))))
+    (defun my-cape-wrap-with-annotation (oldfn &optional annotstr)
+      (when (eq nil annotstr)
+        (setq annotstr (symbol-name )))
+      (cape-wrap-properties oldfn :annotation-function (lambda (_) (format " %s" annotstr))))
+    :config
+    (advice-add 'pcomplete-completions-at-point
+                :around
+                (lambda (oldfn &rest _)
+                  (my-cape-wrap-with-annotation oldfn (symbol-name 'pcomplete-completions-at-point)))))
+  (leaf kind-icon
+    :elpaca (kind-icon :host github :repo "jdtsmith/kind-icon")
+    :emacs>= 27.1
+    :after corfu
+    :custom
+    (kind-icon-default-face . 'corfu-default)
+    :config
+    (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)))
+(leaf migemo
+  :elpaca t
+  :unless (equal (shell-command-to-string "command -v cmigemo") "")
+  :require t
+  :custom
+  `((migemo-options . '("-q" "--emacs"))
+    (migemo-coding-system . 'utf-8-unix)
+    (migemo-user-dictionary . nil)
+    (migemo-regex-dictionary . nil)
+    (migemo-options . '("--quiet" "--nonewline" "--emacs"))
+    (migemo-dictionary .
+                       ,(cond ((eq system-type 'darwin)
+                               "/opt/homebrew/opt/cmigemo/share/migemo/utf-8/migemo-dict")
+                              ((eq system-type 'windows-nt)
+                               "~/opt/cmigemo-default-win64/dict/utf-8")
+                              ((string-match-p "arch" operating-system-release)
+                               "/usr/share/migemo/utf-8/migemo-dict")
+                              (t "/usr/share/cmigemo/utf-8/migemo-dict"))))
+  :config
+  ;; https://www.yewton.net/2022/02/07/consult-ripgrep-migemo/
+  (defun consult--migemo-regexp-compiler (input type ignore-case)
+    (setq input (mapcar #'migemo-get-pattern (consult--split-escaped input)))
+    (cons (mapcar (lambda (x) (consult--convert-regexp x type)) input)
+          (when-let (regexps (seq-filter #'consult--valid-regexp-p input))
+            (apply-partially #'consult--highlight-regexps regexps ignore-case))))
+  (setq consult--regexp-compiler #'consult--migemo-regexp-compiler)
+  (migemo-init)) 
+;; SLIMEのロード
+(leaf undo-tree
+  :elpaca t
+  :diminish (global-undo-tree-mode undo-tree-mode)
+  :global-minor-mode global-undo-tree-mode
+  :custom
+  ((undo-tree-history-directory-alist . '(("." . "~/.emacs.d/undo-tree")))
+   (undo-tree-incompatible-major-modes . '(term-mode fundamental-mode))
+   (undo-tree-visualizer-diff . t)))
+(elpaca undo-fu)
+(leaf undo-fu-session
+  :elpaca t
+  :doc "Persistent undo, available between sessions"
+  :req "emacs-28.1"
+  :tag "convenience" "emacs>=28.1"
+  :url "https://codeberg.org/ideasman42/emacs-undo-fu-session"
+  :emacs>= 28.1
+  :custom
+  (undo-fu-session-incompatible-files . '("/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'"))
+  :global-minor-mode undo-fu-session-global-mode)
+(leaf rust-mode
+  :elpaca t
+  :doc "A major-mode for editing Rust source code"
+  :req "emacs-25.1"
+  :tag "languages" "emacs>=25.1"
+  :url "https://github.com/rust-lang/rust-mode"
+  :emacs>= 25.1
+  :hook (rust-mode-hook . prettify-symbols-mode))
+(leaf rustic
+  :elpaca t
+  :doc "Rust development environment"
+  :req "emacs-26.1" "rust-mode-1.0.3" "dash-2.13.0" "f-0.18.2"
+  "let-alist-1.0.4" "markdown-mode-2.3" "project-0.3.0" "s-1.10.0"
+  "seq-2.3" "spinner-1.7.3" "xterm-color-1.6"
+  :tag "languages" "emacs>=26.1"
+  :emacs>= 26.1
+  :custom ((rustic-treesitter-derive . t)
+           (rustic-ansi-faces . ["black" "red3" "green3" "yellow3"
+                                 "deep sky blue" "magenta3" "cyan3" "white"]))
+  :hook
+  ((rustic-mode-hook . my-rustic-init))
+  :init
+  (with-eval-after-load 'smartparens
+    (push 'rustic-mode sp-ignore-modes-list))
+  (defun my-rustic-init ()
+    (electric-pair-local-mode 1)
+    (corfu-mode)
+    (when (featurep 'embark)
+      (setq-local embark-target-finders
+                  (append (remove
+                           'embark-target-file-at-point
+                           embark-target-finders)
+                          '(embark-target-file-at-point))))
+    (when (eq corfu-mode t)
+      (setq-local corfu-auto-prefix 2)))
+  (leaf rustic-babel
+    :after org
+    :require t))
+(leaf lsp-haskell
+  :elpaca t
+  :doc "Haskell support for lsp-mode"
+  :req "emacs-24.3" "lsp-mode-3.0"
+  :tag "haskell" "emacs>=24.3"
+  :url "https://github.com/emacs-lsp/lsp-haskell"
+  :emacs>= 24.3
+  :hook (haskell-mode-hook . lsp-deferred))
+(leaf ron-mode
+  :elpaca t
+  :doc "Rusty Object Notation mode"
+  :req "emacs-24.5.1"
+  :tag "languages" "emacs>=24.5.1"
+  :url "https://chiselapp.com/user/Hutzdog/repository/ron-mode/home"
+  :emacs>= 24.5
+  :mode (("\\.ron$" . ron-mode)))
+(leaf moody
+  :elpaca t
+  :doc "Tabs and ribbons for the mode line"
+  :req "emacs-25.3" "compat-28.1.1.0"
+  :url "https://github.com/tarsius/moody"
+  :custom
+  ((x-underline-at-descent-line . t))
+  :config
+  (moody-replace-mode-line-buffer-identification)
+  (moody-replace-vc-mode))
 (leaf dabbrev
   :bind (("M-/" . dabbrev-completion)
          ("C-M-/" . dabbrev-expand)))
-(elpaca wgrep
-  (leaf wgrep
-    :custom
-    ((wgrep-enable-key . "e")
-     (wgrep-auto-save-buffer . t))))
+(leaf wgrep
+  :elpaca t
+  :custom
+  ((wgrep-enable-key . "e")
+   (wgrep-auto-save-buffer . t)))
 (elpaca highlight-symbol)
 (elpaca expand-region)
 (leaf expand-region
   :bind (("C-=" . er/expand-region)))
 (when (display-graphic-p)
   (elpaca all-the-icons))
-(elpaca which-key
-  (leaf which-key
-    :diminish t
-    :custom
-    (which-key-idle-secondary-delay . 0.0)
-    (which-key-max-description-length . 35)
-    :config
-    ;; 3つの表示方法どれか1つ選ぶ
-    (which-key-setup-side-window-bottom)    ;ミニバッファ
-    ;; (which-key-setup-side-window-right)     ;右端
-    ;; (which-key-setup-side-window-right-bottom) ;両方使う
-    (which-key-mode 1)))
+(leaf which-key
+  :elpaca t
+  :diminish t
+  :custom
+  (which-key-idle-secondary-delay . 0.0)
+  (which-key-max-description-length . 35)
+  :config
+  ;; 3つの表示方法どれか1つ選ぶ
+  (which-key-setup-side-window-bottom)    ;ミニバッファ
+  ;; (which-key-setup-side-window-right)     ;右端
+  ;; (which-key-setup-side-window-right-bottom) ;両方使う
+  (which-key-mode 1))
 
 ;;;yasnippet
 (leaf yasnippet*
@@ -1314,63 +1316,62 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   (when (eq system-type 'darwin)
     (setq rst-pdf-program "open -a Skim")
     (setq rst-slides-program "open -a Firefox")))
-(elpaca gradle-mode
-  (leaf gradle-mode
-    :mode (("\\.gradle$" . gradle-mode))))
-(elpaca slime
-  (leaf slime
-    :if (file-exists-p "~/.roswell/helper.el")
-    :custom
-    ((slime-auto-start . 'ask))
-    :hook ((lisp-mode-hook . slime-mode))
-    :config
-    ;; (slime-setup '(slime-fancy slime-company))
+(leaf gradle-mode
+  :elpaca t
+  :mode (("\\.gradle$" . gradle-mode)))
+(leaf slime
+  :if (file-exists-p "~/.roswell/helper.el")
+  :custom
+  ((slime-auto-start . 'ask))
+  :hook ((lisp-mode-hook . slime-mode))
+  :config
+  ;; (slime-setup '(slime-fancy slime-company))
 
 
-    (setq slime-net-coding-system 'utf-8-unix)
-    (slime-setup '(slime-fancy slime-company slime-indentation))
-    (defun slime-space\\skk-insert (origfun &rest arglist)
-      "skkの変換(スペース)がslime-spaceに食われてしまうのを回避"
-      (apply (cond (skk-henkan-mode
-                    ;; skk-henkan-mode中であれば(▽▼の時)skk-insertへ処理を投げる
-                    #'skk-insert)
-                   (t
-                    ;; それ以外は通常のslime-space
-                    origfun))
-             arglist))
-    ;; (advice-add 'slime-space :around #'slime-space\\skk-insert)
-    (advice-add 'slime-autodoc-space :around #'slime-space\\skk-insert)
-    ;; (let ((path "/usr/local/share/doc/hyperspec/HyperSpec/"))
-    ;;   (when (file-exists-p path)
-    ;;   (setq common-lisp-hyperspec-root  path)
-    ;;   (setq common-lisp-hyperspec-symbol-table
-    ;;         (concat common-lisp-hyperspec-root "Data/Map_Sym.txt")
-    ;;         common-lisp-hyperspec-issuex-table
-    ;;         (concat common-lisp-hyperspec-root "Data/Map_IssX.txt"))))
-    ))
-(elpaca slime-company
-  (leaf slime-company
-    :after slime
-    :custom ((slime-company-completion . 'fuzzy)
-             (slime-complete-symbol*-fancy . t))
-    :hook ((slime-repl-mode-hook
-            . (lambda () (add-to-list
-                          'company-backends
-                          '(company-slime company-dabbrev-code)))))))
-(elpaca web-mode
-  (leaf web-mode
-    ;; :mode (("\\.as[cp]x\\'"    . web-mode)
-    ;;        ("\\.djhtml\\'"     . web-mode)
-    ;;        ("\\.erb\\'"        . web-mode)
-    ;;        ("\\.html?\\'"      . web-mode)
-    ;;        ("\\.mustache\\'"   . web-mode)
-    ;;        ("\\.php\\'"        . web-mode)
-    ;;        ("\\.phtml\\'"      . web-mode)
-    ;;        ("\\.tpl\\.php\\'"  . web-mode)
-    ;;        ("\\.[gj]sp\\'"     . web-mode))
-    :config
-    (setq web-mode-extra-snippets
-          '(("php" . (("print" . "print(\"|\")")))))))
+  (setq slime-net-coding-system 'utf-8-unix)
+  (slime-setup '(slime-fancy slime-company slime-indentation))
+  (defun slime-space\\skk-insert (origfun &rest arglist)
+    "skkの変換(スペース)がslime-spaceに食われてしまうのを回避"
+    (apply (cond (skk-henkan-mode
+                  ;; skk-henkan-mode中であれば(▽▼の時)skk-insertへ処理を投げる
+                  #'skk-insert)
+                 (t
+                  ;; それ以外は通常のslime-space
+                  origfun))
+           arglist))
+  ;; (advice-add 'slime-space :around #'slime-space\\skk-insert)
+  (advice-add 'slime-autodoc-space :around #'slime-space\\skk-insert)
+  ;; (let ((path "/usr/local/share/doc/hyperspec/HyperSpec/"))
+  ;;   (when (file-exists-p path)
+  ;;   (setq common-lisp-hyperspec-root  path)
+  ;;   (setq common-lisp-hyperspec-symbol-table
+  ;;         (concat common-lisp-hyperspec-root "Data/Map_Sym.txt")
+  ;;         common-lisp-hyperspec-issuex-table
+  ;;         (concat common-lisp-hyperspec-root "Data/Map_IssX.txt"))))
+  )
+(leaf slime-company
+  :elpaca t
+  :after slime
+  :custom ((slime-company-completion . 'fuzzy)
+           (slime-complete-symbol*-fancy . t))
+  :hook ((slime-repl-mode-hook
+          . (lambda () (add-to-list
+                        'company-backends
+                        '(company-slime company-dabbrev-code))))))
+(leaf web-mode
+  :elpaca t
+  ;; :mode (("\\.as[cp]x\\'"    . web-mode)
+  ;;        ("\\.djhtml\\'"     . web-mode)
+  ;;        ("\\.erb\\'"        . web-mode)
+  ;;        ("\\.html?\\'"      . web-mode)
+  ;;        ("\\.mustache\\'"   . web-mode)
+  ;;        ("\\.php\\'"        . web-mode)
+  ;;        ("\\.phtml\\'"      . web-mode)
+  ;;        ("\\.tpl\\.php\\'"  . web-mode)
+  ;;        ("\\.[gj]sp\\'"     . web-mode))
+  :config
+  (setq web-mode-extra-snippets
+        '(("php" . (("print" . "print(\"|\")"))))))
 ;; Org-mode
 (leaf org*
   :config
@@ -2099,10 +2100,10 @@ See `org-capture-templates' for more information."
         (leaf org-roam-protocol :require t)
         ;; (advice-add 'org-roam-node-open :after (lambda (&rest _) (view-mode)))
         (dolist (f org-roam-completion-functions)
-            (advice-add f
-                        :around
-                        (lambda (oldfn &rest _)
-                          (my-cape-wrap-with-annotation oldfn (symbol-name f)))))
+          (advice-add f
+                      :around
+                      (lambda (oldfn &rest _)
+                        (my-cape-wrap-with-annotation oldfn (symbol-name f)))))
         ))
     (elpaca org-roam-ui
       (leaf org-roam-ui
@@ -2121,23 +2122,23 @@ See `org-capture-templates' for more information."
         :emacs>= 27.1
         :after org-roam consult))
     )
-  (elpaca org-modern
-    (leaf org-modern
-      :doc "Modern looks for Org"
-      :req "emacs-27.1"
-      :tag "emacs>=27.1"
-      :url "https://github.com/minad/org-modern"
-      :emacs>= 27.1
-      :after org
-      :custom
-      (org-modern-star . nil)
-      :config
-      (global-org-modern-mode)
-      (add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
-      (dolist (face '(org-modern-date-active org-modern-date-inactive))
-        (set-face-attribute face nil
-                            :family "UDEV Gothic JPDOC"))
-      (set-face-attribute 'org-modern-symbol nil :family "Iosevka")))
+  (leaf org-modern
+    :doc "Modern looks for Org"
+    :req "emacs-27.1"
+    :tag "emacs>=27.1"
+    :url "https://github.com/minad/org-modern"
+    :elpaca t
+    :emacs>= 27.1
+    :after org
+    :custom
+    (org-modern-star . nil)
+    :config
+    (global-org-modern-mode)
+    (add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
+    (dolist (face '(org-modern-date-active org-modern-date-inactive))
+      (set-face-attribute face nil
+                          :family "UDEV Gothic JPDOC"))
+    (set-face-attribute 'org-modern-symbol nil :family "Iosevka"))
 
   (elpaca ob-browser)
   (elpaca ox-epub)
@@ -2165,17 +2166,17 @@ See `org-capture-templates' for more information."
       (org-latex-impatient-tex2svg-bin . "tex2svg")))
   )
 
-(elpaca (org-tag-beautify :host github :repo "emacsmirror/org-tag-beautify" :branch "master")
-  (leaf org-tag-beautify
-    :doc "Beautify Org mode tags"
-    :req "emacs-26.1" "org-pretty-tags-0.2.2" "all-the-icons-5.0.0"
-    :url "https://repo.or.cz/org-tag-beautify.git"
-    :emacs>= 26.1
-    :after org
-    :custom
-    `(org-tag-beautify-data-dir . ,(format "%sorg-tag-beautify/data/" elpaca-repos-directory))
-    :config
-    (org-tag-beautify-mode 1)))
+(leaf org-tag-beautify
+  :elpaca (org-tag-beautify :host github :repo "emacsmirror/org-tag-beautify" :branch "master")
+  :doc "Beautify Org mode tags"
+  :req "emacs-26.1" "org-pretty-tags-0.2.2" "all-the-icons-5.0.0"
+  :url "https://repo.or.cz/org-tag-beautify.git"
+  :emacs>= 26.1
+  :after org
+  :custom
+  `(org-tag-beautify-data-dir . ,(format "%sorg-tag-beautify/data/" elpaca-repos-directory))
+  :config
+  (org-tag-beautify-mode 1))
 (leaf anki-editor-org-src
   :after org
   ;; :leaf-defer nil
@@ -2186,11 +2187,11 @@ See `org-capture-templates' for more information."
   :init
   (add-to-list 'org-src-lang-modes '("anki-editor" . org)))
 
-(elpaca mermaid-mode
-  (leaf mermaid-mode
-    :config
-    (with-eval-after-load 'org
-      (push '("mermaid" . mermaid) org-src-lang-modes))))
+(leaf mermaid-mode
+  :elpaca t
+  :config
+  (with-eval-after-load 'org
+    (push '("mermaid" . mermaid) org-src-lang-modes)))
 (leaf mu4e
   :disabled t
   :load-path "/opt/homebrew/opt/mu/share/emacs/site-lisp/mu/mu4e"
@@ -2260,8 +2261,8 @@ See `org-capture-templates' for more information."
     ;;store link to message if in header view, not to header query
     (setq org-mu4e-link-query-in-headers-mode nil)))
 
-(elpaca (yatex :repo "https://www.yatex.org/gitbucket/git/yuuji/yatex.git")
-  (leaf yatex
+(leaf yatex
+    :elpaca (yatex :repo "https://www.yatex.org/gitbucket/git/yuuji/yatex.git")
     :mode
     (("\\.tex$" . yatex-mode)
      ("\\.ltx$" . yatex-mode)
@@ -2300,23 +2301,23 @@ See `org-capture-templates' for more information."
                 (define-key reftex-mode-map
                             (concat YaTeX-prefix ">") 'YaTeX-comment-region)
                 (define-key reftex-mode-map
-                            (concat YaTeX-prefix "<") 'YaTeX-uncomment-region)))))
+                            (concat YaTeX-prefix "<") 'YaTeX-uncomment-region))))
 ;; for yatex
 (when (equal system-type 'darwin)
   (setenv "PATH" "/usr/local/bin:/Library/TeX/texbin/:/Applications/Skim.app/Contents/SharedSupport:$PATH" t)
   (setq exec-path (append '("/usr/local/bin" "/Library/TeX/texbin" "/Applications/Skim.app/Contents/SharedSupport") exec-path)))
-(elpaca php-mode
-  (leaf php-mode
-    :custom
-    ((php-manual-url . 'ja))))
+(leaf php-mode
+  :elpaca t
+  :custom
+  ((php-manual-url . 'ja)))
 (elpaca ac-php)
-(elpaca flycheck-phpstan
-  (leaf flycheck-phpstan
-    :hook (php-mode-hook . (lambda ()
-                             (require 'flycheck-phpstan)
-                             (flycheck-mode t)))))
-(elpaca company-php
-  (leaf company-php
+(leaf flycheck-phpstan
+  :elpaca t
+  :hook (php-mode-hook . (lambda ()
+                           (require 'flycheck-phpstan)
+                           (flycheck-mode t))))
+(leaf company-php
+    :elpaca t
     :after (ac-php)
     :hook (php-mode-hook . (lambda ()
                              ;; Enable company-mode
@@ -2328,13 +2329,14 @@ See `org-capture-templates' for more information."
 
                              (set (make-local-variable 'company-backends)
                                   '((company-ac-php-backend company-dabbrev-code)
-                                    company-capf company-files))))))
-(elpaca typescript-mode
-  (leaf typescript-mode
-    :hook (typescript-mode-hook . lsp-deferred)))
+                                    company-capf company-files)))))
+(leaf typescript-mode
+    :elpaca t
+    :hook (typescript-mode-hook . lsp-deferred))
 (elpaca rainbow-mode)
 (elpaca poetry)
 (leaf pipenv
+  :elpaca t
   :disabled t
   :hook (python-mode-hook . pipenv-mode)
   :init
@@ -2342,10 +2344,10 @@ See `org-capture-templates' for more information."
    pipenv-projectile-after-switch-function
    #'pipenv-projectile-after-switch-extended))
 (elpaca hydra)
-(elpaca go-mode
-  (leaf go-mode
+(leaf go-mode
+    :elpaca t
     :after lsp-mode
-    :hook (go-mode-hook . lsp-deferred)))
+    :hook (go-mode-hook . lsp-deferred))
 (leaf go-ts-mode
   :hook (go-ts-mode-hook . lsp-deferred)
   :init
@@ -2370,90 +2372,90 @@ See `org-capture-templates' for more information."
       :after lsp
       :custom
       `(lsp-sourcekit-executable . ,(string-trim (shell-command-to-string "xcrun --find sourcekit-lsp"))))))
-(elpaca ccls
-  (leaf ccls
-    :after lsp-mode
-    ;; :ensure-system-package ccls
-    :hook ((c-mode-hook c++-mode-hook objc-mode-hook) .
-           (lambda ()
-             (smartparens-mode -1)
-             (require 'ccls)
-             (lsp-deferred)
-             (electric-pair-local-mode 1)))
-    :config
-    (when (eq system-type 'darwin)
-      (setq ccls-executable (cond ((executable-find  "/opt/homebrew/opt/ccls/bin/ccls"))
-                                  ((executable-find  "/usr/local/opt/ccls/bin/ccls"))
-                                  ((executable-find  "/opt/local/bin/ccls-clang-11"))
-                                  (t "ccls"))))))
-(elpaca smartparens
-  (leaf smartparens
-    :diminish t
-    :require smartparens-config
-    :hook (emacs-lisp-mode-hook . smartparens-mode)
-    :bind
-    (:emacs-lisp-mode-map
-     ("C-c C-u" . sp-backward-up-sexp)
-     ("C-c C-n" . sp-next-sexp)
-     ("C-c C-p" . sp-previous-sexp))
-    :config
-    (defvar-keymap my-sp-move-repeat-map
-      :repeat t
-      "u"   #'sp-backward-up-sexp
-      "n"   #'sp-next-sexp
-      "p"   #'sp-previous-sexp
-      "@"   #'sp-mark-sexp
-      )))
-(elpaca kotlin-mode
-  (leaf kotlin-mode
-    :mode (("\\.kt\\'" . kotlin-mode))
-    :config
-    (with-eval-after-load 'org
-      (push '("kotlin" . kotlin) org-src-lang-modes))))
+(leaf ccls
+  :elpaca t
+  :after lsp-mode
+  ;; :ensure-system-package ccls
+  :hook ((c-mode-hook c++-mode-hook objc-mode-hook) .
+         (lambda ()
+           (smartparens-mode -1)
+           (require 'ccls)
+           (lsp-deferred)
+           (electric-pair-local-mode 1)))
+  :config
+  (when (eq system-type 'darwin)
+    (setq ccls-executable (cond ((executable-find  "/opt/homebrew/opt/ccls/bin/ccls"))
+                                ((executable-find  "/usr/local/opt/ccls/bin/ccls"))
+                                ((executable-find  "/opt/local/bin/ccls-clang-11"))
+                                (t "ccls")))))
+(leaf smartparens
+  :elpaca t
+  :diminish t
+  :require smartparens-config
+  :hook (emacs-lisp-mode-hook . smartparens-mode)
+  :bind
+  (:emacs-lisp-mode-map
+   ("C-c C-u" . sp-backward-up-sexp)
+   ("C-c C-n" . sp-next-sexp)
+   ("C-c C-p" . sp-previous-sexp))
+  :config
+  (defvar-keymap my-sp-move-repeat-map
+    :repeat t
+    "u"   #'sp-backward-up-sexp
+    "n"   #'sp-next-sexp
+    "p"   #'sp-previous-sexp
+    "@"   #'sp-mark-sexp
+    ))
+(leaf kotlin-mode
+  :elpaca t
+  :mode (("\\.kt\\'" . kotlin-mode))
+  :config
+  (with-eval-after-load 'org
+    (push '("kotlin" . kotlin) org-src-lang-modes)))
 (elpaca ob-kotlin)
-(elpaca (dart-mode :host github :repo "bradyt/dart-mode")
-  (leaf dart-mode
-    :doc "Major mode for editing Dart files"
-    :req "emacs-24.3"
-    :tag "languages" "emacs>=24.3"
-    :url "https://github.com/bradyt/dart-mode"
-    :mode (("\\.dart\\'" . dart-mode))
-    :hook ((dart-mode-hook . lsp-deferred)
-           (dart-mode-hook . (lambda ()
-                               (electric-pair-local-mode 1)
-                               (when (featurep 'embark)
-                                 (setq-local embark-target-finders
-                                             (append (remove
-                                                      'embark-target-file-at-point
-                                                      embark-target-finders)
-                                                     '(embark-target-file-at-point)))))))))
+(leaf dart-mode
+  :elpaca (dart-mode :host github :repo "bradyt/dart-mode")
+  :doc "Major mode for editing Dart files"
+  :req "emacs-24.3"
+  :tag "languages" "emacs>=24.3"
+  :url "https://github.com/bradyt/dart-mode"
+  :mode (("\\.dart\\'" . dart-mode))
+  :hook ((dart-mode-hook . lsp-deferred)
+         (dart-mode-hook . (lambda ()
+                             (electric-pair-local-mode 1)
+                             (when (featurep 'embark)
+                               (setq-local embark-target-finders
+                                           (append (remove
+                                                    'embark-target-file-at-point
+                                                    embark-target-finders)
+                                                   '(embark-target-file-at-point))))))))
 (elpaca fsharp-mode)
-(elpaca plantuml-mode
-  (leaf plantuml-mode
-    :custom
-    ((plantuml-default-exec-mode . 'jar)
-     (plantuml-output-type . "png"))
-    :config
-    (setq plantuml-jar-path
-          (cond ((eq system-type 'darwin)
-                 "/usr/local/opt/plantuml/libexec/plantuml.jar")
-                ((string-match "ndeavour" my-lsb-distribution-name)
-                 "/usr/share/java/plantuml/plantuml.jar")
-                (t "")))))
+(leaf plantuml-mode
+  :elpaca t
+  :custom
+  ((plantuml-default-exec-mode . 'jar)
+   (plantuml-output-type . "png"))
+  :config
+  (setq plantuml-jar-path
+        (cond ((eq system-type 'darwin)
+               "/usr/local/opt/plantuml/libexec/plantuml.jar")
+              ((string-match "ndeavour" my-lsb-distribution-name)
+               "/usr/share/java/plantuml/plantuml.jar")
+              (t ""))))
 (elpaca htmlize)
-(elpaca adoc-mode
-  (leaf adoc-mode
-    :bind
-    (:adoc-mode-map
-     ("C-c C-n" . outline-next-visible-heading)
-     ("C-c C-p" . outline-previous-visible-heading))))
+(leaf adoc-mode
+  :elpaca t
+  :bind
+  (:adoc-mode-map
+   ("C-c C-n" . outline-next-visible-heading)
+   ("C-c C-p" . outline-previous-visible-heading)))
 (elpaca pandoc)
 (elpaca graphviz-dot-mode)
-(elpaca editorconfig
-  (leaf editorconfig
-    :diminish editorconfig-mode
-    :config
-    (editorconfig-mode 1)))
+(leaf editorconfig
+  :elpaca t
+  :diminish editorconfig-mode
+  :config
+  (editorconfig-mode 1))
 (leaf easy-hugo
   :disabled t
   :custom
@@ -2462,68 +2464,65 @@ See `org-capture-templates' for more information."
 (elpaca npm-mode)
 (elpaca autodisass-java-bytecode)
 (elpaca solarized-theme)
-(elpaca modus-themes
-  (leaf modus-themes
-    :require t
-    :custom
-    ((modus-themes-italic-constructs . t)
-     (modus-themes-org-blocks . 'gray-background)
-     (modus-themes-custom-auto-reload . t)
-     (modus-themes-disable-other-themes . t)
-     (modus-themes-to-toggle . '(modus-operandi-deuteranopia
-                                 modus-vivendi-deuteranopia)))
-    :hook
-    (ns-system-appearance-change-functions .(lambda (appearance)
-                                              (if (and custom-enabled-themes
-                                                       (string-match-p "modus-"
-                                                                       (symbol-name (car custom-enabled-themes))))
-                                                  (my-modus-themes--change-appearance appearance))))
-    :init
-    (defun my-modus-themes--change-appearance (appearance)
-      (modus-themes-load-theme
-       (nth (if (eq appearance 'dark) 1 0) modus-themes-to-toggle)))
-    :config
-    (let ((a (cond ((boundp 'ns-system-appearance) ns-system-appearance)
-                            ((and modus-themes--select-theme-history
-                             (string-match-p "vivendi" (car modus-themes--select-theme-history)))
-                             'dark)
-                            (t 'light))))
-      (my-modus-themes--change-appearance a))
-    (defun my-modus-themes--save ()
-        "save current modus-theme's variant to `modus-themes--select-theme-history'"
-        (let ((theme (symbol-name (car custom-enabled-themes))))
-          (when (string-match-p "^modus-" theme)
-            (add-to-history 'modus-themes--select-theme-history theme))))
-    (advice-add 'modus-themes-toggle :after #'my-modus-themes--save)))
+(leaf modus-themes
+  :elpaca t
+  :require t
+  :custom
+  ((modus-themes-italic-constructs . t)
+   (modus-themes-org-blocks . 'gray-background)
+   (modus-themes-custom-auto-reload . t)
+   (modus-themes-disable-other-themes . t)
+   (modus-themes-to-toggle . '(modus-operandi-deuteranopia
+                               modus-vivendi-deuteranopia)))
+  :hook
+  (ns-system-appearance-change-functions .(lambda (appearance)
+                                            (if (and custom-enabled-themes
+                                                     (string-match-p "modus-"
+                                                                     (symbol-name (car custom-enabled-themes))))
+                                                (my-modus-themes--change-appearance appearance))))
+  :init
+  (defun my-modus-themes--change-appearance (appearance)
+    (modus-themes-load-theme
+     (nth (if (eq appearance 'dark) 1 0) modus-themes-to-toggle)))
+  :config
+  (let ((a (cond ((boundp 'ns-system-appearance) ns-system-appearance)
+                 ((and modus-themes--select-theme-history
+                       (string-match-p "vivendi" (car modus-themes--select-theme-history)))
+                  'dark)
+                 (t 'light))))
+    (my-modus-themes--change-appearance a))
+  (defun my-modus-themes--save ()
+    "save current modus-theme's variant to `modus-themes--select-theme-history'"
+    (let ((theme (symbol-name (car custom-enabled-themes))))
+      (when (string-match-p "^modus-" theme)
+        (add-to-history 'modus-themes--select-theme-history theme))))
+  (advice-add 'modus-themes-toggle :after #'my-modus-themes--save))
 (elpaca doom-themes)
-(elpaca markdown-mode
-  (leaf markdown-mode
-    :mode (("README\\.md\\'" . gfm-mode)
-           ("\\.md\\'" . markdown-mode)
-           ("\\.markdown\\'" . markdown-mode))
-    :custom ((markdown-command . "multimarkdown"))
-    :hook (markdown-mode-hook . (lambda ()
-                                  (setq-local imenu-create-index-function
-                                              'markdown-imenu-create-flat-index)))
-    :config
-    (when (eq window-system 'ns)
-      (set-face-attribute 'markdown-table-face nil
-                          :family "IPAGothic"))
-    (defvar-keymap my-markdown-navigation-repeat-map
-      :repeat t
-      "n" #'markdown-outline-next
-      "p" #'markdown-outline-previous
-      "TAB" #'markdown-cycle
-      "u" #'markdown-up-heading)))
-
+(leaf markdown-mode
+  :elpaca t
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :custom ((markdown-command . "multimarkdown"))
+  :hook (markdown-mode-hook . (lambda ()
+                                (setq-local imenu-create-index-function
+                                            'markdown-imenu-create-flat-index)))
+  :config
+  (when (eq window-system 'ns)
+    (set-face-attribute 'markdown-table-face nil
+                        :family "IPAGothic"))
+  (defvar-keymap my-markdown-navigation-repeat-map
+    :repeat t
+    "n" #'markdown-outline-next
+    "p" #'markdown-outline-previous
+    "TAB" #'markdown-cycle
+    "u" #'markdown-up-heading))
 (elpaca docker)
 
 (elpaca docker-compose-mode)
-
-(elpaca review-mode
-  (leaf review-mode
-    :mode (("\\.re\\'" . review-mode))))
-
+(leaf review-mode
+  :elpaca t
+  :mode (("\\.re\\'" . review-mode)))
 (elpaca csv-mode)
 
 (elpaca gnuplot)
@@ -2544,22 +2543,21 @@ See `org-capture-templates' for more information."
 
 (elpaca ssh-config-mode)
 
-(elpaca fish-mode
-  (leaf fish-mode
-    :config
-    (with-eval-after-load 'org
-      (push '("fish" . fish) org-src-lang-modes))))
+(leaf fish-mode
+  :elpaca t
+  :config
+  (with-eval-after-load 'org
+    (push '("fish" . fish) org-src-lang-modes)))
 
-(elpaca dockerfile-mode
-  (leaf dockerfile-mode
-    :config
-    (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))))
+(leaf dockerfile-mode
+  :elpaca t
+  :config
+  (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
 
 (elpaca meson-mode)
-
-(elpaca git-modes
-  (leaf git-modes
-    :require t))
+(leaf git-modes
+    :elpaca t
+    :require t)
 (elpaca groovy-mode)
 (leaf server
   :commands (server-running-p)
@@ -2607,129 +2605,130 @@ Optional argument ARG hoge."
 (leaf epg-config
   :custom
   (epg-pinentry-mode . 'loopback))
-(elpaca vimrc-mode
-  (leaf vimrc-mode
+(leaf vimrc-mode
+    :elpaca t
     :mode
-    ("\\.vim\\(rc\\)?\\'" . vimrc-mode)))
-(elpaca (lsp-bridge :host github :repo "manateelazycat/lsp-bridge"
-                    :files (:defaults "lsp_bridge.py" "acm/*" "core" "langserver" "multiserver" "resources"))
-  (leaf lsp-bridge
-    :disabled t
-    :bind
-    (:lsp-bridge-mode-map
-     ("C-c C-l a a" . lsp-bridge-code-action))))
+    ("\\.vim\\(rc\\)?\\'" . vimrc-mode))
+(leaf lsp-bridge
+  :elpaca (lsp-bridge :host github :repo "manateelazycat/lsp-bridge"
+                      :files (:defaults "lsp_bridge.py" "acm/*" "core"
+                                        "langserver" "multiserver" "resources"))
+  :disabled t
+  :bind
+  (:lsp-bridge-mode-map
+   ("C-c C-l a a" . lsp-bridge-code-action)))
 (leaf *lsp
   :config
-  (elpaca lsp-mode
-    (leaf lsp-mode
-      :commands (lsp lsp-deferred)
-      :custom ((lsp-auto-execute-action . nil)
-               (lsp-completion-provider . :none) ;disable company-capf
-               (lsp-keymap-prefix . "C-c C-l")
-               (lsp-semantic-tokens-enable . t))
-      :hook ((lsp-mode-hook  . lsp-enable-which-key-integration)
-             (lsp-completion-mode-hook . my-lsp-mode-setup-completion)
-             (c-mode-hook    . lsp-deferred)
-             (css-mode-hook  . lsp-deferred)
-             (html-mode-hook . lsp-deferred))
-      :init
-      (setq read-process-output-max (* 1024 1024))
-      (defun my-lsp-mode-setup-completion ()
-        (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-              '(orderless)))))
-  (elpaca lsp-python-ms
-    (leaf lsp-python-ms
-      :disabled t
-      :require t
-      :custom
-      ((lsp-python-ms-python-executable-cmd . "python3"))
-      :hook ((python-mode-hook . (lambda ()
-                                   (require 'lsp-python-ms)
-                                   (when (file-exists-p
-                                          (concat (projectile-project-root buffer-file-name) ".venv/"))
-                                     (setq lsp-python-ms-extra-paths
-                                           (vector
-                                            (format
-                                             "%s/site-packages"
-                                             (car
-                                              (last (directory-files
-                                                     (concat
-                                                      (projectile-project-root buffer-file-name)
-                                                      ".venv/lib/")
-                                                     t))))))
-                                     (message "lsp-python-ms-extra-paths `%s'" lsp-python-ms-extra-paths))
-                                   (lsp-deferred))))
-      :config
-      (setq lsp-python-ms-auto-install-server t)
-      (add-hook 'python-mode-hook #'lsp-deferred) ; or lsp
-      ))
-  (elpaca lsp-pyright
-    (leaf lsp-pyright
-      :hook ((python-mode-hook . (lambda ()
-                                   (require 'lsp-pyright)
-                                   (when (file-exists-p
-                                          (concat (projectile-project-root buffer-file-name) ".venv/"))
-                                     (setq lsp-pyright-extra-paths
-                                           (vector
-                                            (format
-                                             "%s/site-packages"
-                                             (car
-                                              (last (directory-files
-                                                     (concat
-                                                      (projectile-project-root buffer-file-name)
-                                                      ".venv/lib/")
-                                                     t))))))
-                                     (message "lsp-pyright-extra-paths `%s'" lsp-pyright-extra-paths))
-                                   (lsp-deferred))))
-
-      :config
-      (dolist (dir '(
-                     "[/\\\\]\\.venv$"
-                     "[/\\\\]\\.mypy_cache$"
-                     "[/\\\\]__pycache__$"))
-        (push dir lsp-file-watch-ignored))))
+  (leaf lsp-mode
+    :elpaca t
+    :commands (lsp lsp-deferred)
+    :custom ((lsp-auto-execute-action . nil)
+             (lsp-completion-provider . :none) ;disable company-capf
+             (lsp-keymap-prefix . "C-c C-l")
+             (lsp-semantic-tokens-enable . t))
+    :hook ((lsp-mode-hook  . lsp-enable-which-key-integration)
+           (lsp-completion-mode-hook . my-lsp-mode-setup-completion)
+           (c-mode-hook    . lsp-deferred)
+           (css-mode-hook  . lsp-deferred)
+           (html-mode-hook . lsp-deferred))
+    :init
+    (setq read-process-output-max (* 1024 1024))
+    (defun my-lsp-mode-setup-completion ()
+      (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+            '(orderless))))
+  (leaf lsp-python-ms
+    :elpaca t
+    :disabled t
+    :require t
+    :custom
+    ((lsp-python-ms-python-executable-cmd . "python3"))
+    :hook ((python-mode-hook . (lambda ()
+                                 (require 'lsp-python-ms)
+                                 (when (file-exists-p
+                                        (concat (projectile-project-root buffer-file-name) ".venv/"))
+                                   (setq lsp-python-ms-extra-paths
+                                         (vector
+                                          (format
+                                           "%s/site-packages"
+                                           (car
+                                            (last (directory-files
+                                                   (concat
+                                                    (projectile-project-root buffer-file-name)
+                                                    ".venv/lib/")
+                                                   t))))))
+                                   (message "lsp-python-ms-extra-paths `%s'" lsp-python-ms-extra-paths))
+                                 (lsp-deferred))))
+    :config
+    (setq lsp-python-ms-auto-install-server t)
+    (add-hook 'python-mode-hook #'lsp-deferred) ; or lsp
+    )
+  (leaf lsp-pyright
+    :elpaca t
+    :hook
+    ((python-mode-hook . (lambda ()
+                           (require 'lsp-pyright)
+                           (when (file-exists-p
+                                  (concat (projectile-project-root buffer-file-name) ".venv/"))
+                             (setq lsp-pyright-extra-paths
+                                   (vector
+                                    (format
+                                     "%s/site-packages"
+                                     (car
+                                      (last (directory-files
+                                             (concat
+                                              (projectile-project-root buffer-file-name)
+                                              ".venv/lib/")
+                                             t))))))
+                             (message "lsp-pyright-extra-paths `%s'" lsp-pyright-extra-paths))
+                           (lsp-deferred))))
+    :config
+    (dolist (dir '(
+                   "[/\\\\]\\.venv$"
+                   "[/\\\\]\\.mypy_cache$"
+                   "[/\\\\]__pycache__$"))
+      (push dir lsp-file-watch-ignored)))
   ;; optionally
-  (elpaca lsp-ui
-    (leaf lsp-ui
-      :after lsp-mode
-      :custom
-      (lsp-ui-doc-show-with-cursor . t)
+  (leaf lsp-ui
+    :elpaca t
+    :after lsp-mode
+    :custom
+    (lsp-ui-doc-show-with-cursor . t)
 
-      (lsp-ui-doc-enable                  . t)
-      (lsp-ui-doc-header                  . t)
-      (lsp-ui-doc-include-signature       . t)
-      (lsp-ui-doc-position                . 'bottom) ;; top, bottom, or at-point
-      (lsp-ui-doc-max-width               . 85)
-      (lsp-ui-doc-max-height              . 20)
-      (lsp-ui-doc-use-childframe          . t)
-      (lsp-ui-doc-use-webkit              . nil)
+    (lsp-ui-doc-enable                  . t)
+    (lsp-ui-doc-header                  . t)
+    (lsp-ui-doc-include-signature       . t)
+    (lsp-ui-doc-position                . 'bottom) ;; top, bottom, or at-point
+    (lsp-ui-doc-max-width               . 85)
+    (lsp-ui-doc-max-height              . 20)
+    (lsp-ui-doc-use-childframe          . t)
+    (lsp-ui-doc-use-webkit              . nil)
 
-      (lsp-ui-sideline-enable             . t)
-      (lsp-ui-sideline-ignore-duplicate   . t)
-      (lsp-ui-sideline-show-symbol        . t)
-      (lsp-ui-sideline-show-hover         . t)
-      (lsp-ui-sideline-show-diagnostics   . t)
-      (lsp-ui-sideline-show-code-actions  . t)
-      :bind ((:lsp-ui-mode-map
-              ("M-." . lsp-ui-peek-find-definitions)
-              ("M-?" . lsp-ui-peek-find-references))
-             (:lsp-command-map
-              ("t" . lsp-ui-doc-focus-frame)))
-      ))
+    (lsp-ui-sideline-enable             . t)
+    (lsp-ui-sideline-ignore-duplicate   . t)
+    (lsp-ui-sideline-show-symbol        . t)
+    (lsp-ui-sideline-show-hover         . t)
+    (lsp-ui-sideline-show-diagnostics   . t)
+    (lsp-ui-sideline-show-code-actions  . t)
+    :bind ((:lsp-ui-mode-map
+            ("M-." . lsp-ui-peek-find-definitions)
+            ("M-?" . lsp-ui-peek-find-references))
+           (:lsp-command-map
+            ("t" . lsp-ui-doc-focus-frame)))
+    )
   (leaf lsp-treemacs
     :commands lsp-treemacs-errors-list
     :config
     (lsp-treemacs-sync-mode 1))
   ;; optionally if you want to use debugger
-  (elpaca lsp-java
-    (leaf lsp-java
-      :disabled t
-      :require t
-      :hook (java-mode-hook . (lambda ()
-                                (lsp-deferred)
-                                (setq lsp-managed-mode t)))
-      :bind ((:lsp-mode-map
-              ("M-." . lsp-find-definition)))))
+  (leaf lsp-java
+    :elpaca t
+    :disabled t
+    :require t
+    :hook (java-mode-hook . (lambda ()
+                              (lsp-deferred)
+                              (setq lsp-managed-mode t)))
+    :bind ((:lsp-mode-map
+            ("M-." . lsp-find-definition))))
   ;; (elpaca lsp-metals
   ;;   (leaf lsp-metals
   ;;     :custom
@@ -2737,210 +2736,209 @@ Optional argument ARG hoge."
   ;;     :hook (scala-mode-hook . lsp-deferred)))
   (elpaca lsp-dart)
   (elpaca lsp-tailwindcss)
-  (elpaca dap-mode
-    (leaf dap-mode
-      :after lsp-mode
-      :config
-      (dap-mode 1)
-      (dap-ui-mode 1)
-      (require 'dap-cpptools)
-      (require 'dap-gdb-lldb)
-      (dap-register-debug-template "Rust::GDB Run Configuration"
-                                   (list :type "gdb"
-                                         :request "launch"
-                                         :name "GDB::Run"
-                                         :gdbpath "rust-gdb"
-                                         :target nil
-                                         :cwd nil))
-      (leaf dap-java
-        :require t
-        :after (lsp-java))))
-  (elpaca consult-lsp
-    (leaf consult-lsp
-      :after (consult lsp-mode)
-      :config
-      (consult-customize
-       consult-lsp-symbols
-       :preview-key (kbd "C-,")))))
+  (leaf dap-mode
+    :elpaca t
+    :after lsp-mode
+    :config
+    (dap-mode 1)
+    (dap-ui-mode 1)
+    (require 'dap-cpptools)
+    (require 'dap-gdb-lldb)
+    (dap-register-debug-template "Rust::GDB Run Configuration"
+                                 (list :type "gdb"
+                                       :request "launch"
+                                       :name "GDB::Run"
+                                       :gdbpath "rust-gdb"
+                                       :target nil
+                                       :cwd nil))
+    (leaf dap-java
+      :require t
+      :after (lsp-java)))
+  (leaf consult-lsp
+    :elpaca t
+    :after (consult lsp-mode)
+    :config
+    (consult-customize
+     consult-lsp-symbols
+     :preview-key (kbd "C-,"))))
 (leaf eglot
-    :after corfu flymake
-    :bind
-    ((:eglot-mode-map
-      ("C-c C-l a a" . eglot-code-actions))))
+  :after corfu flymake
+  :bind
+  ((:eglot-mode-map
+    ("C-c C-l a a" . eglot-code-actions))))
 (elpaca flycheck-eglot)
 (elpaca tree-sitter-langs)
 (elpaca treesit-auto)
-(elpaca sideline
-  (leaf sideline
-    :init
-    (setq sideline-flymake-display-mode 'point) ; 'point to show errors only on point
+(leaf sideline
+  :elpaca t
+  :init
+  (setq sideline-flymake-display-mode 'point) ; 'point to show errors only on point
                                         ; 'line to show errors on the current line
-    (setq sideline-backends-right '((sideline-lsp      . up)
-                                    (sideline-flymake . down)))))
+  (setq sideline-backends-right '((sideline-lsp      . up)
+                                  (sideline-flymake . down))))
 (elpaca sideline-flymake)
 (elpaca sideline-lsp)
-(elpaca eglot-java
-  (leaf eglot-java
-    :doc "Java extension for the eglot LSP client"
-    :req "emacs-26.1" "eglot-1.0" "jsonrpc-1.0.0"
-    :tag "languages" "convenience" "emacs>=26.1"
-    :url "https://github.com/yveszoundi/eglot-java"
-    :emacs>= 26.1
-    :custom
-    ((eglot-java-prefix-key . "C-c C-l"))))
-(elpaca consult-eglot
-  (leaf consult-eglot
-    :doc "A consulting-read interface for eglot"
-    :req "emacs-27.1" "eglot-1.7" "consult-0.9"
-    :tag "lsp" "completion" "tools" "emacs>=27.1"
-    :url "https://github.com/mohkale/consult-eglot"
-    :emacs>= 27.1
-    :after eglot consult))
-
+(leaf eglot-java
+  :elpaca t
+  :doc "Java extension for the eglot LSP client"
+  :req "emacs-26.1" "eglot-1.0" "jsonrpc-1.0.0"
+  :tag "languages" "convenience" "emacs>=26.1"
+  :url "https://github.com/yveszoundi/eglot-java"
+  :emacs>= 26.1
+  :custom
+  ((eglot-java-prefix-key . "C-c C-l")))
+(leaf consult-eglot
+  :elpaca t
+  :doc "A consulting-read interface for eglot"
+  :req "emacs-27.1" "eglot-1.7" "consult-0.9"
+  :tag "lsp" "completion" "tools" "emacs>=27.1"
+  :url "https://github.com/mohkale/consult-eglot"
+  :emacs>= 27.1
+  :after eglot consult)
 (elpaca vterm)
-(elpaca (elfeed :files (:defaults "web/*"))
-  (leaf elfeed
-    :doc "an Emacs Atom/RSS feed reader"
-    :req "emacs-24.3"
-    :tag "emacs>=24.3"
-    :url "https://github.com/skeeto/elfeed"
-    :commands (elfeed)
-    :emacs>= 24.3
-    :bind ((:elfeed-show-mode-map
-            ("S-SPC" . scroll-down-command))
-           (:elfeed-search-mode-map
-            ("j" . forward-line)
-            ("n" . forward-line)
-            ("k" . (lambda () (interactive)(forward-line -1)))
-            ("p" . (lambda () (interactive)(forward-line -1)))
-            ("e" . (lambda () (interactive)(eww (my-elfeed-yank-entry-url))))
-            ("a" . my-elfeed-safari-add-reading-item)
-            ("s" . my-elfeed-search-live-filter))
-           (:elfeed-show-mode-map
-            ("a" . my-elfeed-safari-add-reading-item)))
-    :init
-    (defvar-keymap my-elfeed-yank-map
-      "y" #'elfeed-search-yank
-      "m" #'my-elfeed-search-yank-markdown
-      "o" #'my-elfeed-search-yank-org)
-    :custom
-    ((elfeed-search-date-format . '("%Y-%m-%d %H:%M" 16 :left))
-     (elfeed-search-filter . "@24-hours-ago +unread"))
-    :config
-    ;;osascript -e 'tell application "Safari" to add reading list item "http://totl.net/"'
-    (defun my-elfeed-safari-add-reading-item ()
-      (interactive)
-      (unless (and (eq system-type 'darwin)
-                   (not (equal (shell-command-to-string "command -v osascript") "")))
-        (error "not found 'osascript' command"))
-      (let ((url (car (mapcar #'elfeed-entry-link (elfeed-search-selected)))))
-        (when (equal url nil)
-          (error "Url is empty"))
-        (call-process-shell-command
-         (format "osascript -e 'tell application \"Safari\" to add reading list item \"%s\"'" (my-elfeed-yank-entry-url)))
-        (message "The selected entry is added to Safari's reading list.")
-        (elfeed-search-untag-all-unread)))
-    (defun my-elfeed-yank-entry-url ()
-      (interactive)
-      (let ((url (car (mapcar #'elfeed-entry-link (elfeed-search-selected)))))
-        (if (equal url "")
-            (error "Selected entry's url is empty")
-          url)))
-    (defun my-elfeed-search-live-filter ()
-      (interactive)
-      (unwind-protect
-          (let* ((elfeed-search-filter-active :live)
-                 (input (my-elfeed--tag-completing-multi)))
-            (setq elfeed-search-filter input))
-        (elfeed-search-update :force)))
-    (defun my-elfeed--tag-completing-multi ()
-      (require 'elfeed)
-      (let ((elfeed-db-tags (elfeed-db-get-all-tags)))
-        (mapconcat 'identity (completing-read-multiple "Filter: "
-                                                       elfeed-db-tags
-                                                       nil nil
-                                                       elfeed-search-filter)
-                   " +")))
+(leaf elfeed
+  :elpaca (elfeed :files (:defaults "web/*"))
+  :doc "an Emacs Atom/RSS feed reader"
+  :req "emacs-24.3"
+  :tag "emacs>=24.3"
+  :url "https://github.com/skeeto/elfeed"
+  :commands (elfeed)
+  :emacs>= 24.3
+  :bind ((:elfeed-show-mode-map
+          ("S-SPC" . scroll-down-command))
+         (:elfeed-search-mode-map
+          ("j" . forward-line)
+          ("n" . forward-line)
+          ("k" . (lambda () (interactive)(forward-line -1)))
+          ("p" . (lambda () (interactive)(forward-line -1)))
+          ("e" . (lambda () (interactive)(eww (my-elfeed-yank-entry-url))))
+          ("a" . my-elfeed-safari-add-reading-item)
+          ("s" . my-elfeed-search-live-filter))
+         (:elfeed-show-mode-map
+          ("a" . my-elfeed-safari-add-reading-item)))
+  :init
+  (defvar-keymap my-elfeed-yank-map
+    "y" #'elfeed-search-yank
+    "m" #'my-elfeed-search-yank-markdown
+    "o" #'my-elfeed-search-yank-org)
+  :custom
+  ((elfeed-search-date-format . '("%Y-%m-%d %H:%M" 16 :left))
+   (elfeed-search-filter . "@24-hours-ago +unread"))
+  :config
+  ;;osascript -e 'tell application "Safari" to add reading list item "http://totl.net/"'
+  (defun my-elfeed-safari-add-reading-item ()
+    (interactive)
+    (unless (and (eq system-type 'darwin)
+                 (not (equal (shell-command-to-string "command -v osascript") "")))
+      (error "not found 'osascript' command"))
+    (let ((url (car (mapcar #'elfeed-entry-link (elfeed-search-selected)))))
+      (when (equal url nil)
+        (error "Url is empty"))
+      (call-process-shell-command
+       (format "osascript -e 'tell application \"Safari\" to add reading list item \"%s\"'" (my-elfeed-yank-entry-url)))
+      (message "The selected entry is added to Safari's reading list.")
+      (elfeed-search-untag-all-unread)))
+  (defun my-elfeed-yank-entry-url ()
+    (interactive)
+    (let ((url (car (mapcar #'elfeed-entry-link (elfeed-search-selected)))))
+      (if (equal url "")
+          (error "Selected entry's url is empty")
+        url)))
+  (defun my-elfeed-search-live-filter ()
+    (interactive)
+    (unwind-protect
+        (let* ((elfeed-search-filter-active :live)
+               (input (my-elfeed--tag-completing-multi)))
+          (setq elfeed-search-filter input))
+      (elfeed-search-update :force)))
+  (defun my-elfeed--tag-completing-multi ()
+    (require 'elfeed)
+    (let ((elfeed-db-tags (elfeed-db-get-all-tags)))
+      (mapconcat 'identity (completing-read-multiple "Filter: "
+                                                     elfeed-db-tags
+                                                     nil nil
+                                                     elfeed-search-filter)
+                 " +")))
 
-    (defun my-elfeed-search-set-filter (old-fn &rest args)
-      (interactive)
-      (funcall old-fn (my-elfeed--tag-completing-multi)))
-    (advice-add 'elfeed-search-set-filter :around #'my-elfeed-search-set-filter)
-    (defun my-elfeed-search-yank-markdown ()
-      (interactive)
-      (my-elfeed-search-yank 'my-markdown--generate-link))
-    (defun my-elfeed-search-yank-org ()
-      (interactive)
-      (my-elfeed-search-yank 'my-org--generate-link))
-    (defun my-elfeed-search-yank (yank-function)
-      (interactive)
-      (let* ((entries (elfeed-search-selected))
-             (links (mapcar #'elfeed-entry-link entries))
-             (titles (mapcar #'elfeed-entry-title entries))
-             (markdowns (mapconcat
-                         #'identity
-                         (cl-mapcar
-                          yank-function
-                          titles links) "\n")))
-        (kill-new markdowns)
-        (message "Copied:%s" markdowns)))
-    (leaf-keys-bind-keymap
-     ((elfeed-search-mode-map :package elfeed
-                              ("y" . my-elfeed-yank-map))))))
-(elpaca elfeed-goodies
-  (leaf elfeed-goodies
-    :doc "Elfeed goodies"
-    :req "popwin-1.0.0" "powerline-2.2" "elfeed-2.0.0" "cl-lib-0.5" "link-hint-0.1"
-    :url "https://github.com/algernon/elfeed-goodies"
-    :require  popwin
-    :after elfeed
-    :bind (:elfeed-search-mode-map
-           :package (elfeed elfeed-goodies)
-           ("l" . elfeed-goodies/toggle-logs))
-    :custom
-    ((elfeed-goodies/entry-pane-position . 'bottom))
-    :init
-    (elfeed-goodies/setup)))
+  (defun my-elfeed-search-set-filter (old-fn &rest args)
+    (interactive)
+    (funcall old-fn (my-elfeed--tag-completing-multi)))
+  (advice-add 'elfeed-search-set-filter :around #'my-elfeed-search-set-filter)
+  (defun my-elfeed-search-yank-markdown ()
+    (interactive)
+    (my-elfeed-search-yank 'my-markdown--generate-link))
+  (defun my-elfeed-search-yank-org ()
+    (interactive)
+    (my-elfeed-search-yank 'my-org--generate-link))
+  (defun my-elfeed-search-yank (yank-function)
+    (interactive)
+    (let* ((entries (elfeed-search-selected))
+           (links (mapcar #'elfeed-entry-link entries))
+           (titles (mapcar #'elfeed-entry-title entries))
+           (markdowns (mapconcat
+                       #'identity
+                       (cl-mapcar
+                        yank-function
+                        titles links) "\n")))
+      (kill-new markdowns)
+      (message "Copied:%s" markdowns)))
+  (leaf-keys-bind-keymap
+   ((elfeed-search-mode-map :package elfeed
+                            ("y" . my-elfeed-yank-map)))))
+(leaf elfeed-goodies
+  :elpaca t
+  :doc "Elfeed goodies"
+  :req "popwin-1.0.0" "powerline-2.2" "elfeed-2.0.0" "cl-lib-0.5" "link-hint-0.1"
+  :url "https://github.com/algernon/elfeed-goodies"
+  :require  popwin
+  :after elfeed
+  :bind (:elfeed-search-mode-map
+         :package (elfeed elfeed-goodies)
+         ("l" . elfeed-goodies/toggle-logs))
+  :custom
+  ((elfeed-goodies/entry-pane-position . 'bottom))
+  :init
+  (elfeed-goodies/setup))
 
-(elpaca powershell
-  (leaf powershell
-    :config
-    (with-eval-after-load 'org
-      (push '("pwsh" . powershell) org-src-lang-modes)
-      (push '("powershell" . powershell) org-src-lang-modes))))
+(leaf powershell
+  :elpaca t
+  :config
+  (with-eval-after-load 'org
+    (push '("pwsh" . powershell) org-src-lang-modes)
+    (push '("powershell" . powershell) org-src-lang-modes)))
 
 ;; Major mode for Twitter http://twmode.sf.net/
 (elpaca twittering-mode)
 (elpaca lua-mode)
 (elpaca (protobuf-mode :main "editors/protobuf-mode.el"))
-(elpaca pcre2el
-  (leaf pcre2el
-    :doc "regexp syntax converter"
-    :req "emacs-24" "cl-lib-0.3"
-    :tag "emacs>=24"
-    :url "https://github.com/joddie/pcre2el"
-    :custom
-    ((reb-re-syntax . 'pcre))
-    :bind
-    (:reb-mode-map
-     ("C-r" . reb-prev-match)
-     ("C-s" . reb-next-match))))
-(elpaca regex-tool
-  (leaf regex-tool
-    :doc "A regular expression evaluation tool for programmers"
-    :tag "development" "programming" "languages" "regex"
-    :url "http://www.newartisans.com/"
-    :custom
-    (regex-tool-backend . 'perl)
-    :bind
-    (:regex-tool-mode-map
-     ("C-c C-q" . regex-tool-quit))))
-(elpaca visual-regexp-steroids
-  (leaf visual-regexp-steroids
-    :doc "Extends visual-regexp to support other regexp engines"
-    :req "visual-regexp-1.1"
-    :tag "feedback" "visual" "python" "replace" "regexp" "foreign" "external"
-    :url "https://github.com/benma/visual-regexp-steroids.el/"))
+(leaf pcre2el
+  :elpaca t
+  :doc "regexp syntax converter"
+  :req "emacs-24" "cl-lib-0.3"
+  :tag "emacs>=24"
+  :url "https://github.com/joddie/pcre2el"
+  :custom
+  ((reb-re-syntax . 'pcre))
+  :bind
+  (:reb-mode-map
+   ("C-r" . reb-prev-match)
+   ("C-s" . reb-next-match)))
+(leaf regex-tool
+  :elpaca t
+  :doc "A regular expression evaluation tool for programmers"
+  :tag "development" "programming" "languages" "regex"
+  :url "http://www.newartisans.com/"
+  :custom
+  (regex-tool-backend . 'perl)
+  :bind
+  (:regex-tool-mode-map
+   ("C-c C-q" . regex-tool-quit)))
+(leaf visual-regexp-steroids
+  :elpaca t
+  :doc "Extends visual-regexp to support other regexp engines"
+  :req "visual-regexp-1.1"
+  :tag "feedback" "visual" "python" "replace" "regexp" "foreign" "external"
+  :url "https://github.com/benma/visual-regexp-steroids.el/")
 
 (leaf repeat-mode
   :emacs>= 28
@@ -2949,76 +2947,75 @@ Optional argument ARG hoge."
   :config
   (repeat-mode t))
 
-(elpaca grip-mode
-  (leaf grip-mode
-    :doc "Instant GitHub-flavored Markdown/Org preview using grip."
-    :bind ((:markdown-mode-command-map
-            ("g" . grip-mode)))))
+(leaf grip-mode
+  :elpaca t
+  :doc "Instant GitHub-flavored Markdown/Org preview using grip."
+  :bind ((:markdown-mode-command-map
+          ("g" . grip-mode))))
 (elpaca dirvish)
-(elpaca shrface
-  (leaf shrface
-    :doc "Extend shr/eww with org features and analysis capability"
-    :req "emacs-25.1" "org-9.0" "language-detection-0.1.0"
-    :tag "faces" "emacs>=25.1"
-    :url "https://github.com/chenyanming/shrface"
-    :emacs>= 25.1
-    :hook (;; (eww-after-render-hook . shrface-mode)
-           (nov-mode-hook . shrface-mode))
-    :require t
-    :after eww
-    :bind
-    (:nov-mode-map
-     :package nov
-     ("n" . org-next-visible-heading)
-     ("p" . org-previous-visible-heading)
-     ("s" . org-toggle-narrow-to-subtree)
-     ("u" . outline-up-heading))
+(leaf shrface
+  :elpaca t
+  :doc "Extend shr/eww with org features and analysis capability"
+  :req "emacs-25.1" "org-9.0" "language-detection-0.1.0"
+  :tag "faces" "emacs>=25.1"
+  :url "https://github.com/chenyanming/shrface"
+  :emacs>= 25.1
+  :hook (;; (eww-after-render-hook . shrface-mode)
+         (nov-mode-hook . shrface-mode))
+  :require t
+  :after eww
+  :bind
+  (:nov-mode-map
+   :package nov
+   ("n" . org-next-visible-heading)
+   ("p" . org-previous-visible-heading)
+   ("s" . org-toggle-narrow-to-subtree)
+   ("u" . outline-up-heading))
 
-    :config
-    (shrface-basic)
-    (shrface-trial)
-    (shrface-default-keybindings) ; setup default keybindings
-    (setq shrface-href-versatile t)
+  :config
+  (shrface-basic)
+  (shrface-trial)
+  (shrface-default-keybindings) ; setup default keybindings
+  (setq shrface-href-versatile t)
 
-    (setq nov-shr-rendering-functions (append '((img . nov-render-img)
-                                                (title . nov-render-title))
-                                              shr-external-rendering-functions))))
-(elpaca nov
-  (leaf nov
-    :doc "Featureful EPUB reader mode"
-    :req "esxml-0.3.6" "emacs-25.1"
-    :tag "epub" "multimedia" "hypermedia" "emacs>=25.1"
-    :url "https://depp.brause.cc/nov.el"
-    :emacs>= 25.1
-    :custom
-    ((nov-text-width . t))
-    :mode ("\\.epub\\'" . nov-mode)
-    :hook (nov-mode-hook . (lambda () (visual-line-mode 1)))))
-(elpaca (nov-xwidget :host github :repo "chenyanming/nov-xwidget")
-  (leaf nov-xwidget
-    :disabled t
-    :after nov
-    :commands nov-xwidget-inject-all-files
-    :bind
-    (:nov-mode-map
-     ("o" . nov-xwidget-view))
-    :hook
-    (nov-mode-hook . nov-xwidget-inject-all-files)))
-
-(elpaca speed-type
-  (leaf speed-type
-    :doc "Practice touch and speed typing"
-    :req "emacs-25.1"
-    :tag "games" "emacs>=25.1"
-    :url "https://github.com/parkouss/speed-type"
-    :emacs>= 25.1
-    :config
-    (with-eval-after-load 'speed-type
-      (add-hook 'speed-type-mode-hook
-                (lambda ()
-                  (when (and (featurep 'corfu)
-                             global-corfu-mode)
-                    (corfu-mode -1)))))))
+  (setq nov-shr-rendering-functions (append '((img . nov-render-img)
+                                              (title . nov-render-title))
+                                            shr-external-rendering-functions)))
+(leaf nov
+  :elpaca t
+  :doc "Featureful EPUB reader mode"
+  :req "esxml-0.3.6" "emacs-25.1"
+  :tag "epub" "multimedia" "hypermedia" "emacs>=25.1"
+  :url "https://depp.brause.cc/nov.el"
+  :emacs>= 25.1
+  :custom
+  ((nov-text-width . t))
+  :mode ("\\.epub\\'" . nov-mode)
+  :hook (nov-mode-hook . (lambda () (visual-line-mode 1))))
+(leaf nov-xwidget
+  :elpaca (nov-xwidget :host github :repo "chenyanming/nov-xwidget")
+  :disabled t
+  :after nov
+  :commands nov-xwidget-inject-all-files
+  :bind
+  (:nov-mode-map
+   ("o" . nov-xwidget-view))
+  :hook
+  (nov-mode-hook . nov-xwidget-inject-all-files))
+(leaf speed-type
+  :elpaca t
+  :doc "Practice touch and speed typing"
+  :req "emacs-25.1"
+  :tag "games" "emacs>=25.1"
+  :url "https://github.com/parkouss/speed-type"
+  :emacs>= 25.1
+  :config
+  (with-eval-after-load 'speed-type
+    (add-hook 'speed-type-mode-hook
+              (lambda ()
+                (when (and (featurep 'corfu)
+                           global-corfu-mode)
+                  (corfu-mode -1))))))
 (elpaca suggest)
 (elpaca (emacs-eat :type git
                    :host codeberg
@@ -3031,9 +3028,9 @@ Optional argument ARG hoge."
                            (:exclude ".dir-locals.el" "*-tests.el"))))
 (elpaca jinx)
 (elpaca chatgpt-shell)
-(elpaca dmacro
-  (leaf dmacro
-    :global-minor-mode global-dmacro-mode))
+(leaf dmacro
+  :elpaca t
+  :global-minor-mode global-dmacro-mode)
 (elpaca puni)
 (elpaca rg)
 (elpaca mistty)
