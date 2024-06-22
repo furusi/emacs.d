@@ -1273,8 +1273,9 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   :bind (("C-=" . er/expand-region)))
 (when (display-graphic-p)
   (elpaca all-the-icons))
+(when (version< emacs-version "30")
+  (elpaca which-key))
 (leaf which-key
-  :elpaca t
   :diminish t
   :custom
   (which-key-idle-secondary-delay . 0.0)
@@ -2451,8 +2452,9 @@ See `org-capture-templates' for more information."
    ("C-c C-p" . outline-previous-visible-heading)))
 (elpaca pandoc)
 (elpaca graphviz-dot-mode)
+(when (version< emacs-version "30")
+  (elpaca editorconfig))
 (leaf editorconfig
-  :elpaca t
   :diminish editorconfig-mode
   :config
   (editorconfig-mode 1))
