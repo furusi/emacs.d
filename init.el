@@ -597,7 +597,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   :elpaca t)
 (leaf projectile
   :elpaca t
-  :bind `(,(when (string> emacs-version "28")
+  :bind `(,(when (version< "28" emacs-version)
              '(:projectile-command-map
                ("v" . my-projectile-vc-in-new-tab))))
   :bind-keymap (("C-c p" . projectile-command-map))
@@ -1376,214 +1376,214 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
 ;; Org-mode
 (leaf org*
   :config
-  (elpaca org
-    (leaf org
-      :mode (("\\.org$" . org-mode))
-      :hook ((org-mode-hook . (lambda () (prettify-symbols-mode)))
-             (org-mode-hook . (lambda () (setq prettify-symbols-alist org-prettify-symbols-alist)))
-             (org-mode-hook . (lambda ()
-                                ;; org-modeの固定幅フォントを設定
-                                (dolist (face '(org-table
-                                                org-formula
-                                                org-date))
-                                  (set-face-attribute face nil :family "UDEV Gothic JPDOC")))))
-      :custom
-      `((org-directory . ,(expand-file-name
-                           (cond
-                            ((file-exists-p (concat my-dropbox-dir "/org")) (concat my-dropbox-dir "/org"))
-                            ((file-exists-p "~/git/notes") "~/git/notes")
-                            (t (progn
-                                 (when (not (file-exists-p "~/org"))
-                                   (mkdir "~/org"))
-                                 "~/org")))))
-        (org-export-allow-bind-keywords . t)
-        (org-babel-python-command . "python3")
-        (org-export-backends . '(ascii html icalendar latex md odt taskjuggler asciidoc pandoc gfm))
-        (org-id-link-to-org-use-id . 'create-if-interactive)
-        (org-icalendar-use-scheduled . '(event-if-todo todo-start))
-        (org-link-file-path-type . (lambda (path)
-                                     (let* ((truepath (file-truename path))
-                                            (proj (project-current))
-                                            (root (if proj (project-current) default-directory)))
-                                       (if (string-prefix-p (expand-file-name (pcase (project-current)
-                                                                                (`(projectile . ,dir) dir)
-                                                                                (_ root)))
-                                                            truepath)
-                                           (file-relative-name truepath)
-                                         (abbreviate-file-name path)))))
-        (org-list-allow-alphabetical . t)
-        (org-return-follows-link . t)
-        (org-agenda-start-on-weekday . 0)
-        (org-link-frame-setup .
-                              '((vm . vm-visit-folder-other-frame)
-                                (vm-imap . vm-visit-imap-folder-other-frame)
-                                (gnus . org-gnus-no-new-news)
-                                (file . find-file)
-                                (wl . wl-other-frame)))
-        (org-todo-keywords . '((sequence "TODO(t)" "WAIT(w)" "SOMEDAY(s)" "|" "DONE(d)")
-                               (sequence "|" "CANCELED")))
-        (org-special-ctrl-a/e . t)
-        (org-src-preserve-indentation . t)
-        (org-startup-folded . t)
-        (org-preview-latex-default-process . 'dvisvgm)
-        (org-clock-persist . t)
-        (org-enforce-todo-dependencies . t)
-        (org-enforce-todo-checkbox-dependencies . t)
-        (org-use-sub-superscripts . '{})
-        (org-export-with-toc . nil)
-        (org-export-with-sub-superscripts . '{}))
-      :bind (("C-c c" . org-capture)
-             ("C-c l" . org-store-link)
-             ("C-c a" . org-agenda)
-             ("<f2>" . insert-zero-width-space)
-             (:org-mode-map
-              ("C-c C-\'" . org-insert-structure-template)))
-      :init
-      (defun my-org-item-speed-command-help ()
-        (interactive)
-        (with-output-to-temp-buffer "*Help*"
-          (princ "Speed commands\n==============\n")
-          (mapc #'org-print-speed-command
-                ;; FIXME: don't check `org-speed-commands-user' past 9.6
-                my-org-item-key-bindings))
-        (with-current-buffer "*Help*"
-          (setq truncate-lines t)))
-      (defvar my-org-item-key-bindings
-        '(("p" . org-previous-item)
-          ("n" . org-next-item)
-          ("U" . org-metaup)
-          ("D" . org-metadown)
-          ("r" . org-metaright)
-          ("l" . org-metaleft)
-          ("R" . org-shiftmetaright)
-          ("L" . org-shiftmetaleft)
-          ("t" . org-toggle-checkbox)
-          ("i" . (lambda () (org-insert-item) (org-move-item-down) (org-beginning-of-line)))
-          ("c" . (lambda ()  (org-insert-item t) (org-move-item-down) (org-beginning-of-line)))
-          ("k" . (lambda () (forward-char) (org-mark-element) (call-interactively #'kill-region)))
-          ("Clock Commands")
-          ("I" . org-clock-in)
-          ("O" . org-clock-out)
-          ("Help")
-          ("?" . my-org-item-speed-command-help)))
-      (defun my-org-item-speed-command-activate (keys)
-        (when (and (bolp)
-                   (org-at-item-p))
-          (cdr (assoc keys my-org-item-key-bindings))))
+  (leaf org
+    :elpaca t
+    :mode (("\\.org$" . org-mode))
+    :hook ((org-mode-hook . (lambda () (prettify-symbols-mode)))
+           (org-mode-hook . (lambda () (setq prettify-symbols-alist org-prettify-symbols-alist)))
+           (org-mode-hook . (lambda ()
+                              ;; org-modeの固定幅フォントを設定
+                              (dolist (face '(org-table
+                                              org-formula
+                                              org-date))
+                                (set-face-attribute face nil :family "UDEV Gothic JPDOC")))))
+    :custom
+    `((org-directory . ,(expand-file-name
+                         (cond
+                          ((file-exists-p (concat my-dropbox-dir "/org")) (concat my-dropbox-dir "/org"))
+                          ((file-exists-p "~/git/notes") "~/git/notes")
+                          (t (progn
+                               (when (not (file-exists-p "~/org"))
+                                 (mkdir "~/org"))
+                               "~/org")))))
+      (org-export-allow-bind-keywords . t)
+      (org-babel-python-command . "python3")
+      (org-export-backends . '(ascii html icalendar latex md odt taskjuggler asciidoc pandoc gfm))
+      (org-id-link-to-org-use-id . 'create-if-interactive)
+      (org-icalendar-use-scheduled . '(event-if-todo todo-start))
+      (org-link-file-path-type . (lambda (path)
+                                   (let* ((truepath (file-truename path))
+                                          (proj (project-current))
+                                          (root (if proj (project-current) default-directory)))
+                                     (if (string-prefix-p (expand-file-name (pcase (project-current)
+                                                                              (`(projectile . ,dir) dir)
+                                                                              (_ root)))
+                                                          truepath)
+                                         (file-relative-name truepath)
+                                       (abbreviate-file-name path)))))
+      (org-list-allow-alphabetical . t)
+      (org-return-follows-link . t)
+      (org-agenda-start-on-weekday . 0)
+      (org-link-frame-setup .
+                            '((vm . vm-visit-folder-other-frame)
+                              (vm-imap . vm-visit-imap-folder-other-frame)
+                              (gnus . org-gnus-no-new-news)
+                              (file . find-file)
+                              (wl . wl-other-frame)))
+      (org-todo-keywords . '((sequence "TODO(t)" "WAIT(w)" "SOMEDAY(s)" "|" "DONE(d)")
+                             (sequence "|" "CANCELED")))
+      (org-special-ctrl-a/e . t)
+      (org-src-preserve-indentation . t)
+      (org-startup-folded . t)
+      (org-preview-latex-default-process . 'dvisvgm)
+      (org-clock-persist . t)
+      (org-enforce-todo-dependencies . t)
+      (org-enforce-todo-checkbox-dependencies . t)
+      (org-use-sub-superscripts . '{})
+      (org-export-with-toc . nil)
+      (org-export-with-sub-superscripts . '{}))
+    :bind (("C-c c" . org-capture)
+           ("C-c l" . org-store-link)
+           ("C-c a" . org-agenda)
+           ("<f2>" . insert-zero-width-space)
+           (:org-mode-map
+            ("C-c C-\'" . org-insert-structure-template)))
+    :init
+    (defun my-org-item-speed-command-help ()
+      (interactive)
+      (with-output-to-temp-buffer "*Help*"
+        (princ "Speed commands\n==============\n")
+        (mapc #'org-print-speed-command
+              ;; FIXME: don't check `org-speed-commands-user' past 9.6
+              my-org-item-key-bindings))
+      (with-current-buffer "*Help*"
+        (setq truncate-lines t)))
+    (defvar my-org-item-key-bindings
+      '(("p" . org-previous-item)
+        ("n" . org-next-item)
+        ("U" . org-metaup)
+        ("D" . org-metadown)
+        ("r" . org-metaright)
+        ("l" . org-metaleft)
+        ("R" . org-shiftmetaright)
+        ("L" . org-shiftmetaleft)
+        ("t" . org-toggle-checkbox)
+        ("i" . (lambda () (org-insert-item) (org-move-item-down) (org-beginning-of-line)))
+        ("c" . (lambda ()  (org-insert-item t) (org-move-item-down) (org-beginning-of-line)))
+        ("k" . (lambda () (forward-char) (org-mark-element) (call-interactively #'kill-region)))
+        ("Clock Commands")
+        ("I" . org-clock-in)
+        ("O" . org-clock-out)
+        ("Help")
+        ("?" . my-org-item-speed-command-help)))
+    (defun my-org-item-speed-command-activate (keys)
+      (when (and (bolp)
+                 (org-at-item-p))
+        (cdr (assoc keys my-org-item-key-bindings))))
 
-      (defun insert-zero-width-space()
-        (interactive)
-        (insert-char #x200b))
-      (defun insert-zero-width-space-twice()
-        (interactive)
-        (insert-zero-width-space)
-        (insert-zero-width-space))
-      (defvar org-prettify-symbols-alist
-        nil
-        ;; '(("#+begin_src" . "🖥️")
-        ;;   ("#+end_src". "🖥️"))
-        )
-      :config
+    (defun insert-zero-width-space()
+      (interactive)
+      (insert-char #x200b))
+    (defun insert-zero-width-space-twice()
+      (interactive)
+      (insert-zero-width-space)
+      (insert-zero-width-space))
+    (defvar org-prettify-symbols-alist
+      nil
+      ;; '(("#+begin_src" . "🖥️")
+      ;;   ("#+end_src". "🖥️"))
+      )
+    :config
 
-      ;; org-habitモジュールを有効化
-      (add-to-list 'org-modules 'org-habit)
-      (add-to-list 'org-modules 'org-id)
+    ;; org-habitモジュールを有効化
+    (add-to-list 'org-modules 'org-habit)
+    (add-to-list 'org-modules 'org-id)
 
-      (push 'my-org-item-speed-command-activate
-            org-speed-command-hook)
-      (org-clock-persistence-insinuate)
-      ;; 強調の規則を変更(別の環境で開いた場合は認識されなくなる...)
-      (setcar org-emphasis-regexp-components "-[:space:]\x200B('\"{")
-      (setcar (nthcdr 1 org-emphasis-regexp-components) "-[:space:]\x200B.,:!?;'\")}\\[")
-      (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
+    (push 'my-org-item-speed-command-activate
+          org-speed-command-hook)
+    (org-clock-persistence-insinuate)
+    ;; 強調の規則を変更(別の環境で開いた場合は認識されなくなる...)
+    (setcar org-emphasis-regexp-components "-[:space:]\x200B('\"{")
+    (setcar (nthcdr 1 org-emphasis-regexp-components) "-[:space:]\x200B.,:!?;'\")}\\[")
+    (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
 
-      (setq org-format-latex-options
-            (plist-put org-format-latex-options :scale 2.0))
+    (setq org-format-latex-options
+          (plist-put org-format-latex-options :scale 2.0))
 
-      (add-to-list 'face-font-rescale-alist
-                   '(".*IPAゴシック.*" . 0.85))
+    (add-to-list 'face-font-rescale-alist
+                 '(".*IPAゴシック.*" . 0.85))
 
-      (when (equal system-type 'darwin)
-        (setq org-plantuml-jar-path
-              "/usr/local/opt/plantuml/libexec/plantuml.jar"))
+    (when (equal system-type 'darwin)
+      (setq org-plantuml-jar-path
+            "/usr/local/opt/plantuml/libexec/plantuml.jar"))
 
-      (setq org-tag-alist
-            '(("ignore" . ?i) ("@OFFICE" . ?o) ("@HOME" . ?h) ("SHOPPING" . ?s)
-              ("MAIL" . ?m) ("PROJECT" . ?p) ("備忘録" . ?b)))
-      (setq org-capture-templates
-            `(("i" "インボックス" entry
-               (file ,(concat org-directory "/inbox.org"))
-               "* %? %i\n%U\n")
-              ;; ("h" "定期的にやること" entry
-              ;;  (file ,(concat org-directory "habit.org"))
-              ;;  "* %?\n %U\n")
-              ("t" "タスク" entry
-               (file ,(concat org-directory "/task.org"))
-               "* TODO %? %i\n%U\n")
-              ("e" "イベント" entry
-               (file ,(concat org-directory "/event.org"))
-               "* EVENT %?\n %a\n%U\n")
-              ("n"
-               "ノート(本文から書く)"
-               entry
-               (file+headline, (concat org-directory "/notes.org") "MEMO")
-               "* %U \n%?")
-              ("N"
-               "ノート(見出しから書く)"
-               entry
-               (file+headline, (concat org-directory "/notes.org") "MEMO")
-               "* %U %?\n\n\n")
-              ("r" "読みかけ(リンク付き)" entry
-               (file ,(concat org-directory "/reading.org"))
-               "* %?\n %a\n %U\n")
-              ("m"
-               "みんなで会議"
-               entry
-               (file+olp+datetree (concat org-directory "/minutes.org") "会議")
-               "* %T %?"
-               :empty-lines 1
-               :jump-to-captured 1)
-              ("p"
-               "ぱっと 読み返したいと思ったとき"
-               plain
-               (file+headline nil "PLAIN")
-               "%?"
-               :empty-lines 1
-               :jump-to-captured 1
-               :unnarrowed 1)
-              ("g"
-               "とりあえず 仕事を放り込む"
-               entry
-               (file+headline (concat org-directory "/gtd.org") "GTD")
-               "** TODO %T %?\n   Entered on %U    %i\n"
-               :empty-lines 1)
-              ("i"
-               "itemのテスト"
-               item
-               (file+headline (concat org-directory "/gtd.org") "GTD")
-               "** TODO %T %?\n   Entered on %U    %i\n"
-               :empty-lines 1)
-              ("z"
-               "'あれ'についてのメモ"
-               entry
-               (file+headline , (concat org-directory "/notes.org") "MEMO")
-               "* %U %? %^g\n\n"
-               :empty-lines 1)))
-      ;;
-      (setq org-agenda-default-appointment-duration 60)
-      ;; コードを評価するとき尋ねない
-      (setq org-confirm-babel-evaluate nil)
+    (setq org-tag-alist
+          '(("ignore" . ?i) ("@OFFICE" . ?o) ("@HOME" . ?h) ("SHOPPING" . ?s)
+            ("MAIL" . ?m) ("PROJECT" . ?p) ("備忘録" . ?b)))
+    (setq org-capture-templates
+          `(("i" "インボックス" entry
+             (file ,(concat org-directory "/inbox.org"))
+             "* %? %i\n%U\n")
+            ;; ("h" "定期的にやること" entry
+            ;;  (file ,(concat org-directory "habit.org"))
+            ;;  "* %?\n %U\n")
+            ("t" "タスク" entry
+             (file ,(concat org-directory "/task.org"))
+             "* TODO %? %i\n%U\n")
+            ("e" "イベント" entry
+             (file ,(concat org-directory "/event.org"))
+             "* EVENT %?\n %a\n%U\n")
+            ("n"
+             "ノート(本文から書く)"
+             entry
+             (file+headline, (concat org-directory "/notes.org") "MEMO")
+             "* %U \n%?")
+            ("N"
+             "ノート(見出しから書く)"
+             entry
+             (file+headline, (concat org-directory "/notes.org") "MEMO")
+             "* %U %?\n\n\n")
+            ("r" "読みかけ(リンク付き)" entry
+             (file ,(concat org-directory "/reading.org"))
+             "* %?\n %a\n %U\n")
+            ("m"
+             "みんなで会議"
+             entry
+             (file+olp+datetree (concat org-directory "/minutes.org") "会議")
+             "* %T %?"
+             :empty-lines 1
+             :jump-to-captured 1)
+            ("p"
+             "ぱっと 読み返したいと思ったとき"
+             plain
+             (file+headline nil "PLAIN")
+             "%?"
+             :empty-lines 1
+             :jump-to-captured 1
+             :unnarrowed 1)
+            ("g"
+             "とりあえず 仕事を放り込む"
+             entry
+             (file+headline (concat org-directory "/gtd.org") "GTD")
+             "** TODO %T %?\n   Entered on %U    %i\n"
+             :empty-lines 1)
+            ("i"
+             "itemのテスト"
+             item
+             (file+headline (concat org-directory "/gtd.org") "GTD")
+             "** TODO %T %?\n   Entered on %U    %i\n"
+             :empty-lines 1)
+            ("z"
+             "'あれ'についてのメモ"
+             entry
+             (file+headline , (concat org-directory "/notes.org") "MEMO")
+             "* %U %? %^g\n\n"
+             :empty-lines 1)))
+    ;;
+    (setq org-agenda-default-appointment-duration 60)
+    ;; コードを評価するとき尋ねない
+    (setq org-confirm-babel-evaluate nil)
 
-      (add-to-list 'org-babel-tangle-lang-exts
-                   '("C" . "c"))
+    (add-to-list 'org-babel-tangle-lang-exts
+                 '("C" . "c"))
 
-      (setq org-use-speed-commands t)
-      (setq org-icalendar-alarm-time 30)
-      (setq org-icalendar-timezone "Asia/Tokyo")
+    (setq org-use-speed-commands t)
+    (setq org-icalendar-alarm-time 30)
+    (setq org-icalendar-timezone "Asia/Tokyo")
 
-      ;; htmlで数式
-      (setq org-html-mathjax-template
-            "<script type=\"text/x-mathjax-config\">
+    ;; htmlで数式
+    (setq org-html-mathjax-template
+          "<script type=\"text/x-mathjax-config\">
     MathJax.Hub.Config({
         displayAlign: \"%ALIGN\",
         displayIndent: \"%INDENT\",
@@ -1606,311 +1606,308 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
 });
 </script>
 <script src=\"%PATH\"></script>")
-      (defun org-todo-list-current-file (&optional arg)
-        "Like `org-todo-list', but using only the current buffer's file."
-        (interactive "P")
-        (let ((org-agenda-files (list (buffer-file-name (current-buffer)))))
-          (if (null (car org-agenda-files))
-              (error "%s is not visiting a file" (buffer-name (current-buffer)))
-            (org-todo-list arg))))
+    (defun org-todo-list-current-file (&optional arg)
+      "Like `org-todo-list', but using only the current buffer's file."
+      (interactive "P")
+      (let ((org-agenda-files (list (buffer-file-name (current-buffer)))))
+        (if (null (car org-agenda-files))
+            (error "%s is not visiting a file" (buffer-name (current-buffer)))
+          (org-todo-list arg))))
 
-      (defun my-org-mode-hook ()
-        (add-hook 'completion-at-point-functions
-                  'pcomplete-completions-at-point nil t)
-        ;; (face-remap-add-relative 'default :height 173)
-        )
-      (org-babel-do-load-languages
-       'org-babel-load-languages org-babel-load-languages)
-      (add-hook 'org-mode-hook #'my-org-mode-hook)
+    (defun my-org-mode-hook ()
+      (add-hook 'completion-at-point-functions
+                'pcomplete-completions-at-point nil t)
+      ;; (face-remap-add-relative 'default :height 173)
+      )
+    (org-babel-do-load-languages
+     'org-babel-load-languages org-babel-load-languages)
+    (add-hook 'org-mode-hook #'my-org-mode-hook)
 
-      (defun my-org-choose-src-language ()
-        (let ((lang (completing-read
-                     "Choose language: "
-                     (mapcar (lambda (x)
-                               (car x))
-                             org-src-lang-modes)
-                     nil nil)))
-          (format "src %s" lang)))
+    (defun my-org-choose-src-language ()
+      (let ((lang (completing-read
+                   "Choose language: "
+                   (mapcar (lambda (x)
+                             (car x))
+                           org-src-lang-modes)
+                   nil nil)))
+        (format "src %s" lang)))
 
-      (defun my-org-insert-structure-template (orig-fun &rest args)
-        (if (equal (car args) "src")
-            (apply orig-fun (list (my-org-choose-src-language)))
-          (apply orig-fun args)))
+    (defun my-org-insert-structure-template (orig-fun &rest args)
+      (if (equal (car args) "src")
+          (apply orig-fun (list (my-org-choose-src-language)))
+        (apply orig-fun args)))
 
-      (advice-add 'org-insert-structure-template :around #'my-org-insert-structure-template)
+    (advice-add 'org-insert-structure-template :around #'my-org-insert-structure-template)
 
-      (leaf org-screenshot
-        :url "https://dev.classmethod.jp/articles/org-mode-paste-show-clipboard-image/"
+    (leaf org-screenshot
+      :url "https://dev.classmethod.jp/articles/org-mode-paste-show-clipboard-image/"
+      :config
+      (defun my-org-screenshot ()
+        (interactive)
+        (if (and (eq system-type 'darwin)
+                 (equal (shell-command-to-string "command -v pngpaste") ""))
+            (error "not found 'pngpaste' command"))
+        (let ((filename (format "%s/img/%s_%s.png"
+                                org-directory
+                                (format-time-string "%Y%m%d_%H%M%S")
+                                (make-temp-name "")))
+              (cmd (if (eq system-type 'darwin) "pngpaste" "import")))
+          (call-process cmd nil nil nil filename)
+          (insert (format "[[file:%s]]" (file-relative-name filename)))
+          (org-display-inline-images))))
+
+    (leaf org-monokakido
+      :url ("https://alhassy.github.io/org-special-block-extras/#Links"
+            "https://gist.github.com/skoji/936a89f5e1e7c6f93d4a216175408659"))
+    (org-link-set-parameters
+     "mkdictionaries"
+     :follow
+     (lambda (label)
+       (call-process
+        "open" nil 0 nil
+        (concat "mkdictionaries:///?text=" label)))
+     :export
+     (lambda (label description backend)
+       (if (memq backend '(html latex))
+           (format (pcase backend
+                     ('html "<a href=\"%s\">%s</a>")
+                     ('latex "\\href{%s}{%s}")
+                     (_ "I don’t know how to export that!"))
+                   (concat "mkdictionaries:///?text=" label)
+                   (or description label))
+         (or description label))))
+    (leaf org-image
+      :url "https://misohena.jp/blog/2020-05-26-limit-maximum-inline-image-size-in-org-mode.html"
+      :config
+      (defcustom org-limit-image-size '(0.99 . 0.5) "Maximum image size") ;; integer or float or (width-int-or-float . height-int-or-float)
+
+      (defun org-limit-image-size--get-limit-size (width-p)
+        (let ((limit-size (if (numberp org-limit-image-size)
+                              org-limit-image-size
+                            (if width-p (car org-limit-image-size)
+                              (cdr org-limit-image-size)))))
+          (if (floatp limit-size)
+              (ceiling (* limit-size (if width-p (frame-text-width) (frame-text-height))))
+            limit-size)))
+
+      (defvar org-limit-image-size--in-org-display-inline-images nil)
+
+      (defun org-limit-image-size--create-image
+          (old-func file-or-data &optional type data-p &rest props)
+
+        (if (and org-limit-image-size--in-org-display-inline-images
+                 org-limit-image-size
+                 (null type)
+                 ;;(image-type-available-p 'imagemagick) ;;Emacs27 support scaling by default?
+                 (null (plist-get props :width)))
+            ;; limit to maximum size
+            (apply
+             old-func
+             file-or-data
+             (if (image-type-available-p 'imagemagick) 'imagemagick)
+             data-p
+             (plist-put
+              (plist-put
+               (org-plist-delete props :width) ;;remove (:width nil)
+               :max-width (org-limit-image-size--get-limit-size t))
+              :max-height (org-limit-image-size--get-limit-size nil)))
+
+          ;; default
+          (apply old-func file-or-data type data-p props)))
+
+      (defun org-limit-image-size--org-display-inline-images (old-func &rest args)
+        (let ((org-limit-image-size--in-org-display-inline-images t))
+          (apply old-func args)))
+
+      (defun org-limit-image-size-activate ()
+        (interactive)
+        (advice-add #'create-image :around #'org-limit-image-size--create-image)
+        (advice-add #'org-display-inline-images :around #'org-limit-image-size--org-display-inline-images))
+
+      (defun org-limit-image-size-deactivate ()
+        (interactive)
+        (advice-remove #'create-image #'org-limit-image-size--create-image)
+        (advice-remove #'org-display-inline-images #'org-limit-image-size--org-display-inline-images)))
+    (leaf org-agenda
+      :after org
+      :custom
+      ((org-agenda-span . 'fortnight)))
+    (leaf org-refile
+      :after (org org-agenda)
+      :custom
+      ((org-refile-use-outline-path . t)
+       (org-outline-path-complete-in-steps . nil))
+      :config
+      (setq org-refile-targets
+            `((nil . (:maxlevel . 10))))
+      (leaf org-refile-source-log
+        :disabled t
+        :url "https://emacs.stackexchange.com/questions/36390/add-original-location-of-refiled-entries-to-logbook-after-org-refile"
         :config
-        (defun my-org-screenshot ()
-          (interactive)
-          (if (and (eq system-type 'darwin)
-                   (equal (shell-command-to-string "command -v pngpaste") ""))
-              (error "not found 'pngpaste' command"))
-          (let ((filename (format "%s/img/%s_%s.png"
-                                  org-directory
-                                  (format-time-string "%Y%m%d_%H%M%S")
-                                  (make-temp-name "")))
-                (cmd (if (eq system-type 'darwin) "pngpaste" "import")))
-            (call-process cmd nil nil nil filename)
-            (insert (format "[[file:%s]]" (file-relative-name filename)))
-            (org-display-inline-images))))
+        ;; add custom logging instead
+        (add-hook 'org-after-refile-insert-hook #'clavis-org-refile-add-refiled-from-note)
 
-      (leaf org-monokakido
-        :url ("https://alhassy.github.io/org-special-block-extras/#Links"
-              "https://gist.github.com/skoji/936a89f5e1e7c6f93d4a216175408659"))
-      (org-link-set-parameters
-       "mkdictionaries"
-       :follow
-       (lambda (label)
-         (call-process
-          "open" nil 0 nil
-          (concat "mkdictionaries:///?text=" label)))
-       :export
-       (lambda (label description backend)
-         (if (memq backend '(html latex))
-             (format (pcase backend
-                       ('html "<a href=\"%s\">%s</a>")
-                       ('latex "\\href{%s}{%s}")
-                       (_ "I don’t know how to export that!"))
-                     (concat "mkdictionaries:///?text=" label)
-                     (or description label))
-           (or description label))))
-      (leaf org-image
-        :url "https://misohena.jp/blog/2020-05-26-limit-maximum-inline-image-size-in-org-mode.html"
-        :config
-        (defcustom org-limit-image-size '(0.99 . 0.5) "Maximum image size") ;; integer or float or (width-int-or-float . height-int-or-float)
+        (advice-add 'org-refile
+                    :before
+                    #'clavis-org-save-source-id-and-header)
 
-        (defun org-limit-image-size--get-limit-size (width-p)
-          (let ((limit-size (if (numberp org-limit-image-size)
-                                org-limit-image-size
-                              (if width-p (car org-limit-image-size)
-                                (cdr org-limit-image-size)))))
-            (if (floatp limit-size)
-                (ceiling (* limit-size (if width-p (frame-text-width) (frame-text-height))))
-              limit-size)))
+        (defvar clavis-org-refile-refiled-from-id nil)
+        (defvar clavis-org-refile-refiled-from-header nil)
 
-        (defvar org-limit-image-size--in-org-display-inline-images nil)
-
-        (defun org-limit-image-size--create-image
-            (old-func file-or-data &optional type data-p &rest props)
-
-          (if (and org-limit-image-size--in-org-display-inline-images
-                   org-limit-image-size
-                   (null type)
-                   ;;(image-type-available-p 'imagemagick) ;;Emacs27 support scaling by default?
-                   (null (plist-get props :width)))
-              ;; limit to maximum size
-              (apply
-               old-func
-               file-or-data
-               (if (image-type-available-p 'imagemagick) 'imagemagick)
-               data-p
-               (plist-put
-                (plist-put
-                 (org-plist-delete props :width) ;;remove (:width nil)
-                 :max-width (org-limit-image-size--get-limit-size t))
-                :max-height (org-limit-image-size--get-limit-size nil)))
-
-            ;; default
-            (apply old-func file-or-data type data-p props)))
-
-        (defun org-limit-image-size--org-display-inline-images (old-func &rest args)
-          (let ((org-limit-image-size--in-org-display-inline-images t))
-            (apply old-func args)))
-
-        (defun org-limit-image-size-activate ()
-          (interactive)
-          (advice-add #'create-image :around #'org-limit-image-size--create-image)
-          (advice-add #'org-display-inline-images :around #'org-limit-image-size--org-display-inline-images))
-
-        (defun org-limit-image-size-deactivate ()
-          (interactive)
-          (advice-remove #'create-image #'org-limit-image-size--create-image)
-          (advice-remove #'org-display-inline-images #'org-limit-image-size--org-display-inline-images)))
-      (leaf org-agenda
-        :after org
-        :custom
-        ((org-agenda-span . 'fortnight)))
-      (leaf org-refile
-        :after (org org-agenda)
-        :custom
-        ((org-refile-use-outline-path . t)
-         (org-outline-path-complete-in-steps . nil))
-        :config
-        (setq org-refile-targets
-              `((nil . (:maxlevel . 10))))
-        (leaf org-refile-source-log
-          :disabled t
-          :url "https://emacs.stackexchange.com/questions/36390/add-original-location-of-refiled-entries-to-logbook-after-org-refile"
-          :config
-          ;; add custom logging instead
-          (add-hook 'org-after-refile-insert-hook #'clavis-org-refile-add-refiled-from-note)
-
-          (advice-add 'org-refile
-                      :before
-                      #'clavis-org-save-source-id-and-header)
-
-          (defvar clavis-org-refile-refiled-from-id nil)
-          (defvar clavis-org-refile-refiled-from-header nil)
-
-          (defun clavis-org-save-source-id-and-header (_)
-            "Saves refile's source entry's id and header name to
+        (defun clavis-org-save-source-id-and-header (_)
+          "Saves refile's source entry's id and header name to
 `clavis-org-refile-refiled-from-id' and
 `clavis-org-refile-refiled-from-header'. If refiling entry is
 first level entry then it stores file path and buffer name
 respectively."
-            (interactive)
-            (save-excursion
-              (if (org-up-heading-safe)
-                  (progn
-                    (setq clavis-org-refile-refiled-from-id (org-id-get nil t))
-                    (setq clavis-org-refile-refiled-from-header
-                          (org-get-heading 'no-tags 'no-todo 'no-priority 'no-comment)))
-                (setq clavis-org-refile-refiled-from-id (buffer-file-name))
-                (setq clavis-org-refile-refiled-from-header (buffer-name)))))
+          (interactive)
+          (save-excursion
+            (if (org-up-heading-safe)
+                (progn
+                  (setq clavis-org-refile-refiled-from-id (org-id-get nil t))
+                  (setq clavis-org-refile-refiled-from-header
+                        (org-get-heading 'no-tags 'no-todo 'no-priority 'no-comment)))
+              (setq clavis-org-refile-refiled-from-id (buffer-file-name))
+              (setq clavis-org-refile-refiled-from-header (buffer-name)))))
 
-          (defun clavis-org-refile-add-refiled-from-note ()
-            "Adds a note to entry at point on where the entry was refiled
+        (defun clavis-org-refile-add-refiled-from-note ()
+          "Adds a note to entry at point on where the entry was refiled
 from using the org ID from `clavis-org-refile-refiled-from-id'
 and `clavis-org-refile-refiled-from-header' variables."
-            (interactive)
-            (when (and clavis-org-refile-refiled-from-id
-                       clavis-org-refile-refiled-from-header)
-              (save-excursion
-                (let* ((note-format "- Refiled on [%s] from [[id:%s][%s]]\n")
-                       (time-format (substring (cdr org-time-stamp-formats) 1 -1))
-                       (time-stamp (format-time-string time-format (current-time))))
-                  (goto-char (org-log-beginning t))
-                  (insert (format note-format
-                                  time-stamp
-                                  clavis-org-refile-refiled-from-id
-                                  clavis-org-refile-refiled-from-header))))
-              (setq clavis-org-refile-refiled-from-id nil)
-              (setq clavis-org-refile-refiled-from-header nil)))))
+          (interactive)
+          (when (and clavis-org-refile-refiled-from-id
+                     clavis-org-refile-refiled-from-header)
+            (save-excursion
+              (let* ((note-format "- Refiled on [%s] from [[id:%s][%s]]\n")
+                     (time-format (substring (cdr org-time-stamp-formats) 1 -1))
+                     (time-stamp (format-time-string time-format (current-time))))
+                (goto-char (org-log-beginning t))
+                (insert (format note-format
+                                time-stamp
+                                clavis-org-refile-refiled-from-id
+                                clavis-org-refile-refiled-from-header))))
+            (setq clavis-org-refile-refiled-from-id nil)
+            (setq clavis-org-refile-refiled-from-header nil)))))
 
-      (leaf ob-java
-        :custom
-        ((org-babel-java-compiler . "javac -encoding UTF-8")))
-      (leaf org-eldoc
-        :after org
-        :hook (org-mode-hook . eldoc-mode)
-        :config
-        (defadvice org-eldoc-documentation-function (around add-field-info activate)
-          (or
-           (ignore-errors (and (not (org-at-table-hline-p))
-                               (org-table-field-info nil)))
-           ad-do-it))
-        (eldoc-add-command-completions
-         "org-table-next-" "org-table-previous" "org-cycle"))
-
-      (leaf ox-latex
-        :after (org)
-        :custom ((org-latex-minted-options . '(("frame" "single")
-                                               ("breaklines" "")
-                                               ("style" "xcode")
-                                               ("fontsize" "\\footnotesize")))
-                 (org-latex-compiler . "lualatex")
-                 (org-latex-default-class . "lualatex-jlreq")
-                 (org-latex-listings . 'minted)
-                 (org-latex-listings-options . '(("frame" "single")
-                                                 ("basicstyle" "{\\ttfamily\\scriptsize}")
-                                                 ("numbers" "left")
-                                                 ("commentstyle" "{\\ttfamily\\scriptsize}")
-                                                 ("breaklines" "true")
-                                                 ("showstringspaces" "false")))
-                 (org-latex-minted-langs . '((rust "rust")
-                                             (emacs-lisp "common-lisp")
-                                             (cc "c++")
-                                             (cperl "perl")
-                                             (shell-script "bash")
-                                             (caml "ocaml")
-                                             (bash "bash")
-                                             (conf "ini")))
-                 (org-preview-latex-default-process . 'dvisvgm))
-        :config
-        ;; (setq org-latex-pdf-process '("latexmk -gg -pdfdvi  %f"))
-        ;; (setq org-latex-pdf-process '("latexmk %f"))
-        (setq org-latex-pdf-process '("latexmk -gg -pdflua  %f"))
-        (add-to-list 'org-latex-packages-alist '("" "minted" t))
-        (add-to-list 'org-latex-packages-alist '("" "cancel" t))
-        (add-to-list 'org-latex-packages-alist '("" "siunitx" t))
-        (setq org-highlight-latex-and-related
-              '(latex script entities))
-        ;;(setq org-latex-pdf-process '("latexmk -e '$lualatex=q/lualatex %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex -o %D %S/' -norc -gg -pdflua %f"))
-        ;;(setq org-export-in-background t)
-        (with-eval-after-load 'ox-latex
-          (let ((template-dir (file-name-as-directory
-                               (locate-user-emacs-file "lisp/org/ox-latex/templates")))
-                (section-list '(("\\section{%s}" . "\\section*{%s}")
-                                ("\\subsection{%s}" . "\\subsection*{%s}")
-                                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                                ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                                ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
-            (mapcar
-             (lambda (filename)
-               (add-to-list 'org-latex-classes
-                            (append `(,(file-name-base filename))
-                                    `(,(org-file-contents (format "%s/%s" template-dir filename)))
-                                    section-list)))
-             (cddr (directory-files
-                    (locate-user-emacs-file "lisp/org/ox-latex/templates"))))))
-
-        ;; org-export-latex-no-toc
-        (defun org-export-latex-no-toc (depth)
-          (when depth
-            (format "%% Org-mode is exporting headings to %s levels.\n"
-                    depth)))
-        (setq org-export-latex-format-toc-function 'org-export-latex-no-toc))
-
-      (leaf ox-taskjuggler
-        :custom
-        ((org-taskjuggler-process-command . "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")))
-      (setq org-ditaa-jar-path
-            "/usr/local/opt/ditaa/libexec/ditaa-0.11.0-standalone.jar")
-
-      (leaf ox-extra
-        :after org
-        :require t
-        :config
-        ;; ignoreタグで見出しを非表示にしつつ内容を表示する
-        (ox-extras-activate '(latex-header-blocks ignore-headlines)))
-      (leaf org-src-block
-        :config
-        (defvar-keymap my-org-block-repeat-map
-          :repeat t
-          "C-n" #'org-babel-next-src-block
-          "n"   #'org-babel-next-src-block
-          "p"   #'org-babel-previous-src-block
-          "C-p" #'org-babel-previous-src-block
-          )
-        (add-to-list 'org-src-lang-modes '("json" . js-json)))))
-  (elpaca org-contrib
-    (leaf org-contrib
+    (leaf ob-java
+      :custom
+      ((org-babel-java-compiler . "javac -encoding UTF-8")))
+    (leaf org-eldoc
       :after org
+      :hook (org-mode-hook . eldoc-mode)
       :config
-      ;; 有効にする言語 デフォルトでは elisp のみ
-      (org-babel-do-load-languages
-       'org-babel-load-languages '((C          . t)
-                                   (dot        . t)
-                                   (emacs-lisp . t)
-                                   (go         . t)
-                                   (gnuplot    . t)
-                                   (java       . t)
-                                   (lisp       . t)
-                                   (mermaid    . t)
-                                   (perl       . t)
-                                   (php        . t)
-                                   (plantuml   . t)
-                                   (python     . t)
-                                   (ruby       . t)
-                                   (scheme     . t)))
-      ;;ob-plantuml
-      (add-to-list 'org-babel-default-header-args:plantuml
-                   '(:cmdline . "-charset utf-8"))))
+      (defadvice org-eldoc-documentation-function (around add-field-info activate)
+        (or
+         (ignore-errors (and (not (org-at-table-hline-p))
+                             (org-table-field-info nil)))
+         ad-do-it))
+      (eldoc-add-command-completions
+       "org-table-next-" "org-table-previous" "org-cycle"))
 
+    (leaf ox-latex
+      :after (org)
+      :custom ((org-latex-minted-options . '(("frame" "single")
+                                             ("breaklines" "")
+                                             ("style" "xcode")
+                                             ("fontsize" "\\footnotesize")))
+               (org-latex-compiler . "lualatex")
+               (org-latex-default-class . "lualatex-jlreq")
+               (org-latex-listings . 'minted)
+               (org-latex-listings-options . '(("frame" "single")
+                                               ("basicstyle" "{\\ttfamily\\scriptsize}")
+                                               ("numbers" "left")
+                                               ("commentstyle" "{\\ttfamily\\scriptsize}")
+                                               ("breaklines" "true")
+                                               ("showstringspaces" "false")))
+               (org-latex-minted-langs . '((rust "rust")
+                                           (emacs-lisp "common-lisp")
+                                           (cc "c++")
+                                           (cperl "perl")
+                                           (shell-script "bash")
+                                           (caml "ocaml")
+                                           (bash "bash")
+                                           (conf "ini")))
+               (org-preview-latex-default-process . 'dvisvgm))
+      :config
+      ;; (setq org-latex-pdf-process '("latexmk -gg -pdfdvi  %f"))
+      ;; (setq org-latex-pdf-process '("latexmk %f"))
+      (setq org-latex-pdf-process '("latexmk -gg -pdflua  %f"))
+      (add-to-list 'org-latex-packages-alist '("" "minted" t))
+      (add-to-list 'org-latex-packages-alist '("" "cancel" t))
+      (add-to-list 'org-latex-packages-alist '("" "siunitx" t))
+      (setq org-highlight-latex-and-related
+            '(latex script entities))
+      ;;(setq org-latex-pdf-process '("latexmk -e '$lualatex=q/lualatex %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex -o %D %S/' -norc -gg -pdflua %f"))
+      ;;(setq org-export-in-background t)
+      (with-eval-after-load 'ox-latex
+        (let ((template-dir (file-name-as-directory
+                             (locate-user-emacs-file "lisp/org/ox-latex/templates")))
+              (section-list '(("\\section{%s}" . "\\section*{%s}")
+                              ("\\subsection{%s}" . "\\subsection*{%s}")
+                              ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                              ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                              ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+          (mapcar
+           (lambda (filename)
+             (add-to-list 'org-latex-classes
+                          (append `(,(file-name-base filename))
+                                  `(,(org-file-contents (format "%s/%s" template-dir filename)))
+                                  section-list)))
+           (cddr (directory-files
+                  (locate-user-emacs-file "lisp/org/ox-latex/templates"))))))
 
+      ;; org-export-latex-no-toc
+      (defun org-export-latex-no-toc (depth)
+        (when depth
+          (format "%% Org-mode is exporting headings to %s levels.\n"
+                  depth)))
+      (setq org-export-latex-format-toc-function 'org-export-latex-no-toc))
 
+    (leaf ox-taskjuggler
+      :custom
+      ((org-taskjuggler-process-command . "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")))
+    (setq org-ditaa-jar-path
+          "/usr/local/opt/ditaa/libexec/ditaa-0.11.0-standalone.jar")
+
+    (leaf ox-extra
+      :after org
+      :require t
+      :config
+      ;; ignoreタグで見出しを非表示にしつつ内容を表示する
+      (ox-extras-activate '(latex-header-blocks ignore-headlines)))
+    (leaf org-src-block
+      :config
+      (defvar-keymap my-org-block-repeat-map
+        :repeat t
+        "C-n" #'org-babel-next-src-block
+        "n"   #'org-babel-next-src-block
+        "p"   #'org-babel-previous-src-block
+        "C-p" #'org-babel-previous-src-block
+        )
+      (add-to-list 'org-src-lang-modes '("json" . js-json))))
+  (leaf org-contrib
+    :elpaca t
+    :after org
+    :config
+    ;; 有効にする言語 デフォルトでは elisp のみ
+    (org-babel-do-load-languages
+     'org-babel-load-languages '((C          . t)
+                                 (dot        . t)
+                                 (emacs-lisp . t)
+                                 (go         . t)
+                                 (gnuplot    . t)
+                                 (java       . t)
+                                 (lisp       . t)
+                                 (mermaid    . t)
+                                 (perl       . t)
+                                 (php        . t)
+                                 (plantuml   . t)
+                                 (python     . t)
+                                 (ruby       . t)
+                                 (scheme     . t)))
+    ;;ob-plantuml
+    (add-to-list 'org-babel-default-header-args:plantuml
+                 '(:cmdline . "-charset utf-8")))
   (elpaca ox-hugo
     (leaf ox-hugo
       :disabled t
@@ -3019,15 +3016,20 @@ Optional argument ARG hoge."
                            global-corfu-mode)
                   (corfu-mode -1))))))
 (elpaca suggest)
-(elpaca (emacs-eat :type git
-                   :host codeberg
-                   :repo "akib/emacs-eat"
-                   :main "eat.el"
-                   :files ("*.el" ("term" "term/*.el") "*.texi"
-                           "*.ti" ("terminfo/e" "terminfo/e/*")
-                           ("terminfo/65" "terminfo/65/*")
-                           ("integration" "integration/*")
-                           (:exclude ".dir-locals.el" "*-tests.el"))))
+(leaf emacs-eat
+  :elpaca (emacs-eat :type git
+                     :host codeberg
+                     :repo "akib/emacs-eat"
+                     :main "eat.el"
+                     :files ("*.el" ("term" "term/*.el") "*.texi"
+                             "*.ti" ("terminfo/e" "terminfo/e/*")
+                             ("terminfo/65" "terminfo/65/*")
+                             ("integration" "integration/*")
+                             (:exclude ".dir-locals.el" "*-tests.el")))
+  :bind (:projectile-command-map
+         :package projectile
+         ("x a" . eat-project)
+         ("x 4 a" . eat-project-other-window)))
 (elpaca jinx)
 (elpaca chatgpt-shell)
 (leaf dmacro
