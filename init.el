@@ -1172,6 +1172,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   ((undo-tree-history-directory-alist . '(("." . "~/.emacs.d/undo-tree")))
    (undo-tree-incompatible-major-modes . '(term-mode fundamental-mode))
    (undo-tree-visualizer-diff . t)))
+(leaf vundo :elpaca t)
 (elpaca undo-fu)
 (leaf undo-fu-session
   :elpaca t
@@ -3014,10 +3015,13 @@ Optional argument ARG hoge."
                              ("terminfo/65" "terminfo/65/*")
                              ("integration" "integration/*")
                              (:exclude ".dir-locals.el" "*-tests.el")))
-  :bind (:projectile-command-map
-         :package projectile
-         ("x a" . eat-project)
-         ("x 4 a" . eat-project-other-window)))
+  :bind ((:projectile-command-map
+          :package projectile
+          ("x a" . eat-project)
+          ("x 4 a" . eat-project-other-window))
+         (:project-prefix-map
+          :package project
+          ("a" . eat-project))))
 (elpaca jinx)
 (elpaca chatgpt-shell)
 (leaf dmacro
