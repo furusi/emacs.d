@@ -653,17 +653,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                                               (seq-some (lambda (p)
                                                           (string-match-p p project-root))
                                                         projectile-ignored-projects))))
-(leaf projectile-for-eglot
-  :url "https://glassonion.hatenablog.com/entry/2019/05/11/134135"
-  :after projectile
-  :preface
-  (defun my-projectile-project-find-function (dir)
-    (let ((root (projectile-project-root dir)))
-      (and root
-           (cons 'transient root))))
-  :config
-  (with-eval-after-load 'project
-    (add-to-list 'project-find-functions #'my-projectile-project-find-function)))
 ;; ddskk
 (leaf ddskk
   :elpaca (ddskk :host github :repo "skk-dev/ddskk" :depth 10
