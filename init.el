@@ -84,7 +84,7 @@
 (column-number-mode)
 (require 'cl-lib)
 
-(defcustom my-dropbox-dir (expand-file-name "~/Dropbox")
+(defcustom my-share-dir (expand-file-name "~/Sync")
   "Dropbox directory."
   :type 'directory
   :set (lambda (symbol value) (set symbol (expand-file-name value))))
@@ -188,7 +188,7 @@
   (defvar auto-read-only-dirs
     `("/opt/homebrew/Cellar/"
       "~/.cargo/registry/"
-      ,(concat user-emacs-directory "packages/")
+      ,(expand-file-name "packages/" user-emacs-directory)
       "~/.rustup/toolchains/")))
 (leaf view-mode
   :bind
@@ -687,13 +687,13 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (skk-japanese-message-and-error . t))
   :init
   (leaf skk-dropbox
-    :if (file-exists-p (expand-file-name ".config/ddskk" my-dropbox-dir))
+    :if (file-exists-p (expand-file-name ".config/ddskk" my-share-dir))
     :custom
     (skk-jisyo-code . 'utf-8))
 
   (let ((skk-jisyo-directory
-         (if (file-exists-p (expand-file-name ".config/ddskk/skkdic-utf8" my-dropbox-dir))
-             (expand-file-name ".config/ddskk/skkdic-utf8" my-dropbox-dir)
+         (if (file-exists-p (expand-file-name ".config/ddskk/skkdic-utf8" my-share-dir))
+             (expand-file-name ".config/ddskk/skkdic-utf8" my-share-dir)
            skk-get-jisyo-directory)))
     (setq skk-large-jisyo (format "%s/SKK-JISYO.L" skk-jisyo-directory))
     (setq skk-extra-jisyo-file-list
@@ -1114,7 +1114,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (add-hook 'completion-at-point-functions #'cape-tex)
     (add-hook 'completion-at-point-functions #'cape-file)
 
-    (when-let ((wordfile (expand-file-name ".config/emacs/cape/words" my-dropbox-dir)))
+    (when-let ((wordfile (expand-file-name ".config/emacs/cape/words" my-share-dir)))
       (customize-set-variable 'cape-dict-file
                               (if (stringp cape-dict-file)
                                   (list wordfile cape-dict-file)
@@ -1378,7 +1378,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :custom
     `((org-directory . ,(expand-file-name
                          (cond
-                          ((file-exists-p (concat my-dropbox-dir "/org")) (concat my-dropbox-dir "/org"))
+                          ((file-exists-p (expand-file-name "org" my-share-dir)) (expand-file-name "org" my-share-dir))
                           ((file-exists-p "~/git/notes") "~/git/notes")
                           (t (progn
                                (when (not (file-exists-p "~/org"))
@@ -1930,14 +1930,14 @@ See `org-capture-templates' for more information."
   (elpaca org-gcal
     (leaf org-gcal
       :disabled t
-      :if (file-exists-p (expand-file-name "org/googlecalendar/org-gcal-config.el" my-dropbox-dir))
+      :if (file-exists-p (expand-file-name "org/googlecalendar/org-gcal-config.el" my-share-dir))
       :after org
       :require t
       :custom
       ((org-gcal-down-days . 180)
        (org-gcal-up-days . 180))
       :config
-      (load (expand-file-name "org/googlecalendar/org-gcal-config.el" my-dropbox-dir))))
+      (load (expand-file-name "org/googlecalendar/org-gcal-config.el" my-share-dir))))
   (elpaca (anki-editor :host github :repo "orgtre/anki-editor")
     (leaf anki-editor
       :doc "Minor mode for making Anki cards with Org"
@@ -2048,7 +2048,7 @@ See `org-capture-templates' for more information."
         "C-b" #'org-journal-previous-entry
         "b"   #'org-journal-previous-entry
         "p"   #'org-journal-previous-entry)
-      (setq org-journal-dir (concat org-directory "/journal/"))))
+      (setq org-journal-dir (expand-file-name  "journal/" org-directory))))
   (leaf org-roam*
     :config
     (elpaca (emacsql-sqlite :protocol https :inherit t :depth 1
@@ -3034,7 +3034,7 @@ Optional argument ARG hoge."
 (require 'my-lisp)
 (require 'my-window)
 
-(let ((f (expand-file-name ".config/emacs/config.el" my-dropbox-dir)))
+(let ((f (expand-file-name ".config/emacs/config.el" my-share-dir)))
   (when (file-exists-p f)
     (load-file f)))
 
