@@ -113,9 +113,6 @@
     (comment-style . 'multi-line)
     (custom-theme-directory . ,(locate-user-emacs-file "themes")) ;; テーマのディレクトリを設定
     (cursor-type . '(bar . 4))
-    (ediff-diff-options . "-w")
-    (ediff-split-window-function . 'split-window-horizontally)
-    (ediff-window-setup-function . 'ediff-setup-windows-plain)
     ;; (garbage-collection-messages . t) ; GC発動のタイミングを確認するときに有効にする
     (eol-mnemonic-dos . "(CRLF)")
     (eol-mnemonic-mac . "(CR)")
@@ -124,17 +121,17 @@
     (inhibit-startup-screen . t)
     (mark-ring-max . 128)
     (package-user-dir . ,(locate-user-emacs-file (format "elpa/%s" emacs-version)))
-    (recentf-auto-cleanup . 'never)
-    (recentf-max-menu-items . 30)
-    (recentf-max-saved-items . 2000)
     (set-mark-command-repeat-pop . t)    ;; C-u C-SPCの後C-SPCだけでマークを遡れる
     (show-paren-style . 'mixed)
     (tramp-ssh-controlmaster-options . "-4") ; ssh接続時にipv4アドレスを利用する
-    ;; (truncate-lines . t)         ;文字列を折り返さない
     (use-dialog-box . nil)
     (use-file-dialog . nil)
     (vc-follow-symlinks . t)
     (vc-handled-backends . '(Git))))
+(leaf ediff
+  :custom ((ediff-diff-options . "-w")
+           (ediff-split-window-function . 'split-window-horizontally)
+           (ediff-window-setup-function . 'ediff-setup-windows-plain)))
 
 (leaf conf-mode
   :config
@@ -175,7 +172,10 @@
     (setq browse-url-chrome-program "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")))
 
 (leaf recentf
-  :custom `(recentf-save-file . ,(locate-user-emacs-file (format "recentf-%s" emacs-version))))
+  :custom `((recentf-save-file . ,(locate-user-emacs-file (format "recentf-%s" emacs-version)))
+            (recentf-auto-cleanup . 'never)
+            (recentf-max-menu-items . 30)
+            (recentf-max-saved-items . 2000)))
 
 (leaf xref
   :defvar auto-read-only-dirs
@@ -969,7 +969,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (embark-collect-mode-hook . consult-preview-at-point-mode)
     :bind
     `((,(if window-system "C-." "M-.") . embark-act)         ;; pick some comfortable binding
-      ("C-;" . embark-dwim)        ;; good alternative: M-.
       ("C-h B" . embark-bindings) ;; alternative for `describe-bindings'
       (:embark-package-map
        ("b" . embark-browse-package-url))
