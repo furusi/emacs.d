@@ -787,8 +787,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     ((vertico-count . 20)
      (vertico-cycle . t)
      (vertico-resize . t))
-    :init
-    (vertico-mode)
+    :global-minor-mode t
+    :config
     (defun crm-indicator (args)
       (cons (format "[CRM%s] %s"
                     (replace-regexp-in-string
@@ -2511,7 +2511,7 @@ See `org-capture-templates' for more information."
 
 (elpaca gnuplot)
 
-(leaf *gdb
+(leaf gdb
   ;;; GDB 関連
   :hook
   (;; 変数の上にマウスカーソルを置くと値を表示
