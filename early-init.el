@@ -29,3 +29,5 @@
 (prefer-coding-system 'utf-8)
 
 (setq default-frame-alist '((width . 180) (height . 40) (top . 1) (left . 1) (tool-bar-lines . 0) (menu-bar-lines . 0)))
+
+(setenv "LSP_USE_PLISTS" "true")
