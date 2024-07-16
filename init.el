@@ -3021,7 +3021,9 @@ Optional argument ARG hoge."
           ("x 4 a" . eat-project-other-window))
          (:project-prefix-map
           :package project
-          ("a" . eat-project))))
+          ("s" . nil)
+          ("s s" . project-shell)
+          ("s a" . eat-project))))
 (elpaca jinx)
 (elpaca chatgpt-shell)
 (leaf dmacro
