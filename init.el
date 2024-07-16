@@ -1274,25 +1274,20 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
 
 ;;;yasnippet
 (leaf yasnippet*
+  :elpaca yasnippet yasnippet-snippets consult-yasnippet
   :config
-  (elpaca yasnippet
-    (leaf yasnippet
-      :diminish yas-minor-mode
-      :config
-      (yas-global-mode 1)
-      (add-to-list 'yas-snippet-dirs (locate-user-emacs-file "snippets/yasnippet"))))
-  (elpaca yasnippet-snippets)
-  (elpaca consult-yasnippet
-    (leaf consult-yasnippet
-      :doc "A consulting-read interface for yasnippet"
-      :req "emacs-27.1" "yasnippet-0.14" "consult-0.9"
-      :tag "emacs>=27.1"
-      :url "https://github.com/mohkale/consult-yasnippet"
-      :emacs>= 27.1
-      :after yasnippet consult)))
-
-
-
+  (leaf yasnippet
+    :diminish yas-minor-mode
+    :config
+    (yas-global-mode 1)
+    (add-to-list 'yas-snippet-dirs (locate-user-emacs-file "snippets/yasnippet")))
+  (leaf consult-yasnippet
+    :doc "A consulting-read interface for yasnippet"
+    :req "emacs-27.1" "yasnippet-0.14" "consult-0.9"
+    :tag "emacs>=27.1"
+    :url "https://github.com/mohkale/consult-yasnippet"
+    :emacs>= 27.1
+    :after yasnippet consult))
 (elpaca gitignore-templates)
 
 (leaf rst
