@@ -944,17 +944,13 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   (elpaca consult-projectile)
   (leaf affe
     :elpaca t
-    :after consult orderless
+    :after consult
     :custom
-    ((affe-find-command . "fd -H -E .git --color=never --full-path")
-     (affe-grep-command . "rg --hidden --color=never --max-columns=1000 --no-heading --line-number -v ^$ ."))
+    ((affe-highlight-function . 'orderless-highlight-matches)
+     (affe-regexp-function . 'orderless-compile))
     :config
-    ;; Configure Orderless
-    (setq affe-regexp-function #'orderless-pattern-compiler
-          affe-highlight-function #'orderless--highlight)
-
     ;; Manual preview key for `affe-grep'
-    (consult-customize affe-grep :preview-key "M-.")) 
+    (consult-customize affe-grep :preview-key "M-."))
   (leaf marginalia
     :elpaca t
     :bind (("M-A" . marginalia-cycle)
@@ -2750,10 +2746,23 @@ Optional argument ARG hoge."
      consult-lsp-symbols
      :preview-key (kbd "C-,"))))
 (leaf eglot
-  :after corfu flymake
   :bind
   ((:eglot-mode-map
     ("C-c C-l a a" . eglot-code-actions))))
+(leaf (eglot-booster :type git
+                     :host github
+                     :repo "jdtsmith/eglot-booster"
+                     ;; :main "eat.el"
+                     ;; :files ("*.el" ("term" "term/*.el") "*.texi"
+                     ;;         "*.ti" ("terminfo/e" "terminfo/e/*")
+                     ;;         ("terminfo/65" "terminfo/65/*")
+                     ;;         ("integration" "integration/*")
+                     ;;         (:exclude ".dir-locals.el" "*-tests.el"))
+                     )
+  :when (executable-find "emacs-lsp-booster")
+  :elpaca t
+  :after eglot
+  :config (eglot-booster-mode))
 (elpaca flycheck-eglot)
 (elpaca tree-sitter-langs)
 (elpaca treesit-auto)
