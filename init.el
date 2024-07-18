@@ -45,7 +45,6 @@
     (load "./elpaca-autoloads")))
 (add-hook 'after-init-hook #'elpaca-process-queues)
 (elpaca `(,@elpaca-order))
-
 ;;elpaca end
 (if (version< emacs-version "29")
     (elpaca use-package (require 'use-package)))
@@ -73,6 +72,15 @@
     :emacs>= 26.1
     :ensure t
     :after leaf leaf-keywords ppp))
+
+(leaf elpaca
+  :bind
+  ((:elpaca-ui-mode-map
+    :package elpaca-ui
+    ("j" . next-line)
+    ("k" . previous-line)
+    ("p" . previous-line)
+    ("P" . elpaca-ui-mark-pull))))
 
 (leaf diminish
   :ensure t
