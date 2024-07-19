@@ -614,12 +614,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (projectile-known-projects-file . ,(locate-user-emacs-file
                                         (format "projectile/%s/projectile-bookmarks.eld" emacs-version)))
     (projectile-sort-order . 'recently-active)
-    (projectile-switch-project-action . 'projectile-commander)
-    (projectile-ignored-projects . `(,(format "%spackages/" user-emacs-directory)
-                                     "/mnt/[a-z]/Users/[^/]+/$"
-                                     "~/.cargo/"
-                                     "~/.rustup/"
-                                     "^~/$")))
+    (projectile-switch-project-action . 'projectile-commander))
   :init
   (let ((dir (locate-user-emacs-file (format "projectile/%s" emacs-version))))
     (unless (file-directory-p dir)
@@ -655,11 +650,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (push d projectile-globally-ignored-directories))
   (when (string> emacs-version "28")
     (def-projectile-commander-method ?v "Open project root in vc-dir or magit."
-                                     (my-projectile-vc-in-new-tab)))
-  (setq projectile-ignored-project-function (lambda (project-root)
-                                              (seq-some (lambda (p)
-                                                          (string-match-p p project-root))
-                                                        projectile-ignored-projects))))
+                                     (my-projectile-vc-in-new-tab))))
 ;; ddskk
 (leaf ddskk
   :elpaca (ddskk :host github :repo "skk-dev/ddskk" :depth 10
