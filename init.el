@@ -542,8 +542,6 @@ read-only-mode will be activated for that file."
         '(holiday nil nil nil nil nil japanese-holiday-saturday))
   (add-hook 'calendar-today-visible-hook 'japanese-holiday-mark-weekend)
   (add-hook 'calendar-today-invisible-hook 'japanese-holiday-mark-weekend))
-;; (when (version< emacs-version "29.2")
-;;   (elpaca seq))
 (elpaca transient)
 (leaf magit
   :elpaca t
@@ -2060,9 +2058,7 @@ See `org-capture-templates' for more information."
         :emacs>= 26.1
         :commands (org-roam-node-find)
         :custom
-        ((org-roam-title-to-slug-function . (lambda (text) text))
-         (org-roam-v2-ack . t)
-         (org-roam-completion-everywhere . t))
+        ((org-roam-completion-everywhere . t))
         :bind
         (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
