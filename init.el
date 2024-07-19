@@ -531,15 +531,16 @@ read-only-mode will be activated for that file."
   :url "https://github.com/emacs-jp/japanese-holidays"
   :emacs>= 24.1
   :require t
+  :custom
+  (
+   (calendar-mark-holidays-flag . t)    ;祝日をカレンダーに表示
+   ;; 土曜日・日曜日を祝日として表示する場合、以下の設定を追加します。
+   (japanese-holiday-weekend . '(0 6))  ;土日を祝日として表示
+   (japanese-holiday-weekend-marker . '(holiday nil nil nil nil nil japanese-holiday-saturday))) ;土曜日を水色で表示
   :config
-  (setq calendar-holidays ; 他の国の祝日も表示させたい場合は適当に調整
-        (append japanese-holidays holiday-local-holidays holiday-other-holidays))
-  (setq calendar-mark-holidays-flag t) ;祝日をカレンダーに表示
-  ;; 土曜日・日曜日を祝日として表示する場合、以下の設定を追加します。
-  ;; デフォルトで設定済み
-  (setq japanese-holiday-weekend '(0 6) ; 土日を祝日として表示
-        japanese-holiday-weekend-marker ; 土曜日を水色で表示
-        '(holiday nil nil nil nil nil japanese-holiday-saturday))
+  ;; 他の国の祝日も表示させたい場合は適当に調整
+  (setq calendar-holidays (append japanese-holidays holiday-local-holidays
+                                  holiday-other-holidays))
   (add-hook 'calendar-today-visible-hook 'japanese-holiday-mark-weekend)
   (add-hook 'calendar-today-invisible-hook 'japanese-holiday-mark-weekend))
 (elpaca transient)
@@ -1991,18 +1992,6 @@ See `org-capture-templates' for more information."
     (leaf org-download
       :after org
       :hook ((org-mode-hook . org-download-enable))))
-  (leaf ox*
-    :custom
-    (org-export-allow-bind-keywords . t)
-    :config
-    (defvar org-export-directory nil
-      "org-exportの出力先を指定する変数。buffer-local変数として指定する。")
-    (defun org-export-output-file-name--set-directory (orig-fn extension &optional subtreep pub-dir)
-      (setq pub-dir (or pub-dir org-export-directory))
-      (funcall orig-fn extension subtreep pub-dir))
-    (advice-add 'org-export-output-file-name :around 'org-export-output-file-name--set-directory)
-    (elpaca (ox-slimhtml :host github :repo "emacsattic/ox-slimhtml"))
-    (elpaca (ox-tailwind :host github :repo "vascoferreira25/ox-tailwind")))
   (elpaca ox-pandoc
     (leaf ox-pandoc
       :after org
@@ -2074,18 +2063,17 @@ See `org-capture-templates' for more information."
         (when (eq system-type 'darwin)
           (setq org-roam-graph-viewer "open"))
         (setq org-roam-dailies-capture-templates
-              '(("d" "default" entry
-                 "* %?\n%U\n"
+              '(("d" "default" entry "* %?\n%U\n"
                  :target
-                 (file+head+olp "%<%Y-%m>.org" "#+TITLE: %<%Y-%m>\n\n\n" ("%<%Y-%m-%d>")))))
+                 (file+head+olp "%<%Y-%m>.org"
+                                "#+TITLE: %<%Y-%m>\n\n\n" ("%<%Y-%m-%d>")))))
         (push "ROAM_EXCLUDE" org-default-properties)
         (leaf org-roam-protocol :require t)
         ;; (advice-add 'org-roam-node-open :after (lambda (&rest _) (view-mode)))
         (dolist (f org-roam-completion-functions)
-          (advice-add f
-                      :around
-                      (lambda (oldfn &rest _)
-                        (my-cape-wrap-with-annotation oldfn (symbol-name f)))))
+          (advice-add f :around (lambda (oldfn &rest _)
+                                  (my-cape-wrap-with-annotation oldfn
+                                                                (symbol-name f)))))
         ))
     (elpaca org-roam-ui
       (leaf org-roam-ui
@@ -2147,7 +2135,18 @@ See `org-capture-templates' for more information."
       :custom
       (org-latex-impatient-tex2svg-bin . "tex2svg")))
   )
-
+(leaf ox*
+  :elpaca (ox-slimhtml :host github :repo "emacsattic/ox-slimhtml")
+  :elpaca (ox-tailwind :host github :repo "vascoferreira25/ox-tailwind")
+  :custom
+  (org-export-allow-bind-keywords . t)
+  :config
+  (defvar org-export-directory nil
+    "org-exportの出力先を指定する変数。buffer-local変数として指定する。")
+  (defun org-export-output-file-name--set-directory (orig-fn extension &optional subtreep pub-dir)
+    (setq pub-dir (or pub-dir org-export-directory))
+    (funcall orig-fn extension subtreep pub-dir))
+  (advice-add 'org-export-output-file-name :around 'org-export-output-file-name--set-directory))
 (leaf org-tag-beautify
   :elpaca (org-tag-beautify :host github :repo "emacsmirror/org-tag-beautify" :branch "master")
   :doc "Beautify Org mode tags"
@@ -2781,14 +2780,7 @@ Optional argument ARG hoge."
     ("C-c C-l a a" . eglot-code-actions))))
 (leaf (eglot-booster :type git
                      :host github
-                     :repo "jdtsmith/eglot-booster"
-                     ;; :main "eat.el"
-                     ;; :files ("*.el" ("term" "term/*.el") "*.texi"
-                     ;;         "*.ti" ("terminfo/e" "terminfo/e/*")
-                     ;;         ("terminfo/65" "terminfo/65/*")
-                     ;;         ("integration" "integration/*")
-                     ;;         (:exclude ".dir-locals.el" "*-tests.el"))
-                     )
+                     :repo "jdtsmith/eglot-booster")
   :when (executable-find "emacs-lsp-booster")
   :elpaca t
   :after eglot
