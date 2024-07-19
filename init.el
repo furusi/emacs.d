@@ -1857,11 +1857,8 @@ and `clavis-org-refile-refiled-from-header' variables."
       :config
       (defvar-keymap my-org-block-repeat-map
         :repeat t
-        "C-n" #'org-babel-next-src-block
         "n"   #'org-babel-next-src-block
-        "p"   #'org-babel-previous-src-block
-        "C-p" #'org-babel-previous-src-block
-        )
+        "p"   #'org-babel-previous-src-block)
       (add-to-list 'org-src-lang-modes '("json" . js-json))))
   (leaf org-contrib
     :elpaca t
