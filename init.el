@@ -1203,19 +1203,19 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   (with-eval-after-load 'smartparens
     (push 'rustic-mode sp-ignore-modes-list))
   (defun my-rustic-init ()
-    (electric-pair-local-mode 1)
-    (corfu-mode)
+    (electric-pair-local-mode t)
+    (corfu-mode t)
     (when (featurep 'embark)
       (setq-local embark-target-finders
                   (append (remove
                            'embark-target-file-at-point
                            embark-target-finders)
-                          '(embark-target-file-at-point))))
-    (when (eq corfu-mode t)
-      (setq-local corfu-auto-prefix 2)))
+                          '(embark-target-file-at-point)))))
   (leaf rustic-babel
     :after org
-    :require t))
+    :require t)
+  :config
+  (setq-mode-local rustic-mode corfu-auto-prefix 2))
 (leaf lsp-haskell
   :elpaca t
   :doc "Haskell support for lsp-mode"
@@ -2595,7 +2595,8 @@ Optional argument ARG hoge."
     :custom ((lsp-auto-execute-action . nil)
              (lsp-completion-provider . :none) ;disable company-capf
              (lsp-keymap-prefix . "C-c C-l")
-             (lsp-semantic-tokens-enable . t))
+             (lsp-semantic-tokens-enable . t)
+             (lsp-inlay-hint-enable . t))
     :hook ((lsp-mode-hook  . lsp-enable-which-key-integration)
            (lsp-completion-mode-hook . my-lsp-mode-setup-completion)
            (c-mode-hook    . lsp-deferred)
@@ -2631,11 +2632,11 @@ Optional argument ARG hoge."
           orig-result)))
     (when (executable-find "emacs-lsp-booster")
       (advice-add (if (progn (require 'json)
-                           (fboundp 'json-parse-buffer))
-                    'json-parse-buffer
-                  'json-read)
-                :around
-                #'lsp-booster--advice-json-parse)
+                             (fboundp 'json-parse-buffer))
+                      'json-parse-buffer
+                    'json-read)
+                  :around
+                  #'lsp-booster--advice-json-parse)
       (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)))
   (leaf lsp-python-ms
     :elpaca t
