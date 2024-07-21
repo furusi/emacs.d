@@ -2332,6 +2332,7 @@ See `org-capture-templates' for more information."
       `(lsp-sourcekit-executable . ,(string-trim (shell-command-to-string "xcrun --find sourcekit-lsp"))))))
 (leaf ccls
   :elpaca t
+  :after lsp-mode
   :require t
   :hook ((c-mode-hook c++-mode-hook objc-mode-hook) .
          (lambda ()
