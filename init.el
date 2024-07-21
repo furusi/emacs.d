@@ -811,19 +811,15 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   (leaf vertico-multiform
     :disabled t
     :after consult vertico
+    :custom
+    ((vertico-multiform-categories . '((consult-grep
+                                        buffer
+                                        (vertico-buffer-display-action . (display-buffer-same-window))))))
     :config
     (vertico-multiform-mode)
-
     (setq vertico-multiform-commands
           `((consult-imenu buffer ,(lambda (_) (text-scale-set -1)))
             (consult-outline buffer ,(lambda (_) (text-scale-set -1)))))
-
-    ;; Configure the buffer display and the buffer display action
-    (setq vertico-multiform-categories
-          '((consult-grep
-             buffer
-             (vertico-buffer-display-action . (display-buffer-same-window)))))
-
     ;; Disable preview for consult-grep commands
     (consult-customize consult-ripgrep consult-git-grep consult-grep
                        :preview-key nil))
@@ -852,19 +848,20 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   ;; You may prefer to use `initials' instead of `partial-completion'.
   (leaf orderless
     :elpaca t
-    :init
-    (setq completion-styles '(orderless basic)
-          completion-category-defaults nil
-          completion-category-overrides '((file (styles basic partial-completion)))))
+    :custom
+    ((completion-category-defaults  . nil)
+     (completion-category-overrides . '((file (styles basic partial-completion))))
+     (completion-styles             . '(orderless basic))))
   ;; Persist history over Emacs restarts. Vertico sorts by history position.
   (leaf savehist
     :init
     (savehist-mode))
   (leaf consult
-    :elpaca (consult :host github :repo "minad/consult")
+    :elpaca (consult :host github :repo "minad/consult") consult-projectile
     :custom
     ((consult-async-min-input . 2)
      (consult-narrow-key . ">")
+     (consult-project-function . #'projectile-project-root)
      (consult-ripgrep-args
       . "rg --hidden --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --with-filename --line-number --search-zip")
      (xref-show-definitions-function . #'consult-xref)
@@ -930,16 +927,12 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
      consult--source-recent-file consult--source-project-recent-file consult--source-bookmark
      consult-find consult-fd consult-org-agenda
      :preview-key (if window-system "C-," "M-,"))
-    (autoload 'projectile-project-root "projectile")
-    (setq consult-project-function #'projectile-project-root)
     (setq completion-in-region-function
           (lambda (&rest args)
             (apply (if vertico-mode
                        #'consult-completion-in-region
                      #'completion--in-region)
                    args))))
-
-  (elpaca consult-projectile)
   (leaf affe
     :elpaca t
     :after consult
@@ -1925,26 +1918,25 @@ See `org-capture-templates' for more information."
        (org-gcal-up-days . 180))
       :config
       (load (expand-file-name "org/googlecalendar/org-gcal-config.el" my-share-dir))))
-  (elpaca (anki-editor :host github :repo "orgtre/anki-editor")
-    (leaf anki-editor
-      :doc "Minor mode for making Anki cards with Org"
-      :req "emacs-25" "request-0.3.0" "dash-2.12.0"
-      :tag "emacs>=25"
-      :url "https://github.com/louietan/anki-editor"
-      :emacs>= 25
-      :after embark
-      :hook
-      (anki-editor-mode-hook . (lambda ()
-                                 (let* ((keymap (copy-keymap embark-region-map)))
-                                   (define-key keymap (kbd "c")
-                                               'my-anki-editor-cloze-region)
-                                   (setq-local embark-region-map keymap))))
-      :init
-      (defun my-anki-editor-cloze-region (_text)
-        (call-interactively
-         (lambda (&optional arg hint)
-           (interactive "NNumber: \nsHint (optional): ")
-           (anki-editor-cloze-region arg hint))))))
+  (leaf anki-editor
+    :elpaca t
+    :doc "Minor mode for making Anki cards with Org"
+    :req "emacs-25" "request-0.3.0" "dash-2.12.0"
+    :tag "emacs>=25"
+    :emacs>= 25
+    :after embark
+    :hook
+    (anki-editor-mode-hook . (lambda ()
+                               (let* ((keymap (copy-keymap embark-region-map)))
+                                 (define-key keymap (kbd "c")
+                                             'my-anki-editor-cloze-region)
+                                 (setq-local embark-region-map keymap))))
+    :init
+    (defun my-anki-editor-cloze-region (_text)
+      (call-interactively
+       (lambda (&optional arg hint)
+         (interactive "NNumber: \nsHint (optional): ")
+         (anki-editor-cloze-region arg hint)))))
   (leaf org-pdf*
     :config
     (elpaca org-pdftools
@@ -1983,10 +1975,7 @@ See `org-capture-templates' for more information."
   (elpaca ox-pandoc
     (leaf ox-pandoc
       :after org
-      :if (or (file-exists-p "/usr/bin/pandoc")
-              (file-exists-p "/usr/local/bin/pandoc")
-              (file-exists-p "/opt/local/bin/pandoc")
-              (file-exists-p "/opt/homebrew/bin/pandoc"))))
+      :if (executable-find "pandoc")))
   (elpaca ox-asciidoc)
   (elpaca ox-gfm
     (leaf ox-gfm
@@ -2343,20 +2332,14 @@ See `org-capture-templates' for more information."
       `(lsp-sourcekit-executable . ,(string-trim (shell-command-to-string "xcrun --find sourcekit-lsp"))))))
 (leaf ccls
   :elpaca t
-  :after lsp-mode
-  ;; :ensure-system-package ccls
+  :require t
   :hook ((c-mode-hook c++-mode-hook objc-mode-hook) .
          (lambda ()
            (smartparens-mode -1)
-           (require 'ccls)
-           (lsp-deferred)
            (electric-pair-local-mode 1)))
-  :config
-  (when (eq system-type 'darwin)
-    (setq ccls-executable (cond ((executable-find  "/opt/homebrew/opt/ccls/bin/ccls"))
-                                ((executable-find  "/usr/local/opt/ccls/bin/ccls"))
-                                ((executable-find  "/opt/local/bin/ccls-clang-11"))
-                                (t "ccls")))))
+  :custom
+  `((ccls-executable . ,(or (executable-find "ccls")
+                            (executable-find "ccls-clang-11")))))
 (leaf smartparens
   :elpaca t
   :diminish t
@@ -2424,8 +2407,7 @@ See `org-capture-templates' for more information."
   (elpaca editorconfig))
 (leaf editorconfig
   :diminish editorconfig-mode
-  :config
-  (editorconfig-mode 1))
+  :global-minor-mode t)
 (leaf easy-hugo
   :disabled t
   :custom
@@ -2478,7 +2460,7 @@ See `org-capture-templates' for more information."
                                 (setq-local imenu-create-index-function
                                             'markdown-imenu-create-flat-index)))
   :config
-  (when (eq window-system 'ns)
+  (when (member "IPAGothic" (font-family-list))
     (set-face-attribute 'markdown-table-face nil
                         :family "IPAGothic"))
   (defvar-keymap my-markdown-navigation-repeat-map
@@ -2741,11 +2723,9 @@ Optional argument ARG hoge."
   (leaf dap-mode
     :elpaca t
     :after lsp-mode
+    :global-minor-mode dap-mode dap-ui-mode
+    :require dap-cpptools dap-gdb-lldb
     :config
-    (dap-mode 1)
-    (dap-ui-mode 1)
-    (require 'dap-cpptools)
-    (require 'dap-gdb-lldb)
     (dap-register-debug-template "Rust::GDB Run Configuration"
                                  (list :type "gdb"
                                        :request "launch"
@@ -2767,25 +2747,22 @@ Optional argument ARG hoge."
   :bind
   ((:eglot-mode-map
     ("C-c C-l a a" . eglot-code-actions))))
-(leaf (eglot-booster :type git
-                     :host github
-                     :repo "jdtsmith/eglot-booster")
+(leaf eglot-booster
   :when (executable-find "emacs-lsp-booster")
-  :elpaca t
+  :elpaca (eglot-booster :type git
+                         :host github
+                         :repo "jdtsmith/eglot-booster")
   :after eglot
-  :config (eglot-booster-mode))
+  :global-minor-mode eglot-booster-mode)
 (elpaca flycheck-eglot)
 (elpaca tree-sitter-langs)
 (elpaca treesit-auto)
 (leaf sideline
-  :elpaca t
-  :init
-  (setq sideline-flymake-display-mode 'point) ; 'point to show errors only on point
-                                        ; 'line to show errors on the current line
-  (setq sideline-backends-right '((sideline-lsp      . up)
-                                  (sideline-flymake . down))))
-(elpaca sideline-flymake)
-(elpaca sideline-lsp)
+  :elpaca t sideline-flymake sideline-lsp
+  :custom
+  ((sideline-flymake-display-mode . 'point)
+   (sideline-backends-right . '((sideline-lsp      . up)
+                                (sideline-flymake . down)))))
 (leaf eglot-java
   :elpaca t
   :doc "Java extension for the eglot LSP client"
@@ -2918,7 +2895,6 @@ Optional argument ARG hoge."
 ;; Major mode for Twitter http://twmode.sf.net/
 (elpaca twittering-mode)
 (elpaca lua-mode)
-(elpaca (protobuf-mode :main "editors/protobuf-mode.el"))
 (leaf pcre2el
   :elpaca t
   :doc "regexp syntax converter"
@@ -2952,8 +2928,7 @@ Optional argument ARG hoge."
   :emacs>= 28
   :custom
   (repeat-exit-key . "q")
-  :config
-  (repeat-mode t))
+  :global-minor-mode repeat-mode)
 
 (leaf grip-mode
   :elpaca t
@@ -3018,12 +2993,9 @@ Optional argument ARG hoge."
   :url "https://github.com/parkouss/speed-type"
   :emacs>= 25.1
   :config
-  (with-eval-after-load 'speed-type
+  (with-eval-after-load 'corfu
     (add-hook 'speed-type-mode-hook
-              (lambda ()
-                (when (and (featurep 'corfu)
-                           global-corfu-mode)
-                  (corfu-mode -1))))))
+              (lambda () (corfu-mode -1)))))
 (elpaca suggest)
 (leaf emacs-eat
   :elpaca (emacs-eat :type git
