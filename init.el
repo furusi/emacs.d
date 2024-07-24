@@ -136,419 +136,19 @@
     (use-file-dialog . nil)
     (vc-follow-symlinks . t)
     (vc-handled-backends . '(Git))))
-(leaf ediff
-  :custom ((ediff-diff-options . "-w")
-           (ediff-split-window-function . 'split-window-horizontally)
-           (ediff-window-setup-function . 'ediff-setup-windows-plain)))
-
-(leaf conf-mode
-  :config
-  (push '("\\.toml\\'" . conf-toml-mode) auto-mode-alist))
-
-(leaf yes-or-no
-  :emacs>= 28.1
-  :custom
-  (use-short-answers . t))
-
-(leaf emacs29
-  :emacs>= 29
-  :config
-  (when window-system
-    (pixel-scroll-precision-mode)))
-
-(leaf custom-darwin
-  :if (eq system-type 'darwin)
-  :custom
-  ((browse-url-firefox-program . "/Applications/Firefox.app/Contents/MacOS/firefox")
-   (browse-url-firefox-new-window-is-tab . t)))
-
-(leaf authinfo
-  :mode ("authinfo.gpg" . authinfo-mode))
-
-(leaf browse-url
-  :config
-  (when (eq system-type 'gnu/linux)
-    (cond
-     ;; wsl
-     ((string-match ".*-microsoft-standard-WSL2.*"
-                    operating-system-release)
-      (setq
-       browse-url-generic-program  "/mnt/c/Windows/System32/cmd.exe"
-       browse-url-generic-args     '("/c" "start")
-       browse-url-browser-function #'browse-url-generic))))
-  (when (eq system-type 'darwin)
-    (setq browse-url-chrome-program "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")))
-
 (leaf recentf
   :custom `((recentf-save-file . ,(locate-user-emacs-file (format "recentf-%s" emacs-version)))
             (recentf-auto-cleanup . 'never)
             (recentf-max-menu-items . 30)
-            (recentf-max-saved-items . 2000)))
-
-(leaf xref
-  :defvar auto-read-only-dirs
-  :hook (xref-after-jump-hook .
-                              (lambda ()
-                                (dolist (f auto-read-only-dirs)
-                                  (when (string-match-p (expand-file-name f) buffer-file-name)
-                                    (view-mode)))))
-  :config
-  (defvar auto-read-only-dirs
-    `("/opt/homebrew/Cellar/"
-      "~/.cargo/registry/"
-      ,(expand-file-name "packages/" user-emacs-directory)
-      "~/.rustup/toolchains/")))
-(leaf view-mode
-  :bind
-  (:view-mode-map
-   ("j" . next-line)
-   ("k" . previous-line)
-   ;; ("SPC". scroll-up-command)
-   ;; ("S-SPC". scroll-down-command)
-   ))
-(leaf info
-  :bind
-  (:Info-mode-map
-   ("j" . next-line)
-   ("k" . previous-line))
-  :config
-  (defun Info-find-node--info-ja (orig-fn filename &rest args)
-    (apply orig-fn
-           (pcase filename
-             ("emacs" "emacs-ja")
-             ("elisp" "elisp-ja")
-             (_ filename))
-           args))
-  (let ((infopath (getenv "INFOPATH")))
-    (if (and (stringp infopath)
-             (string-match-p ".local/share/emacs" infopath))
-        (advice-add 'Info-find-node :around 'Info-find-node--info-ja))))
-
-(leaf deepl-translate
-  :url "https://uwabami.github.io/cc-env/Emacs.html"
-  :commands my-deepl-translate
-  :bind
-  (:embark-region-map
-   :package embark
-   ("T" . my-deepl-translate))
-  :preface
-  (require 'url-util)
-  (defun my-translate--sanitize-string (string)
-    "docstring"
-    (replace-regexp-in-string
-     "|" (regexp-quote "\x005c\x007c")
-     (replace-regexp-in-string
-      "/"
-      (regexp-quote "\x005c\x002f")
-      string)))
-  (defvar my-translate-url  "https://miraitranslate.com/trial/#en/ja/"
-    ;; "https://www.deepl.com/translator#en/ja/%s"
-    )
-  (defun my-deepl-translate (&optional string)
-    (interactive)
-    (setq string
-          (cond ((stringp string) string)
-                ((use-region-p)
-                 (string-fill (buffer-substring (region-beginning) (region-end))
-                              5000))
-                (t
-                 (save-excursion
-                   (let (s)
-                     (forward-char 1)
-                     (backward-sentence)
-                     (setq s (point))
-                     (forward-sentence)
-                     (buffer-substring s (point)))))))
-    (run-at-time 0.1 nil 'deactivate-mark)
-    (let* ((string (my-translate--sanitize-string string))
-           (url (format "%s%s"
-                        my-translate-url (url-hexify-string string))))
-      (cond ((eq system-type 'darwin)
-             (browse-url-default-macosx-browser url))
-            ((string-match ".*-microsoft-standard-WSL2.*" operating-system-release)
-             (browse-url-generic url))
-            (t
-             (browse-url-firefox url))))))
-(leaf image-mode
-  :bind (:image-mode-map
-         ("=" . image-increase-size)))
-(leaf help-mode
-  :bind
-  (:help-mode-map
-   ("n" . next-line)
-   ("j" . next-line)
-   ("p" . previous-line)
-   ("k" . previous-line)
-   ("v" . scroll-up-command)
-   ("V" . scroll-down-command)))
-(leaf helpful
-  :disabled t
-  :doc "A better *help* buffer"
-  :req "emacs-25" "dash-2.18.0" "s-1.11.0" "f-0.20.0" "elisp-refs-1.2"
-  :tag "lisp" "help" "emacs>=25"
-  :url "https://github.com/Wilfred/helpful"
-  :elpaca t
-  :emacs>= 25
-  :bind
-  ((:help-map
-    :package help
-    ("v" . helpful-variable)
-    ("f" . helpful-callable)
-    ("o" . helpful-symbol)
-    ("k" . helpful-key))
-   (:embark-symbol-map
-    :package embark
-    ("h" . helpful-symbol))))
-(leaf diff-mode
-  :bind
-  (:diff-mode-map
-   ("v" . scroll-up-command)
-   ("V" . scroll-down-command))
-  :hook
-  (diff-mode-hook . (lambda () (read-only-mode t))))
-(leaf autorevert
-  :hook
-  (emacs-startup-hook . global-auto-revert-mode))
-(leaf window
-  :emacs>= 28
-  :bind
-  (:resize-window-repeat-map
-   ("+" . enlarge-window)
-   ("=" . enlarge-window)
-   ("-" . shrink-window)
-   ("_" . shrink-window)
-   (">" . enlarge-window-horizontally)
-   ("<" . shrink-window-horizontally))
-  :config
-  (defvar-keymap my-scroll-other-window-repeat-map
-    :repeat t
-    "v"   #'scroll-other-window
-    "C-v" #'scroll-other-window
-    "M-v" #'scroll-other-window-down
-    "V" #'scroll-other-window-down))
-(leaf simple
-  :config
-  (defcustom my-read-only-dirs nil
-    "List of directories where files should be opened in read-only.
-Each element in the list is a string, representing a directory path.
-When a file is opened and its path starts with one of the directory paths in this list,
-read-only-mode will be activated for that file."
-    :type '(repeat string))
-  (defun my-read-only-find-file-hook ()
-    (when (cl-some
-           (lambda (dir)
-             (string-prefix-p (expand-file-name dir) buffer-file-name))
-           my-read-only-dirs)
-      (read-only-mode 1)))
-  (add-hook 'find-file-hook 'my-read-only-find-file-hook))
-(leaf initchart
-  :elpaca (initchart :host github :repo "yuttie/initchart")
-  :disabled t
-  :require t
-  :config
-  (initchart-record-execution-time-of load file)
-  (initchart-record-execution-time-of require feature))
-(leaf esup
-  :elpaca t
-  :require t)
-(defun which-linux-distribution ()
-  "Return string which obtains from 'lsb_release' command."
-  (interactive)
-  (if (eq system-type 'gnu/linux)
-      (string-trim (shell-command-to-string "lsb_release -sd")
-                   "^\"" "\"?[ \t\n\r]+")
-    ""))
-(setq my-lsb-distribution-name
-      (which-linux-distribution))
-
-(recentf-mode 1)
-;;行番号を表示
-(if (version< "26" emacs-version)
-    (progn
-      ;; (global-display-line-numbers-mode)
-      (setq-default indicate-empty-lines t)
-      (setq-default indicate-buffer-boundaries 'left)))
-(leaf exec-path-from-shell
-  :elpaca t
-  :config
-  (exec-path-from-shell-initialize)
-  (add-to-list 'exec-path-from-shell-variables "PYTHONPATH")
-  (add-to-list 'exec-path-from-shell-variables "JAVA_HOME"))
-(leaf system-packages
-  :elpaca t
-  :config
-  (cond
-   ((eq system-type 'darwin)
-    (setq system-packages-package-manager 'brew))
-   ((string-match-p "asahi" operating-system-release)
-    (setq system-packages-package-manager 'dnf))
-   ((string-match-p "manjaro\\|endeavouros" operating-system-release)
-    (add-to-list 'system-packages-supported-package-managers
-                 '(yay .
-                       ((default-sudo . nil)
-                        (install . "yay -S")
-                        (search . "yay -Ss")
-                        (uninstall . "yay -Rs")
-                        (update . "yay -Syu")
-                        (clean-cache . "yay -Sc")
-                        (log . "cat /var/log/pacman.log")
-                        (get-info . "yay -Qi")
-                        (get-info-remote . "yay -Si")
-                        (list-files-provided-by . "yay -Ql")
-                        (verify-all-packages . "yay -Qkk")
-                        (verify-all-dependencies . "yay -Dk")
-                        (remove-orphaned . "yay -Rns $(pacman -Qtdq)")
-                        (list-installed-packages . "yay -Qe")
-                        (list-installed-packages-all . "yay -Q")
-                        (list-dependencies-of . "yay -Qi")
-                        (noconfirm . "--noconfirm"))))
-    (setq system-packages-use-sudo nil
-          system-packages-package-manager 'yay))))
-(leaf bind-key
-  :bind
-  (("M-<f1>" . other-frame)  ;Macのショートカットに合わせる
-   ;; ("C-o" . my-insert-newline-and-indent)
-   (:isearch-mode-map
-    ("C-o" . isearch-exit))
-   (:reb-mode-map
-    :package re-builder
-    ("C-c C-k". reb-quit))))
-(leaf outline-repeat
-  :after outline
-  :config
-  (defvar-keymap my-outline-navigation-repeat-map
-    :parent outline-navigation-repeat-map
-    :repeat t
-    "TAB" #'outline-cycle))
-(leaf special-characer-mode
-  :url "https://github.com/madanh/special-characer-mode"
-  :config
-  (defmacro ins-val (val)
-    `(lambda () (interactive) (insert ,val)))
-  (define-minor-mode special-char-mode
-    "Toggle Special Character mode"
-    :init-value " SpecialChar"
-    `(
-      (,(kbd "1") . ,(ins-val "!")) (,(kbd "!") . ,(ins-val "1")) (,[kp-1] . ,(ins-val "1"))
-      (,(kbd "2") . ,(ins-val "@")) (,(kbd "@") . ,(ins-val "2")) (,[kp-2] . ,(ins-val "2"))
-      (,(kbd "3") . ,(ins-val "#")) (,(kbd "#") . ,(ins-val "3")) (,[kp-3] . ,(ins-val "3"))
-      (,(kbd "4") . ,(ins-val "$")) (,(kbd "$") . ,(ins-val "4")) (,[kp-4] . ,(ins-val "4"))
-      (,(kbd "5") . ,(ins-val "%")) (,(kbd "%") . ,(ins-val "5")) (,[kp-5] . ,(ins-val "5"))
-      (,(kbd "6") . ,(ins-val "^")) (,(kbd "^") . ,(ins-val "6")) (,[kp-6] . ,(ins-val "6"))
-      (,(kbd "7") . ,(ins-val "&")) (,(kbd "&") . ,(ins-val "7")) (,[kp-7] . ,(ins-val "7"))
-      (,(kbd "8") . ,(ins-val "*")) (,(kbd "*") . ,(ins-val "8")) (,[kp-8] . ,(ins-val "8")) (,[kp-multiply] . ,(ins-val "*"))
-      (,(kbd "9") . ,(ins-val "(")) (,(kbd "(") . ,(ins-val "9")) (,[kp-9] . ,(ins-val "9"))
-      (,(kbd "0") . ,(ins-val ")")) (,(kbd ")") . ,(ins-val "0")) (,[kp-0] . ,(ins-val "0")))))
-(when (equal system-type 'darwin)
-  (setq ns-command-modifier 'meta)
-  (when (memq window-system '(ns mac))
-    ;; 游教科書体
-    ;; (set-face-attribute 'default nil
-    ;;                     :family "YuKyokasho Yoko")
-    ;; UDEV Gothic
-    (set-face-attribute 'default nil
-                        :family "UDEV Gothic JPDOC")
-    (set-fontset-font nil '(#x30000 . #x3134F) (font-spec :family "Source Han Sans SC"))
-    (set-fontset-font nil '(#xAA80 . #xAADF) (font-spec :family "Noto Sans Tai Viet"))
-    (let* ((variable-tuple
-            (cond ((x-list-fonts "UDEV Gothic JPDOC") '(:font "UDEV Gothic JPDOC"))
-                  ((x-list-fonts "Source Sans Pro")       '(:font "Source Sans Pro"))
-                  ((x-list-fonts "Lucida Grande")         '(:font "Lucida Grande"))
-                  ((x-list-fonts "Verdana")               '(:font "Verdana"))
-                  ((x-family-fonts "Sans Serif")          '(:family "Sans Serif"))
-                  (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
-           (headline           `(:inherit default :weight bold)))
-      ;; (custom-theme-set-faces
-      ;;  'user
-      ;;  `(org-level-8 ((t (,@headline ,@variable-tuple))))
-      ;;  `(org-level-7 ((t (,@headline ,@variable-tuple))))
-      ;;  `(org-level-6 ((t (,@headline ,@variable-tuple))))
-      ;;  `(org-level-5 ((t (,@headline ,@variable-tuple))))
-      ;;  `(org-level-4 ((t (,@headline ,@variable-tuple))))
-      ;;  `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.1))))
-      ;;  `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.25))))
-      ;;  `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.5))))
-      ;;  `(org-table ((t (,@headline ,@variable-tuple))))
-      ;;  `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil)))))
-      )))
-(when (equal system-type 'gnu/linux)
-  (add-to-list 'load-path "~/opt/mu-1.0/mu4e")
-  ;;曖昧な文字幅を指定する
-  (aset char-width-table ?→ 2)
-  (when (memq window-system '(x pgtk))
-    (set-face-attribute 'default nil :family "UDEV Gothic JPDOC")))
-;; 記号をデフォルトのフォントにしない。(for Emacs 25.2)
-(setq use-default-font-for-symbols nil)
-(when (version< emacs-version "29")
-  (elpaca restart-emacs))
-
-(leaf dired
-  :custom
-  ((dired-dwim-target . (lambda () (unless current-prefix-arg (dired-dwim-target-next))))
-   (dired-recursive-copies . 'always)
-   (dired-listing-switches . "-alFh"))
-  :config
-  (when (eq system-type 'darwin)
-    (setq dired-use-ls-dired nil)))
-
-(leaf xwidget
-  :leaf-autoload nil
-  :leaf-defun nil
-  :bind
-  (:xwidget-webkit-mode-map
-   ("j" . xwidget-webkit-scroll-up-line)
-   ("k" . xwidget-webkit-scroll-down-line))
-  :hook
-  ((xwidget-webkit-mode-hook . (lambda ()
-                                 (display-line-numbers-mode -1)))))
-(leaf pomodoro
-  :doc "A timer for the Pomodoro Technique"
-  :elpaca t
-  :commands pomodoro-start
-  :config
-  (when (eq window-system 'ns)
-    (setq pomodoro-sound-player "afplay"))
-
-  (let ((sound (cond
-                ((or (string-match "Ubuntu" my-lsb-distribution-name)
-                     (string-match "debian" my-lsb-distribution-name))
-                 "/usr/share/sounds/gnome/default/alerts/glass.ogg")
-                ((string-match "endeavouros" my-lsb-distribution-name)
-                 "/usr/share/sounds/freedesktop/stereo/service-login.oga")
-                ((eq window-system 'ns)
-                 "/System/Library/Sounds/Glass.aiff"))))
-    (setq pomodoro-work-start-sound sound
-          pomodoro-break-start-sound sound))
-  (when (not (member '(pomodoro-mode-line-string pomodoro-mode-line-string)  mode-line-format))
-    (pomodoro-add-to-mode-line)))
-(elpaca sudo-edit)
-(leaf japanese-holidays
-  :after calendar
-  :elpaca t
-  :doc "Calendar functions for the Japanese calendar"
-  :req "emacs-24.1" "cl-lib-0.3"
-  :tag "calendar" "emacs>=24.1"
-  :url "https://github.com/emacs-jp/japanese-holidays"
-  :emacs>= 24.1
-  :require t
-  :custom
-  (
-   (calendar-mark-holidays-flag . t)    ;祝日をカレンダーに表示
-   ;; 土曜日・日曜日を祝日として表示する場合、以下の設定を追加します。
-   (japanese-holiday-weekend . '(0 6))  ;土日を祝日として表示
-   (japanese-holiday-weekend-marker . '(holiday nil nil nil nil nil japanese-holiday-saturday))) ;土曜日を水色で表示
-  :config
-  ;; 他の国の祝日も表示させたい場合は適当に調整
-  (setq calendar-holidays (append japanese-holidays holiday-local-holidays
-                                  holiday-other-holidays))
-  (add-hook 'calendar-today-visible-hook 'japanese-holiday-mark-weekend)
-  (add-hook 'calendar-today-invisible-hook 'japanese-holiday-mark-weekend))
-(elpaca transient)
+            (recentf-max-saved-items . 2000))
+  :global-minor-mode recentf-mode)
 (leaf magit
   :elpaca t
   :bind (("C-x g" . magit-status)
          (:magit-diff-mode-map
-          ("=" . magit-diff-more-context)))
+          ("=" . magit-diff-more-context))
+         (:project-prefix-map :package project
+                              ("v" . magit-status)))
   :hook
   (ediff-keymap-setup-hook . add-d-to-ediff-mode-map)
   :custom
@@ -592,184 +192,10 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
         (org-fold-show-all)
       (org-show-all)))
   (add-hook 'ediff-prepare-buffer-hook #'my-ediff-prepare-buffer-function))
-(elpaca (libgit2 :repo "https://github.com/magit/libegit2.git"
-                 :main "libgit.el"))
-(elpaca magit-svn)
-(leaf blamer
-  :doc "Show git blame info about current line"
-  :req "emacs-27.1" "posframe-1.1.7"
-  :tag "emacs>=27.1"
-  :url "https://github.com/artawower/blamer.el"
-  :emacs>= 27.1
-  :elpaca t)
-(leaf projectile
-  :elpaca t
-  :bind `(,(when (version< "28" emacs-version)
-             '(:projectile-command-map
-               ("v" . my-projectile-vc-in-new-tab))))
-  :bind-keymap (("C-c p" . projectile-command-map))
-  :custom
-  `((projectile-cache-file . ,(locate-user-emacs-file
-                               (format "projectile/%s/projectile.cache" emacs-version)))
-    (projectile-known-projects-file . ,(locate-user-emacs-file
-                                        (format "projectile/%s/projectile-bookmarks.eld" emacs-version)))
-    (projectile-sort-order . 'recently-active)
-    (projectile-switch-project-action . 'projectile-commander))
-  :init
-  (let ((dir (locate-user-emacs-file (format "projectile/%s" emacs-version))))
-    (unless (file-directory-p dir)
-      (make-directory dir t)))
-  (defun my-projectile-vc-in-new-tab ()
-    (interactive)
-    (let ((tab-name-list (mapcar #'cdadr (tab-bar-tabs)))
-          (tab-name (format "=p:%s"
-                            (replace-regexp-in-string
-                             "\.emacs\.d/packages/.*/.*repos" "REPO"
-                             (replace-regexp-in-string
-                              (format "^%s" (getenv "HOME")) "~"
-                              (projectile-acquire-root)))))
-          (project-root (projectile-acquire-root)))
-      (cond
-       ;; 既に同名のタブがあったらそれを使う
-       ((member tab-name tab-name-list)
-        (tab-switch tab-name)
-        (projectile-vc project-root))
-       ((not (memq major-mode '(magit-diff-mode
-                                magit-log-mode
-                                magit-revision-mode
-                                magit-status-mode)))
-        (other-tab-prefix)
-        (projectile-vc)
-        (tab-rename tab-name))
-       (t
-        (projectile-vc)))))
-  :config
-  (projectile-mode +1)
-  (dolist
-      (d '("^\\.ccls-cache$"))
-    (push d projectile-globally-ignored-directories))
-  (when (string> emacs-version "28")
-    (def-projectile-commander-method ?v "Open project root in vc-dir or magit."
-                                     (my-projectile-vc-in-new-tab))))
-;; ddskk
-(leaf ddskk
-  :elpaca (ddskk :host github :repo "skk-dev/ddskk" :depth 10
-                 :files ("context-skk.el" "ddskk*.el" "skk*.el" "tar-util.el"
-                         "doc/skk.texi" "etc/skk.xpm" "ccc.el"
-                         (:exclude "skk-xemacs.el" "skk-lookup.el")))
-  :commands skk-mode
-  :bind (("C-x C-j" . skk-mode)
-         (:minibuffer-local-map
-          ("C-j" . skk-kakutei)))
-  :hook ((skk-load-hook . (lambda () (require 'context-skk))) ;自動的に英字モードになる
-         (skk-jisyo-edit-mode-hook . (lambda () (read-only-mode t))))
-  :custom
-  `((default-input-method . "japanese-skk")
-    (skk-auto-insert-paren . t)
-    (skk-dcomp-activate . t)         ;動的補完
-    (skk-delete-implies-kakutei . nil) ; ▼モードで BS を押したときには確定しないで前候補を表示する
-    (skk-egg-like-newline . t)           ;non-nilにするとEnterでの確定時に改行しない
-    (skk-get-jisyo-directory . ,(expand-file-name (locate-user-emacs-file "skk-get-jisyo")))
-    (skk-henkan-show-candidates-keys . '(?a ?o ?e ?u ?h ?t ?n ?s))
-    (skk-henkan-strict-okuri-precedence . t)
-    (skk-isearch-start-mode . 'latin); isearch で skk の初期状態
-    (skk-kutouten-type . 'jp)
-    (skk-save-jisyo-instantly . t)
-    (skk-search-katakana . 'jisx0201-kana)
-    (skk-search-sagyo-henkaku . t)   ;サ行変格活用の動詞も送りあり変換出来るようにする
-    (skk-share-private-jisyo . t)
-    (skk-sticky-key . '(117 101))
-    (skk-use-act . t)                ;全角・半角カタカナを変換候補にする
-    (skk-use-jisx0201-input-method . t)
-    (skk-user-directory . ,(locate-user-emacs-file "ddskk"))
-    (skk-japanese-message-and-error . t))
-  :init
-  (leaf skk-dropbox
-    :if (file-exists-p (expand-file-name ".config/ddskk" my-share-dir))
-    :custom
-    (skk-jisyo-code . 'utf-8))
-
-  (let ((skk-jisyo-directory
-         (if (file-exists-p (expand-file-name ".config/ddskk/skkdic-utf8" my-share-dir))
-             (expand-file-name ".config/ddskk/skkdic-utf8" my-share-dir)
-           skk-get-jisyo-directory)))
-    (setq skk-large-jisyo (format "%s/SKK-JISYO.L" skk-jisyo-directory))
-    (setq skk-extra-jisyo-file-list
-          (mapcar (lambda (x)
-                    (format "%s/%s" skk-jisyo-directory x))
-                  '("SKK-JISYO.lisp" "SKK-JISYO.station"
-                    "SKK-JISYO.assoc" "SKK-JISYO.edict"
-                    "SKK-JISYO.law" "SKK-JISYO.jinmei"
-                    "SKK-JISYO.fullname" "SKK-JISYO.geo"
-                    "SKK-JISYO.itaiji" "SKK-JISYO.zipcode"
-                    "SKK-JISYO.okinawa" "SKK-JISYO.propernoun"))))
-  (with-eval-after-load 'dired
-    (load "dired-x")
-    (global-set-key "\C-x\C-j" 'skk-mode))
-  (leaf skk-study
-    :require t)
-  (leaf skk-hint
-    :require t
-    :custom
-    ;; ▼モード中で=漢字の読み方を指定する
-    (skk-hint-start-char . ?=))
-  (leaf context-skk
-    :config
-    (dolist (mode '(python-mode js-mode rustic-mode dart-mode
-                                go-mode typescript-mode))
-      (add-to-list 'context-skk-programming-mode mode))
-    (setq context-skk-mode-off-message "[context-skk] 日本語入力 off")
-    (defun my-context-skk-at-heading-p ()
-      (and (bolp)
-           (and (memq 'org-mode (list major-mode (get-mode-local-parent major-mode)))
-                (or (org-at-heading-p)
-                    (org-at-item-p)
-                    (org-at-block-p)
-                    (org-at-item-checkbox-p)))))
-    (add-hook 'org-mode-hook
-              (lambda ()
-                (setq-local
-                 context-skk-context-check-hook
-                 '(my-context-skk-at-heading-p
-                   context-skk-in-read-only-p))))
-    (context-skk-mode 1))
-  (defun skk-set-display-table ()
-    (walk-windows (lambda (w)
-                    (let ((disptab (make-display-table)))
-                      (aset disptab ?\▼ (vector (make-glyph-code ?# 'escape-glyph)))
-                      (aset disptab ?\▽ (vector (make-glyph-code ?@ 'escape-glyph)))
-                      (set-window-display-table w disptab)))))
-  (require 'ccc)
-  (add-hook 'window-configuration-change-hook #'skk-set-display-table)
-  (add-hook 'after-init-hook #'skk-set-display-table))
-(leaf eww
-  :commands (eww)
-  :bind
-  ((:eww-mode-map
-    ("j" . next-line)
-    ("k" . previous-line))
-   (:embark-url-map
-    :package embark
-    ("x" . browse-url-default-browser)))
-  :custom
-  (eww-search-prefix . "https://www.google.co.jp/search?q=")
-  :config
-  (defun eww-disable-images ()
-    "eww で画像表示させない"
-    (interactive)
-    (setq-local shr-put-image-function 'shr-put-image-alt)
-    (eww-reload))
-  (defun eww-enable-images ()
-    "eww で画像表示させる"
-    (interactive)
-    (setq-local shr-put-image-function 'shr-put-image)
-    (eww-reload))
-  (defun shr-put-image-alt (spec alt &optional flags)
-    (insert alt))
-  ;; はじめから非表示
-  (defun eww-mode-hook--disable-image ()
-    (setq-local shr-put-image-function 'shr-put-image-alt)))
-
+(leaf ediff
+  :custom ((ediff-diff-options . "-w")
+           (ediff-split-window-function . 'split-window-horizontally)
+           (ediff-window-setup-function . 'ediff-setup-windows-plain)))
 (leaf *vertico
   :config
   (leaf vertico
@@ -842,7 +268,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :custom
     ((vertico-quick1 . "aoeu")
      (vertico-quick2 . "htns")))
-  
   ;; Use the `orderless' completion style.
   ;; Enable `partial-completion' for files to allow path expansion.
   ;; You may prefer to use `initials' instead of `partial-completion'.
@@ -1123,6 +548,582 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (kind-icon-default-face . 'corfu-default)
     :config
     (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)))
+
+(leaf conf-mode
+  :config
+  (push '("\\.toml\\'" . conf-toml-mode) auto-mode-alist))
+
+(leaf yes-or-no
+  :emacs>= 28.1
+  :custom
+  (use-short-answers . t))
+
+(leaf emacs29
+  :emacs>= 29
+  :config
+  (when window-system
+    (pixel-scroll-precision-mode)))
+
+(leaf custom-darwin
+  :if (eq system-type 'darwin)
+  :custom
+  ((browse-url-firefox-program . "/Applications/Firefox.app/Contents/MacOS/firefox")
+   (browse-url-firefox-new-window-is-tab . t)))
+
+(leaf authinfo
+  :mode ("authinfo.gpg" . authinfo-mode))
+
+(leaf browse-url
+  :config
+  (when (eq system-type 'gnu/linux)
+    (cond
+     ;; wsl
+     ((string-match ".*-microsoft-standard-WSL2.*"
+                    operating-system-release)
+      (setq
+       browse-url-generic-program  "/mnt/c/Windows/System32/cmd.exe"
+       browse-url-generic-args     '("/c" "start")
+       browse-url-browser-function #'browse-url-generic))))
+  (when (eq system-type 'darwin)
+    (setq browse-url-chrome-program "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")))
+
+
+(leaf xref
+  :defvar auto-read-only-dirs
+  :hook (xref-after-jump-hook .
+                              (lambda ()
+                                (dolist (f auto-read-only-dirs)
+                                  (when (string-match-p (expand-file-name f) buffer-file-name)
+                                    (view-mode)))))
+  :config
+  (defvar auto-read-only-dirs
+    `("/opt/homebrew/Cellar/"
+      "~/.cargo/registry/"
+      ,(expand-file-name "packages/" user-emacs-directory)
+      "~/.rustup/toolchains/")))
+(leaf view-mode
+  :bind
+  (:view-mode-map
+   ("j" . next-line)
+   ("k" . previous-line)
+   ;; ("SPC". scroll-up-command)
+   ;; ("S-SPC". scroll-down-command)
+   ))
+(leaf info
+  :bind
+  (:Info-mode-map
+   ("j" . next-line)
+   ("k" . previous-line))
+  :config
+  (defun Info-find-node--info-ja (orig-fn filename &rest args)
+    (apply orig-fn
+           (pcase filename
+             ("emacs" "emacs-ja")
+             ("elisp" "elisp-ja")
+             (_ filename))
+           args))
+  (let ((infopath (getenv "INFOPATH")))
+    (if (and (stringp infopath)
+             (string-match-p ".local/share/emacs" infopath))
+        (advice-add 'Info-find-node :around 'Info-find-node--info-ja))))
+
+(leaf deepl-translate
+  :url "https://uwabami.github.io/cc-env/Emacs.html"
+  :commands my-deepl-translate
+  :bind
+  (:embark-region-map
+   :package embark
+   ("T" . my-deepl-translate))
+  :preface
+  (require 'url-util)
+  (defun my-translate--sanitize-string (string)
+    "docstring"
+    (replace-regexp-in-string
+     "|" (regexp-quote "\x005c\x007c")
+     (replace-regexp-in-string
+      "/"
+      (regexp-quote "\x005c\x002f")
+      string)))
+  (defvar my-translate-url  "https://miraitranslate.com/trial/#en/ja/"
+    ;; "https://www.deepl.com/translator#en/ja/%s"
+    )
+  (defun my-deepl-translate (&optional string)
+    (interactive)
+    (setq string
+          (cond ((stringp string) string)
+                ((use-region-p)
+                 (string-fill (buffer-substring (region-beginning) (region-end))
+                              5000))
+                (t
+                 (save-excursion
+                   (let (s)
+                     (forward-char 1)
+                     (backward-sentence)
+                     (setq s (point))
+                     (forward-sentence)
+                     (buffer-substring s (point)))))))
+    (run-at-time 0.1 nil 'deactivate-mark)
+    (let* ((string (my-translate--sanitize-string string))
+           (url (format "%s%s"
+                        my-translate-url (url-hexify-string string))))
+      (cond ((eq system-type 'darwin)
+             (browse-url-default-macosx-browser url))
+            ((string-match ".*-microsoft-standard-WSL2.*" operating-system-release)
+             (browse-url-generic url))
+            (t
+             (browse-url-firefox url))))))
+(leaf image-mode
+  :bind (:image-mode-map
+         ("=" . image-increase-size)))
+(leaf help-mode
+  :bind
+  (:help-mode-map
+   ("n" . next-line)
+   ("j" . next-line)
+   ("p" . previous-line)
+   ("k" . previous-line)
+   ("v" . scroll-up-command)
+   ("V" . scroll-down-command)))
+(leaf helpful
+  :disabled t
+  :doc "A better *help* buffer"
+  :req "emacs-25" "dash-2.18.0" "s-1.11.0" "f-0.20.0" "elisp-refs-1.2"
+  :tag "lisp" "help" "emacs>=25"
+  :url "https://github.com/Wilfred/helpful"
+  :elpaca t
+  :emacs>= 25
+  :bind
+  ((:help-map
+    :package help
+    ("v" . helpful-variable)
+    ("f" . helpful-callable)
+    ("o" . helpful-symbol)
+    ("k" . helpful-key))
+   (:embark-symbol-map
+    :package embark
+    ("h" . helpful-symbol))))
+(leaf diff-mode
+  :bind
+  (:diff-mode-map
+   ("v" . scroll-up-command)
+   ("V" . scroll-down-command))
+  :hook
+  (diff-mode-hook . (lambda () (read-only-mode t))))
+(leaf autorevert
+  :hook
+  (emacs-startup-hook . global-auto-revert-mode))
+(leaf window
+  :emacs>= 28
+  :bind
+  (:resize-window-repeat-map
+   ("+" . enlarge-window)
+   ("=" . enlarge-window)
+   ("-" . shrink-window)
+   ("_" . shrink-window)
+   (">" . enlarge-window-horizontally)
+   ("<" . shrink-window-horizontally))
+  :config
+  (defvar-keymap my-scroll-other-window-repeat-map
+    :repeat t
+    "v"   #'scroll-other-window
+    "C-v" #'scroll-other-window
+    "M-v" #'scroll-other-window-down
+    "V" #'scroll-other-window-down))
+(leaf simple
+  :config
+  (defcustom my-read-only-dirs nil
+    "List of directories where files should be opened in read-only.
+Each element in the list is a string, representing a directory path.
+When a file is opened and its path starts with one of the directory paths in this list,
+read-only-mode will be activated for that file."
+    :type '(repeat string))
+  (defun my-read-only-find-file-hook ()
+    (when (cl-some
+           (lambda (dir)
+             (string-prefix-p (expand-file-name dir) buffer-file-name))
+           my-read-only-dirs)
+      (read-only-mode 1)))
+  (add-hook 'find-file-hook 'my-read-only-find-file-hook))
+(leaf initchart
+  :elpaca (initchart :host github :repo "yuttie/initchart")
+  :disabled t
+  :require t
+  :config
+  (initchart-record-execution-time-of load file)
+  (initchart-record-execution-time-of require feature))
+(leaf esup
+  :elpaca t
+  :require t)
+(defun which-linux-distribution ()
+  "Return string which obtains from 'lsb_release' command."
+  (interactive)
+  (if (eq system-type 'gnu/linux)
+      (string-trim (shell-command-to-string "lsb_release -sd")
+                   "^\"" "\"?[ \t\n\r]+")
+    ""))
+(setq my-lsb-distribution-name
+      (which-linux-distribution))
+
+;;行番号を表示
+(if (version< "26" emacs-version)
+    (progn
+      ;; (global-display-line-numbers-mode)
+      (setq-default indicate-empty-lines t)
+      (setq-default indicate-buffer-boundaries 'left)))
+(leaf exec-path-from-shell
+  :elpaca t
+  :config
+  (exec-path-from-shell-initialize)
+  (add-to-list 'exec-path-from-shell-variables "PYTHONPATH")
+  (add-to-list 'exec-path-from-shell-variables "JAVA_HOME"))
+(leaf system-packages
+  :elpaca t
+  :config
+  (cond
+   ((eq system-type 'darwin)
+    (setq system-packages-package-manager 'brew))
+   ((string-match-p "asahi" operating-system-release)
+    (setq system-packages-package-manager 'dnf))
+   ((string-match-p "manjaro\\|endeavouros" operating-system-release)
+    (add-to-list 'system-packages-supported-package-managers
+                 '(yay .
+                       ((default-sudo . nil)
+                        (install . "yay -S")
+                        (search . "yay -Ss")
+                        (uninstall . "yay -Rs")
+                        (update . "yay -Syu")
+                        (clean-cache . "yay -Sc")
+                        (log . "cat /var/log/pacman.log")
+                        (get-info . "yay -Qi")
+                        (get-info-remote . "yay -Si")
+                        (list-files-provided-by . "yay -Ql")
+                        (verify-all-packages . "yay -Qkk")
+                        (verify-all-dependencies . "yay -Dk")
+                        (remove-orphaned . "yay -Rns $(pacman -Qtdq)")
+                        (list-installed-packages . "yay -Qe")
+                        (list-installed-packages-all . "yay -Q")
+                        (list-dependencies-of . "yay -Qi")
+                        (noconfirm . "--noconfirm"))))
+    (setq system-packages-use-sudo nil
+          system-packages-package-manager 'yay))))
+(leaf bind-key
+  :bind
+  (("M-<f1>" . other-frame)  ;Macのショートカットに合わせる
+   ;; ("C-o" . my-insert-newline-and-indent)
+   (:isearch-mode-map
+    ("C-o" . isearch-exit))
+   (:reb-mode-map
+    :package re-builder
+    ("C-c C-k". reb-quit))))
+(leaf outline-repeat
+  :after outline
+  :config
+  (defvar-keymap my-outline-navigation-repeat-map
+    :parent outline-navigation-repeat-map
+    :repeat t
+    "TAB" #'outline-cycle))
+(leaf special-characer-mode
+  :url "https://github.com/madanh/special-characer-mode"
+  :config
+  (defmacro ins-val (val)
+    `(lambda () (interactive) (insert ,val)))
+  (define-minor-mode special-char-mode
+    "Toggle Special Character mode"
+    :init-value " SpecialChar"
+    `(
+      (,(kbd "1") . ,(ins-val "!")) (,(kbd "!") . ,(ins-val "1")) (,[kp-1] . ,(ins-val "1"))
+      (,(kbd "2") . ,(ins-val "@")) (,(kbd "@") . ,(ins-val "2")) (,[kp-2] . ,(ins-val "2"))
+      (,(kbd "3") . ,(ins-val "#")) (,(kbd "#") . ,(ins-val "3")) (,[kp-3] . ,(ins-val "3"))
+      (,(kbd "4") . ,(ins-val "$")) (,(kbd "$") . ,(ins-val "4")) (,[kp-4] . ,(ins-val "4"))
+      (,(kbd "5") . ,(ins-val "%")) (,(kbd "%") . ,(ins-val "5")) (,[kp-5] . ,(ins-val "5"))
+      (,(kbd "6") . ,(ins-val "^")) (,(kbd "^") . ,(ins-val "6")) (,[kp-6] . ,(ins-val "6"))
+      (,(kbd "7") . ,(ins-val "&")) (,(kbd "&") . ,(ins-val "7")) (,[kp-7] . ,(ins-val "7"))
+      (,(kbd "8") . ,(ins-val "*")) (,(kbd "*") . ,(ins-val "8")) (,[kp-8] . ,(ins-val "8")) (,[kp-multiply] . ,(ins-val "*"))
+      (,(kbd "9") . ,(ins-val "(")) (,(kbd "(") . ,(ins-val "9")) (,[kp-9] . ,(ins-val "9"))
+      (,(kbd "0") . ,(ins-val ")")) (,(kbd ")") . ,(ins-val "0")) (,[kp-0] . ,(ins-val "0")))))
+(when (equal system-type 'darwin)
+  (setq ns-command-modifier 'meta)
+  (when (memq window-system '(ns mac))
+    ;; 游教科書体
+    ;; (set-face-attribute 'default nil
+    ;;                     :family "YuKyokasho Yoko")
+    ;; UDEV Gothic
+    (set-face-attribute 'default nil
+                        :family "UDEV Gothic JPDOC")
+    (set-fontset-font nil '(#x30000 . #x3134F) (font-spec :family "Source Han Sans SC"))
+    (set-fontset-font nil '(#xAA80 . #xAADF) (font-spec :family "Noto Sans Tai Viet"))
+    (let* ((variable-tuple
+            (cond ((x-list-fonts "UDEV Gothic JPDOC") '(:font "UDEV Gothic JPDOC"))
+                  ((x-list-fonts "Source Sans Pro")       '(:font "Source Sans Pro"))
+                  ((x-list-fonts "Lucida Grande")         '(:font "Lucida Grande"))
+                  ((x-list-fonts "Verdana")               '(:font "Verdana"))
+                  ((x-family-fonts "Sans Serif")          '(:family "Sans Serif"))
+                  (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+           (headline           `(:inherit default :weight bold)))
+      ;; (custom-theme-set-faces
+      ;;  'user
+      ;;  `(org-level-8 ((t (,@headline ,@variable-tuple))))
+      ;;  `(org-level-7 ((t (,@headline ,@variable-tuple))))
+      ;;  `(org-level-6 ((t (,@headline ,@variable-tuple))))
+      ;;  `(org-level-5 ((t (,@headline ,@variable-tuple))))
+      ;;  `(org-level-4 ((t (,@headline ,@variable-tuple))))
+      ;;  `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.1))))
+      ;;  `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.25))))
+      ;;  `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.5))))
+      ;;  `(org-table ((t (,@headline ,@variable-tuple))))
+      ;;  `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil)))))
+      )))
+(when (equal system-type 'gnu/linux)
+  (add-to-list 'load-path "~/opt/mu-1.0/mu4e")
+  ;;曖昧な文字幅を指定する
+  (aset char-width-table ?→ 2)
+  (when (memq window-system '(x pgtk))
+    (set-face-attribute 'default nil :family "UDEV Gothic JPDOC")))
+;; 記号をデフォルトのフォントにしない。(for Emacs 25.2)
+(setq use-default-font-for-symbols nil)
+(when (version< emacs-version "29")
+  (elpaca restart-emacs))
+
+(leaf dired
+  :custom
+  ((dired-dwim-target . (lambda () (unless current-prefix-arg (dired-dwim-target-next))))
+   (dired-recursive-copies . 'always)
+   (dired-listing-switches . "-alFh"))
+  :config
+  (when (eq system-type 'darwin)
+    (setq dired-use-ls-dired nil)))
+
+(leaf xwidget
+  :leaf-autoload nil
+  :leaf-defun nil
+  :bind
+  (:xwidget-webkit-mode-map
+   ("j" . xwidget-webkit-scroll-up-line)
+   ("k" . xwidget-webkit-scroll-down-line))
+  :hook
+  ((xwidget-webkit-mode-hook . (lambda ()
+                                 (display-line-numbers-mode -1)))))
+(leaf pomodoro
+  :doc "A timer for the Pomodoro Technique"
+  :elpaca t
+  :commands pomodoro-start
+  :config
+  (when (eq window-system 'ns)
+    (setq pomodoro-sound-player "afplay"))
+
+  (let ((sound (cond
+                ((or (string-match "Ubuntu" my-lsb-distribution-name)
+                     (string-match "debian" my-lsb-distribution-name))
+                 "/usr/share/sounds/gnome/default/alerts/glass.ogg")
+                ((string-match "endeavouros" my-lsb-distribution-name)
+                 "/usr/share/sounds/freedesktop/stereo/service-login.oga")
+                ((eq window-system 'ns)
+                 "/System/Library/Sounds/Glass.aiff"))))
+    (setq pomodoro-work-start-sound sound
+          pomodoro-break-start-sound sound))
+  (when (not (member '(pomodoro-mode-line-string pomodoro-mode-line-string)  mode-line-format))
+    (pomodoro-add-to-mode-line)))
+(elpaca sudo-edit)
+(leaf japanese-holidays
+  :after calendar
+  :elpaca t
+  :doc "Calendar functions for the Japanese calendar"
+  :req "emacs-24.1" "cl-lib-0.3"
+  :tag "calendar" "emacs>=24.1"
+  :url "https://github.com/emacs-jp/japanese-holidays"
+  :emacs>= 24.1
+  :require t
+  :custom
+  (
+   (calendar-mark-holidays-flag . t)    ;祝日をカレンダーに表示
+   ;; 土曜日・日曜日を祝日として表示する場合、以下の設定を追加します。
+   (japanese-holiday-weekend . '(0 6))  ;土日を祝日として表示
+   (japanese-holiday-weekend-marker . '(holiday nil nil nil nil nil japanese-holiday-saturday))) ;土曜日を水色で表示
+  :config
+  ;; 他の国の祝日も表示させたい場合は適当に調整
+  (setq calendar-holidays (append japanese-holidays holiday-local-holidays
+                                  holiday-other-holidays))
+  (add-hook 'calendar-today-visible-hook 'japanese-holiday-mark-weekend)
+  (add-hook 'calendar-today-invisible-hook 'japanese-holiday-mark-weekend))
+(elpaca transient)
+(elpaca (libgit2 :repo "https://github.com/magit/libegit2.git"
+                 :main "libgit.el"))
+(elpaca magit-svn)
+(leaf blamer
+  :doc "Show git blame info about current line"
+  :req "emacs-27.1" "posframe-1.1.7"
+  :tag "emacs>=27.1"
+  :url "https://github.com/artawower/blamer.el"
+  :emacs>= 27.1
+  :elpaca t)
+(leaf projectile
+  :elpaca t
+  :bind `(,(when (version< "28" emacs-version)
+             '(:projectile-command-map
+               ("v" . my-projectile-vc-in-new-tab))))
+  :bind-keymap (("C-c p" . projectile-command-map))
+  :custom
+  `((projectile-cache-file . ,(locate-user-emacs-file
+                               (format "projectile/%s/projectile.cache" emacs-version)))
+    (projectile-known-projects-file . ,(locate-user-emacs-file
+                                        (format "projectile/%s/projectile-bookmarks.eld" emacs-version)))
+    (projectile-sort-order . 'recently-active)
+    (projectile-switch-project-action . 'projectile-commander))
+  :init
+  (let ((dir (locate-user-emacs-file (format "projectile/%s" emacs-version))))
+    (unless (file-directory-p dir)
+      (make-directory dir t)))
+  (defun my-projectile-vc-in-new-tab ()
+    (interactive)
+    (let ((tab-name-list (mapcar #'cdadr (tab-bar-tabs)))
+          (tab-name (format "=p:%s"
+                            (replace-regexp-in-string
+                             "\.emacs\.d/packages/.*/.*repos" "REPO"
+                             (replace-regexp-in-string
+                              (format "^%s" (getenv "HOME")) "~"
+                              (projectile-acquire-root)))))
+          (project-root (projectile-acquire-root)))
+      (cond
+       ;; 既に同名のタブがあったらそれを使う
+       ((member tab-name tab-name-list)
+        (tab-switch tab-name)
+        (projectile-vc project-root))
+       ((not (memq major-mode '(magit-diff-mode
+                                magit-log-mode
+                                magit-revision-mode
+                                magit-status-mode)))
+        (other-tab-prefix)
+        (projectile-vc)
+        (tab-rename tab-name))
+       (t
+        (projectile-vc)))))
+  :config
+  (projectile-mode +1)
+  (dolist
+      (d '("^\\.ccls-cache$"))
+    (push d projectile-globally-ignored-directories))
+  (when (string> emacs-version "28")
+    (def-projectile-commander-method ?v "Open project root in vc-dir or magit."
+                                     (my-projectile-vc-in-new-tab))))
+;; ddskk
+(leaf ddskk
+  :elpaca (ddskk :host github :repo "skk-dev/ddskk" :depth 10
+                 :files ("context-skk.el" "ddskk*.el" "skk*.el" "tar-util.el"
+                         "doc/skk.texi" "etc/skk.xpm" "ccc.el"
+                         (:exclude "skk-xemacs.el" "skk-lookup.el")))
+  :commands skk-mode
+  :bind (("C-x C-j" . skk-mode)
+         (:minibuffer-local-map
+          ("C-j" . skk-kakutei)))
+  :hook ((skk-load-hook . (lambda () (require 'context-skk))) ;自動的に英字モードになる
+         (skk-jisyo-edit-mode-hook . (lambda () (read-only-mode t))))
+  :custom
+  `((default-input-method . "japanese-skk")
+    (skk-auto-insert-paren . t)
+    (skk-dcomp-activate . t)         ;動的補完
+    (skk-delete-implies-kakutei . nil) ; ▼モードで BS を押したときには確定しないで前候補を表示する
+    (skk-egg-like-newline . t)           ;non-nilにするとEnterでの確定時に改行しない
+    (skk-get-jisyo-directory . ,(expand-file-name (locate-user-emacs-file "skk-get-jisyo")))
+    (skk-henkan-show-candidates-keys . '(?a ?o ?e ?u ?h ?t ?n ?s))
+    (skk-henkan-strict-okuri-precedence . t)
+    (skk-isearch-start-mode . 'latin); isearch で skk の初期状態
+    (skk-kutouten-type . 'jp)
+    (skk-save-jisyo-instantly . t)
+    (skk-search-katakana . 'jisx0201-kana)
+    (skk-search-sagyo-henkaku . t)   ;サ行変格活用の動詞も送りあり変換出来るようにする
+    (skk-share-private-jisyo . t)
+    (skk-sticky-key . '(117 101))
+    (skk-use-act . t)                ;全角・半角カタカナを変換候補にする
+    (skk-use-jisx0201-input-method . t)
+    (skk-user-directory . ,(locate-user-emacs-file "ddskk"))
+    (skk-japanese-message-and-error . t))
+  :init
+  (leaf skk-dropbox
+    :if (file-exists-p (expand-file-name ".config/ddskk" my-share-dir))
+    :custom
+    (skk-jisyo-code . 'utf-8))
+
+  (let ((skk-jisyo-directory
+         (if (file-exists-p (expand-file-name ".config/ddskk/skkdic-utf8" my-share-dir))
+             (expand-file-name ".config/ddskk/skkdic-utf8" my-share-dir)
+           skk-get-jisyo-directory)))
+    (setq skk-large-jisyo (format "%s/SKK-JISYO.L" skk-jisyo-directory))
+    (setq skk-extra-jisyo-file-list
+          (mapcar (lambda (x)
+                    (format "%s/%s" skk-jisyo-directory x))
+                  '("SKK-JISYO.lisp" "SKK-JISYO.station"
+                    "SKK-JISYO.assoc" "SKK-JISYO.edict"
+                    "SKK-JISYO.law" "SKK-JISYO.jinmei"
+                    "SKK-JISYO.fullname" "SKK-JISYO.geo"
+                    "SKK-JISYO.itaiji" "SKK-JISYO.zipcode"
+                    "SKK-JISYO.okinawa" "SKK-JISYO.propernoun"))))
+  (with-eval-after-load 'dired
+    (load "dired-x")
+    (global-set-key "\C-x\C-j" 'skk-mode))
+  (leaf skk-study
+    :require t)
+  (leaf skk-hint
+    :require t
+    :custom
+    ;; ▼モード中で=漢字の読み方を指定する
+    (skk-hint-start-char . ?=))
+  (leaf context-skk
+    :config
+    (dolist (mode '(python-mode js-mode rustic-mode dart-mode
+                                go-mode typescript-mode))
+      (add-to-list 'context-skk-programming-mode mode))
+    (setq context-skk-mode-off-message "[context-skk] 日本語入力 off")
+    (defun my-context-skk-at-heading-p ()
+      (and (bolp)
+           (and (memq 'org-mode (list major-mode (get-mode-local-parent major-mode)))
+                (or (org-at-heading-p)
+                    (org-at-item-p)
+                    (org-at-block-p)
+                    (org-at-item-checkbox-p)))))
+    (add-hook 'org-mode-hook
+              (lambda ()
+                (setq-local
+                 context-skk-context-check-hook
+                 '(my-context-skk-at-heading-p
+                   context-skk-in-read-only-p))))
+    (context-skk-mode 1))
+  (defun skk-set-display-table ()
+    (walk-windows (lambda (w)
+                    (let ((disptab (make-display-table)))
+                      (aset disptab ?\▼ (vector (make-glyph-code ?# 'escape-glyph)))
+                      (aset disptab ?\▽ (vector (make-glyph-code ?@ 'escape-glyph)))
+                      (set-window-display-table w disptab)))))
+  (require 'ccc)
+  (add-hook 'window-configuration-change-hook #'skk-set-display-table)
+  (add-hook 'after-init-hook #'skk-set-display-table))
+(leaf eww
+  :commands (eww)
+  :bind
+  ((:eww-mode-map
+    ("j" . next-line)
+    ("k" . previous-line))
+   (:embark-url-map
+    :package embark
+    ("x" . browse-url-default-browser)))
+  :custom
+  (eww-search-prefix . "https://www.google.co.jp/search?q=")
+  :config
+  (defun eww-disable-images ()
+    "eww で画像表示させない"
+    (interactive)
+    (setq-local shr-put-image-function 'shr-put-image-alt)
+    (eww-reload))
+  (defun eww-enable-images ()
+    "eww で画像表示させる"
+    (interactive)
+    (setq-local shr-put-image-function 'shr-put-image)
+    (eww-reload))
+  (defun shr-put-image-alt (spec alt &optional flags)
+    (insert alt))
+  ;; はじめから非表示
+  (defun eww-mode-hook--disable-image ()
+    (setq-local shr-put-image-function 'shr-put-image-alt)))
+
 (leaf migemo
   :elpaca t
   :unless (equal (shell-command-to-string "command -v cmigemo") "")
@@ -1249,9 +1250,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   :bind (("C-=" . er/expand-region)))
 (when (display-graphic-p)
   (elpaca all-the-icons))
-(when (version< emacs-version "30")
-  (elpaca which-key))
 (leaf which-key
+  :elpaca `(,@(version< emacs-version "30"))
   :diminish t
   :custom
   (which-key-idle-secondary-delay . 0.0)
@@ -2322,14 +2322,14 @@ See `org-capture-templates' for more information."
 (when (version< emacs-version "29")
   (elpaca csharp-mode))
 (elpaca android-mode)
-(when (eq system-type 'darwin)
-  (elpaca swift-mode
-    (leaf swift-mode))
-  (elpaca (lsp-sourcekit :host github :repo "emacs-lsp/lsp-sourcekit" :files (:defaults "lsp-sourcekit.el"))
-    (leaf lsp-sourcekit
-      :after lsp
-      :custom
-      `(lsp-sourcekit-executable . ,(string-trim (shell-command-to-string "xcrun --find sourcekit-lsp"))))))
+(leaf swift
+  :when (eq system-type 'darwin)
+  :elpaca swift-mode
+  :elpaca (lsp-sourcekit :host github :repo "emacs-lsp/lsp-sourcekit"
+                         :files (:defaults "lsp-sourcekit.el"))
+  :custom
+  `(lsp-sourcekit-executable . ,(and (eq system-type 'darwin)
+                                     (string-trim (shell-command-to-string "xcrun --find sourcekit-lsp")))))
 (leaf ccls
   :elpaca t
   :after lsp-mode
@@ -2404,9 +2404,8 @@ See `org-capture-templates' for more information."
    ("C-c C-p" . outline-previous-visible-heading)))
 (elpaca pandoc)
 (elpaca graphviz-dot-mode)
-(when (version< emacs-version "30")
-  (elpaca editorconfig))
 (leaf editorconfig
+  :elpaca `(,@(version< emacs-version "30"))
   :diminish editorconfig-mode
   :global-minor-mode t)
 (leaf easy-hugo
