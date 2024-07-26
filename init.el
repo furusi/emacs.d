@@ -539,7 +539,9 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (advice-add 'pcomplete-completions-at-point
                 :around
                 (lambda (oldfn &rest _)
-                  (my-cape-wrap-with-annotation oldfn (symbol-name 'pcomplete-completions-at-point)))))
+                  (my-cape-wrap-with-annotation
+                   oldfn
+                   (symbol-name 'pcomplete-completions-at-point)))))
   (leaf kind-icon
     :elpaca (kind-icon :host github :repo "jdtsmith/kind-icon")
     :emacs>= 27.1
@@ -555,9 +557,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
 
 (leaf whitespace-mode
   :custom
-  (whitespace-display-mappings . '((space-mark   ?\xA0  [?¤]     [?_])
-                                   (tab-mark     ?\t    [?» ?\t] [?\\ ?\t]))))
-
+  (whitespace-style . '(face tabs trailing space-before-tab newline
+                             indentation empty space-after-tab tab-mark)))
 (leaf yes-or-no
   :emacs>= 28.1
   :custom
@@ -3042,9 +3043,7 @@ Optional argument ARG hoge."
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
 (require 'my-lisp)
 (require 'my-window)
-(require 'info-downloader)
-;; (leaf info-downloader
-;;   :commands info-downloader-install info-downloader-generate-dir-file)
+;; (require 'info-downloader)
 
 (let ((f (expand-file-name ".config/emacs/config.el" my-share-dir)))
   (when (file-exists-p f)
