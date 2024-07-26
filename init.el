@@ -3014,7 +3014,10 @@ Optional argument ARG hoge."
           :package project
           ("s" . nil)
           ("s s" . project-shell)
-          ("s a" . eat-project))))
+          ("s a" . eat-project)))
+  :init
+  (with-eval-after-load 'projectile
+    (def-projectile-commander-method ?x "Open EAT buffer." (eat-project))))
 (elpaca jinx)
 (elpaca chatgpt-shell)
 (leaf dmacro
