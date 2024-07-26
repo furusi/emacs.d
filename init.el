@@ -2548,7 +2548,6 @@ Optional argument ARG hoge."
     (cond ((= arg 0) (message "*scratch* is cleared up."))
           ((= arg 1) (message "another *scratch* is created")))))
 
-(put 'narrow-to-region 'disabled nil)
 (leaf ispell
   :require t
   :config
@@ -3027,10 +3026,16 @@ Optional argument ARG hoge."
 (elpaca syncthing)
 (elpaca bnf-mode)
 (elpaca (ts-fold :type git :host github :repo "emacs-tree-sitter/ts-fold"))
+(leaf indent-bars
+  :elpaca (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
+  :hook (rustic-mode-hook . indent-bars-mode))
 
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
 (require 'my-lisp)
 (require 'my-window)
+(require 'info-downloader)
+;; (leaf info-downloader
+;;   :commands info-downloader-install info-downloader-generate-dir-file)
 
 (let ((f (expand-file-name ".config/emacs/config.el" my-share-dir)))
   (when (file-exists-p f)
@@ -3045,3 +3050,4 @@ Optional argument ARG hoge."
 (put 'downcase-region 'disabled nil)
 (put 'magit-diff-edit-hunk-commit 'disabled nil)
 (put 'set-goal-column 'disabled nil)
+(put 'narrow-to-region 'disabled nil)
