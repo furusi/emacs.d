@@ -553,6 +553,11 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   :config
   (push '("\\.toml\\'" . conf-toml-mode) auto-mode-alist))
 
+(leaf whitespace-mode
+  :custom
+  (whitespace-display-mappings . '((space-mark   ?\xA0  [?¤]     [?_])
+                                   (tab-mark     ?\t    [?» ?\t] [?\\ ?\t]))))
+
 (leaf yes-or-no
   :emacs>= 28.1
   :custom
@@ -1089,7 +1094,8 @@ read-only-mode will be activated for that file."
     (context-skk-mode 1))
   (defun skk-set-display-table ()
     (walk-windows (lambda (w)
-                    (let ((disptab (make-display-table)))
+                    (let ((disptab (or buffer-display-table
+                                       (make-display-table))))
                       (aset disptab ?\▼ (vector (make-glyph-code ?# 'escape-glyph)))
                       (aset disptab ?\▽ (vector (make-glyph-code ?@ 'escape-glyph)))
                       (set-window-display-table w disptab)))))
