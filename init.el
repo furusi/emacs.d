@@ -1418,14 +1418,10 @@ read-only-mode will be activated for that file."
             ("C-c C-\'" . org-insert-structure-template)))
     :init
     (defun my-org-item-speed-command-help ()
+      "Show the available speed commands for item."
       (interactive)
-      (with-output-to-temp-buffer "*Help*"
-        (princ "Speed commands\n==============\n")
-        (mapc #'org-print-speed-command
-              ;; FIXME: don't check `org-speed-commands-user' past 9.6
-              my-org-item-key-bindings))
-      (with-current-buffer "*Help*"
-        (setq truncate-lines t)))
+      (let ((org-speed-commands my-org-item-key-bindings))
+        (call-interactively #'org-speed-command-help)))
     (defvar my-org-item-key-bindings
       '(("p" . org-previous-item)
         ("n" . org-next-item)
@@ -2752,7 +2748,10 @@ Optional argument ARG hoge."
 (leaf eglot
   :bind
   ((:eglot-mode-map
-    ("C-c C-l a a" . eglot-code-actions))))
+    ("C-c C-l a a" . eglot-code-actions)
+    ("C-c C-l r r" . eglot-rename)
+    ("C-c C-l w r" . eglot-reconnect)
+    ("C-c C-l w q" . eglot-shutdown))))
 (leaf eglot-booster
   :when (executable-find "emacs-lsp-booster")
   :elpaca (eglot-booster :type git
