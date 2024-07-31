@@ -188,9 +188,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   :config
   ;; ediff時にorgファイルを全て表示する
   (defun my-ediff-prepare-buffer-function ()
-    (if (version<= "9.6" (org-version))
-        (org-fold-show-all)
-      (org-show-all)))
+    (with-eval-after-load 'org
+      (org-fold-show-all)))
   (add-hook 'ediff-prepare-buffer-hook #'my-ediff-prepare-buffer-function))
 (leaf ediff
   :custom ((ediff-diff-options . "-w")
@@ -1151,12 +1150,13 @@ read-only-mode will be activated for that file."
                               (t "/usr/share/cmigemo/utf-8/migemo-dict"))))
   :config
   ;; https://www.yewton.net/2022/02/07/consult-ripgrep-migemo/
-  (defun consult--migemo-regexp-compiler (input type ignore-case)
-    (setq input (mapcar #'migemo-get-pattern (consult--split-escaped input)))
-    (cons (mapcar (lambda (x) (consult--convert-regexp x type)) input)
-          (when-let (regexps (seq-filter #'consult--valid-regexp-p input))
-            (apply-partially #'consult--highlight-regexps regexps ignore-case))))
-  (setq consult--regexp-compiler #'consult--migemo-regexp-compiler)
+  (with-eval-after-load 'consult
+    (defun consult--migemo-regexp-compiler (input type ignore-case)
+      (setq input (mapcar #'migemo-get-pattern (consult--split-escaped input)))
+      (cons (mapcar (lambda (x) (consult--convert-regexp x type)) input)
+            (when-let (regexps (seq-filter #'consult--valid-regexp-p input))
+              (apply-partially #'consult--highlight-regexps regexps ignore-case))))
+    (setq consult--regexp-compiler #'consult--migemo-regexp-compiler))
   (migemo-init)) 
 ;; SLIMEのロード
 (leaf undo-tree
@@ -2082,9 +2082,10 @@ See `org-capture-templates' for more information."
     :after org
     :custom
     (org-modern-star . nil)
+    :hook
+    ((org-mode-hook . org-modern-mode)
+     (org-agenda-finalize-hook . org-modern-agenda))
     :config
-    (global-org-modern-mode)
-    (add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
     (dolist (face '(org-modern-date-active org-modern-date-inactive))
       (set-face-attribute face nil
                           :family "UDEV Gothic JPDOC"))
@@ -3042,7 +3043,7 @@ Optional argument ARG hoge."
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
 (require 'my-lisp)
 (require 'my-window)
-;; (require 'info-downloader)
+(require 'info-downloader nil t)
 
 (let ((f (expand-file-name ".config/emacs/config.el" my-share-dir)))
   (when (file-exists-p f)
