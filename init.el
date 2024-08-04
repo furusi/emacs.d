@@ -487,9 +487,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       ;; often when you don't expect it.
       ;; NOTE: We add `tempel-expand' *before* the main programming mode Capf,
       ;; such that it will be tried first.
-      (setq-local completion-at-point-functions
-                  (cons #'tempel-expand
-                        completion-at-point-functions)))
+      (add-hook 'completion-at-point-functions
+                #'tempel-expand nil 'local))
     (add-hook 'prog-mode-hook 'tempel-setup-capf)
     (add-hook 'text-mode-hook 'tempel-setup-capf))
   (elpaca tempel-collection)
@@ -500,24 +499,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :tag "emacs>=27.1"
     :url "https://github.com/minad/cape"
     :emacs>= 27.1
-    :bind
-    (("C-c f p" . completion-at-point) ;; capf
-     ("C-c f t" . complete-tag)        ;; etags
-     ("C-c f d" . cape-dabbrev)        ;; or dabbrev-completion
-     ("C-c f h" . cape-history)
-     ("C-c f f" . cape-file)
-     ("C-c f k" . cape-keyword)
-     ("C-c f s" . cape-elisp-symbol)
-     ("C-c f e" . cape-elisp-block)
-     ("C-c f a" . cape-abbrev)
-     ("C-c f l" . cape-line)
-     ("C-c f w" . cape-dict)
-     ("C-c f :" . cape-emoji)
-     ("C-c f \\" . cape-tex)
-     ("C-c f _" . cape-tex)
-     ("C-c f ^" . cape-tex)
-     ("C-c f &" . cape-sgml)
-     ("C-c f r" . cape-rfc1345))
+    :bind-keymap
+    ("C-c f" . cape-prefix-map)
     :init
     (if (memq system-type '(darwin gnu/linux))
         (customize-set-variable 'cape-dict-file "/usr/share/dict/words"))
@@ -531,10 +514,16 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                                   (list wordfile cape-dict-file)
                                 (add-to-list 'cape-dict-file wordfile))))
     (defun my-cape-wrap-with-annotation (oldfn &optional annotstr)
-      (when (eq nil annotstr)
-        (setq annotstr (symbol-name )))
-      (cape-wrap-properties oldfn :annotation-function (lambda (_) (format " %s" annotstr))))
+      (when (null annotstr)
+        (setq annotstr "from unknown function"))
+      (cape-wrap-properties oldfn
+                            :annotation-function
+                            (lambda (_) (format " %s" annotstr))))
     :config
+    (add-hook 'emacs-lisp-mode-hook
+              (lambda ()
+                (add-hook 'completion-at-point-functions
+                          (cape-capf-inside-code #'cape-elisp-symbol) nil 'local)))
     (advice-add 'pcomplete-completions-at-point
                 :around
                 (lambda (oldfn &rest _)
