@@ -73,6 +73,10 @@
     :ensure t
     :after leaf leaf-keywords ppp))
 
+(leaf no-littering
+  :elpaca t
+  :require t)
+
 (leaf elpaca
   :bind
   ((:elpaca-ui-mode-map
@@ -137,8 +141,8 @@
     (vc-follow-symlinks . t)
     (vc-handled-backends . '(Git))))
 (leaf recentf
-  :custom `((recentf-save-file . ,(locate-user-emacs-file (format "recentf-%s" emacs-version)))
-            (recentf-auto-cleanup . 'never)
+  :after no-littering
+  :custom `((recentf-auto-cleanup . 'never)
             (recentf-max-menu-items . 30)
             (recentf-max-saved-items . 2000))
   :global-minor-mode recentf-mode)
@@ -1843,7 +1847,7 @@ and `clavis-org-refile-refiled-from-header' variables."
           "/usr/local/opt/ditaa/libexec/ditaa-0.11.0-standalone.jar")
 
     (leaf ox-extra
-      :after org
+      :after org-contrib
       :require t
       :config
       ;; ignoreタグで見出しを非表示にしつつ内容を表示する
