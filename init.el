@@ -108,8 +108,8 @@
   :tag "builtin" "faces" "help"
   :custom `((custom-file . ,(locate-user-emacs-file "custom.el")))
   :config
-  (when (file-exists-p (locate-user-emacs-file "custom.el"))
-    (load-file (locate-user-emacs-file "custom.el"))))
+  (when (file-exists-p custom-file)
+    (load-file custom-file)))
 
 (leaf custom-variables
   :doc "set custom variables"
@@ -592,6 +592,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   :config
   (defvar auto-read-only-dirs
     `("/opt/homebrew/Cellar/"
+      ,lisp-directory
       "~/.cargo/registry/"
       ,(expand-file-name "packages/" user-emacs-directory)
       "~/.rustup/toolchains/")))
@@ -1340,6 +1341,15 @@ read-only-mode will be activated for that file."
   :config
   (setq web-mode-extra-snippets
         '(("php" . (("print" . "print(\"|\")"))))))
+
+(defmacro my-add-org-src-mode (mode  &optional name)
+  (when (not (symbolp mode))
+    (signal 'wrong-type-argument '(mode)))
+  (when (null name)
+    (setq name (symbol-name mode)))
+  `(with-eval-after-load 'org
+     (push '(,name . ,mode) org-src-lang-modes)))
+
 ;; Org-mode
 (leaf org*
   :config
@@ -2461,7 +2471,8 @@ See `org-capture-templates' for more information."
     "n" #'markdown-outline-next
     "p" #'markdown-outline-previous
     "TAB" #'markdown-cycle
-    "u" #'markdown-up-heading))
+    "u" #'markdown-up-heading)
+  (my-add-org-src-mode markdown))
 (elpaca docker)
 
 (elpaca docker-compose-mode)
