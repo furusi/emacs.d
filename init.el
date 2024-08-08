@@ -1180,6 +1180,7 @@ read-only-mode will be activated for that file."
   :tag "languages" "emacs>=25.1"
   :url "https://github.com/rust-lang/rust-mode"
   :emacs>= 25.1
+  :custom ((rust-mode-treesitter-derive . t))
   :hook (rust-mode-hook . prettify-symbols-mode))
 (leaf rustic
   :elpaca t
@@ -1189,9 +1190,10 @@ read-only-mode will be activated for that file."
   "seq-2.3" "spinner-1.7.3" "xterm-color-1.6"
   :tag "languages" "emacs>=26.1"
   :emacs>= 26.1
-  :custom ((rustic-treesitter-derive . t)
-           (rustic-ansi-faces . ["black" "red3" "green3" "yellow3"
-                                 "deep sky blue" "magenta3" "cyan3" "white"]))
+  :after rust-mode
+  :custom ((rustic-ansi-faces . ["black" "red3" "green3" "yellow3"
+                                 "deep sky blue" "magenta3" "cyan3" "white"])
+           (rustic-lsp-client . 'lsp-mode))
   :hook
   ((rustic-mode-hook . my-rustic-init))
   :init
