@@ -1193,7 +1193,7 @@ read-only-mode will be activated for that file."
   :after rust-mode
   :custom ((rustic-ansi-faces . ["black" "red3" "green3" "yellow3"
                                  "deep sky blue" "magenta3" "cyan3" "white"])
-           (rustic-lsp-client . 'lsp-mode))
+           (rustic-lsp-client . 'eglot))
   :hook
   ((rustic-mode-hook . my-rustic-init))
   :init
@@ -1295,15 +1295,14 @@ read-only-mode will be activated for that file."
   :elpaca t
   :mode (("\\.gradle$" . gradle-mode)))
 (leaf slime
-  :if (file-exists-p "~/.roswell/helper.el")
+  :if (executable-find "ros")
   :custom
-  ((slime-auto-start . 'ask))
+  ((inferior-lisp-program . "ros -Q run")
+   (slime-auto-start . 'ask)
+   (slime-net-coding-system . 'utf-8-unix))
   :hook ((lisp-mode-hook . slime-mode))
   :config
   ;; (slime-setup '(slime-fancy slime-company))
-
-
-  (setq slime-net-coding-system 'utf-8-unix)
   (slime-setup '(slime-fancy slime-company slime-indentation))
   (defun slime-space\\skk-insert (origfun &rest arglist)
     "skkの変換(スペース)がslime-spaceに食われてしまうのを回避"
@@ -1316,13 +1315,10 @@ read-only-mode will be activated for that file."
            arglist))
   ;; (advice-add 'slime-space :around #'slime-space\\skk-insert)
   (advice-add 'slime-autodoc-space :around #'slime-space\\skk-insert)
-  ;; (let ((path "/usr/local/share/doc/hyperspec/HyperSpec/"))
-  ;;   (when (file-exists-p path)
-  ;;   (setq common-lisp-hyperspec-root  path)
-  ;;   (setq common-lisp-hyperspec-symbol-table
-  ;;         (concat common-lisp-hyperspec-root "Data/Map_Sym.txt")
-  ;;         common-lisp-hyperspec-issuex-table
-  ;;         (concat common-lisp-hyperspec-root "Data/Map_IssX.txt"))))
+  ;; (setq common-lisp-hyperspec-symbol-table
+  ;;       (format "%sData/Map_Sym.txt" common-lisp-hyperspec-root)
+  ;;       common-lisp-hyperspec-issuex-table
+  ;;       (format "%sData/Map_IssX.txt" common-lisp-hyperspec-root))
   )
 (leaf slime-company
   :elpaca t
