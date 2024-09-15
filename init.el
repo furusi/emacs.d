@@ -982,10 +982,8 @@ read-only-mode will be activated for that file."
     (let ((tab-name-list (mapcar #'cdadr (tab-bar-tabs)))
           (tab-name (format "=p:%s"
                             (replace-regexp-in-string
-                             "\.emacs\.d/packages/.*/.*repos" "REPO"
-                             (replace-regexp-in-string
-                              (format "^%s" (getenv "HOME")) "~"
-                              (projectile-acquire-root)))))
+                             elpaca-repos-directory "/REPO/"
+                             (projectile-acquire-root))))
           (project-root (projectile-acquire-root)))
       (cond
        ;; 既に同名のタブがあったらそれを使う
@@ -1036,7 +1034,7 @@ read-only-mode will be activated for that file."
     (skk-search-katakana . 'jisx0201-kana)
     (skk-search-sagyo-henkaku . t)   ;サ行変格活用の動詞も送りあり変換出来るようにする
     (skk-share-private-jisyo . t)
-    (skk-sticky-key . '(117 101))
+    (skk-sticky-key . '(?u ?h))
     (skk-use-act . t)                ;全角・半角カタカナを変換候補にする
     (skk-use-jisx0201-input-method . t)
     (skk-user-directory . ,(locate-user-emacs-file "ddskk"))
