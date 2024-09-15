@@ -2020,62 +2020,6 @@ See `org-capture-templates' for more information."
         "b"   #'org-journal-previous-entry
         "p"   #'org-journal-previous-entry)
       (setq org-journal-dir (expand-file-name  "journal/" org-directory))))
-  (leaf org-roam*
-    :config
-    (elpaca (emacsql-sqlite :protocol https :inherit t :depth 1
-                            :host github :repo "magit/emacsql"
-                            :files (:defaults "emacsql-sqlite.el" "emacsql-sqlite-common.el" "sqlite")))
-    (elpaca org-roam
-      (leaf org-roam
-        :req "emacs-26.1" "dash-2.13" "org-9.4" "emacsql-20230228" "magit-section-3.0.0"
-        :emacs>= 26.1
-        :commands (org-roam-node-find)
-        :custom
-        ((org-roam-completion-everywhere . t))
-        :bind
-        (("C-c n l" . org-roam-buffer-toggle)
-         ("C-c n f" . org-roam-node-find)
-         ("C-c n g" . org-roam-graph)
-         ("C-c n i" . org-roam-node-insert)
-         ("C-c n c" . org-roam-capture)
-         ;; Dailies
-         ("C-c n j" . org-roam-dailies-capture-today)
-         ("C-c n t" . org-roam-dailies-goto-today))
-        :config
-        (setq org-roam-directory (format "%s/roam" org-directory))
-        (org-roam-db-autosync-mode)
-        (when (eq system-type 'darwin)
-          (setq org-roam-graph-viewer "open"))
-        (setq org-roam-dailies-capture-templates
-              '(("d" "default" entry "* %?\n%U\n"
-                 :target
-                 (file+head+olp "%<%Y-%m>.org"
-                                "#+TITLE: %<%Y-%m>\n\n\n" ("%<%Y-%m-%d>")))))
-        (push "ROAM_EXCLUDE" org-default-properties)
-        (leaf org-roam-protocol :require t)
-        ;; (advice-add 'org-roam-node-open :after (lambda (&rest _) (view-mode)))
-        (dolist (f org-roam-completion-functions)
-          (advice-add f :around (lambda (oldfn &rest _)
-                                  (my-cape-wrap-with-annotation oldfn
-                                                                (symbol-name f)))))
-        ))
-    (elpaca org-roam-ui
-      (leaf org-roam-ui
-        :req "emacs-27.1" "org-roam-2.0.0" "simple-httpd-20191103.1446" "websocket-1.13"
-        :emacs>= 27.1
-        :after org-roam
-        :custom ((org-roam-ui-sync-theme . t)
-                 (org-roam-ui-follow . t)
-                 (org-roam-ui-update-on-save . t))))
-    (elpaca consult-org-roam
-      (leaf consult-org-roam
-        :doc "Consult integration for org-roam"
-        :req "emacs-27.1" "org-roam-2.2.0" "consult-0.16"
-        :tag "emacs>=27.1"
-        :url "https://github.com/jgru/consult-org-roam"
-        :emacs>= 27.1
-        :after org-roam consult))
-    )
   (leaf org-modern
     :doc "Modern looks for Org"
     :req "emacs-27.1"
@@ -2132,6 +2076,55 @@ See `org-capture-templates' for more information."
     (setq pub-dir (or pub-dir org-export-directory))
     (funcall orig-fn extension subtreep pub-dir))
   (advice-add 'org-export-output-file-name :around 'org-export-output-file-name--set-directory))
+(leaf org-roam*
+    :elpaca org-roam org-roam-ui consult-org-roam
+    :config
+    (leaf org-roam
+      :req "emacs-26.1" "dash-2.13" "org-9.4" "emacsql-20230228" "magit-section-3.0.0"
+      :emacs>= 26.1
+      :commands (org-roam-node-find)
+      :custom
+      `((org-roam-directory . ,(format "%s/roam" org-directory))
+        (org-roam-completion-everywhere . t))
+      :bind
+      (("C-c n l" . org-roam-buffer-toggle)
+       ("C-c n f" . org-roam-node-find)
+       ("C-c n g" . org-roam-graph)
+       ("C-c n i" . org-roam-node-insert)
+       ("C-c n c" . org-roam-capture)
+       ;; Dailies
+       ("C-c n j" . org-roam-dailies-capture-today)
+       ("C-c n t" . org-roam-dailies-goto-today))
+      :config
+      (org-roam-db-autosync-mode)
+      (when (eq system-type 'darwin)
+        (setq org-roam-graph-viewer "open"))
+      (setq org-roam-dailies-capture-templates
+            '(("d" "default" entry "* %?\n%U\n"
+               :target
+               (file+head+olp "%<%Y-%m>.org"
+                              "#+TITLE: %<%Y-%m>\n\n\n" ("%<%Y-%m-%d>")))))
+      (push "ROAM_EXCLUDE" org-default-properties)
+      (leaf org-roam-protocol :require t)
+      ;; (advice-add 'org-roam-node-open :after (lambda (&rest _) (view-mode)))
+      (dolist (f org-roam-completion-functions)
+        (advice-add f :around (lambda (oldfn &rest _)
+                                (my-cape-wrap-with-annotation oldfn
+                                                              (symbol-name f))))))
+    (leaf org-roam-ui
+        :req "emacs-27.1" "org-roam-2.0.0" "simple-httpd-20191103.1446" "websocket-1.13"
+        :emacs>= 27.1
+        :after org-roam
+        :custom ((org-roam-ui-sync-theme . t)
+                 (org-roam-ui-follow . t)
+                 (org-roam-ui-update-on-save . t)))
+    (leaf consult-org-roam
+        :doc "Consult integration for org-roam"
+        :req "emacs-27.1" "org-roam-2.2.0" "consult-0.16"
+        :tag "emacs>=27.1"
+        :url "https://github.com/jgru/consult-org-roam"
+        :emacs>= 27.1
+        :after org-roam consult))
 (leaf org-tag-beautify
   :elpaca (org-tag-beautify :host github :repo "emacsmirror/org-tag-beautify" :branch "master")
   :doc "Beautify Org mode tags"
