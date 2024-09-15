@@ -129,6 +129,7 @@
     (eol-mnemonic-dos . "(CRLF)")
     (eol-mnemonic-mac . "(CR)")
     (eol-mnemonic-unix . "(LF)")
+    (use-short-answers . t)
     (indent-tabs-mode . nil)
     (inhibit-startup-screen . t)
     (mark-ring-max . 128)
@@ -147,7 +148,15 @@
             (recentf-max-saved-items . 2000))
   :global-minor-mode recentf-mode)
 (leaf magit
-  :elpaca t
+  :elpaca (magit :files ("lisp/magit*.el"
+          "lisp/git-rebase.el" "lisp/git-commit.el" "docs/magit.texi"
+          "docs/AUTHORS.md" "LICENSE"
+          "Documentation/magit.texi"
+          "Documentation/AUTHORS.md" (:exclude
+                                      "lisp/magit-libgit.el"
+                                      "lisp/magit-libgit-pkg.el"
+                                      "lisp/magit-section.el"
+                                      "lisp/magit-section-pkg.el")))
   :bind (("C-x g" . magit-status)
          (:magit-diff-mode-map
           ("=" . magit-diff-more-context))
@@ -459,6 +468,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (dolist (mode '(tags-table-mode skk-jisyo-mode))
         (push mode dabbrev-ignored-buffer-modes))))
   (leaf corfu-terminal
+    :if (null (display-graphic-p))
     :elpaca t
     :after corfu popon
     :config
@@ -551,11 +561,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   :custom
   (whitespace-style . '(face tabs trailing space-before-tab newline
                              indentation empty space-after-tab tab-mark)))
-(leaf yes-or-no
-  :emacs>= 28.1
-  :custom
-  (use-short-answers . t))
-
 (leaf emacs29
   :emacs>= 29
   :config
