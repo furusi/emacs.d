@@ -3041,11 +3041,12 @@ Optional argument ARG hoge."
 (leaf indent-bars
   :elpaca (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
   :hook (rustic-mode-hook . indent-bars-mode))
+(leaf info-downloader
+  :elpaca (info-downloader :type git :host github :repo "furusi/info-downloader"))
 
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
 (require 'my-lisp)
 (require 'my-window)
-(require 'info-downloader nil t)
 
 (let ((f (expand-file-name ".config/emacs/config.el" my-share-dir)))
   (when (file-exists-p f)
