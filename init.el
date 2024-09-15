@@ -3047,7 +3047,8 @@ Optional argument ARG hoge."
   :elpaca (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
   :hook (rustic-mode-hook . indent-bars-mode))
 (leaf info-downloader
-  :elpaca (info-downloader :type git :host github :repo "furusi/info-downloader"))
+  :elpaca (info-downloader :type git :host github :repo "furusi/info-downloader")
+  :after info)
 
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
 (require 'my-lisp)
