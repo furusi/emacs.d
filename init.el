@@ -263,7 +263,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                        :preview-key nil))
 
   (leaf vertico-repeat
-    :bind (("C-x c r" . vertico-repeat-last)
+    :bind (("C-x c r" . vertico-repeat-previous)
            ("C-x c R" . vertico-repeat-select))
     :hook
     (minibuffer-setup-hook . vertico-repeat-save))
@@ -1347,11 +1347,10 @@ read-only-mode will be activated for that file."
   (setq web-mode-extra-snippets
         '(("php" . (("print" . "print(\"|\")"))))))
 
-(defmacro my-add-org-src-mode (mode  &optional name)
-  (when (not (symbolp mode))
-    (signal 'wrong-type-argument '(mode)))
-  (when (null name)
-    (setq name (symbol-name mode)))
+(defmacro my-org-push-src-lang-modes (mode  &optional name)
+  (cond
+   ((null name) (setq name (symbol-name mode)))
+   ((symbolp name) (setq name (symbol-name name))))
   `(with-eval-after-load 'org
      (push '(,name . ,mode) org-src-lang-modes)))
 
@@ -2149,8 +2148,7 @@ See `org-capture-templates' for more information."
 (leaf mermaid-mode
   :elpaca t
   :config
-  (with-eval-after-load 'org
-    (push '("mermaid" . mermaid) org-src-lang-modes)))
+  (my-org-push-src-lang-modes mermaid))
 (leaf mu4e
   :disabled t
   :load-path "/opt/homebrew/opt/mu/share/emacs/site-lisp/mu/mu4e"
@@ -2320,6 +2318,9 @@ See `org-capture-templates' for more information."
   :hook (js-ts-mode-hook . lsp-deferred)
   :init
   (push '(javascript-mode . js-ts-mode) major-mode-remap-alist))
+(leaf toml
+  :config
+  (my-org-push-src-lang-modes conf-toml toml))
 (when (version< emacs-version "29")
   (elpaca csharp-mode))
 (elpaca android-mode)
@@ -2364,8 +2365,7 @@ See `org-capture-templates' for more information."
   :elpaca t
   :mode (("\\.kt\\'" . kotlin-mode))
   :config
-  (with-eval-after-load 'org
-    (push '("kotlin" . kotlin) org-src-lang-modes)))
+  (my-org-push-src-lang-modes kotlin))
 (elpaca ob-kotlin)
 (leaf dart-mode
   :elpaca (dart-mode :host github :repo "bradyt/dart-mode")
@@ -2470,7 +2470,7 @@ See `org-capture-templates' for more information."
     "p" #'markdown-outline-previous
     "TAB" #'markdown-cycle
     "u" #'markdown-up-heading)
-  (my-add-org-src-mode markdown))
+  (my-org-push-src-lang-modes markdown))
 (elpaca docker)
 
 (elpaca docker-compose-mode)
@@ -2500,8 +2500,7 @@ See `org-capture-templates' for more information."
 (leaf fish-mode
   :elpaca t
   :config
-  (with-eval-after-load 'org
-    (push '("fish" . fish) org-src-lang-modes)))
+  (my-org-push-src-lang-modes fish))
 
 (leaf dockerfile-mode
   :elpaca t
@@ -2892,9 +2891,8 @@ Optional argument ARG hoge."
 (leaf powershell
   :elpaca t
   :config
-  (with-eval-after-load 'org
-    (push '("pwsh" . powershell) org-src-lang-modes)
-    (push '("powershell" . powershell) org-src-lang-modes)))
+  (my-org-push-src-lang-modes powershell)
+  (my-org-push-src-lang-modes powershell pwsh))
 
 ;; Major mode for Twitter http://twmode.sf.net/
 (elpaca twittering-mode)
