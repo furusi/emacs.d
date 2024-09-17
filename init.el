@@ -78,13 +78,19 @@
   :require t)
 
 (leaf elpaca
+  :custom
+  (elpaca-log-diff-function . #'elpaca-log-magit-diff)
   :bind
   ((:elpaca-ui-mode-map
     :package elpaca-ui
     ("j" . next-line)
     ("k" . previous-line)
     ("p" . previous-line)
-    ("P" . elpaca-ui-mark-pull))))
+    ("P" . elpaca-ui-mark-pull))
+   (:elpaca-log-mode-map
+    :package elpaca-log
+    ("D" . elpaca-ui-mark-delete)
+    ("d" . elpaca-log-view-diff))))
 
 (leaf diminish
   :ensure t
@@ -148,6 +154,7 @@
             (recentf-max-saved-items . 2000))
   :global-minor-mode recentf-mode)
 (leaf magit
+  :elpaca transient
   :elpaca (magit :files ("lisp/magit*.el"
           "lisp/git-rebase.el" "lisp/git-commit.el" "docs/magit.texi"
           "docs/AUTHORS.md" "LICENSE"
@@ -949,7 +956,6 @@ read-only-mode will be activated for that file."
                                   holiday-other-holidays))
   (add-hook 'calendar-today-visible-hook 'japanese-holiday-mark-weekend)
   (add-hook 'calendar-today-invisible-hook 'japanese-holiday-mark-weekend))
-(elpaca transient)
 (elpaca (libgit2 :repo "https://github.com/magit/libegit2.git"
                  :main "libgit.el"))
 (elpaca magit-svn)
@@ -2450,6 +2456,8 @@ See `org-capture-templates' for more information."
       (when (string-match-p "^modus-" theme)
         (add-to-history 'modus-themes--select-theme-history theme))))
   (advice-add 'modus-themes-toggle :after #'my-modus-themes--save))
+(leaf kanagawa-theme
+  :elpaca (kanagawa-theme :main "kanagawa-themes.el"))
 (elpaca doom-themes)
 (leaf markdown-mode
   :elpaca t
