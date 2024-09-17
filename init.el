@@ -2456,8 +2456,8 @@ See `org-capture-templates' for more information."
       (when (string-match-p "^modus-" theme)
         (add-to-history 'modus-themes--select-theme-history theme))))
   (advice-add 'modus-themes-toggle :after #'my-modus-themes--save))
-(leaf kanagawa-theme
-  :elpaca (kanagawa-theme :main "kanagawa-themes.el"))
+(leaf kanagawa-themes
+  :elpaca t)
 (elpaca doom-themes)
 (leaf markdown-mode
   :elpaca t
