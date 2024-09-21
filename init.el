@@ -1398,6 +1398,7 @@ read-only-mode will be activated for that file."
                                                           truepath)
                                          (file-relative-name truepath)
                                        (abbreviate-file-name path)))))
+      (org-log-into-drawer . t)
       (org-list-allow-alphabetical . t)
       (org-return-follows-link . t)
       (org-agenda-start-on-weekday . 0)
