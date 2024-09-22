@@ -1212,12 +1212,11 @@ read-only-mode will be activated for that file."
                   (append (remove
                            'embark-target-file-at-point
                            embark-target-finders)
-                          '(embark-target-file-at-point)))))
+                          '(embark-target-file-at-point))
+                  corfu-auto-prefix 2)))
   (leaf rustic-babel
     :after org
-    :require t)
-  :config
-  (setq-mode-local rustic-mode corfu-auto-prefix 2))
+    :require t))
 (leaf lsp-haskell
   :elpaca t
   :doc "Haskell support for lsp-mode"
