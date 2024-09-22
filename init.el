@@ -973,11 +973,7 @@ read-only-mode will be activated for that file."
                ("v" . my-projectile-vc-in-new-tab))))
   :bind-keymap (("C-c p" . projectile-command-map))
   :custom
-  `((projectile-cache-file . ,(locate-user-emacs-file
-                               (format "projectile/%s/projectile.cache" emacs-version)))
-    (projectile-known-projects-file . ,(locate-user-emacs-file
-                                        (format "projectile/%s/projectile-bookmarks.eld" emacs-version)))
-    (projectile-sort-order . 'recently-active)
+  `((projectile-sort-order . 'recently-active)
     (projectile-switch-project-action . 'projectile-commander))
   :init
   (let ((dir (locate-user-emacs-file (format "projectile/%s" emacs-version))))
@@ -2957,7 +2953,9 @@ Optional argument ARG hoge."
   :hook (;; (eww-after-render-hook . shrface-mode)
          (nov-mode-hook . shrface-mode))
   :require t
-  :after eww
+  :custom ((shrface-href-versatile . t))
+  :custom-face
+  (shr-text . '((t (:inherit (default)))))
   :bind
   (:nov-mode-map
    :package nov
@@ -2965,16 +2963,12 @@ Optional argument ARG hoge."
    ("p" . org-previous-visible-heading)
    ("s" . org-toggle-narrow-to-subtree)
    ("u" . outline-up-heading))
-
   :config
-  (shrface-basic)
-  (shrface-trial)
   (shrface-default-keybindings) ; setup default keybindings
-  (setq shrface-href-versatile t)
-
-  (setq nov-shr-rendering-functions (append '((img . nov-render-img)
-                                              (title . nov-render-title))
-                                            shr-external-rendering-functions)))
+  (with-eval-after-load 'nov
+    (setq nov-shr-rendering-functions (append '((img . nov-render-img)
+                                                (title . nov-render-title))
+                                              shr-external-rendering-functions))))
 (leaf nov
   :elpaca t
   :doc "Featureful EPUB reader mode"
