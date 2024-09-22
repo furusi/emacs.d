@@ -2978,8 +2978,16 @@ Optional argument ARG hoge."
   :emacs>= 25.1
   :custom
   ((nov-text-width . t))
+  :preface
+  (defun quit-window-confirm ()
+    "Ask for confirmation before quitting the window."
+    (interactive)
+    (when (y-or-n-p "Are you sure you want to this window? ")
+      (quit-window)))
   :mode ("\\.epub\\'" . nov-mode)
-  :hook (nov-mode-hook . (lambda () (visual-line-mode 1))))
+  :hook (nov-mode-hook . (lambda () (visual-line-mode 1)))
+  :bind (:nov-mode-map
+         ("q" . quit-window-confirm)))
 (leaf nov-xwidget
   :elpaca (nov-xwidget :host github :repo "chenyanming/nov-xwidget")
   :disabled t
@@ -2997,6 +3005,7 @@ Optional argument ARG hoge."
   :tag "games" "emacs>=25.1"
   :url "https://github.com/parkouss/speed-type"
   :emacs>= 25.1
+  :custom-face (speed-type-default . '((t (:height 1.2))))
   :config
   (with-eval-after-load 'corfu
     (add-hook 'speed-type-mode-hook
