@@ -1079,7 +1079,7 @@ read-only-mode will be activated for that file."
     (setq context-skk-mode-off-message "[context-skk] 日本語入力 off")
     (defun my-context-skk-at-heading-p ()
       (and (bolp)
-           (and (memq 'org-mode (list major-mode (get-mode-local-parent major-mode)))
+           (and (memq major-mode '(org-mode org-journal-mode))
                 (or (org-at-heading-p)
                     (org-at-item-p)
                     (org-at-block-p)
