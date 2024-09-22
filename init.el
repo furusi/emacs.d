@@ -208,9 +208,9 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   :config
   ;; ediff時にorgファイルを全て表示する
   (defun my-ediff-prepare-buffer-function ()
-    (with-eval-after-load 'org
-      (org-fold-show-all)))
-  (add-hook 'ediff-prepare-buffer-hook #'my-ediff-prepare-buffer-function))
+    (org-fold-show-all))
+  (with-eval-after-load 'org-element-ast
+    (add-hook 'ediff-prepare-buffer-hook #'my-ediff-prepare-buffer-function)))
 (leaf ediff
   :custom ((ediff-diff-options . "-w")
            (ediff-split-window-function . 'split-window-horizontally)
@@ -1916,17 +1916,17 @@ See `org-capture-templates' for more information."
     (leaf org-re-reveal
       :disabled t
       :after org))
-  (elpaca org-gcal
-    (leaf org-gcal
-      :disabled t
-      :if (file-exists-p (expand-file-name "org/googlecalendar/org-gcal-config.el" my-share-dir))
-      :after org
-      :require t
-      :custom
-      ((org-gcal-down-days . 180)
-       (org-gcal-up-days . 180))
-      :config
-      (load (expand-file-name "org/googlecalendar/org-gcal-config.el" my-share-dir))))
+  (leaf org-gcal
+    :disabled t
+    :elpaca t
+    :if (file-exists-p (expand-file-name "org/googlecalendar/org-gcal-config.el" my-share-dir))
+    :after org
+    :require t
+    :custom
+    ((org-gcal-down-days . 180)
+     (org-gcal-up-days . 180))
+    :config
+    (load (expand-file-name "org/googlecalendar/org-gcal-config.el" my-share-dir)))
   (leaf anki-editor
     :elpaca t
     :doc "Minor mode for making Anki cards with Org"
@@ -1947,21 +1947,21 @@ See `org-capture-templates' for more information."
          (interactive "NNumber: \nsHint (optional): ")
          (anki-editor-cloze-region arg hint)))))
   (leaf org-pdf*
+    :disabled t
     :config
-    (elpaca org-pdftools
-      (leaf org-pdftools
-        :after org
-        :custom
-        `((org-pdftools-root-dir . ,(concat (getenv "HOME") "/GoogleDrive/Books")))
-        :hook (org-mode-hook . org-pdftools-setup-link)))
-    (elpaca org-noter
-      (leaf org-noter
-        :after (org)))
-    (elpaca org-noter-pdftools
-      (leaf org-noter-pdftools
-        :after (org-noter)
-        :require t))
-
+    (leaf org-pdftools
+      :elpaca t
+      :after org
+      :custom
+      `((org-pdftools-root-dir . ,(concat (getenv "HOME") "/GoogleDrive/Books")))
+      :hook (org-mode-hook . org-pdftools-setup-link))
+    (leaf org-noter
+      :elpaca t
+      :after (org))
+    (leaf org-noter-pdftools
+      :elpaca t
+      :after (org-noter)
+      :require t)
     (elpaca pdf-tools
       (leaf pdf-tools
         ;; https://github.com/vedang/pdf-tools#installing-pdf-tools
