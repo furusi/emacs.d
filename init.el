@@ -315,6 +315,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
            ("C-x C-SPC" . consult-global-mark)
            ("C-x b" . consult-buffer)
            ("C-x c i" . consult-imenu)
+           ("M-g i" . consult-imenu)
            ("C-x j" . consult-recent-file)
            ("C-x r j" . consult-register)
            ("C-x r l"  . consult-bookmark)
@@ -2452,8 +2453,6 @@ See `org-capture-templates' for more information."
       (when (string-match-p "^modus-" theme)
         (add-to-history 'modus-themes--select-theme-history theme))))
   (advice-add 'modus-themes-toggle :after #'my-modus-themes--save))
-(leaf kanagawa-theme
-  :elpaca (kanagawa-theme :main "kanagawa-themes.el"))
 (elpaca doom-themes)
 (leaf markdown-mode
   :elpaca t
