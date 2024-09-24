@@ -297,9 +297,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
      (completion-category-overrides . '((file (styles basic partial-completion))))
      (completion-styles             . '(orderless basic))))
   ;; Persist history over Emacs restarts. Vertico sorts by history position.
-  (leaf savehist
-    :init
-    (savehist-mode))
   (leaf consult
     :elpaca (consult :host github :repo "minad/consult") consult-projectile
     :custom
@@ -470,7 +467,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
         (apply #'consult-completion-in-region completion-in-region--data)))
     (global-corfu-mode)
     (corfu-popupinfo-mode)
-    (corfu-history-mode)
+    (corfu-history-mode t)
+    (savehist-mode t)
     (add-to-list 'savehist-additional-variables 'corfu-history)
     (with-eval-after-load 'dabbrev
       (dolist (mode '(tags-table-mode skk-jisyo-mode))
@@ -2427,32 +2425,40 @@ See `org-capture-templates' for more information."
   ((modus-themes-italic-constructs . t)
    (modus-themes-org-blocks . 'gray-background)
    (modus-themes-custom-auto-reload . t)
-   (modus-themes-disable-other-themes . t)
-   (modus-themes-to-toggle . '(modus-operandi-deuteranopia
-                               modus-vivendi-deuteranopia)))
+   (modus-themes-disable-other-themes . t))
   :hook
   (ns-system-appearance-change-functions .(lambda (appearance)
                                             (if (and custom-enabled-themes
                                                      (string-match-p "modus-"
                                                                      (symbol-name (car custom-enabled-themes))))
                                                 (my-modus-themes--change-appearance appearance))))
+  :preface
+  (defcustom my-theme-color 'light
+    "Choose between 'dark' atd 'light' themes."
+    :type '(choice (const :tag "Light" light)
+                   (const :tag "Dark" dark)
+                   (const :tag "Auto(emacs-plus only)" auto))
+    :group 'my-custom-settings)
   :init
   (defun my-modus-themes--change-appearance (appearance)
     (modus-themes-load-theme
      (nth (if (eq appearance 'dark) 1 0) modus-themes-to-toggle)))
   :config
-  (let ((a (cond ((boundp 'ns-system-appearance) ns-system-appearance)
-                 ((and modus-themes--select-theme-history
-                       (string-match-p "vivendi" (car modus-themes--select-theme-history)))
-                  'dark)
-                 (t 'light))))
-    (my-modus-themes--change-appearance a))
-  (defun my-modus-themes--save ()
-    "save current modus-theme's variant to `modus-themes--select-theme-history'"
-    (let ((theme (symbol-name (car custom-enabled-themes))))
-      (when (string-match-p "^modus-" theme)
-        (add-to-history 'modus-themes--select-theme-history theme))))
-  (advice-add 'modus-themes-toggle :after #'my-modus-themes--save))
+  (defvar modus-themes-item-pairs
+    (cl-labels
+        ((twochunk (x)
+           (if (null (cadr x))
+               (car x)
+             (cons (list (car x) (cadr x)) (twochunk (cddr x))))))
+      (twochunk modus-themes-items))
+    "list of `modus-themes-items' pair")
+  (setq modus-themes-to-toggle (nth 2 modus-themes-item-pairs))
+  (let ((a (cond ((eq 'auto my-theme-color)
+                  (if (boundp 'ns-system-appearance)
+                      ns-system-appearance
+                    'light))
+                 (t my-theme-color))))
+    (my-modus-themes--change-appearance a)))
 (elpaca doom-themes)
 (leaf markdown-mode
   :elpaca t
