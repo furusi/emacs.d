@@ -2959,7 +2959,7 @@ Optional argument ARG hoge."
   :require t
   :custom ((shrface-href-versatile . t))
   :custom-face
-  (shr-text . '((t (:inherit (default)))))
+  (shr-text . '((t (:family "UDEV Gothic JPDOC" :inherit (variable-pitch-text)))))
   :bind
   (:nov-mode-map
    :package nov
