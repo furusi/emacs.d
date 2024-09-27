@@ -2426,12 +2426,6 @@ See `org-capture-templates' for more information."
    (modus-themes-org-blocks . 'gray-background)
    (modus-themes-custom-auto-reload . t)
    (modus-themes-disable-other-themes . t))
-  :hook
-  (ns-system-appearance-change-functions .(lambda (appearance)
-                                            (if (and custom-enabled-themes
-                                                     (string-match-p "modus-"
-                                                                     (symbol-name (car custom-enabled-themes))))
-                                                (my-modus-themes--change-appearance appearance))))
   :preface
   (defcustom my-theme-color 'light
     "Choose between 'dark' atd 'light' themes."
@@ -2439,10 +2433,6 @@ See `org-capture-templates' for more information."
                    (const :tag "Dark" dark)
                    (const :tag "Auto(emacs-plus only)" auto))
     :group 'my-custom-settings)
-  :init
-  (defun my-modus-themes--change-appearance (appearance)
-    (modus-themes-load-theme
-     (nth (if (eq appearance 'dark) 1 0) modus-themes-to-toggle)))
   :config
   (defvar modus-themes-item-pairs
     (cl-labels
@@ -2452,13 +2442,25 @@ See `org-capture-templates' for more information."
              (cons (list (car x) (cadr x)) (twochunk (cddr x))))))
       (twochunk modus-themes-items))
     "list of `modus-themes-items' pair")
-  (setq modus-themes-to-toggle (nth 2 modus-themes-item-pairs))
-  (let ((a (cond ((eq 'auto my-theme-color)
-                  (if (boundp 'ns-system-appearance)
-                      ns-system-appearance
-                    'light))
-                 (t my-theme-color))))
-    (my-modus-themes--change-appearance a)))
+  (setq modus-themes-to-toggle (nth 1 modus-themes-item-pairs))
+  (defun my-modus-themes--change-appearance (&optional appearance)
+    (when (null appearance)
+      (setq appearance (cond ((eq 'auto my-theme-color)
+                              (if (boundp 'ns-system-appearance)
+                                  ns-system-appearance
+                                'light))
+                             (t my-theme-color))))
+    (modus-themes-load-theme
+     (nth (if (eq appearance 'dark) 1 0) modus-themes-to-toggle)))
+  (add-hook 'ns-system-appearance-change-functions
+            #'(lambda (appearance)
+                (if
+                    (and custom-enabled-themes
+                         (string-match-p "modus-"
+                                         (symbol-name
+                                          (car custom-enabled-themes))))
+                    (my-modus-themes--change-appearance appearance))))
+  (my-modus-themes--change-appearance))
 (elpaca doom-themes)
 (leaf markdown-mode
   :elpaca t
