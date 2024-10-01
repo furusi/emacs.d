@@ -1883,37 +1883,37 @@ and `clavis-org-refile-refiled-from-header' variables."
     ;;ob-plantuml
     (add-to-list 'org-babel-default-header-args:plantuml
                  '(:cmdline . "-charset utf-8")))
-  (elpaca ox-hugo
-    (leaf ox-hugo
-      :disabled t
-      :after org
-      :config
-      (defun org-hugo-new-subtree-post-capture-template ()
-        "Returns `org-capture' template string for new Hugo post.
+  (leaf ox-hugo
+    :elpaca t
+    :disabled t
+    :after org
+    :config
+    (defun org-hugo-new-subtree-post-capture-template ()
+      "Returns `org-capture' template string for new Hugo post.
 See `org-capture-templates' for more information."
-        (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
-               (fname (org-hugo-slug title)))
-          (mapconcat #'identity
-                     `(
-                       ,(concat "* TODO " title)
-                       ":PROPERTIES:"
-                       ,(concat ":EXPORT_FILE_NAME: " fname)
-                       ":END:"
-                       "%?\n")          ;Place the cursor here finally
-                     "\n")))
-      (add-to-list 'org-capture-templates
-                   '("h"                ;`org-capture' binding + h
-                     "Hugo post"
-                     entry
-                     ;; It is assumed that below file is present in `org-directory'
-                     ;; and that it has a "Blog Ideas" heading. It can even be a
-                     ;; symlink pointing to the actual location of all-posts.org!
-                     (file+olp "all-posts.org" "Blog Ideas")
-                     (function org-hugo-new-subtree-post-capture-template)))))
-  (elpaca org-re-reveal
-    (leaf org-re-reveal
+      (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
+             (fname (org-hugo-slug title)))
+        (mapconcat #'identity
+                   `(
+                     ,(concat "* TODO " title)
+                     ":PROPERTIES:"
+                     ,(concat ":EXPORT_FILE_NAME: " fname)
+                     ":END:"
+                     "%?\n")          ;Place the cursor here finally
+                   "\n")))
+    (add-to-list 'org-capture-templates
+                 '("h"                ;`org-capture' binding + h
+                   "Hugo post"
+                   entry
+                   ;; It is assumed that below file is present in `org-directory'
+                   ;; and that it has a "Blog Ideas" heading. It can even be a
+                   ;; symlink pointing to the actual location of all-posts.org!
+                   (file+olp "all-posts.org" "Blog Ideas")
+                   (function org-hugo-new-subtree-post-capture-template))))
+  (leaf org-re-reveal
+      :elpaca
       :disabled t
-      :after org))
+      :after org)
   (leaf org-gcal
     :disabled t
     :elpaca t
@@ -1960,66 +1960,66 @@ See `org-capture-templates' for more information."
       :elpaca t
       :after (org-noter)
       :require t)
-    (elpaca pdf-tools
-      (leaf pdf-tools
-        ;; https://github.com/vedang/pdf-tools#installing-pdf-tools
-        :mode (("\\.pdf\\'" . pdf-view-mode))
-        :hook (pdf-view-mode-hook . (lambda ()
-                                      (display-line-numbers-mode 0)))
-        :custom ((pdf-view-use-scaling . t)
-                 (pdf-annot-activate-created-annotations . t)
-                 (pdf-view-resize-factor . 1.1))
-        :bind ((:pdf-view-mode-map
-                ("j" . pdf-view-next-line-or-next-page)
-                ("k" . pdf-view-previous-line-or-previous-page)))
-        :require t
-        :config
-        (pdf-tools-install))))
-  (elpaca org-download
-    (leaf org-download
-      :after org
-      :hook ((org-mode-hook . org-download-enable))))
-  (elpaca ox-pandoc
-    (leaf ox-pandoc
-      :after org
-      :if (executable-find "pandoc")))
-  (elpaca ox-asciidoc)
-  (elpaca ox-gfm
-    (leaf ox-gfm
-      :after org))
-  (elpaca ox-rst
-    (leaf ox-rst
-      :after (org)
-      :custom
-      ((org-rst-headline-underline-characters . '(45 126 94 58 39 32 95)))))
-  (elpaca ob-mermaid
-    (leaf ob-mermaid
-      :doc "org-babel support for mermaid evaluation"
-      :tag "lisp"
-      :after org
-      :url "https://github.com/arnm/ob-mermaid"))
-  (elpaca org-journal
-    (leaf org-journal
-      :commands (org-journal-new-entry org-journal-open-current-journal-file)
-      :after org
-      ;; :commands org-journal-new-entry
-      :custom
-      `((org-journal-file-type . 'monthly)
-        (org-journal-date-format . "%F (%a)")
-        (org-journal-time-format . "<%Y-%m-%d %R> ")
-        (org-journal-file-format . "%Y%m.org")
-        (org-journal-file-header . "# -*- mode: org-journal; -*-
-#+STARTUP: showall"))
+    (leaf pdf-tools
+      ;; https://github.com/vedang/pdf-tools#installing-pdf-tools
+      :elpaca t
+      :mode (("\\.pdf\\'" . pdf-view-mode))
+      :hook (pdf-view-mode-hook . (lambda ()
+                                    (display-line-numbers-mode 0)))
+      :custom ((pdf-view-use-scaling . t)
+               (pdf-annot-activate-created-annotations . t)
+               (pdf-view-resize-factor . 1.1))
+      :bind ((:pdf-view-mode-map
+              ("j" . pdf-view-next-line-or-next-page)
+              ("k" . pdf-view-previous-line-or-previous-page)))
+      :require t
       :config
-      (defvar-keymap my-org-journal-repeat-map
-        :repeat t
-        "C-f" #'org-journal-next-entry
-        "f"   #'org-journal-next-entry
-        "n"   #'org-journal-next-entry
-        "C-b" #'org-journal-previous-entry
-        "b"   #'org-journal-previous-entry
-        "p"   #'org-journal-previous-entry)
-      (setq org-journal-dir (expand-file-name  "journal/" org-directory))))
+      (pdf-tools-install)))
+  (leaf org-download
+    :elpaca t
+    :after org
+    :hook ((org-mode-hook . org-download-enable)))
+  (leaf ox-pandoc
+      :elpaca t
+      :after org
+      :if (executable-find "pandoc"))
+  (elpaca ox-asciidoc)
+  (leaf ox-gfm
+      :elpaca t
+      :after org)
+  (leaf ox-rst
+    :elpaca t
+    :after (org)
+    :custom
+    ((org-rst-headline-underline-characters . '(45 126 94 58 39 32 95))))
+  (leaf ob-mermaid
+    :elpaca t
+    :doc "org-babel support for mermaid evaluation"
+    :tag "lisp"
+    :after org
+    :url "https://github.com/arnm/ob-mermaid")
+  (leaf org-journal
+    :elpaca t
+    :commands (org-journal-new-entry org-journal-open-current-journal-file)
+    :after org
+    ;; :commands org-journal-new-entry
+    :custom
+    `((org-journal-file-type . 'monthly)
+      (org-journal-date-format . "%F (%a)")
+      (org-journal-time-format . "<%Y-%m-%d %R> ")
+      (org-journal-file-format . "%Y%m.org")
+      (org-journal-file-header . "# -*- mode: org-journal; -*-
+#+STARTUP: showall"))
+    :config
+    (defvar-keymap my-org-journal-repeat-map
+      :repeat t
+      "C-f" #'org-journal-next-entry
+      "f"   #'org-journal-next-entry
+      "n"   #'org-journal-next-entry
+      "C-b" #'org-journal-previous-entry
+      "b"   #'org-journal-previous-entry
+      "p"   #'org-journal-previous-entry)
+    (setq org-journal-dir (expand-file-name  "journal/" org-directory)))
   (leaf org-modern
     :doc "Modern looks for Org"
     :req "emacs-27.1"
@@ -2049,20 +2049,16 @@ See `org-capture-templates' for more information."
       :tag "php" "babel" "org"
       :url "https://repo.or.cz/ob-php.git"
       :after org))
-
-  (elpaca (org-fc :host github :repo "l3kn/org-fc" :files(:defaults "awk" "demo.org"))
-    (leaf org-fc
-      :after org))
-  (elpaca org-latex-impatient
-    (leaf org-latex-impatient
-      :doc "Preview org-latex Fragments Instantly via MathJax"
-      :req "emacs-26" "s-1.8.0" "posframe-0.8.0" "org-9.3" "dash-2.17.0"
-      :tag "tools" "tex" "emacs>=26"
-      :url "https://github.com/yangsheng6810/org-latex-instant-preview"
-      :emacs>= 26
-      :hook (org-mode-hook . org-latex-impatient-mode)
-      :custom
-      (org-latex-impatient-tex2svg-bin . "tex2svg")))
+  (leaf org-latex-impatient
+    :elpaca t
+    :doc "Preview org-latex Fragments Instantly via MathJax"
+    :req "emacs-26" "s-1.8.0" "posframe-0.8.0" "org-9.3" "dash-2.17.0"
+    :tag "tools" "tex" "emacs>=26"
+    :url "https://github.com/yangsheng6810/org-latex-instant-preview"
+    :emacs>= 26
+    :hook (org-mode-hook . org-latex-impatient-mode)
+    :custom
+    (org-latex-impatient-tex2svg-bin . "tex2svg"))
   )
 (leaf ox*
   :elpaca (ox-slimhtml :host github :repo "emacsattic/ox-slimhtml")
