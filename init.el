@@ -2450,15 +2450,23 @@ See `org-capture-templates' for more information."
                              (t my-theme-color))))
     (modus-themes-load-theme
      (nth (if (eq appearance 'dark) 1 0) modus-themes-to-toggle)))
-  (add-hook 'ns-system-appearance-change-functions
-            #'(lambda (appearance)
-                (if
-                    (and custom-enabled-themes
-                         (string-match-p "modus-"
-                                         (symbol-name
-                                          (car custom-enabled-themes))))
-                    (my-modus-themes--change-appearance appearance))))
-  (my-modus-themes--change-appearance))
+  ;; (add-hook 'ns-system-appearance-change-functions
+  ;;           #'(lambda (appearance)
+  ;;               (if
+  ;;                   (and custom-enabled-themes
+  ;;                        (string-match-p "modus-"
+  ;;                                        (symbol-name
+  ;;                                         (car custom-enabled-themes))))
+  ;;                   (my-modus-themes--change-appearance appearance))))
+  ;; (my-modus-themes--change-appearance)
+  )
+(leaf circadian
+  :elpaca t
+  :after modus-themes
+  :config
+  (setq circadian-themes `((:sunrise . ,(nth 0 modus-themes-to-toggle))
+                           (:sunset  . ,(nth 1 modus-themes-to-toggle))))
+    (circadian-setup))
 (elpaca doom-themes)
 (leaf markdown-mode
   :elpaca t
