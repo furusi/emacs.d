@@ -1395,14 +1395,18 @@ read-only-mode will be activated for that file."
                                        (abbreviate-file-name path)))))
       (org-todo-keywords . '((sequence "TODO(t)" "WAIT(w)" "SOMEDAY(s)" "|" "DONE(d)")
                              (sequence "|" "CANCELED")))
+      (org-agenda-default-appointment-duration . 60)
       (org-agenda-start-on-weekday . 0)
       (org-clock-persist . t)
+      (org-confirm-babel-evaluate . nil)
       (org-enforce-todo-checkbox-dependencies . t)
       (org-enforce-todo-dependencies . t)
       (org-export-allow-bind-keywords . t)
       (org-export-backends . '(ascii html icalendar latex md odt taskjuggler asciidoc pandoc gfm))
       (org-export-with-sub-superscripts . '{})
       (org-export-with-toc . nil)
+      (org-icalendar-alarm-time . 30)
+      (org-icalendar-timezone . "Asia/Tokyo")
       (org-icalendar-use-scheduled . '(event-if-todo todo-start))
       (org-id-link-to-org-use-id . 'create-if-interactive)
       (org-list-allow-alphabetical . t)
@@ -1548,17 +1552,8 @@ read-only-mode will be activated for that file."
              "* %U %? %^g\n\n"
              :empty-lines 1)))
     ;;
-    (setq org-agenda-default-appointment-duration 60)
-    ;; コードを評価するとき尋ねない
-    (setq org-confirm-babel-evaluate nil)
-
     (add-to-list 'org-babel-tangle-lang-exts
                  '("C" . "c"))
-
-    (setq org-use-speed-commands t)
-    (setq org-icalendar-alarm-time 30)
-    (setq org-icalendar-timezone "Asia/Tokyo")
-
     ;; htmlで数式
     (setq org-html-mathjax-template
           "<script type=\"text/x-mathjax-config\">
