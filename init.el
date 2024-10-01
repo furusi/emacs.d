@@ -1878,6 +1878,13 @@ and `clavis-org-refile-refiled-from-header' variables."
     ;;ob-plantuml
     (add-to-list 'org-babel-default-header-args:plantuml
                  '(:cmdline . "-charset utf-8")))
+  (leaf org-keys
+    :custom
+    (org-use-speed-commands . t)
+    :config
+    (with-eval-after-load 'org-keys
+      (push '("N" . org-next-block) org-babel-key-bindings)
+      (push '("P" . org-previous-block) org-babel-key-bindings)))
   (leaf ox-hugo
     :elpaca t
     :disabled t
