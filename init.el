@@ -1177,6 +1177,194 @@ read-only-mode will be activated for that file."
   :custom
   (undo-fu-session-incompatible-files . '("/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'"))
   :global-minor-mode undo-fu-session-global-mode)
+(leaf eglot
+  :bind
+  ((:eglot-mode-map
+    ("C-c C-l a a" . eglot-code-actions)
+    ("C-c C-l r r" . eglot-rename)
+    ("C-c C-l w r" . eglot-reconnect)
+    ("C-c C-l w q" . eglot-shutdown))))
+(leaf eglot-booster
+  :when (executable-find "emacs-lsp-booster")
+  :elpaca (eglot-booster :type git
+                         :host github
+                         :repo "jdtsmith/eglot-booster")
+  :after eglot
+  :global-minor-mode eglot-booster-mode)
+(leaf *lsp
+  :config
+  (leaf lsp-mode
+    :elpaca t
+    :commands (lsp lsp-deferred)
+    :custom ((lsp-auto-execute-action . nil)
+             (lsp-completion-provider . :none) ;disable company-capf
+             (lsp-keymap-prefix . "C-c C-l")
+             (lsp-semantic-tokens-enable . t)
+             (lsp-inlay-hint-enable . t))
+    :hook ((lsp-mode-hook  . lsp-enable-which-key-integration)
+           (lsp-completion-mode-hook . my-lsp-mode-setup-completion)
+           (c-mode-hook    . lsp-deferred)
+           (css-mode-hook  . lsp-deferred)
+           (html-mode-hook . lsp-deferred))
+    :init
+    (setq read-process-output-max (* 1024 1024))
+    (defun my-lsp-mode-setup-completion ()
+      (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+            '(orderless)))
+    :config
+    (defun lsp-booster--advice-json-parse (old-fn &rest args)
+      "Try to parse bytecode instead of json."
+      (or
+       (when (equal (following-char) ?#)
+         (let ((bytecode (read (current-buffer))))
+           (when (byte-code-function-p bytecode)
+             (funcall bytecode))))
+       (apply old-fn args)))
+    (defun lsp-booster--advice-final-command (old-fn cmd &optional test?)
+      "Prepend emacs-lsp-booster command to lsp CMD."
+      (let ((orig-result (funcall old-fn cmd test?)))
+        (if (and (not test?)                             ;; for check lsp-server-present?
+                 (not (file-remote-p default-directory)) ;; see lsp-resolve-final-command, it would add extra shell wrapper
+                 lsp-use-plists
+                 (not (functionp 'json-rpc-connection))  ;; native json-rpc
+                 (executable-find "emacs-lsp-booster"))
+            (progn
+              (when-let ((command-from-exec-path (executable-find (car orig-result))))  ;; resolve command from exec-path (in case not found in $PATH)
+                (setcar orig-result command-from-exec-path))
+              (message "Using emacs-lsp-booster for %s!" orig-result)
+              (cons "emacs-lsp-booster" orig-result))
+          orig-result)))
+    (when (executable-find "emacs-lsp-booster")
+      (advice-add (if (progn (require 'json)
+                             (fboundp 'json-parse-buffer))
+                      'json-parse-buffer
+                    'json-read)
+                  :around
+                  #'lsp-booster--advice-json-parse)
+      (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)))
+  (leaf lsp-python-ms
+    :elpaca t
+    :disabled t
+    :require t
+    :custom
+    ((lsp-python-ms-python-executable-cmd . "python3"))
+    :hook ((python-mode-hook . (lambda ()
+                                 (require 'lsp-python-ms)
+                                 (when (file-exists-p
+                                        (concat (projectile-project-root buffer-file-name) ".venv/"))
+                                   (setq lsp-python-ms-extra-paths
+                                         (vector
+                                          (format
+                                           "%s/site-packages"
+                                           (car
+                                            (last (directory-files
+                                                   (concat
+                                                    (projectile-project-root buffer-file-name)
+                                                    ".venv/lib/")
+                                                   t))))))
+                                   (message "lsp-python-ms-extra-paths `%s'" lsp-python-ms-extra-paths))
+                                 (lsp-deferred))))
+    :config
+    (setq lsp-python-ms-auto-install-server t)
+    (add-hook 'python-mode-hook #'lsp-deferred) ; or lsp
+    )
+  (leaf lsp-pyright
+    :elpaca t
+    :hook
+    ((python-mode-hook . (lambda ()
+                           (require 'lsp-pyright)
+                           (when (file-exists-p
+                                  (concat (projectile-project-root buffer-file-name) ".venv/"))
+                             (setq lsp-pyright-extra-paths
+                                   (vector
+                                    (format
+                                     "%s/site-packages"
+                                     (car
+                                      (last (directory-files
+                                             (concat
+                                              (projectile-project-root buffer-file-name)
+                                              ".venv/lib/")
+                                             t))))))
+                             (message "lsp-pyright-extra-paths `%s'" lsp-pyright-extra-paths))
+                           (lsp-deferred))))
+    :config
+    (dolist (dir '(
+                   "[/\\\\]\\.venv$"
+                   "[/\\\\]\\.mypy_cache$"
+                   "[/\\\\]__pycache__$"))
+      (push dir lsp-file-watch-ignored)))
+  ;; optionally
+  (leaf lsp-ui
+    :elpaca t
+    :after lsp-mode
+    :custom
+    (lsp-ui-doc-show-with-cursor . t)
+
+    (lsp-ui-doc-enable                  . t)
+    (lsp-ui-doc-header                  . t)
+    (lsp-ui-doc-include-signature       . t)
+    (lsp-ui-doc-position                . 'bottom) ;; top, bottom, or at-point
+    (lsp-ui-doc-max-width               . 85)
+    (lsp-ui-doc-max-height              . 20)
+    (lsp-ui-doc-use-childframe          . t)
+    (lsp-ui-doc-use-webkit              . nil)
+
+    (lsp-ui-sideline-enable             . t)
+    (lsp-ui-sideline-ignore-duplicate   . t)
+    (lsp-ui-sideline-show-symbol        . t)
+    (lsp-ui-sideline-show-hover         . t)
+    (lsp-ui-sideline-show-diagnostics   . t)
+    (lsp-ui-sideline-show-code-actions  . t)
+    :bind ((:lsp-ui-mode-map
+            ("M-." . lsp-ui-peek-find-definitions)
+            ("M-?" . lsp-ui-peek-find-references))
+           (:lsp-command-map
+            ("t" . lsp-ui-doc-focus-frame)))
+    )
+  (leaf lsp-treemacs
+    :commands lsp-treemacs-errors-list
+    :config
+    (lsp-treemacs-sync-mode 1))
+  ;; optionally if you want to use debugger
+  (leaf lsp-java
+    :elpaca t
+    :disabled t
+    :require t
+    :hook (java-mode-hook . (lambda ()
+                              (lsp-deferred)
+                              (setq lsp-managed-mode t)))
+    :bind ((:lsp-mode-map
+            ("M-." . lsp-find-definition))))
+  ;; (elpaca lsp-metals
+  ;;   (leaf lsp-metals
+  ;;     :custom
+  ;;     ((lsp-metals-server-args . '("-J-Dmetals.allow-multiline-string-formatting=off")))
+  ;;     :hook (scala-mode-hook . lsp-deferred)))
+  (elpaca lsp-dart)
+  (elpaca lsp-tailwindcss)
+  (leaf dap-mode
+    :elpaca t
+    :after lsp-mode
+    :global-minor-mode dap-mode dap-ui-mode
+    :require dap-cpptools dap-gdb-lldb
+    :config
+    (dap-register-debug-template "Rust::GDB Run Configuration"
+                                 (list :type "gdb"
+                                       :request "launch"
+                                       :name "GDB::Run"
+                                       :gdbpath "rust-gdb"
+                                       :target nil
+                                       :cwd nil))
+    (leaf dap-java
+      :require t
+      :after (lsp-java)))
+  (leaf consult-lsp
+    :elpaca t
+    :after (consult lsp-mode)
+    :config
+    (consult-customize
+     consult-lsp-symbols
+     :preview-key (kbd "C-,"))))
 (leaf rust-mode
   :elpaca t
   :doc "A major-mode for editing Rust source code"
@@ -2586,194 +2774,6 @@ Optional argument ARG hoge."
   :bind
   (:lsp-bridge-mode-map
    ("C-c C-l a a" . lsp-bridge-code-action)))
-(leaf *lsp
-  :config
-  (leaf lsp-mode
-    :elpaca t
-    :commands (lsp lsp-deferred)
-    :custom ((lsp-auto-execute-action . nil)
-             (lsp-completion-provider . :none) ;disable company-capf
-             (lsp-keymap-prefix . "C-c C-l")
-             (lsp-semantic-tokens-enable . t)
-             (lsp-inlay-hint-enable . t))
-    :hook ((lsp-mode-hook  . lsp-enable-which-key-integration)
-           (lsp-completion-mode-hook . my-lsp-mode-setup-completion)
-           (c-mode-hook    . lsp-deferred)
-           (css-mode-hook  . lsp-deferred)
-           (html-mode-hook . lsp-deferred))
-    :init
-    (setq read-process-output-max (* 1024 1024))
-    (defun my-lsp-mode-setup-completion ()
-      (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-            '(orderless)))
-    :config
-    (defun lsp-booster--advice-json-parse (old-fn &rest args)
-      "Try to parse bytecode instead of json."
-      (or
-       (when (equal (following-char) ?#)
-         (let ((bytecode (read (current-buffer))))
-           (when (byte-code-function-p bytecode)
-             (funcall bytecode))))
-       (apply old-fn args)))
-    (defun lsp-booster--advice-final-command (old-fn cmd &optional test?)
-      "Prepend emacs-lsp-booster command to lsp CMD."
-      (let ((orig-result (funcall old-fn cmd test?)))
-        (if (and (not test?)                             ;; for check lsp-server-present?
-                 (not (file-remote-p default-directory)) ;; see lsp-resolve-final-command, it would add extra shell wrapper
-                 lsp-use-plists
-                 (not (functionp 'json-rpc-connection))  ;; native json-rpc
-                 (executable-find "emacs-lsp-booster"))
-            (progn
-              (when-let ((command-from-exec-path (executable-find (car orig-result))))  ;; resolve command from exec-path (in case not found in $PATH)
-                (setcar orig-result command-from-exec-path))
-              (message "Using emacs-lsp-booster for %s!" orig-result)
-              (cons "emacs-lsp-booster" orig-result))
-          orig-result)))
-    (when (executable-find "emacs-lsp-booster")
-      (advice-add (if (progn (require 'json)
-                             (fboundp 'json-parse-buffer))
-                      'json-parse-buffer
-                    'json-read)
-                  :around
-                  #'lsp-booster--advice-json-parse)
-      (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)))
-  (leaf lsp-python-ms
-    :elpaca t
-    :disabled t
-    :require t
-    :custom
-    ((lsp-python-ms-python-executable-cmd . "python3"))
-    :hook ((python-mode-hook . (lambda ()
-                                 (require 'lsp-python-ms)
-                                 (when (file-exists-p
-                                        (concat (projectile-project-root buffer-file-name) ".venv/"))
-                                   (setq lsp-python-ms-extra-paths
-                                         (vector
-                                          (format
-                                           "%s/site-packages"
-                                           (car
-                                            (last (directory-files
-                                                   (concat
-                                                    (projectile-project-root buffer-file-name)
-                                                    ".venv/lib/")
-                                                   t))))))
-                                   (message "lsp-python-ms-extra-paths `%s'" lsp-python-ms-extra-paths))
-                                 (lsp-deferred))))
-    :config
-    (setq lsp-python-ms-auto-install-server t)
-    (add-hook 'python-mode-hook #'lsp-deferred) ; or lsp
-    )
-  (leaf lsp-pyright
-    :elpaca t
-    :hook
-    ((python-mode-hook . (lambda ()
-                           (require 'lsp-pyright)
-                           (when (file-exists-p
-                                  (concat (projectile-project-root buffer-file-name) ".venv/"))
-                             (setq lsp-pyright-extra-paths
-                                   (vector
-                                    (format
-                                     "%s/site-packages"
-                                     (car
-                                      (last (directory-files
-                                             (concat
-                                              (projectile-project-root buffer-file-name)
-                                              ".venv/lib/")
-                                             t))))))
-                             (message "lsp-pyright-extra-paths `%s'" lsp-pyright-extra-paths))
-                           (lsp-deferred))))
-    :config
-    (dolist (dir '(
-                   "[/\\\\]\\.venv$"
-                   "[/\\\\]\\.mypy_cache$"
-                   "[/\\\\]__pycache__$"))
-      (push dir lsp-file-watch-ignored)))
-  ;; optionally
-  (leaf lsp-ui
-    :elpaca t
-    :after lsp-mode
-    :custom
-    (lsp-ui-doc-show-with-cursor . t)
-
-    (lsp-ui-doc-enable                  . t)
-    (lsp-ui-doc-header                  . t)
-    (lsp-ui-doc-include-signature       . t)
-    (lsp-ui-doc-position                . 'bottom) ;; top, bottom, or at-point
-    (lsp-ui-doc-max-width               . 85)
-    (lsp-ui-doc-max-height              . 20)
-    (lsp-ui-doc-use-childframe          . t)
-    (lsp-ui-doc-use-webkit              . nil)
-
-    (lsp-ui-sideline-enable             . t)
-    (lsp-ui-sideline-ignore-duplicate   . t)
-    (lsp-ui-sideline-show-symbol        . t)
-    (lsp-ui-sideline-show-hover         . t)
-    (lsp-ui-sideline-show-diagnostics   . t)
-    (lsp-ui-sideline-show-code-actions  . t)
-    :bind ((:lsp-ui-mode-map
-            ("M-." . lsp-ui-peek-find-definitions)
-            ("M-?" . lsp-ui-peek-find-references))
-           (:lsp-command-map
-            ("t" . lsp-ui-doc-focus-frame)))
-    )
-  (leaf lsp-treemacs
-    :commands lsp-treemacs-errors-list
-    :config
-    (lsp-treemacs-sync-mode 1))
-  ;; optionally if you want to use debugger
-  (leaf lsp-java
-    :elpaca t
-    :disabled t
-    :require t
-    :hook (java-mode-hook . (lambda ()
-                              (lsp-deferred)
-                              (setq lsp-managed-mode t)))
-    :bind ((:lsp-mode-map
-            ("M-." . lsp-find-definition))))
-  ;; (elpaca lsp-metals
-  ;;   (leaf lsp-metals
-  ;;     :custom
-  ;;     ((lsp-metals-server-args . '("-J-Dmetals.allow-multiline-string-formatting=off")))
-  ;;     :hook (scala-mode-hook . lsp-deferred)))
-  (elpaca lsp-dart)
-  (elpaca lsp-tailwindcss)
-  (leaf dap-mode
-    :elpaca t
-    :after lsp-mode
-    :global-minor-mode dap-mode dap-ui-mode
-    :require dap-cpptools dap-gdb-lldb
-    :config
-    (dap-register-debug-template "Rust::GDB Run Configuration"
-                                 (list :type "gdb"
-                                       :request "launch"
-                                       :name "GDB::Run"
-                                       :gdbpath "rust-gdb"
-                                       :target nil
-                                       :cwd nil))
-    (leaf dap-java
-      :require t
-      :after (lsp-java)))
-  (leaf consult-lsp
-    :elpaca t
-    :after (consult lsp-mode)
-    :config
-    (consult-customize
-     consult-lsp-symbols
-     :preview-key (kbd "C-,"))))
-(leaf eglot
-  :bind
-  ((:eglot-mode-map
-    ("C-c C-l a a" . eglot-code-actions)
-    ("C-c C-l r r" . eglot-rename)
-    ("C-c C-l w r" . eglot-reconnect)
-    ("C-c C-l w q" . eglot-shutdown))))
-(leaf eglot-booster
-  :when (executable-find "emacs-lsp-booster")
-  :elpaca (eglot-booster :type git
-                         :host github
-                         :repo "jdtsmith/eglot-booster")
-  :after eglot
-  :global-minor-mode eglot-booster-mode)
 (elpaca flycheck-eglot)
 (elpaca tree-sitter-langs)
 (elpaca treesit-auto)
@@ -3057,8 +3057,7 @@ Optional argument ARG hoge."
 (elpaca bnf-mode)
 (elpaca (ts-fold :type git :host github :repo "emacs-tree-sitter/ts-fold"))
 (leaf indent-bars
-  :elpaca (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
-  :hook (rustic-mode-hook . indent-bars-mode))
+  :elpaca (indent-bars :type git :host github :repo "jdtsmith/indent-bars"))
 (leaf info-downloader
   :elpaca (info-downloader :type git :host github :repo "furusi/info-downloader")
   :after info)
