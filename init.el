@@ -79,7 +79,7 @@
 
 (leaf elpaca
   :custom
-  (elpaca-log-diff-function . #'elpaca-log-magit-diff)
+  ((elpaca-log-diff-function . #'elpaca-log-magit-diff))
   :bind
   ((:elpaca-ui-mode-map
     :package elpaca-ui
@@ -2654,8 +2654,8 @@ See `org-capture-templates' for more information."
   :config
   (setq circadian-themes `((:sunrise . ,(nth 0 modus-themes-to-toggle))
                            (:sunset  . ,(nth 1 modus-themes-to-toggle))))
-    (circadian-setup))
-(elpaca doom-themes)
+  (circadian-setup))
+(leaf doom-themes :elpaca (doom-themes :repo ("doomemacs/themes"  . "doom-themes")))
 (leaf markdown-mode
   :elpaca t
   :mode (("README\\.md\\'" . gfm-mode)
