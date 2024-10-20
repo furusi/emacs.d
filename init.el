@@ -2278,6 +2278,7 @@ See `org-capture-templates' for more information."
        ("C-c n g" . org-roam-graph)
        ("C-c n i" . org-roam-node-insert)
        ("C-c n c" . org-roam-capture)
+       ("C-c n r" . org-roam-node-random)
        ;; Dailies
        ("C-c n j" . org-roam-dailies-capture-today)
        ("C-c n t" . org-roam-dailies-goto-today))
@@ -2296,7 +2297,11 @@ See `org-capture-templates' for more information."
       (dolist (f org-roam-completion-functions)
         (advice-add f :around (lambda (oldfn &rest _)
                                 (my-cape-wrap-with-annotation oldfn
-                                                              (symbol-name f))))))
+                                                              (symbol-name f)))))
+      (defvar-keymap my-org-roam-random-repeat-map
+        :repeat (:enter (org-roam-node-random))
+        "r" #'org-roam-node-random
+        "l" #'org-roam-buffer-toggle))
     (leaf org-roam-ui
         :req "emacs-27.1" "org-roam-2.0.0" "simple-httpd-20191103.1446" "websocket-1.13"
         :emacs>= 27.1
