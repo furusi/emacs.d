@@ -2135,7 +2135,6 @@ See `org-capture-templates' for more information."
          (interactive "NNumber: \nsHint (optional): ")
          (anki-editor-cloze-region arg hint)))))
   (leaf org-pdf*
-    :disabled t
     :config
     (leaf org-pdftools
       :elpaca t
@@ -2626,12 +2625,17 @@ See `org-capture-templates' for more information."
     :group 'my-custom-settings)
   :config
   (defvar modus-themes-item-pairs
-    (cl-labels
-        ((twochunk (x)
-           (if (null (cadr x))
-               (car x)
-             (cons (list (car x) (cadr x)) (twochunk (cddr x))))))
-      (twochunk modus-themes-items))
+    (if (eq (nth 1 modus-themes-items) 'modus-vivendi)
+        (cl-labels
+            ((twochunk (x)
+               (if (null (cadr x))
+                   (car x)
+                 (cons (list (car x) (cadr x)) (twochunk (cddr x))))))
+          (twochunk modus-themes-items))
+      (mapcar (lambda (n)
+                (list (nth n modus-themes-items)
+                      (nth (+ n 4) modus-themes-items)))
+              (number-sequence 0 3)))
     "list of `modus-themes-items' pair")
   (setq modus-themes-to-toggle (nth 1 modus-themes-item-pairs))
   (defun my-modus-themes--change-appearance (&optional appearance)
