@@ -229,7 +229,11 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :custom
     ((vertico-count . 20)
      (vertico-cycle . t)
-     (vertico-resize . t))
+     (vertico-resize . t)
+     ;; Do not allow the cursor in the minibuffer prompt
+     (minibuffer-prompt-properties . '(read-only t cursor-intangible t face minibuffer-prompt))
+     ;; Enable recursive minibuffers
+     (enable-recursive-minibuffers . t))
     :global-minor-mode t
     :config
     (defun crm-indicator (args)
@@ -240,19 +244,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                     (car args))
             (cdr args)))
     (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
-
-    ;; Do not allow the cursor in the minibuffer prompt
-    (setq minibuffer-prompt-properties
-          '(read-only t cursor-intangible t face minibuffer-prompt))
-    (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
-
-    ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
-    ;; Vertico commands are hidden in normal buffers.
-    ;; (setq read-extended-command-predicate
-    ;;       #'command-completion-default-include-p)
-
-    ;; Enable recursive minibuffers
-    (setq enable-recursive-minibuffers t))
+    (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode))
   (leaf vertico-multiform
     :disabled t
     :after consult vertico
@@ -2523,6 +2515,10 @@ See `org-capture-templates' for more information."
   :custom
   `(lsp-sourcekit-executable . ,(and (eq system-type 'darwin)
                                      (string-trim (shell-command-to-string "xcrun --find sourcekit-lsp")))))
+(leaf applescript-mode
+  :elpaca t
+  :init
+  (my-org-push-src-lang-modes applescript))
 (leaf ccls
   :elpaca t
   :after lsp-mode
