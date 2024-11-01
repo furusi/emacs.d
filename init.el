@@ -1002,10 +1002,12 @@ read-only-mode will be activated for that file."
                                      (my-projectile-vc-in-new-tab))))
 ;; ddskk
 (leaf ddskk
-  :elpaca (ddskk :host github :repo "skk-dev/ddskk" :depth 10
+  :elpaca (ddskk :host github :repo "furusi/ddskk" :depth 10
                  :files ("context-skk.el" "ddskk*.el" "skk*.el" "tar-util.el"
                          "doc/skk.texi" "etc/skk.xpm" "ccc.el"
-                         (:exclude "skk-xemacs.el" "skk-lookup.el")))
+                         (:exclude "skk-xemacs.el" "skk-lookup.el"))
+                 :remotes ("fork"
+                           ("origin" :host github :repo "skk-dev/ddskk" :branch "master")))
   :commands skk-mode
   :bind (("C-x C-j" . skk-mode)
          (:minibuffer-local-map
@@ -2633,7 +2635,8 @@ See `org-capture-templates' for more information."
                       (nth (+ n 4) modus-themes-items)))
               (number-sequence 0 3)))
     "list of `modus-themes-items' pair")
-  (setq modus-themes-to-toggle (nth 1 modus-themes-item-pairs))
+  (setq modus-themes-to-toggle (nth 3   ;(random (length modus-themes-item-pairs))
+                                    modus-themes-item-pairs))
   (defun my-modus-themes--change-appearance (&optional appearance)
     (when (null appearance)
       (setq appearance (cond ((eq 'auto my-theme-color)
