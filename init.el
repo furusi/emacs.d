@@ -7,7 +7,7 @@
 ;; (profiler-start 'cpu)
 
 ;;elpaca
-(defvar elpaca-installer-version 0.7)
+(defvar elpaca-installer-version 0.8)
 (defvar elpaca-directory (expand-file-name "elpaca/" (format "%spackages/%s" user-emacs-directory emacs-version)))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
@@ -24,9 +24,9 @@
     (make-directory repo t)
     (when (< emacs-major-version 28) (require 'subr-x))
     (condition-case-unless-debug err
-        (if-let ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
+        (if-let* ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
                  ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
-                                                 ,@(when-let ((depth (plist-get order :depth)))
+                                                  ,@(when-let* ((depth (plist-get order :depth)))
                                                      (list (format "--depth=%d" depth) "--no-single-branch"))
                                                  ,(plist-get order :repo) ,repo))))
                  ((zerop (call-process "git" nil buffer t "checkout"
@@ -48,6 +48,7 @@
 ;;elpaca end
 (if (version< emacs-version "29")
     (elpaca use-package (require 'use-package)))
+(setq elpaca-queue-limit 30)
 
 ;; <leaf-install-code>
 (eval-and-compile
@@ -1029,7 +1030,7 @@ read-only-mode will be activated for that file."
     (skk-search-katakana . 'jisx0201-kana)
     (skk-search-sagyo-henkaku . t)   ;サ行変格活用の動詞も送りあり変換出来るようにする
     (skk-share-private-jisyo . t)
-    (skk-sticky-key . '(?u ?h))
+    (skk-sticky-key . '(?, ?.))
     (skk-use-act . t)                ;全角・半角カタカナを変換候補にする
     (skk-use-jisx0201-input-method . t)
     (skk-user-directory . ,(locate-user-emacs-file "ddskk"))
