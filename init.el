@@ -2576,6 +2576,8 @@ See `org-capture-templates' for more information."
                                                     'embark-target-file-at-point
                                                     embark-target-finders)
                                                    '(embark-target-file-at-point))))))))
+(leaf zig-mode
+  :elpaca t)
 (elpaca fsharp-mode)
 (leaf plantuml-mode
   :elpaca t
