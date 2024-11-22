@@ -74,10 +74,6 @@
     :ensure t
     :after leaf leaf-keywords ppp))
 
-(leaf no-littering
-  :elpaca t
-  :require t)
-
 (leaf elpaca
   :custom
   ((elpaca-log-diff-function . #'elpaca-log-magit-diff))
@@ -92,6 +88,10 @@
     :package elpaca-log
     ("D" . elpaca-ui-mark-delete)
     ("d" . elpaca-log-view-diff))))
+
+(leaf no-littering
+  :elpaca t
+  :require t)
 
 (leaf diminish
   :ensure t
@@ -2222,6 +2222,9 @@ See `org-capture-templates' for more information."
       (set-face-attribute face nil
                           :family "UDEV Gothic JPDOC"))
     (set-face-attribute 'org-modern-symbol nil :family "Iosevka"))
+  (leaf org-modern-indent
+    :elpaca (org-modern-indent :host github :repo "jdtsmith/org-modern-indent")
+    :hook (org-modern-mode-hook . org-modern-indent-mode))
 
   (elpaca ob-browser)
   (elpaca ox-epub)
@@ -2823,8 +2826,8 @@ Optional argument ARG hoge."
          (:elfeed-search-mode-map
           ("j" . forward-line)
           ("n" . forward-line)
-          ("k" . (lambda () (interactive)(forward-line -1)))
-          ("p" . (lambda () (interactive)(forward-line -1)))
+          ("k" . previous-line)
+          ("p" . previous-line)
           ("e" . (lambda () (interactive)(eww (my-elfeed-yank-entry-url))))
           ("a" . my-elfeed-safari-add-reading-item)
           ("s" . my-elfeed-search-live-filter))
@@ -3055,7 +3058,6 @@ Optional argument ARG hoge."
   (with-eval-after-load 'projectile
     (def-projectile-commander-method ?x "Open EAT buffer." (eat-project))))
 (elpaca jinx)
-(elpaca chatgpt-shell)
 (leaf dmacro
   :elpaca t
   :global-minor-mode global-dmacro-mode)
@@ -3072,8 +3074,8 @@ Optional argument ARG hoge."
   :after info)
 
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
-(require 'my-lisp)
-(require 'my-window)
+(require 'my-lisp nil t)
+(require 'my-window nil t)
 
 (let ((f (expand-file-name ".config/emacs/config.el" my-share-dir)))
   (when (file-exists-p f)
