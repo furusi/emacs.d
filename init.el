@@ -45,10 +45,15 @@
     (load "./elpaca-autoloads")))
 (add-hook 'after-init-hook #'elpaca-process-queues)
 (elpaca `(,@elpaca-order))
+(setq elpaca-queue-limit (if (eq system-type 'windows-nt)
+                             15
+                           30))
+(when (eq system-type 'windows-nt)
+  (elpaca-no-symlink-mode)
+  (add-to-list 'exec-path "c:/msys64/mingw64/bin"))
 ;;elpaca end
 (if (version< emacs-version "29")
     (elpaca use-package (require 'use-package)))
-(setq elpaca-queue-limit 30)
 
 ;; <leaf-install-code>
 (eval-and-compile
@@ -774,6 +779,7 @@ read-only-mode will be activated for that file."
       (setq-default indicate-empty-lines t)
       (setq-default indicate-buffer-boundaries 'left)))
 (leaf exec-path-from-shell
+  :when (memq window-system '(mac ns x))
   :elpaca t
   :config
   (exec-path-from-shell-initialize)
@@ -1125,7 +1131,8 @@ read-only-mode will be activated for that file."
 
 (leaf migemo
   :elpaca t
-  :unless (equal (shell-command-to-string "command -v cmigemo") "")
+  :unless (or (eq system-type 'windows-nt)
+               (equal (shell-command-to-string "command -v cmigemo") ""))
   :require t
   :custom
   `((migemo-options . '("-q" "--emacs"))
@@ -1367,7 +1374,7 @@ read-only-mode will be activated for that file."
   :tag "languages" "emacs>=25.1"
   :url "https://github.com/rust-lang/rust-mode"
   :emacs>= 25.1
-  :custom ((rust-mode-treesitter-derive . t))
+  :custom ((rust-mode-treesitter-derive . nil))
   :hook (rust-mode-hook . prettify-symbols-mode))
 (leaf rustic
   :elpaca t
