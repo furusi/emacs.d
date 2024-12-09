@@ -56,3 +56,6 @@ flycheck_*.el
 /custom.el
 /packages/
 /var/
+/info/
+/eln-cache/
+/ddskk/

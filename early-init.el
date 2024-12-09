@@ -31,3 +31,19 @@
 (setq default-frame-alist '((width . 180) (height . 40) (top . 1) (left . 1) (tool-bar-lines . 0) (menu-bar-lines . 0)))
 
 (setenv "LSP_USE_PLISTS" "true")
+
+;; https://misohena.jp/blog/2023-07-31-setup-emacs-29-1-for-windows.html
+(when (and (fboundp #'native-comp-available-p)
+           (native-comp-available-p)
+           (eq system-type 'windows-nt))
+
+  (defun my-comp-set-env-and-call (orig-fun &rest args)
+    (let ((default-directory invocation-directory))
+      (apply orig-fun args)))
+
+  (advice-add #'comp-final :around #'my-comp-set-env-and-call)
+  (advice-add #'comp-run-async-workers :around #'my-comp-set-env-and-call)
+
+  (setq native-comp-driver-options
+        (list "-B"
+              (expand-file-name (file-name-concat invocation-directory "../lib/gcc")))))
