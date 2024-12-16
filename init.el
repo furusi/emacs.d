@@ -553,7 +553,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :emacs>= 27.1
     :after corfu
     :custom
-    (kind-icon-default-face . 'corfu-default)
+    ((kind-icon-blend-background . t)
+     (kind-icon-default-face . 'corfu-default))
     :config
     (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)))
 
@@ -3045,6 +3046,7 @@ Optional argument ARG hoge."
               (lambda () (corfu-mode -1)))))
 (elpaca suggest)
 (leaf emacs-eat
+  :unless (eq 'windows-nt system-type)
   :elpaca (emacs-eat :type git
                      :host codeberg
                      :repo "akib/emacs-eat"
