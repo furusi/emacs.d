@@ -2495,13 +2495,21 @@ See `org-capture-templates' for more information."
    #'pipenv-projectile-after-switch-extended))
 (elpaca hydra)
 (leaf go-mode
-    :elpaca t
-    :after lsp-mode
-    :hook (go-mode-hook . lsp-deferred))
+  :elpaca t
+  :hook ((go-mode-hook . lsp-deferred))
+  :config
+  (my-org-push-src-lang-modes go))
 (leaf go-ts-mode
-  :hook (go-ts-mode-hook . lsp-deferred)
+  :hook ((go-ts-mode-hook . lsp-deferred)
+         (go-ts-mode-hook . (lambda ()
+                              (add-hook 'before-save-hook #'go-ts-mode-gofmt-before-save nil t))))
   :init
-  (push '(go-mode . go-ts-mode) major-mode-remap-alist))
+  (push '(go-mode . go-ts-mode) major-mode-remap-alist)
+  (defun go-ts-mode-gofmt-before-save ()
+    (interactive)
+    (when (eq major-mode 'go-ts-mode)
+      (require 'go-mode)
+      (gofmt))))
 (leaf csharp-ts-mode
   :hook (csharp-ts-mode-hook . lsp-deferred)
   :init
