@@ -2026,10 +2026,6 @@ and `clavis-org-refile-refiled-from-header' variables."
           (format "%% Org-mode is exporting headings to %s levels.\n"
                   depth)))
       (setq org-export-latex-format-toc-function 'org-export-latex-no-toc))
-
-    (leaf ox-taskjuggler
-      :custom
-      ((org-taskjuggler-process-command . "tj3 --silent --no-color --output-dir %o %f && open %o/Plan.html")))
     (setq org-ditaa-jar-path
           "/usr/local/opt/ditaa/libexec/ditaa-0.11.0-standalone.jar")
 
@@ -2527,8 +2523,7 @@ See `org-capture-templates' for more information."
   :elpaca (lsp-sourcekit :host github :repo "emacs-lsp/lsp-sourcekit"
                          :files (:defaults "lsp-sourcekit.el"))
   :custom
-  `(lsp-sourcekit-executable . ,(and (eq system-type 'darwin)
-                                     (string-trim (shell-command-to-string "xcrun --find sourcekit-lsp")))))
+  `(lsp-sourcekit-executable . ,(string-trim (shell-command-to-string "xcrun --find sourcekit-lsp"))))
 (leaf applescript-mode
   :elpaca t
   :init
