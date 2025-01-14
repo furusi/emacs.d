@@ -2349,6 +2349,7 @@ See `org-capture-templates' for more information."
         :emacs>= 27.1
         :after org-roam consult))
 (leaf org-tag-beautify
+  :disabled t
   :elpaca (org-tag-beautify :host github :repo "emacsmirror/org-tag-beautify" :branch "master")
   :doc "Beautify Org mode tags"
   :req "emacs-26.1" "org-pretty-tags-0.2.2" "all-the-icons-5.0.0"
