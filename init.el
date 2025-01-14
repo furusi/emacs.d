@@ -2176,7 +2176,12 @@ See `org-capture-templates' for more information."
       :require t)
     (leaf pdf-tools
       ;; https://github.com/vedang/pdf-tools#installing-pdf-tools
-      :elpaca t
+      :elpaca (pdf-tools :host github :repo "legends2k/pdf-tools"
+                         :files (:defaults "README"
+                                           ("build" "Makefile")
+                                           ("build" "server"))
+                         :remotes ("patch"
+                                   ("origin" :host github  :repo "vedang/pdf-tools")))
       :mode (("\\.pdf\\'" . pdf-view-mode))
       :hook (pdf-view-mode-hook . (lambda ()
                                     (display-line-numbers-mode 0)))
