@@ -529,11 +529,13 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (add-hook 'completion-at-point-functions #'cape-tex)
     (add-hook 'completion-at-point-functions #'cape-file)
 
-    (when-let ((wordfile (expand-file-name ".config/emacs/cape/words" my-share-dir)))
-      (customize-set-variable 'cape-dict-file
-                              (if (stringp cape-dict-file)
-                                  (list wordfile cape-dict-file)
-                                (add-to-list 'cape-dict-file wordfile))))
+    (when-let* ((worddir (expand-file-name ".config/emacs/cape" my-share-dir))
+                (wordfiles (and (file-directory-p worddir)
+                                (cddr (directory-files worddir t)))))
+      (setopt cape-dict-file (if (consp cape-dict-file)
+                                 (append wordfiles cape-dict-file)
+                               (cons cape-dict-file wordfiles))))
+
     (defun my-cape-wrap-with-annotation (oldfn &optional annotstr)
       (when (null annotstr)
         (setq annotstr "from unknown function"))
