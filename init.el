@@ -2710,7 +2710,9 @@ See `org-capture-templates' for more information."
   :after modus-themes
   :config
   (setq circadian-themes `((:sunrise . ,(nth 0 modus-themes-to-toggle))
-                           (:sunset  . ,(nth 1 modus-themes-to-toggle))))
+                           ("7:30"   . ,(nth 0 modus-themes-to-toggle))
+                           (:sunset  . ,(nth 1 modus-themes-to-toggle))
+                           ("16:30"  . ,(nth 1 modus-themes-to-toggle))))
   (circadian-setup))
 (leaf doom-themes :elpaca (doom-themes :repo ("doomemacs/themes"  . "doom-themes")))
 (leaf markdown-mode
