@@ -3178,6 +3178,16 @@ Optional argument ARG hoge."
   ;; see ~(info "(elisp) Buffer Display Action Functions")~
   (setopt ellama-chat-display-action-function #'display-buffer-full-frame)
   (setopt ellama-instant-display-action-function #'display-buffer-at-bottom))
+(leaf infinite-scroll
+  :elpaca (infinite-scroll :type git :host github :repo "zonuexe/infinite-scroll.el"))
+(leaf ultra-scroll
+  :unless (eq system-type 'windows-nt)
+  :elpaca (ultra-scroll  :type git :host github :repo "jdtsmith/ultra-scroll")
+  :init
+  (setq scroll-conservatively 101 ; important!
+        scroll-margin 0)
+  :config
+  (ultra-scroll-mode 1))
 
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
 (require 'my-lisp nil t)
