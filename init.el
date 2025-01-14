@@ -159,6 +159,10 @@
             (recentf-max-menu-items . 30)
             (recentf-max-saved-items . 2000))
   :global-minor-mode recentf-mode)
+(leaf ediff
+  :custom ((ediff-diff-options . "-w")
+           (ediff-split-window-function . 'split-window-horizontally)
+           (ediff-window-setup-function . 'ediff-setup-windows-plain)))
 (leaf magit
   :elpaca transient
   :elpaca (magit :files ("lisp/magit*.el"
@@ -217,10 +221,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (org-fold-show-all))
   (with-eval-after-load 'org-element-ast
     (add-hook 'ediff-prepare-buffer-hook #'my-ediff-prepare-buffer-function)))
-(leaf ediff
-  :custom ((ediff-diff-options . "-w")
-           (ediff-split-window-function . 'split-window-horizontally)
-           (ediff-window-setup-function . 'ediff-setup-windows-plain)))
 (leaf *vertico
   :config
   (leaf vertico
@@ -388,7 +388,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
            (:minibuffer-local-map
             ("M-A" . marginalia-cycle)))
     :init
-    (marginalia-mode)) 
+    (marginalia-mode))
   (leaf embark
     :elpaca (embark :files (:defaults ("embark-org.el" "embark-consult.el")))
     :emacs>= 26.1
@@ -472,7 +472,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
       (dolist (mode '(tags-table-mode skk-jisyo-mode))
         (push mode dabbrev-ignored-buffer-modes))))
   (leaf corfu-terminal
-    :if (null (display-graphic-p))
+    :if (and (< emacs-major-version 31)
+             (null (display-graphic-p)))
     :elpaca t
     :after corfu popon
     :config
@@ -517,6 +518,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :tag "emacs>=27.1"
     :url "https://github.com/minad/cape"
     :emacs>= 27.1
+    :custom
+    (cape-dict-limit . 500)
     :bind-keymap
     ("C-c f" . cape-prefix-map)
     :init
@@ -1158,7 +1161,7 @@ read-only-mode will be activated for that file."
             (when-let (regexps (seq-filter #'consult--valid-regexp-p input))
               (apply-partially #'consult--highlight-regexps regexps ignore-case))))
     (setq consult--regexp-compiler #'consult--migemo-regexp-compiler))
-  (migemo-init)) 
+  (migemo-init))
 ;; SLIMEのロード
 (leaf undo-tree
   :elpaca t

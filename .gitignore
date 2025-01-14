@@ -59,3 +59,4 @@ flycheck_*.el
 /info/
 /eln-cache/
 /ddskk/
+/tree-sitter/
