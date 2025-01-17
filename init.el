@@ -163,6 +163,26 @@
   :custom ((ediff-diff-options . "-w")
            (ediff-split-window-function . 'split-window-horizontally)
            (ediff-window-setup-function . 'ediff-setup-windows-plain)))
+(leaf pcmpl-git
+  :defer-config
+  ;; https://misohena.jp/blog/2024-03-03-fix-browser-open-use-git-in-shell-mode.html
+  (when (eq system-type 'windows-nt)
+    (defun my-pcomplete/git:around (oldfun)
+    (cl-letf* ((old-pcomplete-from-help (symbol-function 'pcomplete-from-help))
+               ((symbol-function 'pcomplete-from-help)
+                (lambda (command &rest args)
+                  (message "command:%s args:%s" command args)
+                  (apply old-pcomplete-from-help
+                         (if (and
+                              (listp command)
+                              (equal (take 2 command) `(,vc-git-program "help"))
+                              (cddr command)
+                              (not (string-prefix-p "-" (caddr command))))
+                             `(,(car command) ,(caddr command) "-h")
+                           command)
+                         args))))
+      (funcall oldfun)))
+    (advice-add 'pcomplete/git :around #'my-pcomplete/git:around)))
 (leaf magit
   :elpaca transient
   :elpaca (magit :files ("lisp/magit*.el"
@@ -1494,6 +1514,7 @@ read-only-mode will be activated for that file."
   :elpaca t
   :mode (("\\.gradle$" . gradle-mode)))
 (leaf slime
+  :elpaca t
   :if (executable-find "ros")
   :custom
   ((inferior-lisp-program . "ros -Q run")
