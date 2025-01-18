@@ -171,7 +171,6 @@
     (cl-letf* ((old-pcomplete-from-help (symbol-function 'pcomplete-from-help))
                ((symbol-function 'pcomplete-from-help)
                 (lambda (command &rest args)
-                  (message "command:%s args:%s" command args)
                   (apply old-pcomplete-from-help
                          (if (and
                               (listp command)
@@ -1157,20 +1156,18 @@ read-only-mode will be activated for that file."
 
 (leaf migemo
   :elpaca t
-  :unless (or (eq system-type 'windows-nt)
-               (equal (shell-command-to-string "command -v cmigemo") ""))
+  :if (executable-find "cmigemo")
   :require t
   :custom
-  `((migemo-options . '("-q" "--emacs"))
+  `((migemo-options . '("--quiet" "--nonewline" "--emacs"))
     (migemo-coding-system . 'utf-8-unix)
     (migemo-user-dictionary . nil)
     (migemo-regex-dictionary . nil)
-    (migemo-options . '("--quiet" "--nonewline" "--emacs"))
     (migemo-dictionary .
                        ,(cond ((eq system-type 'darwin)
                                "/opt/homebrew/opt/cmigemo/share/migemo/utf-8/migemo-dict")
                               ((eq system-type 'windows-nt)
-                               "~/opt/cmigemo-default-win64/dict/utf-8")
+                               "~/.local/share/migemo/cp932/migemo-dict")
                               ((string-match-p "arch" operating-system-release)
                                "/usr/share/migemo/utf-8/migemo-dict")
                               (t "/usr/share/cmigemo/utf-8/migemo-dict"))))
@@ -1222,7 +1219,7 @@ read-only-mode will be activated for that file."
 (leaf *lsp
   :config
   (leaf lsp-mode
-    :elpaca t
+    :elpaca (lsp-mode :depth 1)
     :commands (lsp lsp-deferred)
     :custom ((lsp-auto-execute-action . nil)
              (lsp-completion-provider . :none) ;disable company-capf
@@ -1575,7 +1572,7 @@ read-only-mode will be activated for that file."
 (leaf org*
   :config
   (leaf org
-    :elpaca t
+    :elpaca (org :depth 1)
     :mode (("\\.org$" . org-mode))
     :hook ((org-mode-hook . (lambda () (prettify-symbols-mode)))
            (org-mode-hook . (lambda () (setq prettify-symbols-alist org-prettify-symbols-alist)))
