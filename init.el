@@ -7,12 +7,12 @@
 ;; (profiler-start 'cpu)
 
 ;;elpaca
-(defvar elpaca-installer-version 0.8)
+(defvar elpaca-installer-version 0.9)
 (defvar elpaca-directory (expand-file-name "elpaca/" (format "%spackages/%s" user-emacs-directory emacs-version)))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
 (defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
-                              :ref nil :depth 1
+                              :ref nil :depth 1 :inherit ignore
                               :files (:defaults "elpaca-test.el" (:exclude "extensions"))
                               :build (:not elpaca--activate-package)))
 (let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
@@ -1616,7 +1616,7 @@ read-only-mode will be activated for that file."
       (org-enforce-todo-checkbox-dependencies . t)
       (org-enforce-todo-dependencies . t)
       (org-export-allow-bind-keywords . t)
-      (org-export-backends . '(ascii html icalendar latex md odt taskjuggler asciidoc pandoc gfm))
+      (org-export-backends . '(ascii html icalendar latex md odt asciidoc pandoc gfm))
       (org-export-with-sub-superscripts . '{})
       (org-export-with-toc . nil)
       (org-icalendar-alarm-time . 30)
