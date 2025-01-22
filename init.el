@@ -49,8 +49,7 @@
                              15
                            30))
 (when (eq system-type 'windows-nt)
-  (elpaca-no-symlink-mode)
-  (add-to-list 'exec-path "c:/msys64/mingw64/bin"))
+  (elpaca-no-symlink-mode 1))
 ;;elpaca end
 (if (version< emacs-version "29")
     (elpaca use-package (require 'use-package)))
@@ -1216,6 +1215,11 @@ read-only-mode will be activated for that file."
                          :repo "jdtsmith/eglot-booster")
   :after eglot
   :global-minor-mode eglot-booster-mode)
+(leaf treesit
+  :custom
+  ((treesit-language-source-alist .
+                                  '((go "https://github.com/tree-sitter/tree-sitter-go")
+                                    (gomod "https://github.com/camdencheek/tree-sitter-go-mod")))))
 (leaf *lsp
   :config
   (leaf lsp-mode
@@ -2173,12 +2177,15 @@ See `org-capture-templates' for more information."
       :require t)
     (leaf pdf-tools
       ;; https://github.com/vedang/pdf-tools#installing-pdf-tools
-      :elpaca (pdf-tools :host github :repo "legends2k/pdf-tools"
-                         :files (:defaults "README"
+      :elpaca `,@(if (equal (getenv "MSYSTEM") "UCRT64")
+                     '(pdf-tools :host github :repo "legends2k/pdf-tools"
+                                 :branch "ucrt64"
+                                 :files (:defaults "README"
                                            ("build" "Makefile")
                                            ("build" "server"))
                          :remotes ("patch"
                                    ("origin" :host github  :repo "vedang/pdf-tools")))
+                    t)
       :mode (("\\.pdf\\'" . pdf-view-mode))
       :hook (pdf-view-mode-hook . (lambda ()
                                     (display-line-numbers-mode 0)))
