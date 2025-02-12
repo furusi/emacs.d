@@ -3151,7 +3151,7 @@ Optional argument ARG hoge."
 	   :default-chat-non-standard-params '(("num_ctx" . 32768))))
   (setopt ellama-coding-provider
 	  (make-llm-ollama
-	   :chat-model "qwen2.5-coder:3b"
+	   :chat-model "qwen2.5-coder:7b"
 	   :embedding-model "nomic-embed-text"
 	   :default-chat-non-standard-params '(("num_ctx" . 32768))))
   ;; Predefined llm providers for interactive switching.
@@ -3172,7 +3172,7 @@ Optional argument ARG hoge."
 	  (make-llm-ollama
 	   :chat-model "llama3:8b-instruct-q8_0"
 	   :embedding-model "nomic-embed-text"
-	   :default-chat-non-standard-params '(("stop" . ("\n")))))
+	   :default-chat-non-standard-params '(("stop" . ["\n"]))))
   (setopt ellama-naming-scheme 'ellama-generate-name-by-llm)
   ;; Translation llm provider
   (setopt ellama-translation-provider
@@ -3195,6 +3195,9 @@ Optional argument ARG hoge."
         scroll-margin 0)
   :config
   (ultra-scroll-mode 1))
+(leaf mise
+  :elpaca t
+  :global-minor-mode global-mise-mode)
 
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
 (require 'my-lisp nil t)
