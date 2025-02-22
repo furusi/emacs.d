@@ -218,7 +218,7 @@
                       (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
   (defun add-d-to-ediff-mode-map ()
     (when (ediff-merge-job)
-      (define-key ediff-mode-map "d" 'ediff-copy-both-to-C)
+      (keymap-set ediff-mode-map "d" 'ediff-copy-both-to-C)
       (setq-local ediff-long-help-message-merge
                   "
 p,DEL -previous diff  |     | -vert/horiz split   |  x -copy buf X's region to C
@@ -1086,7 +1086,7 @@ read-only-mode will be activated for that file."
                     "SKK-JISYO.okinawa" "SKK-JISYO.propernoun"))))
   (with-eval-after-load 'dired
     (load "dired-x")
-    (global-set-key "\C-x\C-j" 'skk-mode))
+    (keymap-global-set "C-x C-j" 'skk-mode))
   (leaf skk-study
     :require t)
   (leaf skk-hint
@@ -2150,7 +2150,7 @@ See `org-capture-templates' for more information."
     :hook
     (anki-editor-mode-hook . (lambda ()
                                (let* ((keymap (copy-keymap embark-region-map)))
-                                 (define-key keymap (kbd "c")
+                                 (keymap-set keymap  "c"
                                              'my-anki-editor-cloze-region)
                                  (setq-local embark-region-map keymap))))
     :init
