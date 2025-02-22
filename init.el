@@ -260,14 +260,13 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
      (enable-recursive-minibuffers . t))
     :global-minor-mode t
     :config
-    (defun crm-indicator (args)
-      (cons (format "[CRM%s] %s"
-                    (replace-regexp-in-string
-                     "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
-                     crm-separator)
-                    (car args))
-            (cdr args)))
-    (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+    (when (< emacs-major-version 31)
+      (advice-add #'completing-read-multiple :filter-args
+                  (lambda (args)
+                    (cons (format "[CRM%s] %s"
+                                  (string-replace "[ \t]*" "" crm-separator)
+                                  (car args))
+                          (cdr args)))))
     (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode))
   (leaf vertico-multiform
     :disabled t
@@ -3075,7 +3074,7 @@ Optional argument ARG hoge."
   :hook
   (nov-mode-hook . nov-xwidget-inject-all-files))
 (leaf speed-type
-  :elpaca t
+  :elpaca (speed-type :ref "b982ee6" :pin t)
   :doc "Practice touch and speed typing"
   :req "emacs-25.1"
   :tag "games" "emacs>=25.1"
@@ -3184,7 +3183,10 @@ Optional argument ARG hoge."
   ;; customize display buffer behaviour
   ;; see ~(info "(elisp) Buffer Display Action Functions")~
   (setopt ellama-chat-display-action-function #'display-buffer-full-frame)
-  (setopt ellama-instant-display-action-function #'display-buffer-at-bottom))
+  (setopt ellama-instant-display-action-function #'display-buffer-at-bottom)
+  :config
+  ;; send last message in chat buffer with C-c C-c
+  (add-hook 'org-ctrl-c-ctrl-c-hook #'ellama-chat-send-last-message))
 (leaf infinite-scroll
   :elpaca (infinite-scroll :type git :host github :repo "zonuexe/infinite-scroll.el"))
 (leaf ultra-scroll
