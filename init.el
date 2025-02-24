@@ -2975,8 +2975,6 @@ Optional argument ARG hoge."
   (my-org-push-src-lang-modes powershell)
   (my-org-push-src-lang-modes powershell pwsh))
 
-;; Major mode for Twitter http://twmode.sf.net/
-(elpaca twittering-mode)
 (elpaca lua-mode)
 (leaf pcre2el
   :elpaca t
