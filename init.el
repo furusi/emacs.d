@@ -1702,9 +1702,8 @@ read-only-mode will be activated for that file."
     (add-to-list 'face-font-rescale-alist
                  '(".*IPAゴシック.*" . 0.85))
 
-    (when (equal system-type 'darwin)
-      (setq org-plantuml-jar-path
-            "/usr/local/opt/plantuml/libexec/plantuml.jar"))
+    (when-let* ((path (executable-find "plantuml")))
+      (setq org-plantuml-jar-path path))
 
     (setq org-tag-alist
           '(("ignore" . ?i) ("@OFFICE" . ?o) ("@HOME" . ?h) ("SHOPPING" . ?s)
