@@ -3196,6 +3196,7 @@ Optional argument ARG hoge."
   :config
   (ultra-scroll-mode 1))
 (leaf mise
+  :if (executable-find "mise")
   :elpaca t
   :global-minor-mode global-mise-mode)
 
