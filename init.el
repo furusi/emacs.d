@@ -1574,7 +1574,8 @@ read-only-mode will be activated for that file."
 (leaf org*
   :config
   (leaf org
-    :elpaca (org :depth 1)
+    :elpaca `,@(and (not (eq system-type 'windows-nt))
+                    '(org :depth 1))
     :mode (("\\.org$" . org-mode))
     :hook ((org-mode-hook . (lambda () (prettify-symbols-mode)))
            (org-mode-hook . (lambda () (setq prettify-symbols-alist org-prettify-symbols-alist)))
