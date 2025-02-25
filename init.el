@@ -2328,10 +2328,11 @@ See `org-capture-templates' for more information."
       (push "ROAM_EXCLUDE" org-default-properties)
       (leaf org-roam-protocol :require t)
       ;; (advice-add 'org-roam-node-open :after (lambda (&rest _) (view-mode)))
-      (dolist (f org-roam-completion-functions)
-        (advice-add f :around (lambda (oldfn &rest _)
-                                (my-cape-wrap-with-annotation oldfn
-                                                              (symbol-name f)))))
+      (with-eval-after-load 'cape
+        (dolist (f org-roam-completion-functions)
+          (advice-add f
+                      :around (lambda (oldfn &rest _)
+                                (my-cape-wrap-with-annotation oldfn (symbol-name f))))))
       (defvar-keymap my-org-roam-random-repeat-map
         :repeat (:enter (org-roam-node-random))
         "r" #'org-roam-node-random
