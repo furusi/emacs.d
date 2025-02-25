@@ -328,6 +328,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
            ("C-x b" . consult-buffer)
            ("C-x c i" . consult-imenu)
            ("M-g i" . consult-imenu)
+           ("M-g m" . consult-mark)
            ("C-x j" . consult-recent-file)
            ("C-x r j" . consult-register)
            ("C-x r l"  . consult-bookmark)
@@ -1133,8 +1134,6 @@ read-only-mode will be activated for that file."
    (:embark-url-map
     :package embark
     ("x" . browse-url-default-browser)))
-  :custom
-  (eww-search-prefix . "https://www.google.co.jp/search?q=")
   :config
   (defun eww-disable-images ()
     "eww で画像表示させない"
