@@ -2164,6 +2164,8 @@ See `org-capture-templates' for more information."
          (interactive "NNumber: \nsHint (optional): ")
          (anki-editor-cloze-region arg hint)))))
   (leaf org-pdf*
+    :unless (and (eq system-type 'windows-nt)
+                 (not (equal (getenv "MSYSTEM") "UCRT64")))
     :config
     (leaf org-pdftools
       :elpaca t
