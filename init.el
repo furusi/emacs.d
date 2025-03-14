@@ -809,6 +809,10 @@ read-only-mode will be activated for that file."
   (exec-path-from-shell-initialize)
   (add-to-list 'exec-path-from-shell-variables "PYTHONPATH")
   (add-to-list 'exec-path-from-shell-variables "JAVA_HOME"))
+(leaf mise
+  :if (executable-find "mise")
+  :elpaca t
+  :global-minor-mode global-mise-mode)
 (leaf system-packages
   :elpaca t
   :config
@@ -1625,7 +1629,8 @@ read-only-mode will be activated for that file."
       (org-icalendar-alarm-time . 30)
       (org-icalendar-timezone . "Asia/Tokyo")
       (org-icalendar-use-scheduled . '(event-if-todo todo-start))
-      (org-id-link-to-org-use-id . 'create-if-interactive)
+      (org-id-link-consider-parent-id . t)
+      (org-id-link-to-org-use-id . 'use-existing)
       (org-list-allow-alphabetical . t)
       (org-log-into-drawer . t)
       (org-preview-latex-default-process . 'dvisvgm)
@@ -3196,10 +3201,6 @@ Optional argument ARG hoge."
         scroll-margin 0)
   :config
   (ultra-scroll-mode 1))
-(leaf mise
-  :if (executable-find "mise")
-  :elpaca t
-  :global-minor-mode global-mise-mode)
 
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
 (require 'my-lisp nil t)
