@@ -2314,7 +2314,10 @@ See `org-capture-templates' for more information."
       `((org-roam-directory . ,(format "%s/roam" org-directory))
         (org-roam-completion-everywhere . t)
         ( org-roam-node-display-template .
-          ,(concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag))))
+          ,(concat "${title:*} "
+                   (propertize "[${aliases:10}]" 'face 'font-lock-variable-name-face)
+                   " "
+                   (propertize "[${tags:10}]" 'face 'org-tag))))
       :bind
       (("C-c n l" . org-roam-buffer-toggle)
        ("C-c n f" . org-roam-node-find)
