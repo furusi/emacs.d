@@ -1178,6 +1178,11 @@ read-only-mode will be activated for that file."
   :custom
   (undo-fu-session-incompatible-files . '("/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'"))
   :global-minor-mode undo-fu-session-global-mode)
+(leaf display-line-numbers
+  :custom
+  (display-line-numbers-type . 'relative)
+  :hook
+  (prog-mode-hook . display-line-numbers-mode))
 (leaf eglot
   :bind
   ((:eglot-mode-map
@@ -1399,7 +1404,6 @@ read-only-mode will be activated for that file."
     (push 'rustic-mode sp-ignore-modes-list))
   (defun my-rustic-init ()
     (electric-pair-local-mode t)
-    (corfu-mode t)
     (when (featurep 'embark)
       (setq-local embark-target-finders
                   (append (remove
