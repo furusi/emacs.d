@@ -2906,19 +2906,24 @@ Optional argument ARG hoge."
         url)))
   (defun my-elfeed-search-live-filter ()
     (interactive)
-    (unwind-protect
-        (let* ((elfeed-search-filter-active :live)
-               (input (my-elfeed--tag-completing-multi)))
-          (setq elfeed-search-filter input))
-      (elfeed-search-update :force)))
+    (unwind-protect (let* ((elfeed-search-filter-active :live)
+                           (input (my-elfeed--tag-completing-multi)))
+                      (unless (string-blank-p input)
+                        (setq elfeed-search-filter input)
+                        (elfeed-search-update :force)))))
   (defun my-elfeed--tag-completing-multi ()
     (require 'elfeed)
-    (let ((elfeed-db-tags (elfeed-db-get-all-tags)))
-      (mapconcat 'identity (completing-read-multiple "Filter: "
-                                                     elfeed-db-tags
-                                                     nil nil
-                                                     elfeed-search-filter)
-                 " +")))
+    (let* ((elfeed-db-tags (elfeed-db-get-all-tags))
+           (query (mapconcat (lambda (element)
+                               (cond
+                                ((member (aref element 0) '(?@ ?+)) element)
+                                (t (format "+%s" element))))
+                             (completing-read-multiple "Filter: "
+                                                       elfeed-db-tags
+                                                       nil nil
+                                                       elfeed-search-filter)
+                             " ")))
+      query))
 
   (defun my-elfeed-search-set-filter (old-fn &rest args)
     (interactive)
