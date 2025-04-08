@@ -3135,7 +3135,7 @@ Optional argument ARG hoge."
 	  (make-llm-ollama
 	   ;; this model should be pulled to use it
 	   ;; value should be the same as you print in terminal during pull
-	   :chat-model "llama3:8b-instruct-q8_0"
+	   :chat-model "llama3.1:8b"
 	   :embedding-model "nomic-embed-text"
 	   :default-chat-non-standard-params '(("num_ctx" . 8192))))
   (setopt ellama-summarization-provider
@@ -3164,7 +3164,7 @@ Optional argument ARG hoge."
   ;; Naming new sessions with llm
   (setopt ellama-naming-provider
 	  (make-llm-ollama
-	   :chat-model "llama3:8b-instruct-q8_0"
+	   :chat-model "llama3.1:8b"
 	   :embedding-model "nomic-embed-text"
 	   :default-chat-non-standard-params '(("stop" . ["\n"]))))
   (setopt ellama-naming-scheme 'ellama-generate-name-by-llm)
@@ -3181,7 +3181,9 @@ Optional argument ARG hoge."
   (setopt ellama-instant-display-action-function #'display-buffer-at-bottom)
   :config
   ;; send last message in chat buffer with C-c C-c
-  (add-hook 'org-ctrl-c-ctrl-c-hook #'ellama-chat-send-last-message))
+  (add-hook 'org-ctrl-c-ctrl-c-final-hook #'ellama-chat-send-last-message))
+(leaf chatgpt-shell
+  :elpaca t)
 (leaf infinite-scroll
   :elpaca (infinite-scroll :type git :host github :repo "zonuexe/infinite-scroll.el"))
 (leaf ultra-scroll
