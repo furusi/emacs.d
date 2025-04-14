@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;; 分割方法を切り替える(水平，垂直) (quoted from https://github.com/magnars/.emacs.d/blob/master/defuns/buffer-defuns.el)
 (defun toggle-window-split ()
   "ウィンドウの分割方法を切り替える(水平→垂直，垂直→水平)"
