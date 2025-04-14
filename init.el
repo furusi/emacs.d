@@ -512,7 +512,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :url "https://github.com/minad/cape"
     :emacs>= 27.1
     :custom
-    (cape-dict-limit . 500)
+    (cape-dict-limit . 20000)
     :bind-keymap
     ("C-c f" . cape-prefix-map)
     :init
@@ -967,6 +967,10 @@ read-only-mode will be activated for that file."
   :url "https://github.com/artawower/blamer.el"
   :emacs>= 27.1
   :elpaca t)
+(leaf tab-bar
+  :bind
+  (:tab-prefix-map
+   ("k" . tab-bar-close-tab-by-name)))
 (leaf projectile
   :elpaca t
   :bind `(,(when (version< "28" emacs-version)
@@ -1383,8 +1387,7 @@ read-only-mode will be activated for that file."
   :tag "languages" "emacs>=25.1"
   :url "https://github.com/rust-lang/rust-mode"
   :emacs>= 25.1
-  :custom ((rust-mode-treesitter-derive . nil))
-  :hook (rust-mode-hook . prettify-symbols-mode))
+  :custom ((rust-mode-treesitter-derive . nil)))
 (leaf rustic
   :elpaca t
   :doc "Rust development environment"
@@ -2204,7 +2207,9 @@ See `org-capture-templates' for more information."
     :doc "org-babel support for mermaid evaluation"
     :tag "lisp"
     :after org
-    :url "https://github.com/arnm/ob-mermaid")
+    :url "https://github.com/arnm/ob-mermaid"
+    :config
+    (setopt ob-mermaid-cli-path (executable-find "mmdc")))
   (leaf org-journal
     :elpaca t
     :commands (org-journal-new-entry org-journal-open-current-journal-file)
