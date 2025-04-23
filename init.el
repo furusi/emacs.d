@@ -2918,18 +2918,18 @@ Optional argument ARG hoge."
                         (elfeed-search-update :force)))))
   (defun my-elfeed--tag-completing-multi ()
     (require 'elfeed)
-    (let* ((elfeed-db-tags (elfeed-db-get-all-tags))
-           (query (mapconcat (lambda (element)
-                               (cond
-                                ((member (aref element 0) '(?@ ?+)) element)
-                                (t (format "+%s" element))))
-                             (completing-read-multiple "Filter: "
-                                                       elfeed-db-tags
-                                                       nil nil
-                                                       elfeed-search-filter)
-                             " ")))
-      query))
-
+    (let* ((all-tags (elfeed-db-get-all-tags))
+           (selected-tags (completing-read-multiple "Filter: "
+                                                    all-tags
+                                                    nil nil
+                                                    elfeed-search-filter))
+           (trimmed-tags (seq-remove #'string-blank-p
+                                     (mapcar #'string-trim selected-tags)))
+           (formatted-tags (mapcar (lambda (tag)
+                                     (cond ((member (aref tag 0) '(?@ ?+)) tag)
+                                           (t (format "+%s" tag))))
+                                   trimmed-tags)))
+      (string-join formatted-tags " ")))
   (defun my-elfeed-search-set-filter (old-fn &rest args)
     (interactive)
     (funcall old-fn (my-elfeed--tag-completing-multi)))
