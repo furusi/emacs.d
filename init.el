@@ -2513,7 +2513,10 @@ See `org-capture-templates' for more information."
                                     company-capf company-files)))))
 (leaf typescript-mode
     :elpaca t
-    :hook (typescript-mode-hook . lsp-deferred))
+    :hook ((typescript-mode-hook . lsp-deferred)
+           (typescript-mode-hook . electric-pair-local-mode)))
+(leaf json-mode
+  :hook ((js-json-mode-hook . electric-pair-local-mode)))
 (elpaca rainbow-mode)
 (elpaca poetry)
 (leaf pipenv
