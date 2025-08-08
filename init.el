@@ -1417,6 +1417,9 @@ read-only-mode will be activated for that file."
   (leaf rustic-babel
     :after org
     :require t))
+(leaf rustowl
+  :if (executable-find "rustowl")
+  :elpaca (rustowlsp :host github :repo "cordx56/rustowl" :main "rustowl.el"))
 (leaf lsp-haskell
   :elpaca t
   :doc "Haskell support for lsp-mode"
@@ -2207,9 +2210,7 @@ See `org-capture-templates' for more information."
     :doc "org-babel support for mermaid evaluation"
     :tag "lisp"
     :after org
-    :url "https://github.com/arnm/ob-mermaid"
-    :config
-    (setopt ob-mermaid-cli-path (executable-find "mmdc")))
+    :url "https://github.com/arnm/ob-mermaid")
   (leaf org-journal
     :elpaca t
     :commands (org-journal-new-entry org-journal-open-current-journal-file)
@@ -3112,6 +3113,12 @@ Optional argument ARG hoge."
   :init
   (with-eval-after-load 'projectile
     (def-projectile-commander-method ?x "Open EAT buffer." (eat-project))))
+(leaf claude-code-ide
+  :elpaca (claude-code-ide :type git :host github :repo "manzaltu/claude-code-ide.el")
+  ;; :bind
+  ;; ("C-c C-'" . claude-code-ide-menu)
+  :config
+  (claude-code-ide-emacs-tools-setup))
 (elpaca jinx)
 (leaf dmacro
   :elpaca t
@@ -3202,6 +3209,15 @@ Optional argument ARG hoge."
         scroll-margin 0)
   :config
   (ultra-scroll-mode 1))
+(leaf emacs-everywhere
+  :if (member system-type '(darwin gnu/linux))
+  :elpaca t)
+(leaf verb
+  :after org
+  :elpaca t
+  :bind-keymap (:org-mode-map :package org ("C-c C-r" . verb-command-map))
+  :config
+  (push '("verb" . ?v) org-tag-alist))
 
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
 (require 'my-lisp nil t)
