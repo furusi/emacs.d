@@ -430,7 +430,23 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :after all-the-icons
     :config
     (all-the-icons-completion-mode t))
+  (defcustom my-completion-frontend 'corfu
+    "Completion backend to use. Can be 'corfu, 'completion-preview, or nil."
+    :type '(choice (const :tag "Use Corfu" corfu)
+                   (const :tag "Use Completion Preview" completion-preview)
+                   (const :tag "None" nil))
+    :group 'my-custom-group)
+  (leaf completion-preview
+    :if (eq my-completion-frontend 'completion-preview)
+    :bind
+    (:completion-preview-active-mode-map
+     ("M-n" . completion-preview-next-candidate)
+     ("M-p" . completion-preview-prev-candidate))
+    :custom
+    (completion-preview-minimum-symbol-length . 2)
+    :global-minor-mode global-completion-preview-mode)
   (leaf corfu
+    :if (eq my-completion-frontend 'corfu)
     :elpaca (corfu :host github :repo "minad/corfu" :depth 10 :files (:defaults "extensions/*.el"))
     :url "https://github.com/minad/corfu"
     :emacs>= 27.1
