@@ -1136,7 +1136,8 @@ read-only-mode will be activated for that file."
 
 (leaf migemo
   :elpaca t
-  :if (executable-find "cmigemo")
+  :if (and (not (eq system-type 'windows-nt))
+       (executable-find "cmigemo"))
   :require t
   :custom
   `((migemo-options . '("--quiet" "--nonewline" "--emacs"))
