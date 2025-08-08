@@ -561,7 +561,34 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                 (lambda (oldfn &rest _)
                   (my-cape-wrap-with-annotation
                    oldfn
-                   (symbol-name 'pcomplete-completions-at-point)))))
+                   (symbol-name 'pcomplete-completions-at-point))))
+    (defun my/org-get-radio-targets ()
+      (let ((targets '()))
+        (save-excursion
+          (goto-char (point-min))
+          (while (re-search-forward "<<\\([^<>]+\\)>>" nil t)
+            (push (match-string-no-properties 1) targets)))
+        (delete-dups (nreverse targets))))
+
+    (defun my/cape-org-radio-targets ()
+      (when (derived-mode-p 'org-mode)
+        (let ((bounds (bounds-of-thing-at-point 'symbol)))
+          (when bounds
+            (list (car bounds)
+                (cdr bounds)
+                (my/org-get-radio-targets)
+                :exclusive 'no)))))
+
+    (defun my/cape-dabbrev+radio ()
+      "dabbrev + org radio target の複合補完を即時実行。"
+      (interactive)
+      (let ((completion-at-point-functions
+             (list (cape-capf-super
+                    #'my/cape-org-radio-targets
+                    #'cape-dabbrev))))
+        (completion-at-point)))
+
+    (define-key cape-prefix-map (kbd "d") #'my/cape-dabbrev+radio))
   (leaf kind-icon
     :elpaca (kind-icon :host github :repo "jdtsmith/kind-icon")
     :emacs>= 27.1
