@@ -1596,14 +1596,14 @@ read-only-mode will be activated for that file."
   (setq web-mode-extra-snippets
         '(("php" . (("print" . "print(\"|\")"))))))
 
-(defmacro my-org-push-src-lang-modes (mode  &optional name)
-  (cond
-   ((null name) (setq name (symbol-name mode)))
-   ((symbolp name) (setq name (symbol-name name))))
-  `(with-eval-after-load 'org
-     (push '(,name . ,mode) org-src-lang-modes)))
 
 ;; Org-mode
+(defmacro my-org-push-src-lang-modes (mode  &optional name)
+   (cond
+    ((null name) (setq name (symbol-name mode)))
+    ((symbolp name) (setq name (symbol-name name))))
+   `(with-eval-after-load 'org
+      (push '(,name . ,mode) org-src-lang-modes)))
 (leaf org*
   :config
   (leaf org
@@ -2210,7 +2210,6 @@ See `org-capture-templates' for more information."
       :after (org-noter)
       :require t)
     (leaf pdf-tools
-      ;; https://github.com/vedang/pdf-tools#installing-pdf-tools
       :elpaca `,@(if (equal (getenv "MSYSTEM") "UCRT64")
                      '(pdf-tools :host github :repo "legends2k/pdf-tools"
                                  :branch "ucrt64"
