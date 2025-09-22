@@ -8,9 +8,12 @@
 
 ;;elpaca
 (defvar elpaca-installer-version 0.11)
-(defvar elpaca-directory (expand-file-name "elpaca/" (format "%spackages/%s" user-emacs-directory emacs-version)))
-(defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
-(defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
+(let* ((package-directory (expand-file-name "elpaca/" (format "%spackages/" user-emacs-directory )))
+       (package-directory-version (expand-file-name emacs-version package-directory)))
+  (defvar elpaca-cache-directory (expand-file-name "cache/" package-directory))
+  (defvar elpaca-directory package-directory-version)
+  (defvar elpaca-builds-directory (expand-file-name "builds/" package-directory-version))
+  (defvar elpaca-repos-directory (expand-file-name "repos/" package-directory-version)))
 (defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
                               :ref nil :depth 1 :inherit ignore
                               :files (:defaults "elpaca-test.el" (:exclude "extensions"))
