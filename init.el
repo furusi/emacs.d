@@ -2335,7 +2335,7 @@ See `org-capture-templates' for more information."
     (funcall orig-fn extension subtreep pub-dir))
   (advice-add 'org-export-output-file-name :around 'org-export-output-file-name--set-directory))
 (leaf org-roam*
-    :elpaca org-roam org-roam-ui consult-org-roam
+    :elpaca org-roam consult-org-roam org-roam-ui (simple-httpd :repo "skeeto/emacs-web-server")
     :config
     (leaf org-roam
       :req "emacs-26.1" "dash-2.13" "org-9.4" "emacsql-20230228" "magit-section-3.0.0"
