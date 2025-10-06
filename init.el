@@ -469,13 +469,14 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (eshell-mode-hook . (lambda ()
                           (setq-local corfu-auto t
                                       corfu-quit-no-match 'separator)))
+    :global-minor-mode global-corfu-mode
     :init
     (defun corfu-move-to-minibuffer ()
       (interactive)
       (let ((completion-extra-properties corfu--extra)
             completion-cycle-threshold completion-cycling)
         (apply #'consult-completion-in-region completion-in-region--data)))
-    (global-corfu-mode)
+    :config
     (corfu-popupinfo-mode)
     (corfu-history-mode t)
     (savehist-mode t)
@@ -763,8 +764,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   :hook
   (diff-mode-hook . (lambda () (read-only-mode t))))
 (leaf autorevert
-  :hook
-  (emacs-startup-hook . global-auto-revert-mode))
+  :global-minor-mode global-auto-revert-mode)
 (leaf window
   :emacs>= 28
   :bind
