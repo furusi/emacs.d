@@ -2021,12 +2021,15 @@ and `clavis-org-refile-refiled-from-header' variables."
     (leaf org-eldoc
       :after org
       :hook (org-mode-hook . eldoc-mode)
+      :require t
       :config
-      (defadvice org-eldoc-documentation-function (around add-field-info activate)
-        (or
-         (ignore-errors (and (not (org-at-table-hline-p))
-                             (org-table-field-info nil)))
-         ad-do-it))
+      (advice-add 'org-eldoc-documentation-function :around
+                  (lambda (orig-fun &rest args)
+                    (or
+                     (ignore-errors (and (not (org-at-table-hline-p))
+                                         (org-table-field-info nil)))
+                     (apply orig-fun args))))
+
       (eldoc-add-command-completions
        "org-table-next-" "org-table-previous" "org-cycle"))
 
