@@ -2761,11 +2761,17 @@ See `org-capture-templates' for more information."
 (leaf circadian
   :elpaca t
   :after modus-themes
+  :require t
   :config
   (setq circadian-themes `((:sunrise . ,(nth 0 modus-themes-to-toggle))
-                           ("7:30"   . ,(nth 0 modus-themes-to-toggle))
-                           (:sunset  . ,(nth 1 modus-themes-to-toggle))
-                           ("18:00"  . ,(nth 1 modus-themes-to-toggle))))
+                           (:sunset  . ,(nth 1 modus-themes-to-toggle))))
+  (defvar circadian-sunset-offset-minutes -40)
+  (defun circadian-sunset-add-offset (f)
+    (let ((time (car f))
+          (offset (/ circadian-sunset-offset-minutes 60.0)))
+      (list (mod (+ time offset)  24.0))))
+  (advice-add 'circadian-frac-to-time
+              :filter-args 'circadian-sunset-add-offset)
   (circadian-setup))
 (leaf doom-themes :elpaca (doom-themes :repo ("doomemacs/themes"  . "doom-themes")))
 (leaf markdown-mode
