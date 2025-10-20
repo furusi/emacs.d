@@ -3254,6 +3254,8 @@ Optional argument ARG hoge."
   (add-hook 'org-ctrl-c-ctrl-c-final-hook #'ellama-chat-send-last-message))
 (leaf chatgpt-shell
   :elpaca t)
+(leaf gptel
+  :elpaca t)
 (leaf infinite-scroll
   :elpaca (infinite-scroll :type git :host github :repo "zonuexe/infinite-scroll.el"))
 (leaf ultra-scroll
@@ -3273,6 +3275,12 @@ Optional argument ARG hoge."
   :bind-keymap (:org-mode-map :package org ("C-c C-r" . verb-command-map))
   :config
   (push '("verb" . ?v) org-tag-alist))
+(leaf osm
+  :elpaca t
+  :custom
+  ((osm-server . 'default)
+   (osm-copyright . t)
+   (osm-search-language . "ja")))
 
 (add-to-list 'load-path (expand-file-name (locate-user-emacs-file "lisp")))
 (require 'my-lisp nil t)
