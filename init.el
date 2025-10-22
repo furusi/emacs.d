@@ -312,7 +312,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :elpaca t
     :custom
     ((completion-category-defaults  . nil)
-     (completion-category-overrides . '((file (styles basic partial-completion))))
+     (completion-category-overrides . '((file (styles partial-completion))))
      (completion-styles             . '(orderless basic))))
   ;; Persist history over Emacs restarts. Vertico sorts by history position.
   (leaf consult
@@ -2347,11 +2347,16 @@ See `org-capture-templates' for more information."
       :custom
       `((org-roam-directory . ,(format "%s/roam" org-directory))
         (org-roam-completion-everywhere . t)
-        ( org-roam-node-display-template .
-          ,(concat "${title:*} "
-                   (propertize "[${aliases:10}]" 'face 'font-lock-variable-name-face)
-                   " "
-                   (propertize "[${tags:10}]" 'face 'org-tag))))
+        (org-roam-node-display-template .
+                                        ,(concat "${title:*} "
+                                                 (propertize "[${aliases:10}]" 'face 'font-lock-variable-name-face)
+                                                 " "
+                                                 (propertize "[${tags:10}]" 'face 'org-tag)))
+        (org-roam-dailies-capture-templates .
+                                            '(("d" "default" plain "* %?\n%U\n"
+                                               :target
+                                               (file+head+olp "%<%Y-%m>.org"
+                                                              "#+TITLE: %<%Y-%m>\n\n\n" ("%<%Y-%m-%d>"))))))
       :bind
       (("C-c n l" . org-roam-buffer-toggle)
        ("C-c n f" . org-roam-node-find)
@@ -2366,11 +2371,6 @@ See `org-capture-templates' for more information."
       (org-roam-db-autosync-mode)
       (when (eq system-type 'darwin)
         (setq org-roam-graph-viewer "open"))
-      (setq org-roam-dailies-capture-templates
-            '(("d" "default" entry "* %?\n%U\n"
-               :target
-               (file+head+olp "%<%Y-%m>.org"
-                              "#+TITLE: %<%Y-%m>\n\n\n" ("%<%Y-%m-%d>")))))
       (push "ROAM_EXCLUDE" org-default-properties)
       (leaf org-roam-protocol :require t)
       ;; (advice-add 'org-roam-node-open :after (lambda (&rest _) (view-mode)))
@@ -2709,7 +2709,6 @@ See `org-capture-templates' for more information."
 (elpaca autodisass-java-bytecode)
 (elpaca solarized-theme)
 (leaf modus-themes
-  :elpaca t
   :require t
   :custom
   ((modus-themes-italic-constructs . t)
