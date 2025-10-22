@@ -185,7 +185,7 @@
       (funcall oldfun)))
     (advice-add 'pcomplete/git :around #'my-pcomplete/git:around)))
 (leaf magit
-  :elpaca transient
+  :elpaca (transient :tag "v0.10.1")
   :elpaca (magit :files ("lisp/magit*.el"
           "lisp/git-rebase.el" "lisp/git-commit.el" "docs/magit.texi"
           "docs/AUTHORS.md" "LICENSE"
