@@ -1068,6 +1068,7 @@ read-only-mode will be activated for that file."
                          (:exclude "skk-xemacs.el" "skk-lookup.el"))
                  :remotes ("fork"
                            ("origin" :host github :repo "skk-dev/ddskk" :branch "master")))
+  :elpaca (ccc :main "ccc.el" :version (lambda (_) "1.43"))
   :commands skk-mode
   :bind (("C-x C-j" . skk-mode)
          (:minibuffer-local-map
