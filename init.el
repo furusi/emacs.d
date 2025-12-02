@@ -358,7 +358,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
      :preview-key (list 'any)
      consult-ripgrep consult-git-grep consult-grep
      consult-bookmark consult-recent-file consult-xref
-     consult--source-recent-file consult--source-project-recent-file consult--source-bookmark
+     consult-source-bookmark consult-source-file-register
+     consult-source-recent-file consult-source-project-recent-file
      consult-find consult-fd consult-org-agenda
      :preview-key (if window-system "C-," "M-,"))
     (setq completion-in-region-function
