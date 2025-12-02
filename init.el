@@ -2354,7 +2354,7 @@ See `org-capture-templates' for more information."
                                                  " "
                                                  (propertize "[${tags:10}]" 'face 'org-tag)))
         (org-roam-dailies-capture-templates .
-                                            '(("d" "default" plain "* %?\n%U\n"
+                                            '(("d" "default" plain "** %?\n%U\n"
                                                :target
                                                (file+head+olp "%<%Y-%m>.org"
                                                               "#+TITLE: %<%Y-%m>\n\n\n" ("%<%Y-%m-%d>"))))))
