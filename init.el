@@ -321,8 +321,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     ((consult-async-min-input . 2)
      (consult-narrow-key . ">")
      (consult-project-function . #'projectile-project-root)
-     (consult-ripgrep-args
-      . "rg --hidden --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --with-filename --line-number --search-zip")
      (xref-show-definitions-function . #'consult-xref)
      (xref-show-xrefs-function . #'consult-xref))
     :bind (("C-c h" . consult-history)
@@ -368,7 +366,12 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
             (apply (if vertico-mode
                        #'consult-completion-in-region
                      #'completion--in-region)
-                   args))))
+                   args)))
+    (setq consult-ripgrep-args (format "%s --hidden --null --line-buffered --color=never \
+--max-columns=1000 --path-separator / --smart-case --no-heading \
+--with-filename --line-number --search-zip"
+                                       (or (executable-find "rg") "rg"))
+          consult-fd-args (format "%s --full-path --color=never" (or (executable-find "fd") "fd"))))
   (leaf affe
     :elpaca t
     :after consult
