@@ -185,7 +185,7 @@
       (funcall oldfun)))
     (advice-add 'pcomplete/git :around #'my-pcomplete/git:around)))
 (leaf magit
-  :elpaca (transient :tag "v0.10.1")
+  :elpaca transient
   :elpaca (magit :files ("lisp/magit*.el"
           "lisp/git-rebase.el" "lisp/git-commit.el" "docs/magit.texi"
           "docs/AUTHORS.md" "LICENSE"
@@ -1039,7 +1039,7 @@ read-only-mode will be activated for that file."
     (let ((tab-name-list (mapcar #'cdadr (tab-bar-tabs)))
           (tab-name (format "=p:%s"
                             (replace-regexp-in-string
-                             elpaca-repos-directory "/REPO/"
+                             elpaca-repos-directory "/PACKAGE/"
                              (projectile-acquire-root))))
           (project-root (projectile-acquire-root)))
       (cond
@@ -1132,7 +1132,7 @@ read-only-mode will be activated for that file."
   (leaf context-skk
     :config
     (dolist (mode '(python-mode js-mode rustic-mode dart-mode
-                                go-mode typescript-mode))
+                                go-mode typescript-mode powershell-mode))
       (add-to-list 'context-skk-programming-mode mode))
     (setq context-skk-mode-off-message "[context-skk] 日本語入力 off")
     (defun my-context-skk-at-heading-p ()
@@ -1470,6 +1470,7 @@ read-only-mode will be activated for that file."
     :after org
     :require t))
 (leaf rustowl
+  :disabled t
   :if (executable-find "rustowl")
   :elpaca (rustowlsp :host github :repo "cordx56/rustowl" :main "rustowl.el"))
 (leaf lsp-haskell
@@ -2726,6 +2727,7 @@ AcroRd32\\|acroread\\|pdfopen\\|xdg-open\\|open\\|start" . ".pdf")))
 (elpaca autodisass-java-bytecode)
 (elpaca solarized-theme)
 (leaf modus-themes
+  :elpaca t
   :require t
   :custom
   ((modus-themes-italic-constructs . t)
