@@ -242,6 +242,12 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (org-fold-show-all))
   (with-eval-after-load 'org-element-ast
     (add-hook 'ediff-prepare-buffer-hook #'my-ediff-prepare-buffer-function)))
+(leaf jj-mode
+  :if (executable-find "jj")
+  :elpaca (jj-mode :host github :repo "bolivier/jj-mode.el"))
+(leaf vc-jj
+  :if (executable-find "jj")
+  :elpaca t)
 (leaf *vertico
   :config
   (leaf vertico
@@ -2943,7 +2949,6 @@ Optional argument ARG hoge."
   :req "emacs-24.3"
   :tag "emacs>=24.3"
   :url "https://github.com/skeeto/elfeed"
-  :commands (elfeed)
   :emacs>= 24.3
   :bind ((:elfeed-show-mode-map
           ("S-SPC" . scroll-down-command))
