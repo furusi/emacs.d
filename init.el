@@ -7,18 +7,18 @@
 ;; (profiler-start 'cpu)
 
 ;;elpaca
-(defvar elpaca-installer-version 0.11)
-(let* ((package-directory (expand-file-name "elpaca/" (format "%spackages/" user-emacs-directory )))
+(defvar elpaca-installer-version 0.12)
+(let* ((package-directory (expand-file-name "elpaca/" (format "%spackages/" user-emacs-directory)))
        (package-directory-version (expand-file-name emacs-version package-directory)))
   (defvar elpaca-cache-directory (expand-file-name "cache/" package-directory))
   (defvar elpaca-directory package-directory-version)
   (defvar elpaca-builds-directory (expand-file-name "builds/" package-directory-version))
-  (defvar elpaca-repos-directory (expand-file-name "repos/" package-directory-version)))
+  (defvar elpaca-sources-directory (expand-file-name "sources/" package-directory-version)))
 (defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
                               :ref nil :depth 1 :inherit ignore
                               :files (:defaults "elpaca-test.el" (:exclude "extensions"))
-                              :build (:not elpaca--activate-package)))
-(let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
+                              :build (:not elpaca-activate)))
+(let* ((repo  (expand-file-name "elpaca/" elpaca-sources-directory))
        (build (expand-file-name "elpaca/" elpaca-builds-directory))
        (order (cdr elpaca-order))
        (default-directory repo))
@@ -916,8 +916,7 @@ read-only-mode will be activated for that file."
     ;; (set-face-attribute 'default nil
     ;;                     :family "YuKyokasho Yoko")
     ;; UDEV Gothic
-    (set-face-attribute 'default nil
-                        :family "UDEV Gothic JPDOC")
+    (set-face-attribute 'default nil :family "UDEV Gothic JPDOC")
     (set-fontset-font nil '(#x30000 . #x3134F) (font-spec :family "Source Han Sans SC"))
     (set-fontset-font nil '(#xAA80 . #xAADF) (font-spec :family "Noto Sans Tai Viet"))
     (let* ((variable-tuple
@@ -1045,7 +1044,7 @@ read-only-mode will be activated for that file."
     (let ((tab-name-list (mapcar #'cdadr (tab-bar-tabs)))
           (tab-name (format "=p:%s"
                             (replace-regexp-in-string
-                             elpaca-repos-directory "/PACKAGE/"
+                             elpaca-sources-directory "/PACKAGE/"
                              (projectile-acquire-root))))
           (project-root (projectile-acquire-root)))
       (cond
@@ -2420,7 +2419,7 @@ See `org-capture-templates' for more information."
   :emacs>= 26.1
   :after org
   :custom
-  `(org-tag-beautify-data-dir . ,(format "%sorg-tag-beautify/data/" elpaca-repos-directory))
+  `(org-tag-beautify-data-dir . ,(format "%sorg-tag-beautify/data/" elpaca-sources-directory))
   :config
   (org-tag-beautify-mode 1))
 (leaf anki-editor-org-src
