@@ -347,8 +347,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
          (:isearch-mode-map :package isearch
                             ("C-i" . my-consult-line)
                             ("M-e" . consult-isearch-history)))
-  :hook
-  (completion-list-mode-hook . consult-preview-at-point-mode)
   :init
   (defun my-consult-line (&optional at-point)
     (interactive "P")
@@ -2968,6 +2966,7 @@ Optional argument ARG hoge."
           ("k" . previous-line)
           ("p" . previous-line)
           ("e" . (lambda () (interactive)(eww (my-elfeed-yank-entry-url))))
+          ("E" . elfeed-search-browse-url)
           ("a" . my-elfeed-safari-add-reading-item)
           ("s" . my-elfeed-search-live-filter))
          (:elfeed-show-mode-map
