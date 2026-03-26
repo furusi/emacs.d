@@ -49,7 +49,7 @@
 (add-hook 'after-init-hook #'elpaca-process-queues)
 (elpaca `(,@elpaca-order))
 (setq elpaca-queue-limit (if (eq system-type 'windows-nt)
-                             15
+                             10
                            30))
 (when (eq system-type 'windows-nt)
   (elpaca-no-symlink-mode 1))
