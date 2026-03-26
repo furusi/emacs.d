@@ -491,6 +491,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (corfu-history-mode t)
     (savehist-mode t)
     (add-to-list 'savehist-additional-variables 'corfu-history)
+    (when (version<= "30" emacs-version)
+      (setopt text-mode-ispell-word-completion nil))
     (with-eval-after-load 'dabbrev
       (dolist (mode '(tags-table-mode skk-jisyo-mode))
         (push mode dabbrev-ignored-buffer-modes))))
@@ -734,6 +736,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
              (browse-url-default-macosx-browser url))
             ((string-match ".*-microsoft-standard-WSL2.*" operating-system-release)
              (browse-url-generic url))
+            ((eq system-type 'windows-nt) (browse-url-default-windows-browser url))
             (t
              (browse-url-firefox url))))))
 (leaf image-mode
@@ -1685,6 +1688,7 @@ If NAME is not provided, it defaults to the string representation of MODE."
       (org-special-ctrl-a/e . t)
       (org-src-preserve-indentation . t)
       (org-startup-folded . t)
+      (org-startup-with-inline-images . t)
       (org-use-sub-superscripts . '{})
       )
     :bind (("C-c c" . org-capture)
@@ -2907,10 +2911,8 @@ Optional argument ARG hoge."
           ((= arg 1) (message "another *scratch* is created")))))
 
 (leaf ispell
-  :require t
-  :config
-  ;; (setq ispell-program-name "hunspell")
-  (setq ispell-really-hunspell t))
+  :custom
+  ((ispell-really-hunspell . t)))
 (leaf epg-config
   :custom
   (epg-pinentry-mode . 'loopback))
