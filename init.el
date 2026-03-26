@@ -2360,10 +2360,9 @@ See `org-capture-templates' for more information."
     (leaf org-roam
       :req "emacs-26.1" "dash-2.13" "org-9.4" "emacsql-20230228" "magit-section-3.0.0"
       :emacs>= 26.1
-      :commands (org-roam-node-find)
+      :after (org no-littering)
       :custom
-      `((org-roam-directory . ,(format "%s/roam" org-directory))
-        (org-roam-completion-everywhere . t)
+      `((org-roam-completion-everywhere . t)
         (org-roam-node-display-template .
                                         ,(concat "${title:*} "
                                                  (propertize "[${aliases:10}]" 'face 'font-lock-variable-name-face)
@@ -2385,6 +2384,7 @@ See `org-capture-templates' for more information."
        ("C-c n j" . org-roam-dailies-capture-today)
        ("C-c n t" . org-roam-dailies-goto-today))
       :config
+      (setopt org-roam-directory (format "%s/roam" org-directory))
       (org-roam-db-autosync-mode)
       (when (eq system-type 'darwin)
         (setq org-roam-graph-viewer "open"))
@@ -2403,7 +2403,6 @@ See `org-capture-templates' for more information."
     (leaf org-roam-ui
         :req "emacs-27.1" "org-roam-2.0.0" "simple-httpd-20191103.1446" "websocket-1.13"
         :emacs>= 27.1
-        :after org-roam
         :custom ((org-roam-ui-sync-theme . t)
                  (org-roam-ui-follow . t)
                  (org-roam-ui-update-on-save . t)))
