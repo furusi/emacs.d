@@ -1612,12 +1612,16 @@ read-only-mode will be activated for that file."
 
 
 ;; Org-mode
-(defmacro my-org-push-src-lang-modes (mode  &optional name)
-   (cond
-    ((null name) (setq name (symbol-name mode)))
-    ((symbolp name) (setq name (symbol-name name))))
-   `(with-eval-after-load 'org
-      (push '(,name . ,mode) org-src-lang-modes)))
+(defun my-org-push-src-lang-modes (mode &optional name)
+  "Enhance the org-src-lang-modes list with the given MODE and optional NAME.
+If NAME is not provided, it defaults to the string representation of MODE."
+  (let ((name (cond
+               ((stringp name) name)
+               ((symbolp name) (symbol-name name))
+               ((null name) (symbol-name mode)))))
+    (with-eval-after-load 'org
+      (add-to-list 'org-src-lang-modes (cons name mode)))))
+
 (leaf org*
   :config
   (leaf org
@@ -2435,7 +2439,7 @@ See `org-capture-templates' for more information."
 (leaf mermaid-mode
   :elpaca t
   :config
-  (my-org-push-src-lang-modes mermaid))
+  (my-org-push-src-lang-modes 'mermaid))
 (leaf mu4e
   :disabled t
   :load-path "/opt/homebrew/opt/mu/share/emacs/site-lisp/mu/mu4e"
@@ -2605,7 +2609,7 @@ AcroRd32\\|acroread\\|pdfopen\\|xdg-open\\|open\\|start" . ".pdf")))
   :elpaca t
   :hook ((go-mode-hook . lsp-deferred))
   :config
-  (my-org-push-src-lang-modes go))
+  (my-org-push-src-lang-modes 'go))
 (leaf go-ts-mode
   :hook ((go-ts-mode-hook . lsp-deferred)
          (go-ts-mode-hook . (lambda ()
@@ -2629,7 +2633,7 @@ AcroRd32\\|acroread\\|pdfopen\\|xdg-open\\|open\\|start" . ".pdf")))
   (push '(javascript-mode . js-ts-mode) major-mode-remap-alist))
 (leaf toml
   :config
-  (my-org-push-src-lang-modes conf-toml toml))
+  (my-org-push-src-lang-modes 'conf-toml "toml"))
 (when (version< emacs-version "29")
   (elpaca csharp-mode))
 (elpaca android-mode)
@@ -2643,7 +2647,7 @@ AcroRd32\\|acroread\\|pdfopen\\|xdg-open\\|open\\|start" . ".pdf")))
 (leaf applescript-mode
   :elpaca t
   :init
-  (my-org-push-src-lang-modes applescript))
+  (my-org-push-src-lang-modes 'applescript))
 (leaf ccls
   :elpaca t
   :after lsp-mode
@@ -2677,7 +2681,7 @@ AcroRd32\\|acroread\\|pdfopen\\|xdg-open\\|open\\|start" . ".pdf")))
   :elpaca t
   :mode (("\\.kt\\'" . kotlin-mode))
   :config
-  (my-org-push-src-lang-modes kotlin))
+  (my-org-push-src-lang-modes 'kotlin))
 (elpaca ob-kotlin)
 (leaf dart-mode
   :elpaca (dart-mode :host github :repo "bradyt/dart-mode")
@@ -2816,7 +2820,7 @@ AcroRd32\\|acroread\\|pdfopen\\|xdg-open\\|open\\|start" . ".pdf")))
     "p" #'markdown-outline-previous
     "TAB" #'markdown-cycle
     "u" #'markdown-up-heading)
-  (my-org-push-src-lang-modes markdown))
+  (my-org-push-src-lang-modes 'markdown))
 (elpaca docker)
 
 (elpaca docker-compose-mode)
@@ -2846,7 +2850,7 @@ AcroRd32\\|acroread\\|pdfopen\\|xdg-open\\|open\\|start" . ".pdf")))
 (leaf fish-mode
   :elpaca t
   :config
-  (my-org-push-src-lang-modes fish))
+  (my-org-push-src-lang-modes 'fish))
 
 (leaf dockerfile-mode
   :elpaca t
@@ -3054,8 +3058,8 @@ Optional argument ARG hoge."
 (leaf powershell
   :elpaca t
   :config
-  (my-org-push-src-lang-modes powershell)
-  (my-org-push-src-lang-modes powershell pwsh))
+  (my-org-push-src-lang-modes 'powershell)
+  (my-org-push-src-lang-modes 'powershell 'pwsh))
 
 (elpaca lua-mode)
 (leaf pcre2el
