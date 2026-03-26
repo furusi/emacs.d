@@ -2808,7 +2808,15 @@ AcroRd32\\|acroread\\|pdfopen\\|xdg-open\\|open\\|start" . ".pdf")))
   :custom ((markdown-command . "multimarkdown"))
   :hook (markdown-mode-hook . (lambda ()
                                 (setq-local imenu-create-index-function
-                                            'markdown-imenu-create-flat-index)))
+                                            'markdown-imenu-create-flat-index)
+                                (when markdown-startup-folded
+                                  (markdown-cycle t))))
+  :init
+  (my-org-push-src-lang-modes 'markdown)
+  (defcustom markdown-startup-folded t
+    "`markdown-mode' 起動時に折り畳む"
+    :group 'markdown
+    :type 'boolean)
   :config
   (when (member "IPAGothic" (font-family-list))
     (set-face-attribute 'markdown-table-face nil
