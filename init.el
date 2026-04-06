@@ -1620,8 +1620,8 @@ read-only-mode will be activated for that file."
 If NAME is not provided, it defaults to the string representation of MODE."
   (let ((name (cond
                ((stringp name) name)
-               ((symbolp name) (symbol-name name))
-               ((null name) (symbol-name mode)))))
+               ((null name) (symbol-name mode))
+               ((symbolp name) (symbol-name name)))))
     (with-eval-after-load 'org
       (add-to-list 'org-src-lang-modes (cons name mode)))))
 
