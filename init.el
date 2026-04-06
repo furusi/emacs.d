@@ -2678,8 +2678,7 @@ AcroRd32\\|acroread\\|pdfopen\\|xdg-open\\|open\\|start" . ".pdf")))
     "u"   #'sp-backward-up-sexp
     "n"   #'sp-next-sexp
     "p"   #'sp-previous-sexp
-    "@"   #'sp-mark-sexp
-    ))
+    "@"   #'sp-mark-sexp))
 (leaf kotlin-mode
   :elpaca t
   :mode (("\\.kt\\'" . kotlin-mode))
@@ -2703,7 +2702,10 @@ AcroRd32\\|acroread\\|pdfopen\\|xdg-open\\|open\\|start" . ".pdf")))
                                                     embark-target-finders)
                                                    '(embark-target-file-at-point))))))))
 (leaf zig-mode
-  :elpaca t)
+  :elpaca t
+  :hook (zig-mode-hook . lsp-deferred)
+  :init
+  (my-org-push-src-lang-modes 'zig))
 (elpaca fsharp-mode)
 (leaf plantuml-mode
   :elpaca t
@@ -2830,8 +2832,7 @@ AcroRd32\\|acroread\\|pdfopen\\|xdg-open\\|open\\|start" . ".pdf")))
     "n" #'markdown-outline-next
     "p" #'markdown-outline-previous
     "TAB" #'markdown-cycle
-    "u" #'markdown-up-heading)
-  (my-org-push-src-lang-modes 'markdown))
+    "u" #'markdown-up-heading))
 (elpaca docker)
 
 (elpaca docker-compose-mode)
