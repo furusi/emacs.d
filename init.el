@@ -249,11 +249,12 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   :if (executable-find "jj")
   :elpaca t)
 (leaf *vertico
+  :elpaca (vertico :host github :repo "minad/vertico"
+                   :files (:defaults "extensions/*.el"))
+  :elpaca cape
   :config
   (leaf vertico
     :emacs>= 27.1
-    :elpaca (vertico :host github :repo "minad/vertico"
-                     :files (:defaults "extensions/*.el"))
     :bind ((:vertico-map
             ("M-RET" . minibuffer-force-complete-and-exit)
             ("M-TAB" . minibuffer-complete)
@@ -537,7 +538,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     (add-hook 'text-mode-hook 'tempel-setup-capf))
   (elpaca tempel-collection)
   (leaf cape
-    :elpaca t
     :doc "Completion At Point Extensions"
     :req "emacs-27.1"
     :tag "emacs>=27.1"
@@ -545,6 +545,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
     :emacs>= 27.1
     :custom
     (cape-dict-limit . 20000)
+    (cape-dabbrev-buffer-function . #'cape-text-buffers)
     :bind-keymap
     ("C-c f" . cape-prefix-map)
     :init
