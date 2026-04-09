@@ -2570,7 +2570,6 @@ AcroRd32\\|acroread\\|pdfopen\\|xdg-open\\|open\\|start" . ".pdf")))
   :elpaca t
   :custom
   ((php-manual-url . 'ja)))
-(elpaca ac-php)
 (leaf flycheck-phpstan
   :elpaca t
   :hook (php-mode-hook . (lambda ()
@@ -2578,7 +2577,6 @@ AcroRd32\\|acroread\\|pdfopen\\|xdg-open\\|open\\|start" . ".pdf")))
                            (flycheck-mode t))))
 (leaf company-php
     :elpaca t
-    :after (ac-php)
     :hook (php-mode-hook . (lambda ()
                              ;; Enable company-mode
                              (company-mode t)
