@@ -248,372 +248,371 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
 (leaf vc-jj
   :if (executable-find "jj")
   :elpaca t)
-(leaf *vertico
-  :config
-  (leaf vertico
-    :emacs>= 27.1
-    :elpaca (vertico :host github :repo "minad/vertico"
-                     :files (:defaults "extensions/*.el"))
-    :bind ((:vertico-map
-            ("M-RET" . minibuffer-force-complete-and-exit)
-            ("M-TAB" . minibuffer-complete)
-            ("C-r" . vertico-previous)
-            ("C-s" . vertico-next)))
-    :custom
-    ((vertico-count . 20)
-     (vertico-cycle . t)
-     (vertico-resize . t)
-     ;; Do not allow the cursor in the minibuffer prompt
-     (minibuffer-prompt-properties . '(read-only t cursor-intangible t face minibuffer-prompt))
-     ;; Enable recursive minibuffers
-     (enable-recursive-minibuffers . t))
-    :global-minor-mode t
-    :config
-    (when (< emacs-major-version 31)
-      (advice-add #'completing-read-multiple :filter-args
-                  (lambda (args)
-                    (cons (format "[CRM%s] %s"
-                                  (string-replace "[ \t]*" "" crm-separator)
-                                  (car args))
-                          (cdr args)))))
-    (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode))
-  (leaf vertico-multiform
-    :disabled t
-    :after consult vertico
-    :custom
-    ((vertico-multiform-categories . '((consult-grep
-                                        buffer
-                                        (vertico-buffer-display-action . (display-buffer-same-window))))))
-    :config
-    (vertico-multiform-mode)
-    (setq vertico-multiform-commands
-          `((consult-imenu buffer ,(lambda (_) (text-scale-set -1)))
-            (consult-outline buffer ,(lambda (_) (text-scale-set -1)))))
-    ;; Disable preview for consult-grep commands
-    (consult-customize consult-ripgrep consult-git-grep consult-grep
-                       :preview-key nil))
 
-  (leaf vertico-repeat
-    :bind (("C-x c r" . vertico-repeat-previous)
-           ("C-x c R" . vertico-repeat-select))
-    :hook
-    (minibuffer-setup-hook . vertico-repeat-save))
-  (leaf vertico-directory
-    :bind ((:vertico-map
-            ("RET"    . vertico-directory-enter)
-            ("DEL"    . vertico-directory-delete-char)
-            ("M-DEL"  . vertico-directory-delete-word)
-            ("C-l"    . vertico-directory-up)))
-    ;; Tidy shadowed file names
-    :hook
-    (rfn-eshadow-update-overlay-hook . vertico-directory-tidy))
-  (leaf vertico-quick
-    :custom
-    ((vertico-quick1 . "aoeu")
-     (vertico-quick2 . "htns")))
-  ;; Use the `orderless' completion style.
-  ;; Enable `partial-completion' for files to allow path expansion.
-  ;; You may prefer to use `initials' instead of `partial-completion'.
-  (leaf orderless
-    :elpaca t
-    :custom
-    ((completion-category-defaults  . nil)
-     (completion-category-overrides . '((file (styles partial-completion))))
-     (completion-styles             . '(orderless basic))))
-  ;; Persist history over Emacs restarts. Vertico sorts by history position.
-  (leaf consult
-    :elpaca (consult :host github :repo "minad/consult") consult-projectile
-    :custom
-    ((consult-async-min-input . 2)
-     (consult-narrow-key . ">")
-     (consult-project-function . #'projectile-project-root)
-     (xref-show-definitions-function . #'consult-xref)
-     (xref-show-xrefs-function . #'consult-xref))
-    :bind (("C-c h" . consult-history)
-           ("C-c m" . consult-mode-command)
-           ("C-x C-SPC" . consult-global-mark)
-           ("C-x b" . consult-buffer)
-           ("C-x c i" . consult-imenu)
-           ("M-g i" . consult-imenu)
-           ("M-g m" . consult-mark)
-           ("C-x j" . consult-recent-file)
-           ("C-x r j" . consult-register)
-           ("C-x r l"  . consult-bookmark)
-           ("M-y" . consult-yank-pop)
-           ("C-x 4 b" . consult-buffer-other-window)
-           ("C-x 5 b" . consult-buffer-other-frame)
-           ("C-x r SPC" . consult-register-store)
-           ("C-h i" . consult-info)
-           ([remap goto-line] . consult-goto-line)
-           (:isearch-mode-map :package isearch
-                              ("C-i" . my-consult-line)
-                              ("M-e" . consult-isearch-history)))
-    :hook
-    (completion-list-mode-hook . consult-preview-at-point-mode)
-    :init
-    (defun my-consult-line (&optional at-point)
-      (interactive "P")
-      (if at-point
-          (consult-line (thing-at-point 'symbol))
-        (consult-line)))
-    :config
-    (consult-customize
-     consult-theme
-     :preview-key (list :debounce 1.0 'any)
-     consult-goto-line consult-line
-     :preview-key (list 'any)
-     consult-ripgrep consult-git-grep consult-grep
-     consult-bookmark consult-recent-file consult-xref
-     consult-source-bookmark consult-source-file-register
-     consult-source-recent-file consult-source-project-recent-file
-     consult-find consult-fd consult-org-agenda
-     :preview-key (if window-system "C-," "M-,"))
-    (setq completion-in-region-function
-          (lambda (&rest args)
-            (apply (if vertico-mode
-                       #'consult-completion-in-region
-                     #'completion--in-region)
-                   args)))
-    (setq consult-ripgrep-args (format "%s --hidden --null --line-buffered --color=never \
+(leaf vertico
+  :emacs>= 27.1
+  :elpaca (vertico :host github :repo "minad/vertico"
+                   :files (:defaults "extensions/*.el"))
+  :bind ((:vertico-map
+          ("M-RET" . minibuffer-force-complete-and-exit)
+          ("M-TAB" . minibuffer-complete)
+          ("C-r" . vertico-previous)
+          ("C-s" . vertico-next)))
+  :custom
+  ((vertico-count . 20)
+   (vertico-cycle . t)
+   (vertico-resize . t)
+   ;; Do not allow the cursor in the minibuffer prompt
+   (minibuffer-prompt-properties . '(read-only t cursor-intangible t face minibuffer-prompt))
+   ;; Enable recursive minibuffers
+   (enable-recursive-minibuffers . t))
+  :global-minor-mode t
+  :config
+  (when (< emacs-major-version 31)
+    (advice-add #'completing-read-multiple :filter-args
+                (lambda (args)
+                  (cons (format "[CRM%s] %s"
+                                (string-replace "[ \t]*" "" crm-separator)
+                                (car args))
+                        (cdr args)))))
+  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode))
+(leaf vertico-multiform
+  :disabled t
+  :after consult vertico
+  :custom
+  ((vertico-multiform-categories . '((consult-grep
+                                      buffer
+                                      (vertico-buffer-display-action . (display-buffer-same-window))))))
+  :config
+  (vertico-multiform-mode)
+  (setq vertico-multiform-commands
+        `((consult-imenu buffer ,(lambda (_) (text-scale-set -1)))
+          (consult-outline buffer ,(lambda (_) (text-scale-set -1)))))
+  ;; Disable preview for consult-grep commands
+  (consult-customize consult-ripgrep consult-git-grep consult-grep
+                     :preview-key nil))
+
+(leaf vertico-repeat
+  :bind (("C-x c r" . vertico-repeat-previous)
+         ("C-x c R" . vertico-repeat-select))
+  :hook
+  (minibuffer-setup-hook . vertico-repeat-save))
+(leaf vertico-directory
+  :bind ((:vertico-map
+          ("RET"    . vertico-directory-enter)
+          ("DEL"    . vertico-directory-delete-char)
+          ("M-DEL"  . vertico-directory-delete-word)
+          ("C-l"    . vertico-directory-up)))
+  ;; Tidy shadowed file names
+  :hook
+  (rfn-eshadow-update-overlay-hook . vertico-directory-tidy))
+(leaf vertico-quick
+  :custom
+  ((vertico-quick1 . "aoeu")
+   (vertico-quick2 . "htns")))
+;; Use the `orderless' completion style.
+;; Enable `partial-completion' for files to allow path expansion.
+;; You may prefer to use `initials' instead of `partial-completion'.
+(leaf orderless
+  :elpaca t
+  :custom
+  ((completion-category-defaults  . nil)
+   (completion-category-overrides . '((file (styles partial-completion))))
+   (completion-styles             . '(orderless basic))))
+;; Persist history over Emacs restarts. Vertico sorts by history position.
+(leaf consult
+  :elpaca (consult :host github :repo "minad/consult") consult-projectile
+  :custom
+  ((consult-async-min-input . 2)
+   (consult-narrow-key . ">")
+   (consult-project-function . #'projectile-project-root)
+   (xref-show-definitions-function . #'consult-xref)
+   (xref-show-xrefs-function . #'consult-xref))
+  :bind (("C-c h" . consult-history)
+         ("C-c m" . consult-mode-command)
+         ("C-x C-SPC" . consult-global-mark)
+         ("C-x b" . consult-buffer)
+         ("C-x c i" . consult-imenu)
+         ("M-g i" . consult-imenu)
+         ("M-g m" . consult-mark)
+         ("C-x j" . consult-recent-file)
+         ("C-x r j" . consult-register)
+         ("C-x r l"  . consult-bookmark)
+         ("M-y" . consult-yank-pop)
+         ("C-x 4 b" . consult-buffer-other-window)
+         ("C-x 5 b" . consult-buffer-other-frame)
+         ("C-x r SPC" . consult-register-store)
+         ("C-h i" . consult-info)
+         ([remap goto-line] . consult-goto-line)
+         (:isearch-mode-map :package isearch
+                            ("C-i" . my-consult-line)
+                            ("M-e" . consult-isearch-history)))
+  :hook
+  (completion-list-mode-hook . consult-preview-at-point-mode)
+  :init
+  (defun my-consult-line (&optional at-point)
+    (interactive "P")
+    (if at-point
+        (consult-line (thing-at-point 'symbol))
+      (consult-line)))
+  :config
+  (consult-customize
+   consult-theme
+   :preview-key (list :debounce 1.0 'any)
+   consult-goto-line consult-line
+   :preview-key (list 'any)
+   consult-ripgrep consult-git-grep consult-grep
+   consult-bookmark consult-recent-file consult-xref
+   consult-source-bookmark consult-source-file-register
+   consult-source-recent-file consult-source-project-recent-file
+   consult-find consult-fd consult-org-agenda
+   :preview-key (if window-system "C-," "M-,"))
+  (setq completion-in-region-function
+        (lambda (&rest args)
+          (apply (if vertico-mode
+                     #'consult-completion-in-region
+                   #'completion--in-region)
+                 args)))
+  (setq consult-ripgrep-args (format "%s --hidden --null --line-buffered --color=never \
 --max-columns=1000 --path-separator / --smart-case --no-heading \
 --with-filename --line-number --search-zip"
-                                       (or (executable-find "rg") "rg"))
-          consult-fd-args (format "%s --full-path --color=never" (or (executable-find "fd") "fd"))))
-  (leaf affe
-    :elpaca t
-    :after consult
-    :custom
-    ((affe-highlight-function . 'orderless-highlight-matches)
-     (affe-regexp-function . 'orderless-compile))
-    :config
-    ;; Manual preview key for `affe-grep'
-    (consult-customize affe-grep :preview-key "M-."))
-  (leaf marginalia
-    :elpaca t
-    :bind (("M-A" . marginalia-cycle)
-           (:minibuffer-local-map
-            ("M-A" . marginalia-cycle)))
-    :init
-    (marginalia-mode))
-  (leaf embark
-    :elpaca (embark :files (:defaults ("embark-org.el" "embark-consult.el")))
-    :emacs>= 26.1
-    :hook
-    (embark-collect-mode-hook . consult-preview-at-point-mode)
-    :bind
-    `((,(if window-system "C-." "M-.") . embark-act)         ;; pick some comfortable binding
-      ("C-h B" . embark-bindings) ;; alternative for `describe-bindings'
-      (:embark-package-map
-       ("b" . embark-browse-package-url))
-      (:embark-region-map
-       ("C-l" . my-lookup-mkdict)
-       ("j" . join-line))
-      (:embark-symbol-map
-       ("C-l" . my-lookup-mkdict))
-      (:embark-identifier-map
-       ("C-l" . my-lookup-mkdict)))
-    :init
-    ;; Optionally replace the key help with a completing-read interface
-    ;; (setq prefix-help-command #'embark-prefix-help-command)
-    (defun my-lookup-mkdict (str)
-      (interactive "sInput: ")
-      (call-process
-       "open" nil 0 nil
-       (concat "mkdictionaries:///?text=" str)))
-    :config
-    ;; Hide the mode line of the Embark live/completions buffers
-    (add-to-list 'display-buffer-alist
-                 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                   nil
-                   (window-parameters (mode-line-format . none))))
-    (defun my-advice--fixup-whitespace (old-fn &rest args)
-      "Skip function execution when cursor is between Japanese characters"
-      (if (and (looking-at-p " *\\cj")
-               (looking-back "\\cj *" (point-beginning-of-line)))
-          (cycle-spacing 0)
-        (apply old-fn args)))
-    (advice-add 'fixup-whitespace :around #'my-advice--fixup-whitespace))
-  (leaf all-the-icons-completion
-    :elpaca t
-    :doc "Add icons to completion candidates"
-    :req "emacs-26.1" "all-the-icons-5.0"
-    :tag "lisp" "convenient" "emacs>=26.1"
-    :url "https://github.com/iyefrat/all-the-icons-completion"
-    :emacs>= 26.1
-    :after all-the-icons
-    :config
-    (all-the-icons-completion-mode t))
-  (defcustom my-completion-frontend 'corfu
-    "Completion backend to use. Can be 'corfu, 'completion-preview, or nil."
-    :type '(choice (const :tag "Use Corfu" corfu)
-                   (const :tag "Use Completion Preview" completion-preview)
-                   (const :tag "None" nil))
-    :group 'my-custom-group)
-  (leaf completion-preview
-    :if (eq my-completion-frontend 'completion-preview)
-    :bind
-    (:completion-preview-active-mode-map
-     ("M-n" . completion-preview-next-candidate)
-     ("M-p" . completion-preview-prev-candidate))
-    :custom
-    (completion-preview-minimum-symbol-length . 2)
-    :global-minor-mode global-completion-preview-mode)
-  (leaf corfu
-    :if (eq my-completion-frontend 'corfu)
-    :elpaca (corfu :host github :repo "minad/corfu" :depth 10 :files (:defaults "extensions/*.el"))
-    :url "https://github.com/minad/corfu"
-    :emacs>= 27.1
-    :bind
-    (:corfu-map
-     ("M-SPC" . corfu-insert-separator)
-     ("M-m" . corfu-move-to-minibuffer))
-    :custom
-    ((completion-cycle-threshold . 3)
-     (corfu-preselect . 'prompt)
-     (corfu-auto . t)
-     (corfu-cycle . t)
-     (corfu-exclude-modes . '(rustic-mode rust-mode))
-     (tab-always-indent . 'complete)
-     (corfu-on-exact-match . nil))
-    :hook
-    (eshell-mode-hook . (lambda ()
-                          (setq-local corfu-auto t
-                                      corfu-quit-no-match 'separator)))
-    :global-minor-mode global-corfu-mode
-    :init
-    (defun corfu-move-to-minibuffer ()
-      (interactive)
-      (let ((completion-extra-properties corfu--extra)
-            completion-cycle-threshold completion-cycling)
-        (apply #'consult-completion-in-region completion-in-region--data)))
-    :config
-    (corfu-popupinfo-mode)
-    (corfu-history-mode t)
-    (savehist-mode t)
-    (add-to-list 'savehist-additional-variables 'corfu-history)
-    (when (version<= "30" emacs-version)
-      (setopt text-mode-ispell-word-completion nil))
-    (with-eval-after-load 'dabbrev
-      (dolist (mode '(tags-table-mode skk-jisyo-mode))
-        (push mode dabbrev-ignored-buffer-modes))))
-  (leaf corfu-terminal
-    :if (and (< emacs-major-version 31)
-             (null (display-graphic-p)))
-    :elpaca t
-    :after corfu popon
-    :config
-    (unless (display-graphic-p)
-      (corfu-terminal-mode +1)))
-  (leaf popon
-    :elpaca t
-    :init
-    (unless (display-graphic-p)
-      (require 'popon)))
-  (leaf tempel
-    :elpaca t
-    :doc "Tempo templates/snippets with in-buffer field editing"
-    :req "emacs-27.1"
-    :tag "emacs>=27.1"
-    :url "https://github.com/minad/tempel"
-    :emacs>= 27.1
-    :bind
-    ((("M-+" . tempel-complete) ;; Alternative tempel-expand
-      ("M-*" . tempel-insert))
-     (:tempel-map
-      ("C-i" . tempel-next)))
-    :custom
-    `((tempel-path . ,(format "%ssnippets/tempel/templates/*" user-emacs-directory)))
-    :init
-    (defun tempel-setup-capf ()
-      ;; Add the Tempel Capf to `completion-at-point-functions'. `tempel-expand'
-      ;; only triggers on exact matches. Alternatively use `tempel-complete' if
-      ;; you want to see all matches, but then Tempel will probably trigger too
-      ;; often when you don't expect it.
-      ;; NOTE: We add `tempel-expand' *before* the main programming mode Capf,
-      ;; such that it will be tried first.
-      (add-hook 'completion-at-point-functions
-                #'tempel-expand nil 'local))
-    (add-hook 'prog-mode-hook 'tempel-setup-capf)
-    (add-hook 'text-mode-hook 'tempel-setup-capf))
-  (elpaca tempel-collection)
-  (leaf cape
-    :elpaca t
-    :doc "Completion At Point Extensions"
-    :req "emacs-27.1"
-    :tag "emacs>=27.1"
-    :url "https://github.com/minad/cape"
-    :emacs>= 27.1
-    :custom
-    (cape-dict-limit . 20000)
-    :bind-keymap
-    ("C-c f" . cape-prefix-map)
-    :init
-    (if (memq system-type '(darwin gnu/linux))
-        (customize-set-variable 'cape-dict-file "/usr/share/dict/words"))
-    (add-hook 'completion-at-point-functions #'cape-keyword)
-    (add-hook 'completion-at-point-functions #'cape-tex)
-    (add-hook 'completion-at-point-functions #'cape-file)
+                                     (or (executable-find "rg") "rg"))
+        consult-fd-args (format "%s --full-path --color=never" (or (executable-find "fd") "fd"))))
+(leaf affe
+  :elpaca t
+  :after consult
+  :custom
+  ((affe-highlight-function . 'orderless-highlight-matches)
+   (affe-regexp-function . 'orderless-compile))
+  :config
+  ;; Manual preview key for `affe-grep'
+  (consult-customize affe-grep :preview-key "M-."))
+(leaf marginalia
+  :elpaca t
+  :bind (("M-A" . marginalia-cycle)
+         (:minibuffer-local-map
+          ("M-A" . marginalia-cycle)))
+  :init
+  (marginalia-mode))
+(leaf embark
+  :elpaca (embark :files (:defaults ("embark-org.el" "embark-consult.el")))
+  :emacs>= 26.1
+  :hook
+  (embark-collect-mode-hook . consult-preview-at-point-mode)
+  :bind
+  `((,(if window-system "C-." "M-.") . embark-act)         ;; pick some comfortable binding
+    ("C-h B" . embark-bindings) ;; alternative for `describe-bindings'
+    (:embark-package-map
+     ("b" . embark-browse-package-url))
+    (:embark-region-map
+     ("C-l" . my-lookup-mkdict)
+     ("j" . join-line))
+    (:embark-symbol-map
+     ("C-l" . my-lookup-mkdict))
+    (:embark-identifier-map
+     ("C-l" . my-lookup-mkdict)))
+  :init
+  ;; Optionally replace the key help with a completing-read interface
+  ;; (setq prefix-help-command #'embark-prefix-help-command)
+  (defun my-lookup-mkdict (str)
+    (interactive "sInput: ")
+    (call-process
+     "open" nil 0 nil
+     (concat "mkdictionaries:///?text=" str)))
+  :config
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none))))
+  (defun my-advice--fixup-whitespace (old-fn &rest args)
+    "Skip function execution when cursor is between Japanese characters"
+    (if (and (looking-at-p " *\\cj")
+             (looking-back "\\cj *" (point-beginning-of-line)))
+        (cycle-spacing 0)
+      (apply old-fn args)))
+  (advice-add 'fixup-whitespace :around #'my-advice--fixup-whitespace))
+(leaf all-the-icons-completion
+  :elpaca t
+  :doc "Add icons to completion candidates"
+  :req "emacs-26.1" "all-the-icons-5.0"
+  :tag "lisp" "convenient" "emacs>=26.1"
+  :url "https://github.com/iyefrat/all-the-icons-completion"
+  :emacs>= 26.1
+  :after all-the-icons
+  :config
+  (all-the-icons-completion-mode t))
+(defcustom my-completion-frontend 'corfu
+  "Completion backend to use. Can be 'corfu, 'completion-preview, or nil."
+  :type '(choice (const :tag "Use Corfu" corfu)
+                 (const :tag "Use Completion Preview" completion-preview)
+                 (const :tag "None" nil))
+  :group 'my-custom-group)
+(leaf completion-preview
+  :if (eq my-completion-frontend 'completion-preview)
+  :bind
+  (:completion-preview-active-mode-map
+   ("M-n" . completion-preview-next-candidate)
+   ("M-p" . completion-preview-prev-candidate))
+  :custom
+  (completion-preview-minimum-symbol-length . 2)
+  :global-minor-mode global-completion-preview-mode)
+(leaf corfu
+  :if (eq my-completion-frontend 'corfu)
+  :elpaca (corfu :host github :repo "minad/corfu" :depth 10 :files (:defaults "extensions/*.el"))
+  :url "https://github.com/minad/corfu"
+  :emacs>= 27.1
+  :bind
+  (:corfu-map
+   ("M-SPC" . corfu-insert-separator)
+   ("M-m" . corfu-move-to-minibuffer))
+  :custom
+  ((completion-cycle-threshold . 3)
+   (corfu-preselect . 'prompt)
+   (corfu-auto . t)
+   (corfu-cycle . t)
+   (corfu-exclude-modes . '(rustic-mode rust-mode))
+   (tab-always-indent . 'complete)
+   (corfu-on-exact-match . nil))
+  :hook
+  (eshell-mode-hook . (lambda ()
+                        (setq-local corfu-auto t
+                                    corfu-quit-no-match 'separator)))
+  :global-minor-mode global-corfu-mode
+  :init
+  (defun corfu-move-to-minibuffer ()
+    (interactive)
+    (let ((completion-extra-properties corfu--extra)
+          completion-cycle-threshold completion-cycling)
+      (apply #'consult-completion-in-region completion-in-region--data)))
+  :config
+  (corfu-popupinfo-mode)
+  (corfu-history-mode t)
+  (savehist-mode t)
+  (add-to-list 'savehist-additional-variables 'corfu-history)
+  (when (version<= "30" emacs-version)
+    (setopt text-mode-ispell-word-completion nil))
+  (with-eval-after-load 'dabbrev
+    (dolist (mode '(tags-table-mode skk-jisyo-mode))
+      (push mode dabbrev-ignored-buffer-modes))))
+(leaf corfu-terminal
+  :if (and (< emacs-major-version 31)
+           (null (display-graphic-p)))
+  :elpaca t
+  :after corfu popon
+  :config
+  (unless (display-graphic-p)
+    (corfu-terminal-mode +1)))
+(leaf popon
+  :elpaca t
+  :init
+  (unless (display-graphic-p)
+    (require 'popon)))
+(leaf tempel
+  :elpaca t
+  :doc "Tempo templates/snippets with in-buffer field editing"
+  :req "emacs-27.1"
+  :tag "emacs>=27.1"
+  :url "https://github.com/minad/tempel"
+  :emacs>= 27.1
+  :bind
+  ((("M-+" . tempel-complete) ;; Alternative tempel-expand
+    ("M-*" . tempel-insert))
+   (:tempel-map
+    ("C-i" . tempel-next)))
+  :custom
+  `((tempel-path . ,(format "%ssnippets/tempel/templates/*" user-emacs-directory)))
+  :init
+  (defun tempel-setup-capf ()
+    ;; Add the Tempel Capf to `completion-at-point-functions'. `tempel-expand'
+    ;; only triggers on exact matches. Alternatively use `tempel-complete' if
+    ;; you want to see all matches, but then Tempel will probably trigger too
+    ;; often when you don't expect it.
+    ;; NOTE: We add `tempel-expand' *before* the main programming mode Capf,
+    ;; such that it will be tried first.
+    (add-hook 'completion-at-point-functions
+              #'tempel-expand nil 'local))
+  (add-hook 'prog-mode-hook 'tempel-setup-capf)
+  (add-hook 'text-mode-hook 'tempel-setup-capf))
+(elpaca tempel-collection)
+(leaf cape
+  :elpaca t
+  :doc "Completion At Point Extensions"
+  :req "emacs-27.1"
+  :tag "emacs>=27.1"
+  :url "https://github.com/minad/cape"
+  :emacs>= 27.1
+  :custom
+  (cape-dict-limit . 20000)
+  :bind-keymap
+  ("C-c f" . cape-prefix-map)
+  :init
+  (if (memq system-type '(darwin gnu/linux))
+      (customize-set-variable 'cape-dict-file "/usr/share/dict/words"))
+  (add-hook 'completion-at-point-functions #'cape-keyword)
+  (add-hook 'completion-at-point-functions #'cape-tex)
+  (add-hook 'completion-at-point-functions #'cape-file)
 
-    (when-let* ((worddir (expand-file-name ".config/emacs/cape" my-share-dir))
-                (wordfiles (and (file-directory-p worddir)
-                                (cddr (directory-files worddir t)))))
-      (setopt cape-dict-file (if (consp cape-dict-file)
-                                 (append wordfiles cape-dict-file)
-                               (cons cape-dict-file wordfiles))))
+  (when-let* ((worddir (expand-file-name ".config/emacs/cape" my-share-dir))
+              (wordfiles (and (file-directory-p worddir)
+                              (cddr (directory-files worddir t)))))
+    (setopt cape-dict-file (if (consp cape-dict-file)
+                               (append wordfiles cape-dict-file)
+                             (cons cape-dict-file wordfiles))))
 
-    (defun my-cape-wrap-with-annotation (oldfn &optional annotstr)
-      (when (null annotstr)
-        (setq annotstr "from unknown function"))
-      (cape-wrap-properties oldfn
-                            :annotation-function
-                            (lambda (_) (format " %s" annotstr))))
-    :config
-    (add-hook 'emacs-lisp-mode-hook
-              (lambda ()
-                (add-hook 'completion-at-point-functions
-                          (cape-capf-inside-code #'cape-elisp-symbol) nil 'local)))
-    (advice-add 'pcomplete-completions-at-point
-                :around
-                (lambda (oldfn &rest _)
-                  (my-cape-wrap-with-annotation
-                   oldfn
-                   (symbol-name 'pcomplete-completions-at-point))))
-    (defun my/org-get-radio-targets ()
-      (let ((targets '()))
-        (save-excursion
-          (goto-char (point-min))
-          (while (re-search-forward "<<\\([^<>]+\\)>>" nil t)
-            (push (match-string-no-properties 1) targets)))
-        (delete-dups (nreverse targets))))
+  (defun my-cape-wrap-with-annotation (oldfn &optional annotstr)
+    (when (null annotstr)
+      (setq annotstr "from unknown function"))
+    (cape-wrap-properties oldfn
+                          :annotation-function
+                          (lambda (_) (format " %s" annotstr))))
+  :config
+  (add-hook 'emacs-lisp-mode-hook
+            (lambda ()
+              (add-hook 'completion-at-point-functions
+                        (cape-capf-inside-code #'cape-elisp-symbol) nil 'local)))
+  (advice-add 'pcomplete-completions-at-point
+              :around
+              (lambda (oldfn &rest _)
+                (my-cape-wrap-with-annotation
+                 oldfn
+                 (symbol-name 'pcomplete-completions-at-point))))
+  (defun my/org-get-radio-targets ()
+    (let ((targets '()))
+      (save-excursion
+        (goto-char (point-min))
+        (while (re-search-forward "<<\\([^<>]+\\)>>" nil t)
+          (push (match-string-no-properties 1) targets)))
+      (delete-dups (nreverse targets))))
 
-    (defun my/cape-org-radio-targets ()
-      (when (derived-mode-p 'org-mode)
-        (let ((bounds (bounds-of-thing-at-point 'symbol)))
-          (when bounds
-            (list (car bounds)
+  (defun my/cape-org-radio-targets ()
+    (when (derived-mode-p 'org-mode)
+      (let ((bounds (bounds-of-thing-at-point 'symbol)))
+        (when bounds
+          (list (car bounds)
                 (cdr bounds)
                 (my/org-get-radio-targets)
                 :exclusive 'no)))))
 
-    (defun my/cape-dabbrev+radio ()
-      "dabbrev + org radio target の複合補完を即時実行。"
-      (interactive)
-      (let ((completion-at-point-functions
-             (list (cape-capf-super
-                    #'my/cape-org-radio-targets
-                    #'cape-dabbrev))))
-        (completion-at-point)))
+  (defun my/cape-dabbrev+radio ()
+    "dabbrev + org radio target の複合補完を即時実行。"
+    (interactive)
+    (let ((completion-at-point-functions
+           (list (cape-capf-super
+                  #'my/cape-org-radio-targets
+                  #'cape-dabbrev))))
+      (completion-at-point)))
 
-    (define-key cape-prefix-map (kbd "d") #'my/cape-dabbrev+radio))
-  (leaf kind-icon
-    :elpaca (kind-icon :host github :repo "jdtsmith/kind-icon")
-    :emacs>= 27.1
-    :after corfu
-    :custom
-    ((kind-icon-blend-background . t)
-     (kind-icon-default-face . 'corfu-default))
-    :config
-    (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)))
+  (define-key cape-prefix-map (kbd "d") #'my/cape-dabbrev+radio))
+(leaf kind-icon
+  :elpaca (kind-icon :host github :repo "jdtsmith/kind-icon")
+  :emacs>= 27.1
+  :after corfu
+  :custom
+  ((kind-icon-blend-background . t)
+   (kind-icon-default-face . 'corfu-default))
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
 (leaf conf-mode
   :config
