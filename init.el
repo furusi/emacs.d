@@ -2395,8 +2395,8 @@ See `org-capture-templates' for more information."
       (with-eval-after-load 'cape
         (dolist (f org-roam-completion-functions)
           (advice-add f
-                      :around (lambda (oldfn &rest _)
-                                (my-cape-wrap-with-annotation oldfn (symbol-name f))))))
+                      :around `(lambda (oldfn &rest _)
+                                (my-cape-wrap-with-annotation oldfn ,(symbol-name f))))))
       (defvar-keymap my-org-roam-random-repeat-map
         :repeat (:enter (org-roam-node-random))
         "r" #'org-roam-node-random
