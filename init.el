@@ -1877,7 +1877,7 @@ read-only-mode will be activated for that file."
           (apply orig-fun (list (my-org-choose-src-language)))
         (apply orig-fun args)))
 
-    (advice-add 'org-insert-structure-template :around #'my-org-insert-structure-template)
+  (advice-add 'org-insert-structure-template :around #'my-org-insert-structure-template))
 
     (leaf org-screenshot
       :url "https://dev.classmethod.jp/articles/org-mode-paste-show-clipboard-image/"
@@ -1897,7 +1897,9 @@ read-only-mode will be activated for that file."
           (org-display-inline-images))))
     (leaf org-monokakido
       :url ("https://alhassy.github.io/org-special-block-extras/#Links"
-            "https://gist.github.com/skoji/936a89f5e1e7c6f93d4a216175408659"))
+        "https://gist.github.com/skoji/936a89f5e1e7c6f93d4a216175408659")
+  :after ol
+  :config
     (org-link-set-parameters
      "mkdictionaries"
      :follow
@@ -1914,7 +1916,7 @@ read-only-mode will be activated for that file."
                      (_ "I don’t know how to export that!"))
                    (concat "mkdictionaries:///?text=" label)
                    (or description label))
-         (or description label))))
+       (or description label)))))
     (leaf org-image
       :url "https://misohena.jp/blog/2020-05-26-limit-maximum-inline-image-size-in-org-mode.html"
       :config
@@ -1978,7 +1980,7 @@ read-only-mode will be activated for that file."
        (org-outline-path-complete-in-steps . nil))
       :config
       (setq org-refile-targets
-            `((nil . (:maxlevel . 10))))
+        `((nil . (:maxlevel . 10)))))
       (leaf org-refile-source-log
         :disabled t
         :url "https://emacs.stackexchange.com/questions/36390/add-original-location-of-refiled-entries-to-logbook-after-org-refile"
@@ -2026,8 +2028,7 @@ and `clavis-org-refile-refiled-from-header' variables."
                                 clavis-org-refile-refiled-from-id
                                 clavis-org-refile-refiled-from-header))))
             (setq clavis-org-refile-refiled-from-id nil)
-            (setq clavis-org-refile-refiled-from-header nil)))))
-
+      (setq clavis-org-refile-refiled-from-header nil))))
     (leaf ob-java
       :custom
       ((org-babel-java-compiler . "javac -encoding UTF-8")))
@@ -2120,7 +2121,7 @@ and `clavis-org-refile-refiled-from-header' variables."
         :repeat t
         "n"   #'org-babel-next-src-block
         "p"   #'org-babel-previous-src-block)
-      (add-to-list 'org-src-lang-modes '("json" . js-json))))
+  (my-org-push-src-lang-modes 'js-json "json"))
   (leaf org-contrib
     :elpaca t
     :after org
