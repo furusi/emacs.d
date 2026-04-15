@@ -1481,6 +1481,7 @@ read-only-mode will be activated for that file."
                            embark-target-finders)
                           '(embark-target-file-at-point))
                   corfu-auto-prefix 2)))
+  (my-org-push-src-lang-modes 'rustic "rust")
   (leaf rustic-babel
     :after org
     :require t))
@@ -2120,7 +2121,8 @@ and `clavis-org-refile-refiled-from-header' variables."
     :repeat t
     "n"   #'org-babel-next-src-block
     "p"   #'org-babel-previous-src-block)
-  (my-org-push-src-lang-modes 'js-json "json"))
+  (my-org-push-src-lang-modes 'js-json "json")
+  (my-org-push-src-lang-modes 'diff))
 (leaf org-contrib
   :elpaca t
   :after org
