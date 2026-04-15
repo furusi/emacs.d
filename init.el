@@ -2382,7 +2382,6 @@ See `org-capture-templates' for more information."
    ("C-c n j" . org-roam-dailies-capture-today)
    ("C-c n t" . org-roam-dailies-goto-today))
   :config
-  ;; (org-roam-db-autosync-mode)
   (when (eq system-type 'darwin)
     (setq org-roam-graph-viewer "open"))
   (push "ROAM_EXCLUDE" org-default-properties)
@@ -2395,7 +2394,9 @@ See `org-capture-templates' for more information."
   (defvar-keymap my-org-roam-random-repeat-map
     :repeat (:enter (org-roam-node-random))
     "r" #'org-roam-node-random
-    "l" #'org-roam-buffer-toggle))
+    "l" #'org-roam-buffer-toggle)
+  (unless (equal (getenv "MSYSTEM") "UCRT64")
+      (org-roam-db-autosync-mode)))
 (leaf org-roam*
   :elpaca consult-org-roam org-roam-ui (simple-httpd :repo "skeeto/emacs-web-server")
   :config
