@@ -166,6 +166,15 @@ If NAME is not provided, it defaults to the string representation of MODE."
     (indent-tabs-mode . nil)
     (inhibit-startup-screen . t)
     (mark-ring-max . 128)
+    (org-directory . ,(expand-file-name
+                       (let ((my-share-dir (expand-file-name "org" my-share-dir)))
+                         (cond
+                          ((file-exists-p my-share-dir) my-share-dir)
+                          ((file-exists-p "~/git/notes") "~/git/notes")
+                          (t (progn
+                               (when (not (file-exists-p "~/org"))
+                                 (mkdir "~/org"))
+                               "~/org"))))))
     (package-user-dir . ,(locate-user-emacs-file (format "elpa/%s" emacs-version)))
     (set-mark-command-repeat-pop . t)    ;; C-u C-SPCの後C-SPCだけでマークを遡れる
     (show-paren-style . 'mixed)
@@ -1636,15 +1645,7 @@ read-only-mode will be activated for that file."
                                             org-date))
                               (set-face-attribute face nil :family "UDEV Gothic JPDOC")))))
   :custom
-  `((org-directory . ,(expand-file-name
-                       (cond
-                        ((file-exists-p (expand-file-name "org" my-share-dir)) (expand-file-name "org" my-share-dir))
-                        ((file-exists-p "~/git/notes") "~/git/notes")
-                        (t (progn
-                             (when (not (file-exists-p "~/org"))
-                               (mkdir "~/org"))
-                             "~/org")))))
-    (org-link-frame-setup .
+  `((org-link-frame-setup .
                           '((vm . vm-visit-folder-other-frame)
                             (vm-imap . vm-visit-imap-folder-other-frame)
                             (gnus . org-gnus-no-new-news)
@@ -2357,7 +2358,7 @@ See `org-capture-templates' for more information."
   :elpaca t
   :req "emacs-26.1" "dash-2.13" "org-9.4" "emacsql-20230228" "magit-section-3.0.0"
   :emacs>= 26.1
-  :after (org no-littering)
+  :after no-littering
   :custom
   `((org-roam-directory . ,(format "%s/roam" org-directory))
     (org-roam-completion-everywhere . t)
@@ -2396,7 +2397,7 @@ See `org-capture-templates' for more information."
     "r" #'org-roam-node-random
     "l" #'org-roam-buffer-toggle)
   (unless (equal (getenv "MSYSTEM") "UCRT64")
-      (org-roam-db-autosync-mode)))
+    (org-roam-db-autosync-mode)))
 (leaf org-roam*
   :elpaca consult-org-roam org-roam-ui (simple-httpd :repo "skeeto/emacs-web-server")
   :config
