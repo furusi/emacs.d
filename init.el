@@ -1622,9 +1622,6 @@ read-only-mode will be activated for that file."
 
 
 ;; Org-mode
-
-(leaf org*
-  :config
   (leaf org
     :elpaca `,@(and (not (eq system-type 'windows-nt))
                     '(org :depth 1))
@@ -1898,7 +1895,6 @@ read-only-mode will be activated for that file."
           (call-process cmd nil nil nil filename)
           (insert (format "[[file:%s]]" (file-relative-name filename)))
           (org-display-inline-images))))
-
     (leaf org-monokakido
       :url ("https://alhassy.github.io/org-special-block-extras/#Links"
             "https://gist.github.com/skoji/936a89f5e1e7c6f93d4a216175408659"))
@@ -2051,7 +2047,7 @@ and `clavis-org-refile-refiled-from-header' variables."
        "org-table-next-" "org-table-previous" "org-cycle"))
 
     (leaf ox-latex
-      :after (org)
+  :after org
       :custom ((org-latex-minted-options . '(("frame" "single")
                                              ("breaklines" "")
                                              ("style" "xcode")
@@ -2103,7 +2099,6 @@ and `clavis-org-refile-refiled-from-header' variables."
                                   section-list)))
            (cddr (directory-files
                   (locate-user-emacs-file "lisp/org/ox-latex/templates"))))))
-
       ;; org-export-latex-no-toc
       (defun org-export-latex-no-toc (depth)
         (when depth
@@ -2343,7 +2338,6 @@ See `org-capture-templates' for more information."
     :hook (org-mode-hook . org-latex-impatient-mode)
     :custom
     (org-latex-impatient-tex2svg-bin . "tex2svg"))
-  )
 (leaf ox*
   :elpaca (ox-slimhtml :host github :repo "emacsattic/ox-slimhtml")
   :elpaca (ox-tailwind :host github :repo "vascoferreira25/ox-tailwind")
