@@ -2359,7 +2359,8 @@ See `org-capture-templates' for more information."
       :emacs>= 26.1
       :after (org no-littering)
       :custom
-      `((org-roam-completion-everywhere . t)
+      `((org-roam-directory . ,(format "%s/roam" org-directory))
+        (org-roam-completion-everywhere . t)
         (org-roam-node-display-template .
                                         ,(concat "${title:*} "
                                                  (propertize "[${aliases:10}]" 'face 'font-lock-variable-name-face)
@@ -2381,8 +2382,7 @@ See `org-capture-templates' for more information."
        ("C-c n j" . org-roam-dailies-capture-today)
        ("C-c n t" . org-roam-dailies-goto-today))
       :config
-      (setopt org-roam-directory (format "%s/roam" org-directory))
-      (org-roam-db-autosync-mode)
+      ;; (org-roam-db-autosync-mode)
       (when (eq system-type 'darwin)
         (setq org-roam-graph-viewer "open"))
       (push "ROAM_EXCLUDE" org-default-properties)
