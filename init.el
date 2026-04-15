@@ -2351,10 +2351,8 @@ See `org-capture-templates' for more information."
     (setq pub-dir (or pub-dir org-export-directory))
     (funcall orig-fn extension subtreep pub-dir))
   (advice-add 'org-export-output-file-name :around 'org-export-output-file-name--set-directory))
-(leaf org-roam*
-    :elpaca org-roam consult-org-roam org-roam-ui (simple-httpd :repo "skeeto/emacs-web-server")
-    :config
-    (leaf org-roam
+(leaf org-roam
+  :elpaca t
       :req "emacs-26.1" "dash-2.13" "org-9.4" "emacsql-20230228" "magit-section-3.0.0"
       :emacs>= 26.1
       :after (org no-littering)
@@ -2397,6 +2395,9 @@ See `org-capture-templates' for more information."
         :repeat (:enter (org-roam-node-random))
         "r" #'org-roam-node-random
         "l" #'org-roam-buffer-toggle))
+(leaf org-roam*
+  :elpaca consult-org-roam org-roam-ui (simple-httpd :repo "skeeto/emacs-web-server")
+  :config
     (leaf org-roam-ui
         :req "emacs-27.1" "org-roam-2.0.0" "simple-httpd-20191103.1446" "websocket-1.13"
         :emacs>= 27.1
