@@ -110,6 +110,25 @@
 (column-number-mode)
 (require 'cl-lib)
 
+(defun which-linux-distribution ()
+  "Return string which obtains from 'lsb_release' command."
+  (interactive)
+  (if (eq system-type 'gnu/linux)
+      (string-trim (shell-command-to-string "lsb_release -sd")
+                   "^\"" "\"?[ \t\n\r]+")
+    ""))
+(setq my-lsb-distribution-name
+      (which-linux-distribution))
+(defun my-org-push-src-lang-modes (mode &optional name)
+  "Enhance the org-src-lang-modes list with the given MODE and optional NAME.
+If NAME is not provided, it defaults to the string representation of MODE."
+  (let ((name (cond
+               ((stringp name) name)
+               ((null name) (symbol-name mode))
+               ((symbolp name) (symbol-name name)))))
+    (with-eval-after-load 'org
+      (add-to-list 'org-src-lang-modes (cons name mode)))))
+
 (defcustom my-share-dir (expand-file-name "~/Sync")
   "Dropbox directory."
   :type 'directory
@@ -817,15 +836,6 @@ read-only-mode will be activated for that file."
 (leaf esup
   :elpaca t
   :require t)
-(defun which-linux-distribution ()
-  "Return string which obtains from 'lsb_release' command."
-  (interactive)
-  (if (eq system-type 'gnu/linux)
-      (string-trim (shell-command-to-string "lsb_release -sd")
-                   "^\"" "\"?[ \t\n\r]+")
-    ""))
-(setq my-lsb-distribution-name
-      (which-linux-distribution))
 
 ;;行番号を表示
 (if (version< "26" emacs-version)
@@ -1612,15 +1622,6 @@ read-only-mode will be activated for that file."
 
 
 ;; Org-mode
-(defun my-org-push-src-lang-modes (mode &optional name)
-  "Enhance the org-src-lang-modes list with the given MODE and optional NAME.
-If NAME is not provided, it defaults to the string representation of MODE."
-  (let ((name (cond
-               ((stringp name) name)
-               ((null name) (symbol-name mode))
-               ((symbolp name) (symbol-name name)))))
-    (with-eval-after-load 'org
-      (add-to-list 'org-src-lang-modes (cons name mode)))))
 
 (leaf org*
   :config
