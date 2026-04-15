@@ -175,6 +175,7 @@ If NAME is not provided, it defaults to the string representation of MODE."
     (vc-follow-symlinks . t)
     (vc-handled-backends . '(Git))))
 (leaf recentf
+  :after no-littering
   :custom `((recentf-auto-cleanup . 'never)
             (recentf-max-menu-items . 30)
             (recentf-max-saved-items . 2000))
@@ -2354,7 +2355,7 @@ See `org-capture-templates' for more information."
   :elpaca t
   :req "emacs-26.1" "dash-2.13" "org-9.4" "emacsql-20230228" "magit-section-3.0.0"
   :emacs>= 26.1
-  :after org
+  :after (org no-littering)
   :custom
   `((org-roam-directory . ,(format "%s/roam" org-directory))
     (org-roam-completion-everywhere . t)
