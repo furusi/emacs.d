@@ -1466,13 +1466,7 @@ read-only-mode will be activated for that file."
   :custom ((rust-mode-treesitter-derive . nil)))
 (leaf rustic
   :elpaca t
-  :doc "Rust development environment"
-  :req "emacs-26.1" "rust-mode-1.0.3" "dash-2.13.0" "f-0.18.2"
-  "let-alist-1.0.4" "markdown-mode-2.3" "project-0.3.0" "s-1.10.0"
-  "seq-2.3" "spinner-1.7.3" "xterm-color-1.6"
-  :tag "languages" "emacs>=26.1"
   :emacs>= 26.1
-  :after rust-mode
   :custom ((rustic-ansi-faces . ["black" "red3" "green3" "yellow3"
                                  "deep sky blue" "magenta3" "cyan3" "white"])
            (rustic-lsp-client . 'lsp-mode))
@@ -1489,11 +1483,7 @@ read-only-mode will be activated for that file."
                            'embark-target-file-at-point
                            embark-target-finders)
                           '(embark-target-file-at-point))
-                  corfu-auto-prefix 2)))
-  (my-org-push-src-lang-modes 'rustic "rust")
-  (leaf rustic-babel
-    :after org
-    :require t))
+                  corfu-auto-prefix 2))))
 (leaf rustowl
   :disabled t
   :if (executable-find "rustowl")
