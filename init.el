@@ -3165,7 +3165,7 @@ Optional argument ARG hoge."
   :hook
   (nov-mode-hook . nov-xwidget-inject-all-files))
 (leaf speed-type
-  :elpaca (speed-type :ref "b982ee6" :pin t)
+  :elpaca t
   :doc "Practice touch and speed typing"
   :req "emacs-25.1"
   :tag "games" "emacs>=25.1"
