@@ -2352,11 +2352,12 @@ See `org-capture-templates' for more information."
   :custom
   `((org-roam-directory . ,(format "%s/roam" org-directory))
     (org-roam-completion-everywhere . t)
-    (org-roam-node-display-template .
-                                    ,(concat "${title:*} "
-                                             (propertize "[${aliases:10}]" 'face 'font-lock-variable-name-face)
-                                             " "
-                                             (propertize "[${tags:10}]" 'face 'org-tag)))
+    (org-roam-node-display-template . "${title:*} [${hints:15}] [${aliases:10}] [${tags:10}]"
+                                    ;; ,(concat "${title:*} ${hints:15} "
+                                    ;;          (propertize "[${aliases:10}]" 'face 'font-lock-variable-name-face)
+                                    ;;          " "
+                                    ;;          (propertize "[${tags:10}]" 'face 'org-tag))
+                                    )
     (org-roam-dailies-capture-templates .
                                         '(("d" "default" plain "** %?\n%U\n"
                                            :target
@@ -2373,6 +2374,7 @@ See `org-capture-templates' for more information."
    ("C-c n j" . org-roam-dailies-capture-today)
    ("C-c n t" . org-roam-dailies-goto-today))
   :config
+  (org-roam-db-autosync-mode)
   (when (eq system-type 'darwin)
     (setq org-roam-graph-viewer "open"))
   (push "ROAM_EXCLUDE" org-default-properties)
@@ -2386,8 +2388,20 @@ See `org-capture-templates' for more information."
     :repeat (:enter (org-roam-node-random))
     "r" #'org-roam-node-random
     "l" #'org-roam-buffer-toggle)
-  (unless (equal (getenv "MSYSTEM") "UCRT64")
-    (org-roam-db-autosync-mode)))
+  (cl-defmethod org-roam-node-hints ((node org-roam-node))
+    (cdr (assoc-string "ROAM_HINTS" (org-roam-node-properties node))))
+  (defun org-roam-hint-add (hint)
+    (interactive "sHint: ")
+    (let ((node (org-roam-node-at-point 'assert)))
+      (save-excursion
+        (goto-char (org-roam-node-point node))
+        (org-roam-property-add "ROAM_HINTS" hint))))
+  (defun org-roam-hint-remove (&optional hint)
+    (interactive)
+    (let ((node (org-roam-node-at-point 'assert)))
+      (save-excursion
+        (goto-char (org-roam-node-point node))
+        (org-roam-property-remove "ROAM_HINTS" hint)))))
 (leaf org-roam*
   :elpaca consult-org-roam org-roam-ui (simple-httpd :repo "skeeto/emacs-web-server")
   :config
