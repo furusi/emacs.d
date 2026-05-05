@@ -295,6 +295,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
    ;; Enable recursive minibuffers
    (enable-recursive-minibuffers . t))
   :global-minor-mode t
+  :init
+  (savehist-mode t)
   :config
   (when (< emacs-major-version 31)
     (advice-add #'completing-read-multiple :filter-args
@@ -514,7 +516,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   :config
   (corfu-popupinfo-mode)
   (corfu-history-mode t)
-  (savehist-mode t)
   (add-to-list 'savehist-additional-variables 'corfu-history)
   (when (version<= "30" emacs-version)
     (setopt text-mode-ispell-word-completion nil))
@@ -3223,8 +3224,7 @@ Optional argument ARG hoge."
 (leaf indent-bars
   :elpaca (indent-bars :type git :host github :repo "jdtsmith/indent-bars"))
 (leaf info-downloader
-  :elpaca (info-downloader :type git :host github :repo "furusi/info-downloader")
-  :after info)
+  :elpaca (info-downloader :type git :host github :repo "furusi/info-downloader"))
 (leaf ellama
   :if (executable-find "ollama")
   :elpaca t
