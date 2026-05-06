@@ -1193,6 +1193,8 @@ read-only-mode will be activated for that file."
    (:embark-url-map
     :package embark
     ("x" . browse-url-default-browser)))
+  :hook
+  ((eww-mode-hook . hl-line-mode))
   :config
   (defun eww-disable-images ()
     "eww で画像表示させない"
@@ -3156,7 +3158,9 @@ Optional argument ARG hoge."
     (when (y-or-n-p "Are you sure you want to this window? ")
       (quit-window)))
   :mode ("\\.epub\\'" . nov-mode)
-  :hook (nov-mode-hook . (lambda () (visual-line-mode 1)))
+  :hook (nov-mode-hook . (lambda ()
+                           (visual-line-mode 1)
+                           (hl-line-mode 1)))
   :bind (:nov-mode-map
          ("q" . quit-window-confirm)))
 (leaf nov-xwidget
