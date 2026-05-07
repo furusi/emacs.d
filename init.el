@@ -49,7 +49,7 @@
 (add-hook 'after-init-hook #'elpaca-process-queues)
 (elpaca `(,@elpaca-order))
 (setq elpaca-queue-limit (if (eq system-type 'windows-nt)
-                             10
+                             5
                            30))
 (when (eq system-type 'windows-nt)
   (elpaca-no-symlink-mode 1))
@@ -156,6 +156,7 @@ If NAME is not provided, it defaults to the string representation of MODE."
     (backup-directory-alist . '((".*" . "~/.ehist")))
     (byte-compile-warnings . '(cl-functions))
     (comment-style . 'multi-line)
+    (confirm-kill-emacs . 'y-or-n-p)
     (custom-theme-directory . ,(locate-user-emacs-file "themes")) ;; テーマのディレクトリを設定
     (cursor-type . '(bar . 4))
     ;; (garbage-collection-messages . t) ; GC発動のタイミングを確認するときに有効にする
@@ -285,7 +286,10 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
           ("M-RET" . minibuffer-force-complete-and-exit)
           ("M-TAB" . minibuffer-complete)
           ("C-r" . vertico-previous)
-          ("C-s" . vertico-next)))
+          ("C-s" . vertico-next))
+         ;; vertico-repeat
+         ("C-x c r" . vertico-repeat-previous)
+         ("C-x c R" . vertico-repeat-select))
   :custom
   ((vertico-count . 20)
    (vertico-cycle . t)
@@ -295,6 +299,9 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
    ;; Enable recursive minibuffers
    (enable-recursive-minibuffers . t))
   :global-minor-mode t
+  :hook
+  ((minibuffer-setup-hook . cursor-intangible-mode)
+   (minibuffer-setup-hook . vertico-repeat-save))
   :init
   (savehist-mode t)
   :config
@@ -304,8 +311,7 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
                   (cons (format "[CRM%s] %s"
                                 (string-replace "[ \t]*" "" crm-separator)
                                 (car args))
-                        (cdr args)))))
-  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode))
+                        (cdr args))))))
 (leaf vertico-multiform
   :disabled t
   :after consult vertico
@@ -322,11 +328,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   (consult-customize consult-ripgrep consult-git-grep consult-grep
                      :preview-key nil))
 
-(leaf vertico-repeat
-  :bind (("C-x c r" . vertico-repeat-previous)
-         ("C-x c R" . vertico-repeat-select))
-  :hook
-  (minibuffer-setup-hook . vertico-repeat-save))
 (leaf vertico-directory
   :bind ((:vertico-map
           ("RET"    . vertico-directory-enter)
@@ -570,7 +571,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   :url "https://github.com/minad/cape"
   :emacs>= 27.1
   :custom
-  (cape-dict-limit . 20000)
+  ((cape-dict-limit . 20000)
+   (cape-dabbrev-buffer-function . #'cape-text-buffers))
   :bind-keymap
   ("C-c f" . cape-prefix-map)
   :init
