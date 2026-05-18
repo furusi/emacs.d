@@ -213,6 +213,7 @@ If NAME is not provided, it defaults to the string representation of MODE."
                            args))))
         (funcall oldfun)))
     (advice-add 'pcomplete/git :around #'my-pcomplete/git:around)))
+(elpaca compat)
 (leaf magit
   :elpaca transient
   :elpaca (magit :files ("lisp/magit*.el"
