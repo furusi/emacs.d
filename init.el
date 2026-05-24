@@ -1438,7 +1438,6 @@ read-only-mode will be activated for that file."
   ;;     ((lsp-metals-server-args . '("-J-Dmetals.allow-multiline-string-formatting=off")))
   ;;     :hook (scala-mode-hook . lsp-deferred)))
   (elpaca lsp-dart)
-  (elpaca lsp-tailwindcss)
   (leaf dap-mode
     :elpaca t
     :after lsp-mode
@@ -2971,23 +2970,23 @@ Optional argument ARG hoge."
   :bind ((:elfeed-show-mode-map
           ("S-SPC" . scroll-down-command))
          (:elfeed-search-mode-map
-          ("j" . forward-line)
-          ("n" . forward-line)
-          ("k" . previous-line)
-          ("p" . previous-line)
           ("e" . (lambda () (interactive)(eww (my-elfeed-yank-entry-url))))
           ("E" . elfeed-search-browse-url)
-          ("a" . my-elfeed-safari-add-reading-item)
-          ("s" . my-elfeed-search-live-filter))
+          ("a" . my-elfeed-safari-add-reading-item))
          (:elfeed-show-mode-map
           ("a" . my-elfeed-safari-add-reading-item)))
-  :init
+  :bind-keymap
+  ((:elfeed-search-mode-map
+          :package elfeed
+          ("y" . my-elfeed-yank-map)))
+  :preface
   (defvar-keymap my-elfeed-yank-map
     "y" #'elfeed-search-yank
     "m" #'my-elfeed-search-yank-markdown
     "o" #'my-elfeed-search-yank-org)
   :custom
   ((elfeed-search-date-format . '("%Y-%m-%d %H:%M" 16 :left))
+   (elfeed-search-separator-date-format . "%F")
    (elfeed-search-filter . "@24-hours-ago +unread"))
   :config
   ;;osascript -e 'tell application "Safari" to add reading list item "http://totl.net/"'
@@ -3010,31 +3009,6 @@ Optional argument ARG hoge."
       (if (equal url "")
           (error "Selected entry's url is empty")
         url)))
-  (defun my-elfeed-search-live-filter ()
-    (interactive)
-    (unwind-protect (let* ((elfeed-search-filter-active :live)
-                           (input (my-elfeed--tag-completing-multi)))
-                      (unless (string-blank-p input)
-                        (setq elfeed-search-filter input)
-                        (elfeed-search-update :force)))))
-  (defun my-elfeed--tag-completing-multi ()
-    (require 'elfeed)
-    (let* ((all-tags (elfeed-db-get-all-tags))
-           (selected-tags (completing-read-multiple "Filter: "
-                                                    all-tags
-                                                    nil nil
-                                                    elfeed-search-filter))
-           (trimmed-tags (seq-remove #'string-blank-p
-                                     (mapcar #'string-trim selected-tags)))
-           (formatted-tags (mapcar (lambda (tag)
-                                     (cond ((member (aref tag 0) '(?@ ?+)) tag)
-                                           (t (format "+%s" tag))))
-                                   trimmed-tags)))
-      (string-join formatted-tags " ")))
-  (defun my-elfeed-search-set-filter (old-fn &rest args)
-    (interactive)
-    (funcall old-fn (my-elfeed--tag-completing-multi)))
-  (advice-add 'elfeed-search-set-filter :around #'my-elfeed-search-set-filter)
   (defun my-elfeed-search-yank-markdown ()
     (interactive)
     (my-elfeed-search-yank 'my-markdown--generate-link))
@@ -3053,9 +3027,7 @@ Optional argument ARG hoge."
                         titles links) "\n")))
       (kill-new markdowns)
       (message "Copied:%s" markdowns)))
-  (leaf-keys-bind-keymap
-   ((elfeed-search-mode-map :package elfeed
-                            ("y" . my-elfeed-yank-map)))))
+  )
 (leaf elfeed-goodies
   :elpaca t
   :doc "Elfeed goodies"
