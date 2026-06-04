@@ -279,6 +279,8 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   :if (executable-find "jj")
   :elpaca t)
 
+(savehist-mode t)
+
 (leaf vertico
   :emacs>= 27.1
   :elpaca (vertico :host github :repo "minad/vertico"
@@ -303,8 +305,6 @@ n,SPC -next diff      |     h -highlighting       |  d -copy both to C
   :hook
   ((minibuffer-setup-hook . cursor-intangible-mode)
    (minibuffer-setup-hook . vertico-repeat-save))
-  :init
-  (savehist-mode t)
   :config
   (when (< emacs-major-version 31)
     (advice-add #'completing-read-multiple :filter-args
