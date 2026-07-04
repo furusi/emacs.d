@@ -56,6 +56,7 @@
 ;;elpaca end
 (if (version< emacs-version "29")
     (elpaca use-package (require 'use-package)))
+(setq elpaca-lock-file (locate-user-emacs-file "packages/elpaca/elpaca.lock"))
 ;; <leaf-install-code>
 
 (eval-and-compile

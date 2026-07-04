@@ -54,7 +54,8 @@ flycheck_*.el
 
 # End of https://www.toptal.com/developers/gitignore/api/emacs
 /custom.el
-/packages/
+/packages/elpaca/*
+!/packages/elpaca/elpaca.lock
 /var/
 /info/
 /eln-cache/
